@@ -53,6 +53,10 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
+import SignIn from "layouts/authentication/sign-in";
+import PrivateRoute from "layouts/authentication/sign-in/PrivateRoutes";
+//store
+import { useAuthStore } from "zustand/auth.store.ts";
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -68,6 +72,7 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const role = useAuthStore((state) => state.role);
 
   // Cache for the rtl
   useMemo(() => {
@@ -109,6 +114,12 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
+  const filteredRoutes = [];
+
+  routes.map((route) => {
+    route.rol.includes(role) ? filteredRoutes.push(route) : null;
+  });
+
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
@@ -121,6 +132,22 @@ export default function App() {
 
       return null;
     });
+
+  // const getRoutes = (routes) => {
+  //   return routes.flatMap((route) => {
+  //     if (route.collapse) {
+  //       return getRoutes(route.collapse);
+  //     }
+  //     // Filtra rutas según el rol
+  //     if (route.route && route.rol && route.rol.includes(role)) {
+  //       return <Route exact path={route.route} element={route.component} key={route.key} />;
+  //     }
+
+  //     return [];
+  //   });
+  // };
+
+  // const filteredRoutes = getRoutes(allRoutes);
 
   const configsButton = (
     <MDBox
@@ -166,8 +193,8 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/tables" />} />
+          {getRoutes(filteredRoutes)}
+          <Route path="*" element={<Navigate to="/Abiertos" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -180,7 +207,7 @@ export default function App() {
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
             brandName="Ticket View"
-            routes={routes}
+            routes={filteredRoutes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -190,8 +217,12 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/tables" />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route element={<PrivateRoute />}>
+          {/* {filteredRoutes} */}
+          {getRoutes(filteredRoutes)}
+          <Route path="*" element={<Navigate to="/abiertos" />} />
+        </Route>
       </Routes>
     </ThemeProvider>
   );

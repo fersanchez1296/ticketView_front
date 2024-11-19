@@ -1,0 +1,24 @@
+[{
+    "_id": "67200415ab8f070f7ce35388",
+    "Estado": "CERRADO"
+  },
+  {
+    "_id": "67200415ab8f070f7ce35389",
+    "Estado": "EN CURSO"
+  },
+  {
+    "_id": "67200415ab8f070f7ce3538a",
+    "Estado": "NUEVO"
+  },
+  {
+    "_id": "67200415ab8f070f7ce3538b",
+    "Estado": "PENDIENTE"
+  },
+  {
+    "_id": "67200415ab8f070f7ce3538c",
+    "Estado": "REABIERTO"
+  },
+  {
+    "_id": "67200415ab8f070f7ce3538d",
+    "Estado": "RESUELTO"
+  }]

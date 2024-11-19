@@ -6,14 +6,14 @@ export const apiSlice = createApi({
     //desarrollo
     //baseUrl: "http://localhost:4000/api/",
     baseUrl: "http://localhost:4000/api/",
-    //credentials: "include",
+    credentials: "include",
   }),
-  tagTypes: ["Tickets"],
+  tagTypes: ["Tickets", "Usuarios"],
   endpoints: (builder) => ({
     //Tickets
     getTicketsAbiertos: builder.query({
       query: ({ collection }) => {
-        const url = `tickets?collection=${collection}`;
+        const url = `tickets/${collection}`;
         return {
           url,
           method: "GET",
@@ -21,38 +21,59 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
-    // aceptarSolicitud: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/solicitud/aceptar/${id}`,
-    //     body: data,
-    //     method: "PUT",
-    //   }),
-    //   invalidatesTags: ["Solicitudes"],
-    // }),
-    // rechazarSolicitud: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/solicitud/rechazar/${id}`,
-    //     body: data,
-    //     method: "PUT",
-    //   }),
-    //   invalidatesTags: ["Solicitudes"],
-    // }),
-    // deleteSolicitud: builder.mutation({
-    //   query: ({ id }) => ({
-    //     url: `/solicitud/${id}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["Solicitudes"],
-    // }),
+    //login
+    login: builder.mutation({
+      query: (credentials) => ({
+        url: "/login",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+    //logout
+    logout: builder.mutation({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+      }),
+      invalidatesTags: ["Tickets", "Usuarios"],
+    }),
+    //REASIGNAR
+    //obtener usuarios (reasignar)
+    getUsuarios: builder.query({
+      query: () => {
+        const url = `reasignar/areas`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
+    }),
+    //RESOLVER
+    putResolver: builder.mutation({
+      query: ({ Id_ticket, Resuelto_por_id, Descripcion_resolucion }) => {
+        const url = `resolver`;
+        return {
+          url,
+          method: "PUT",
+          body: {
+            Id_ticket,
+            Resuelto_por_id,
+            Descripcion_resolucion,
+          },
+        };
+      },
+      invalidatesTags: ["Tickets"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
 
 export const {
   //tickets
-  //useUpdateSolicitudMutation,
   useGetTicketsAbiertosQuery,
-  //useAceptarSolicitudMutation,
-  //useRechazarSolicitudMutation,
-  //useDeleteSolicitudMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useGetUsuariosQuery,
+  usePutResolverMutation,
 } = apiSlice;

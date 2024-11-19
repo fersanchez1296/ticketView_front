@@ -1,61 +1,119 @@
 // Propiedades y métodos del componente de los tickets abiertos
 export interface TicketProps {
-  id: string;
-  fecha_inicio: string;
-  mesa_ayuda_abre: string | number;
-  estado_asignado: string;
-  estado_final: string;
-  categoria: string;
-  descripcion: string;
-  prioridad: string;
-  fecha_cierre_ticket: string;
-  mesa_ayuda_cierre: string;
-  equipo_asignado: string;
-  asignado_a: string;
-  descripcion_cierre_ticket: string;
-  reasginado_a: string;
-  tipo_ticket: string;
-  medio_solicitud_recibido: string;
-  cliente: string;
-  dependencia_cliente: string;
-  area_reasignado_a: string;
-  respuesta_cierre_reasignado: string;
+  _id: string;
+  Id: number | string;
+  Tipo_incidencia: Object;
+  Fecha_hora_creacion: Date | String;
+  Fecha_limite_resolucion_SLA: Date | String;
+  Fecha_hora_ultima_modificacion: Date | String;
+  Estado: Object;
+  Equipo_asignado: Object;
+  Asignado_a: Object;
+  Creado_por: Object;
+  Categoria: Object;
+  Servicio: Object;
+  Subcategoria: Object;
+  Nombre_cliente: string;
+  Secretaria?: Object;
+  Direccion_general?: Object;
+  Direccion_area?: Object | null;
+  Descripcion: string;
+  Prioridad: Object;
+  Incidencia_grave: string;
+  Fecha_limite_respuesta_SLA?: Date | String;
+  Descripcion_mandar_a_Escritorio?: string;
+  Descripcion_cierre?: string;
+  Causa?: string;
+  Resuelto_por?: string;
+  Cerrado_por?: string;
+  Fecha_hora_cierre?: Date | String;
+  NumeroRec_Oficio?: string;
+  Numero_Oficio?: string;
+  PendingReason?: string;
+  Reasignado_a?: Object;
+  Area_reasignado_a?: Object;
+  Historia_ticket?: string;
+  Descripcion_resolucion: string;
 }
 
 export interface TicketMethods {
   setTicketFields: (field: string, value: string | number) => void;
+  setTicketFetch: (fields: Partial<TicketProps>) => void;
   resetValues: () => void;
 }
 
 export type TciketType = TicketProps & TicketMethods;
 
 export const ticketInitialState: TicketProps = {
-  id: "",
-  fecha_inicio: "",
-  mesa_ayuda_abre: "",
-  estado_asignado: "",
-  estado_final: "",
-  categoria: "",
-  descripcion: "",
-  prioridad: "",
-  fecha_cierre_ticket: "",
-  mesa_ayuda_cierre: "",
-  equipo_asignado: "",
-  asignado_a: "",
-  descripcion_cierre_ticket: "",
-  reasginado_a: "",
-  tipo_ticket: "",
-  medio_solicitud_recibido: "",
-  cliente: "",
-  dependencia_cliente: "",
-  area_reasignado_a: "",
-  respuesta_cierre_reasignado: "",
+  _id: "",
+  Id: "",
+  Tipo_incidencia: {},
+  Fecha_hora_creacion: "",
+  Fecha_limite_resolucion_SLA: "",
+  Fecha_hora_ultima_modificacion: "",
+  Estado: {},
+  Equipo_asignado: {},
+  Asignado_a: "",
+  Creado_por: {},
+  Categoria: {},
+  Servicio: {},
+  Subcategoria: {},
+  Nombre_cliente: "",
+  Secretaria: {},
+  Direccion_general: {},
+  Direccion_area: {},
+  Descripcion: "",
+  Prioridad: {},
+  Incidencia_grave: "",
+  Fecha_limite_respuesta_SLA: "",
+  Descripcion_mandar_a_Escritorio: "",
+  Descripcion_cierre: "",
+  Causa: "",
+  Resuelto_por: "",
+  Cerrado_por: "",
+  Fecha_hora_cierre: "",
+  NumeroRec_Oficio: "",
+  Numero_Oficio: "",
+  PendingReason: "",
+  Reasignado_a: "",
+  Area_reasignado_a: "",
+  Historia_ticket: "",
+  Descripcion_resolucion: "",
 };
 
 // Propidades y métodos que controlan el abrir y cerrar de ventanas
 
 export interface DialogState {
+  //estas definiciones y metodos se usan para abrir la ventana de visualización:
   isWindowOpen: boolean;
   openWindow: () => void;
   closeWindow: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de edición:
+  isWindowEditOpen: boolean;
+  openWindowEdit: () => void;
+  closeWindowEdit: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de cerrar ticket:
+  isWindowCloseTicketOpen: boolean;
+  openWindowCloseTicket: () => void;
+  closeWindowCloseTicket: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de reasignar ticket:
+  isWindowReasignarOpen: boolean;
+  openWindowReasignar: () => void;
+  closeWindowReasignar: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de resolver ticket:
+  isWindowResolverOpen: boolean;
+  openWindowResolver: () => void;
+  closeWindowResolver: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de reabrir ticket:
+  isWindowReabrirOpen: boolean;
+  openWindowReabrir: () => void;
+  closeWindowReabrir: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de aceptar resolucion ticket:
+  isWindowAceptarOpen: boolean;
+  openWindowAceptat: () => void;
+  closeWindowAceptar: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de rechazar resolucion ticket:
+  isWindowRechazarOpen: boolean;
+  openWindowRechazar: () => void;
+  closeWindowRechazar: () => void;
 }

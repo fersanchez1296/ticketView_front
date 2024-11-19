@@ -19,41 +19,51 @@ import { useGetTicketsAbiertosQuery } from "api/index";
 import DataTable from "components/Table/index";
 //propTypes
 import PropTypes from "prop-types";
+//view component
+import View from "components/TicketWindow/View";
+import Edit from "components/TicketWindow/Edit";
+import Cerrar from "components/TicketWindow/Cerrar";
+import Reasignar from "components/TicketWindow/Reasignar";
+import Resolver from "components/TicketWindow/Resolver";
+import Aceptar from "components/TicketWindow/Aceptar";
+import Rechazar from "components/TicketWindow/Rechazar";
 
 function TableData({ collection }) {
-  const openWindow = useDialogStore((state) => state.openWindow);
-  const setTicketFields = useTicketStore((state) => state.setTicketFields);
   const { data: tickets, refetch, isLoading, error } = useGetTicketsAbiertosQuery({ collection });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: Reload page</div>;
+  // tickets?.forEach((ticketData) => {
+  //   setTicketFetch(ticketData);
+  // });
   const handleClickActualizar = () => {
     refetch();
   };
   // const { columns, rows } = abiertosTableData(tickets, openWindow, setTicketFields);
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox pt={6} pb={3}>
-        <Grid container spacing={6}>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Tickets Abiertos
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                {/* <DataTable
+    <>
+      <DashboardLayout>
+        <DashboardNavbar />
+        <MDBox pt={6} pb={3}>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <Card>
+                <MDBox
+                  mx={2}
+                  mt={-3}
+                  py={3}
+                  px={2}
+                  variant="gradient"
+                  bgColor="info"
+                  borderRadius="lg"
+                  coloredShadow="info"
+                >
+                  <MDTypography variant="h6" color="white">
+                    Tickets {collection}
+                  </MDTypography>
+                </MDBox>
+                <MDBox pt={3}>
+                  {/* <DataTable
                   table={{ columns, rows }}
                   canSearch
                   isSorted={true}
@@ -61,14 +71,22 @@ function TableData({ collection }) {
                   showTotalEntries={true}
                   noEndBorder
                 /> */}
-                <DataTable tickets={tickets} />
-              </MDBox>
-            </Card>
+                  <DataTable tickets={tickets} collection={collection} />
+                </MDBox>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+        </MDBox>
+        <Footer />
+      </DashboardLayout>
+      <View />
+      <Edit />
+      <Cerrar />
+      <Reasignar />
+      <Resolver />
+      <Aceptar />
+      <Rechazar />
+    </>
   );
 }
 
