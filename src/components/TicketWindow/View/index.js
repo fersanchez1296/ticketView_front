@@ -8,7 +8,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import SaveIcon from "@mui/icons-material/Save";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -43,6 +42,13 @@ const View = () => {
   const closeWindow = useDialogStore((state) => state.closeWindow);
   const ticketState = useTicketStore();
   //const [createDocumento] = usePostDocumentoMutation();
+
+  React.useEffect(() => {
+    console.log("rendering component");
+    return () => {
+      console.log("component removed");
+    };
+  }, [isWindowOpen]);
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());

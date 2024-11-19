@@ -382,7 +382,7 @@ export default function DataTable({ tickets, collection }) {
       field: "prioridad",
       headerName: "Prioridad",
       width: 130,
-      renderCell: (params) => <Badge content={params.row.Prioridad} />,
+      renderCell: (params) => <Badge content={params.row.Prioridad.Descripcion} />,
     },
     { field: "Tipo_incidencia", headerName: "Tipo", width: 150 },
     { field: "Fecha_hora_creacion", headerName: "Creado", width: 250 },
