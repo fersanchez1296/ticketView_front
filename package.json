@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "@emotion/cache": "11.10.8",
-    "@emotion/react": "^11.10.8",
-    "@emotion/styled": "^11.10.8",
+   "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@mui/material": "latest",
     "@mui/icons-material": "5.11.16",
-    "@mui/material": "^5.12.3",
     "@mui/x-data-grid": "^7.21.0",
     "@reduxjs/toolkit": "^2.3.0",
     "chart.js": "4.3.0",

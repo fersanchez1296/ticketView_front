@@ -87,7 +87,7 @@ const View = () => {
       case 3:
         return <Cliente disable_input={true} />;
       case 4:
-        return ticketState.Historia_ticket ? <HistoriaTicket /> : <NoData />;
+        return ticketState.Historia_ticket == [] ? <HistoriaTicket /> : <NoData />;
       default:
         return "Unknown step";
     }

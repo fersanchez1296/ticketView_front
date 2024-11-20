@@ -14,7 +14,6 @@ import PropTypes from "prop-types";
 
 const Cliente = ({ disable_input }) => {
   const ticket = useTicketStore();
-  console.log(ticket);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12} mb={12}>
@@ -55,7 +54,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Secretaría:"
-                      value={ticket.Secretaria.Secretaria}
+                      value={ticket.Secretaria}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -81,7 +80,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Dirección Área:"
-                      value={ticket.Direccion_area.direccion_area}
+                      value={ticket.Direccion_area}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
