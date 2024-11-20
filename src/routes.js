@@ -37,6 +37,7 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
+import Create_Ticket from "components/Create_Ticket/index";
 import Tables from "layouts/tables";
 import DataTable from "layouts/abiertos/";
 import CrearTicket from "components/CreateTicket";
@@ -62,12 +63,12 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "CrearTicket",
-    key: "CrearTicket",
+    name: "Crear Ticket",
+    key: "crear_ticket",
     rol: ["Root", "Administrador"],
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/crear",
-    component: <CrearTicket />,
+    route: "/ticket_nuevo",
+    component: <DataTable collection={"Nuevos"} />,
   },
   {
     type: "collapse",
