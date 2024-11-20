@@ -68,7 +68,7 @@ const routes = [
     rol: ["Root", "Administrador"],
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/ticket_nuevo",
-    component: <DataTable collection={"Nuevos"} />,
+    component: <Create_Ticket />,
   },
   {
     type: "collapse",

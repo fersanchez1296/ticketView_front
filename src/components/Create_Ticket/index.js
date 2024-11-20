@@ -1,4 +1,14 @@
 import React from "react";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+// Material Dashboard 2 React components
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+// Material Dashboard 2 React example components
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import Footer from "examples/Footer";
+
 //mui library component
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -17,8 +27,8 @@ import StepLabel from "@mui/material/StepLabel";
 //import { usePostDocumentoMutation } from "api/api.slice";
 //card components
 import Ticket from "./components/Ticket";
-//import Resolutor from "./components/Resolutor";
-//import Cliente from "./components/Cliente";
+import Resolutor from "./components/Resolutor";
+import Cliente from "./components/Cliente";
 
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
@@ -64,10 +74,10 @@ const Edit = () => {
     switch (step) {
       case 0:
         return <Ticket disable_input={true} />;
-      //case 1:
-      //return <Resolutor disable_input={true} />;
-      //case 2:
-      //return <Cliente disable_input={true} />;
+      case 1:
+        return <Resolutor disable_input={true} />;
+      case 2:
+        return <Cliente disable_input={true} />;
       default:
         return "Unknown step";
     }
@@ -75,70 +85,72 @@ const Edit = () => {
 
   return (
     <React.Fragment>
-      <AppBar sx={{ position: "relative" }}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={() => {
-              handleReset();
-              ticketState.resetValues();
-              closeWindowEdit();
-            }}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Cerrar
-          </Typography>
-          <Button
-            variant="contained"
-            color="success"
-            endIcon={<SaveIcon />}
-            sx={{ border: "1px dashed green" }}
-            //onClick={postDocumento}
-          >
-            Guardar Ticket
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Box sx={{ width: "100%" }}>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
+      <DashboardLayout>
+        <DashboardNavbar />
+        <MDBox pt={6} pb={3}>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <Card>
+                <MDBox pt={3}>
+                  {/* <DataTable
+                  table={{ columns, rows }}
+                  canSearch
+                  isSorted={true}
+                  entriesPerPage={true}
+                  showTotalEntries={true}
+                  noEndBorder
+                /> */}
+                  <Box sx={{ width: "100%" }}>
+                    <Stepper activeStep={activeStep}>
+                      {steps.map((label, index) => {
+                        const stepProps = {};
+                        const labelProps = {};
 
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-          <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-            Atras
-          </Button>
-          <Box sx={{ flex: "1 1 auto" }} />
+                        if (isStepSkipped(index)) {
+                          stepProps.completed = false;
+                        }
+                        return (
+                          <Step key={label} {...stepProps}>
+                            <StepLabel {...labelProps}>{label}</StepLabel>
+                          </Step>
+                        );
+                      })}
+                    </Stepper>
+                    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                      <Button
+                        color="inherit"
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        sx={{ mr: 1 }}
+                      >
+                        Atras
+                      </Button>
+                      <Box sx={{ flex: "1 1 auto" }} />
 
-          {activeStep !== steps.length && (
-            <Button onClick={handleNext} disabled={activeStep === steps.length - 1 ? true : false}>
-              Siguiente
-            </Button>
-          )}
-        </Box>
-        {activeStep === steps.length ? (
-          <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>No hay más por ver</Typography>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
-        )}
-      </Box>
+                      {activeStep !== steps.length && (
+                        <Button
+                          onClick={handleNext}
+                          disabled={activeStep === steps.length - 1 ? true : false}
+                        >
+                          Siguiente
+                        </Button>
+                      )}
+                    </Box>
+                    {activeStep === steps.length ? (
+                      <React.Fragment>
+                        <Typography sx={{ mt: 2, mb: 1 }}>No hay más por ver</Typography>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
+                    )}
+                  </Box>
+                </MDBox>
+              </Card>
+            </Grid>
+          </Grid>
+        </MDBox>
+        <Footer />
+      </DashboardLayout>
     </React.Fragment>
   );
 };
