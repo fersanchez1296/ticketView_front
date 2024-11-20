@@ -22,11 +22,11 @@ const Ticket = ({ disable_input }) => {
   const ticket = useTicketStore();
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
-      <Grid xs={6} mb={12}>
+      <Grid xs={12} mb={17.5}>
         <Card>
           <MDBox
             variant="gradient"
-            bgColor="primary"
+            bgColor="dark"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}
@@ -47,7 +47,7 @@ const Ticket = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Creado por:"
-                      //value={ticket.Creado_por}
+                      value={ticket.Creado_por}
                       fullWidth
                       required
                       disabled={disable_input}
@@ -59,17 +59,17 @@ const Ticket = ({ disable_input }) => {
           </MDBox>
         </Card>
       </Grid>
-      <Grid xs={6} mb={12}>
+      <Grid xs={12} mb={17.5}>
         <Card>
           <MDBox
             variant="gradient"
-            bgColor="primary"
+            bgColor="dark"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}
             mt={-3}
             p={2}
-            mb={1}
+            mb={5}
             textAlign="center"
           >
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
@@ -116,7 +116,7 @@ const Ticket = ({ disable_input }) => {
                   </MDBox>
                 </Grid>
                 <Grid xs={12}>
-                  <MDBox mb={2} sx={{ width: "100%" }}>
+                  <MDBox mb={5} sx={{ width: "100%" }}>
                     <TextField
                       id="outlined-multiline-static"
                       label="Descripción"
@@ -138,13 +138,13 @@ const Ticket = ({ disable_input }) => {
         <Card>
           <MDBox
             variant="gradient"
-            bgColor="primary"
+            bgColor="dark"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}
             mt={-3}
             p={2}
-            mb={1}
+            mb={5}
             textAlign="center"
           >
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
