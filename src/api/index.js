@@ -47,7 +47,21 @@ export const apiSlice = createApi({
           method: "GET",
         };
       },
-      providesTags: ["Usuarios"],
+      providesTags: ["Usuarios", "Tickets"],
+    }),
+    putReasignar: builder.mutation({
+      query: ({ id_usuario_reasignar, id_ticket }) => {
+        const url = `reasignar`;
+        return {
+          url,
+          method: "PUT",
+          body: {
+            id_usuario_reasignar,
+            id_ticket,
+          },
+        };
+      },
+      invalidatesTags: ["Tickets"],
     }),
     //RESOLVER
     putResolver: builder.mutation({
@@ -76,4 +90,5 @@ export const {
   useLogoutMutation,
   useGetUsuariosQuery,
   usePutResolverMutation,
+  usePutReasignarMutation,
 } = apiSlice;
