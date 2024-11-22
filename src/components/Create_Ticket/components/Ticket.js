@@ -22,6 +22,7 @@ const Ticket = ({ disable_input }) => {
   const ticket = useTicketStore();
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+      {/*Primer etiqueta */}
       <Grid xs={12} mb={17.5}>
         <Card>
           <MDBox
@@ -36,13 +37,14 @@ const Ticket = ({ disable_input }) => {
             textAlign="center"
           >
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Estado Ticket
+              Información del ticket
             </MDTypography>
           </MDBox>
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
               <Grid container spacing={3}>
-                <Grid xs={4}>
+                {/*ticket Creado por*/}
+                <Grid xs={12}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -54,133 +56,176 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-              </Grid>
-            </MDBox>
-          </MDBox>
-        </Card>
-      </Grid>
-      <Grid xs={12} mb={17.5}>
-        <Card>
-          <MDBox
-            variant="gradient"
-            bgColor="dark"
-            borderRadius="lg"
-            coloredShadow="info"
-            mx={2}
-            mt={-3}
-            p={2}
-            mb={5}
-            textAlign="center"
-          >
-            <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Información del Ticket
-            </MDTypography>
-          </MDBox>
-          <MDBox pt={4} pb={3} px={3}>
-            <MDBox component="form" role="form">
-              <Grid container spacing={3}>
+                {/*Seleccion tipo de ticket tipo de incidencia*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Servicio:"
-                      value={ticket.Servicio.Servicio}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Tipo de ticket</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticket.Estado._id}
+                        label="Estatus"
+                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                      >
+                        {estados.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Estado}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                   </MDBox>
                 </Grid>
+                {/*Seleccion gravedad de la incidencia*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Categoría:"
-                      value={ticket.Categoria.Categoria}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Incidencia grave</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticket.Estado._id}
+                        label="Estatus"
+                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                      >
+                        {estados.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Estado}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                   </MDBox>
                 </Grid>
+                {/*Seleccion categoria del ticket*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Subcategoría:"
-                      value={ticket.Subcategoria.Subcategoria}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Categoría</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticket.Estado._id}
+                        label="Estatus"
+                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                      >
+                        {estados.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Estado}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                   </MDBox>
                 </Grid>
-                <Grid xs={12}>
-                  <MDBox mb={5} sx={{ width: "100%" }}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Descripción"
-                      multiline
-                      value={ticket.Descripcion}
-                      rows={5.2}
-                      defaultValue="Sin información"
-                      sx={{ width: "100%" }}
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-              </Grid>
-            </MDBox>
-          </MDBox>
-        </Card>
-      </Grid>
-      <Grid xs={12}>
-        <Card>
-          <MDBox
-            variant="gradient"
-            bgColor="dark"
-            borderRadius="lg"
-            coloredShadow="info"
-            mx={2}
-            mt={-3}
-            p={2}
-            mb={5}
-            textAlign="center"
-          >
-            <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Información del Ticket
-            </MDTypography>
-          </MDBox>
-          <MDBox pt={4} pb={3} px={3}>
-            <MDBox component="form" role="form">
-              <Grid container spacing={3}>
-                <Grid xs={3}>
+                {/*Seleccion tipo de Estado*/}
+                <Grid xs={4}>
                   <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Número Rec oficio:"
-                      value={ticket.NumeroRec_Oficio}
-                      onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={!disable_input}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticket.Estado._id}
+                        label="Estatus"
+                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                      >
+                        {estados.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Estado}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                   </MDBox>
                 </Grid>
-                <Grid xs={3}>
+                {/*Seleccion tipo de Servicio*/}
+                <Grid xs={4}>
                   <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Número oficio:"
-                      value={ticket.Numero_Oficio}
-                      onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={!disable_input}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticket.Estado._id}
+                        label="Estatus"
+                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                      >
+                        {estados.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Estado}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                   </MDBox>
                 </Grid>
-                <Grid xs={3}>
+                {/*Seleccion tipo de subcategoria*/}
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Subcategoría</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticket.Estado._id}
+                        label="Estatus"
+                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                      >
+                        {estados.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Estado}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </MDBox>
+                </Grid>
+                {/*Seleccion Dirección Prioridad*/}
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Prioridad</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticket.Estado._id}
+                        label="Estatus"
+                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                      >
+                        {estados.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Estado}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </MDBox>
+                </Grid>
+                {/*Pending reason */}
+                <Grid xs={8}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -193,12 +238,27 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={3}>
+                {/*Introducido por teclado NumeroRec_Oficio*/}
+                <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Cerrado Por:"
-                      value={ticket.Cerrado_por}
+                      label="NumeroRec_Oficio:"
+                      value={ticket.Asignado_a}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={!disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                {/*Introducido por teclado Numero_Oficio*/}
+                <Grid xs={6}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Numero_Oficio:"
+                      value={ticket.Asignado_a}
                       onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -206,50 +266,12 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Resuelto Por:"
-                      value={ticket.Resuelto_por}
-                      onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={!disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Causa:"
-                      value={ticket.Causa}
-                      onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={!disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Fecha y hora de Cierre:"
-                      value={ticket.Fecha_hora_cierre}
-                      //la fecha de cierre se tiene que obtener de manera dinamica
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
+                {/*Introducido por teclado Descripción del ticket*/}
                 <Grid xs={12}>
                   <MDBox mb={2}>
                     <TextField
                       id="outlined-multiline-static"
-                      label="Descripción de cierre"
+                      label="Descripción del ticket"
                       multiline
                       value={ticket.Descripcion_cierre}
                       rows={5.2}

@@ -29,6 +29,14 @@ export const apiSlice = createApi({
         body: credentials,
       }),
     }),
+    //Crear
+    ticket: builder.mutation({
+      query: ({ ticketnuevo }) => ({
+        url: "/login",
+        method: "POST",
+        body: ticketnuevo,
+      }),
+    }),
     //logout
     logout: builder.mutation({
       query: () => ({
@@ -76,4 +84,5 @@ export const {
   useLogoutMutation,
   useGetUsuariosQuery,
   usePutResolverMutation,
+  useTicketMutation,
 } = apiSlice;

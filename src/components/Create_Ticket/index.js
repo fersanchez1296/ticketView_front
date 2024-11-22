@@ -100,6 +100,7 @@ const Edit = () => {
                   showTotalEntries={true}
                   noEndBorder
                 /> */}
+                  {/*Caja que contiene las etiquetas*/}
                   <Box sx={{ width: "100%" }}>
                     <Stepper activeStep={activeStep}>
                       {steps.map((label, index) => {

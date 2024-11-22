@@ -36,7 +36,7 @@ const Resolutor = ({ disable_input }) => {
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
               <Grid container spacing={3}>
-                <Grid xs={4}>
+                <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -49,7 +49,7 @@ const Resolutor = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={4}>
+                <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -58,32 +58,6 @@ const Resolutor = ({ disable_input }) => {
                       onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
-                      disabled={!disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Fecha límite de respuesta según SLA:"
-                      value={ticket.Fecha_limite_respuesta_SLA}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={12}>
-                  <MDBox mb={2} sx={{ width: "100%" }}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Descripción a mandar a Escritorio"
-                      multiline
-                      value={ticket.Descripcion_mandar_a_Escritorio}
-                      rows={10}
-                      defaultValue="Sin información"
-                      sx={{ width: "100%" }}
                       disabled={!disable_input}
                     />
                   </MDBox>

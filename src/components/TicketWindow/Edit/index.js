@@ -17,7 +17,6 @@ import StepLabel from "@mui/material/StepLabel";
 //import { usePostDocumentoMutation } from "api/api.slice";
 //card components
 import Ticket from "../Edit/components/Ticket";
-import Resolutor from "../Edit/components/Resolutor";
 import Cliente from "../Edit/components/Cliente";
 
 //store
@@ -26,7 +25,7 @@ import { useDialogStore, useTicketStore } from "zustand/index.ts";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const steps = ["Información del Ticket", "Resolutor", "Cliente"];
+const steps = ["Información del Ticket", "Cliente"];
 
 const Edit = () => {
   const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
@@ -65,8 +64,6 @@ const Edit = () => {
       case 0:
         return <Ticket disable_input={true} />;
       case 1:
-        return <Resolutor disable_input={true} />;
-      case 2:
         return <Cliente disable_input={true} />;
       default:
         return "Unknown step";
