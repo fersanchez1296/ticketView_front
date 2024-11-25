@@ -35,21 +35,25 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
-function Dashboard() {
+//api hook
+import { useDashboardQuery } from "api/index";
+import Progress from "components/Progress";
+//proptypes
+import PropTypes from "prop-types";
+const Dashboard_component = ({ data }) => {
   const { sales, tasks } = reportsLineChartData;
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
+                color="success"
+                icon="event_available"
+                title="Abiertos"
+                count={data.abiertos}
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -58,12 +62,13 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
+                color="success"
+                icon="event_repeat"
+                title="Reabiertos"
+                count={data.reabiertos}
                 percentage={{
                   color: "success",
                   amount: "+3%",
@@ -72,13 +77,13 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
+                color="info"
+                icon="event"
+                title="Nuevos"
+                count={data.nuevos}
                 percentage={{
                   color: "success",
                   amount: "+1%",
@@ -87,13 +92,43 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
+                color="warning"
+                icon="pending_actions"
+                title="Pendientes"
+                count={data.pendientes}
+                percentage={{
+                  color: "success",
+                  amount: "",
+                  label: "Just updated",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="warning"
+                icon="visibility"
+                title="Revisión"
+                count={data.revision}
+                percentage={{
+                  color: "success",
+                  amount: "",
+                  label: "Just updated",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="error"
+                icon="event_busy"
+                title="Cerrados"
+                count={data.cerrados}
                 percentage={{
                   color: "success",
                   amount: "",
@@ -158,6 +193,17 @@ function Dashboard() {
       <Footer />
     </DashboardLayout>
   );
+};
+function Dashboard() {
+  const { data, isLoading } = useDashboardQuery();
+  if (isLoading) {
+    return <Progress />;
+  } else {
+    return <Dashboard_component data={data} />;
+  }
 }
 
+Dashboard_component.propTypes = {
+  data: PropTypes.object,
+};
 export default Dashboard;

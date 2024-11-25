@@ -8,8 +8,19 @@ export const apiSlice = createApi({
     baseUrl: "http://localhost:4000/api/",
     credentials: "include",
   }),
-  tagTypes: ["Tickets", "Usuarios"],
+  tagTypes: ["Tickets", "Usuarios", "Dashboard"],
   endpoints: (builder) => ({
+    //dashboard
+    dashboard: builder.query({
+      query: () => {
+        const url = `dashboard`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Dashboard"],
+    }),
     //Tickets
     getTicketsAbiertos: builder.query({
       query: ({ collection }) => {
@@ -91,4 +102,5 @@ export const {
   useGetUsuariosQuery,
   usePutResolverMutation,
   usePutReasignarMutation,
+  useDashboardQuery,
 } = apiSlice;

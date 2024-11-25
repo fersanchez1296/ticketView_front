@@ -71,7 +71,7 @@ function Basic() {
         console.log(response);
         setAuth(true);
         setRole(response.data.Rol);
-        navigate("/abiertos");
+        navigate("/dashboard");
       }
     } catch (err) {
       setAuth(false);
