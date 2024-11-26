@@ -55,16 +55,13 @@ const HistoriaTicket = () => {
                     id="panel3-header"
                   >
                     <MDBox sx={{ display: "flex", flexDirection: "column" }}>
-                      <Typography variant="h5">{`${mensaje.Nombre} - ${mensaje.Rol}`}</Typography>
+                      <Typography variant="h5">{`${mensaje.Nombre.Nombre}`}</Typography>
                       <Typography variant="h6" color={"blue"}>
                         {mensaje.Fecha}
                       </Typography>
                     </MDBox>
                   </AccordionSummary>
                   <AccordionDetails>{mensaje.Mensaje}</AccordionDetails>
-                  <AccordionActions>
-                    <Button>Responder</Button>
-                  </AccordionActions>
                 </Accordion>
               </div>
             ))}
