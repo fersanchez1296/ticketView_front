@@ -27,21 +27,15 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import CssBaseline from "@mui/material/CssBaseline";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import Paper from "@mui/material/Paper";
-import ListItemButton from "@mui/material/ListItemButton";
 //api hook
-import { useGetUsuariosQuery } from "api/index";
+import { usePutReasignarMutation } from "api/index";
 //card components
 import CardUsers from "./components/index";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 //proptypes
 import PropTypes from "prop-types";
+import { useGetUsuariosQuery } from "api";
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -69,6 +63,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Reasignar = () => {
+  const [putReasignar] = usePutReasignarMutation();
   const { data, isLoading } = useGetUsuariosQuery();
   const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
   const closeWindowReasignar = useDialogStore((state) => state.closeWindowReasignar);
@@ -79,15 +74,25 @@ const Reasignar = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  //const [createDocumento] = usePostDocumentoMutation();
 
   const resolutorSeleccionado = (e) => {
     e.preventDefault();
     setIdResolutorSeleccionado(e.target.value);
   };
 
-  const reasignarTicket = () => {
-    console.log(idResolutorSeleccionado);
+  const reasignarTicket = async () => {
+    try {
+      const result = await putReasignar({
+        id_usuario_reasignar: idResolutorSeleccionado,
+        id_ticket: ticketState._id,
+      });
+      setTimeout(() => {
+        ticketState.resetValues();
+        closeWindowReasignar();
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleReset = () => {

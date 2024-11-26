@@ -194,7 +194,7 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(filteredRoutes)}
-          <Route path="*" element={<Navigate to="/Abiertos" />} />
+          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -221,7 +221,7 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           {/* {filteredRoutes} */}
           {getRoutes(filteredRoutes)}
-          <Route path="*" element={<Navigate to="/abiertos" />} />
+          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Route>
       </Routes>
     </ThemeProvider>

@@ -27,19 +27,16 @@ import Reasignar from "components/TicketWindow/Reasignar";
 import Resolver from "components/TicketWindow/Resolver";
 import Aceptar from "components/TicketWindow/Aceptar";
 import Rechazar from "components/TicketWindow/Rechazar";
-
+//Progress
+import Progress from "components/Progress";
 function TableData({ collection }) {
   const { data: tickets, refetch, isLoading, error } = useGetTicketsAbiertosQuery({ collection });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Progress />;
   if (error) return <div>Error: Reload page</div>;
-  // tickets?.forEach((ticketData) => {
-  //   setTicketFetch(ticketData);
-  // });
   const handleClickActualizar = () => {
     refetch();
   };
-  // const { columns, rows } = abiertosTableData(tickets, openWindow, setTicketFields);
   return (
     <>
       <DashboardLayout>

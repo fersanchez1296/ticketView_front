@@ -8,8 +8,19 @@ export const apiSlice = createApi({
     baseUrl: "http://localhost:4000/api/",
     credentials: "include",
   }),
-  tagTypes: ["Tickets", "Usuarios"],
+  tagTypes: ["Tickets", "Usuarios", "Dashboard"],
   endpoints: (builder) => ({
+    //dashboard
+    dashboard: builder.query({
+      query: () => {
+        const url = `dashboard`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Dashboard"],
+    }),
     //Tickets
     getTicketsAbiertos: builder.query({
       query: ({ collection }) => {
@@ -55,7 +66,21 @@ export const apiSlice = createApi({
           method: "GET",
         };
       },
-      providesTags: ["Usuarios"],
+      providesTags: ["Usuarios", "Tickets"],
+    }),
+    putReasignar: builder.mutation({
+      query: ({ id_usuario_reasignar, id_ticket }) => {
+        const url = `reasignar`;
+        return {
+          url,
+          method: "PUT",
+          body: {
+            id_usuario_reasignar,
+            id_ticket,
+          },
+        };
+      },
+      invalidatesTags: ["Tickets"],
     }),
     //RESOLVER
     putResolver: builder.mutation({
@@ -106,4 +131,6 @@ export const {
   useTicketMutation,
   useGetInfoSelectsQuery,
   useGuardarMutation,
+  usePutReasignarMutation,
+  useDashboardQuery,
 } = apiSlice;
