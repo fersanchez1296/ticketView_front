@@ -18,8 +18,9 @@ import PropTypes from "prop-types";
 //json
 import estados from "catalogs/estatus.json";
 
-const Ticket = ({ disable_input }) => {
+const Ticket = ({ disable_input, data }) => {
   const ticket = useTicketStore();
+  console.log(data);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       {/*Primer etiqueta */}
@@ -65,14 +66,16 @@ const Ticket = ({ disable_input }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticket.Estado._id}
+                        value={data.tiposTickets.Tipo_de_incidencia}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                        onChange={(e) =>
+                          ticket.setTicketFields("Tipo_de_incidencia", e.target.value)
+                        }
                       >
-                        {estados.map((est) => {
+                        {data.tiposTickets.map((est) => {
                           return (
                             <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
+                              {est.Tipo_de_incidencia}
                             </MenuItem>
                           );
                         })}
@@ -84,22 +87,17 @@ const Ticket = ({ disable_input }) => {
                 <Grid xs={4}>
                   <MDBox mb={2}>
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Incidencia grave</InputLabel>
+                      <InputLabel id="incidencia-grave-label">Incidencia grave</InputLabel>
                       <Select
                         sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticket.Estado._id}
-                        label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                        labelId="incidencia-grave-label"
+                        id="incidencia-grave-select"
+                        value={ticket.Incidencia_grave}
+                        label="Incidencia grave"
+                        onChange={(e) => ticket.setTicketFields("Incidencia_grave", e.target.value)}
                       >
-                        {estados.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
-                            </MenuItem>
-                          );
-                        })}
+                        <MenuItem value="grave">1</MenuItem>
+                        <MenuItem value="no_grave">0</MenuItem>
                       </Select>
                     </FormControl>
                   </MDBox>
@@ -113,14 +111,14 @@ const Ticket = ({ disable_input }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticket.Estado._id}
+                        value={data.categorias.Categoria}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                        onChange={(e) => ticket.setTicketFields("Categoria", e.target.value)}
                       >
-                        {estados.map((est) => {
+                        {data.categorias.map((est) => {
                           return (
                             <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
+                              {est.Categoria}
                             </MenuItem>
                           );
                         })}
@@ -137,11 +135,11 @@ const Ticket = ({ disable_input }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticket.Estado._id}
+                        value={data.estados.Estado}
                         label="Estatus"
                         onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
                       >
-                        {estados.map((est) => {
+                        {data.estados.map((est) => {
                           return (
                             <MenuItem value={est._id} key={est._id}>
                               {est.Estado}
@@ -161,14 +159,14 @@ const Ticket = ({ disable_input }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticket.Estado._id}
+                        value={data.servicios.Servicio}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                        onChange={(e) => ticket.setTicketFields("Servicio", e.target.value)}
                       >
-                        {estados.map((est) => {
+                        {data.servicios.map((est) => {
                           return (
                             <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
+                              {est.Servicio}
                             </MenuItem>
                           );
                         })}
@@ -185,14 +183,14 @@ const Ticket = ({ disable_input }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticket.Estado._id}
+                        value={data.subcategoria.Subcategoria}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                        onChange={(e) => ticket.setTicketFields("Subcategoria", e.target.value)}
                       >
-                        {estados.map((est) => {
+                        {data.subcategoria.map((est) => {
                           return (
                             <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
+                              {est.Subcategoria}
                             </MenuItem>
                           );
                         })}
@@ -209,14 +207,14 @@ const Ticket = ({ disable_input }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticket.Estado._id}
+                        value={data.prioridades.Descripcion}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                        onChange={(e) => ticket.setTicketFields("Descripcion", e.target.value)}
                       >
-                        {estados.map((est) => {
+                        {data.prioridades.map((est) => {
                           return (
                             <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
+                              {est.Descripcion}
                             </MenuItem>
                           );
                         })}
@@ -231,7 +229,7 @@ const Ticket = ({ disable_input }) => {
                       type="text"
                       label="Pending Reason:"
                       value={ticket.PendingReason}
-                      onChange={(e) => setEditor("editor", e.target.value)}
+                      onChange={(e) => ticket.setTicketFields("PendingReason", e.target.value)}
                       fullWidth
                       required
                       disabled={!disable_input}
@@ -244,11 +242,10 @@ const Ticket = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="NumeroRec_Oficio:"
-                      value={ticket.Asignado_a}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      value={ticket.NumeroRec_Oficio}
+                      onChange={(e) => ticket.setTicketFields("NumeroRec_Oficio", e.target.value)}
                       fullWidth
                       required
-                      disabled={!disable_input}
                     />
                   </MDBox>
                 </Grid>
@@ -258,11 +255,10 @@ const Ticket = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Numero_Oficio:"
-                      value={ticket.Asignado_a}
-                      onChange={(e) => setEditor("editor", e.target.value)}
+                      value={ticket.Numero_Oficio}
+                      onChange={(e) => ticket.setTicketFields("Numero_Oficio", e.target.value)}
                       fullWidth
                       required
-                      disabled={!disable_input}
                     />
                   </MDBox>
                 </Grid>
@@ -273,11 +269,11 @@ const Ticket = ({ disable_input }) => {
                       id="outlined-multiline-static"
                       label="Descripción del ticket"
                       multiline
-                      value={ticket.Descripcion_cierre}
+                      value={ticket.Descripcion}
+                      onChange={(e) => ticket.setTicketFields("Descripcion", e.target.value)}
                       rows={5.2}
                       defaultValue="Sin información"
                       sx={{ width: "100%" }}
-                      disabled={!disable_input}
                     />
                   </MDBox>
                 </Grid>
@@ -292,6 +288,7 @@ const Ticket = ({ disable_input }) => {
 
 Ticket.propTypes = {
   disable_input: PropTypes.bool,
+  data: PropTypes.array,
 };
 
 export default React.memo(Ticket);

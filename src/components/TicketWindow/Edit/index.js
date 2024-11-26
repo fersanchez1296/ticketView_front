@@ -14,6 +14,8 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 //api hook
+import { useGetInfoSelectsQuery } from "api/index";
+
 //import { usePostDocumentoMutation } from "api/api.slice";
 //card components
 import Ticket from "../Edit/components/Ticket";
@@ -31,6 +33,7 @@ const Edit = () => {
   const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
   const closeWindowEdit = useDialogStore((state) => state.closeWindowEdit);
   const ticketState = useTicketStore();
+  const { data, isLoading } = useGetInfoSelectsQuery();
   //const [createDocumento] = usePostDocumentoMutation();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -58,13 +61,13 @@ const Edit = () => {
   const handleReset = () => {
     setActiveStep(0);
   };
-
+  if (isLoading) return <div>Loading...</div>;
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <Ticket disable_input={true} />;
+        return <Ticket disable_input={true} data={data} />;
       case 1:
-        return <Cliente disable_input={true} />;
+        return <Cliente disable_input={true} data={data} />;
       default:
         return "Unknown step";
     }
@@ -99,15 +102,6 @@ const Edit = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cerrar
             </Typography>
-            <Button
-              variant="contained"
-              color="success"
-              endIcon={<SaveIcon />}
-              sx={{ border: "1px dashed green" }}
-              //onClick={postDocumento}
-            >
-              Guardar Ticket
-            </Button>
           </Toolbar>
         </AppBar>
         <Box sx={{ width: "100%" }}>

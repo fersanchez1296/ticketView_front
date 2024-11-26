@@ -73,6 +73,25 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["Tickets"],
     }),
+    //Guardar ticket
+    guardar: builder.mutation({
+      query: ({ ticketnuevo }) => ({
+        url: "crear",
+        method: "POST",
+        body: ticketnuevo,
+      }),
+    }),
+    //Obtener datos para mostrarlos en los select
+    getInfoSelects: builder.query({
+      query: () => {
+        const url = `crear/getInfoSelects`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -85,4 +104,6 @@ export const {
   useGetUsuariosQuery,
   usePutResolverMutation,
   useTicketMutation,
+  useGetInfoSelectsQuery,
+  useGuardarMutation,
 } = apiSlice;

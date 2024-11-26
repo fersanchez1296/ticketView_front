@@ -23,8 +23,6 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-//api hook
-//import { usePostDocumentoMutation } from "api/api.slice";
 //card components
 import Ticket from "./components/Ticket";
 import Resolutor from "./components/Resolutor";
@@ -32,6 +30,7 @@ import Cliente from "./components/Cliente";
 
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useGetInfoSelectsQuery } from "api/index";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,7 +41,7 @@ const Edit = () => {
   const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
   const closeWindowEdit = useDialogStore((state) => state.closeWindowEdit);
   const ticketState = useTicketStore();
-  //const [createDocumento] = usePostDocumentoMutation();
+  const { data, isLoading } = useGetInfoSelectsQuery();
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -69,15 +68,15 @@ const Edit = () => {
   const handleReset = () => {
     setActiveStep(0);
   };
-
+  if (isLoading) return <div>Loading...</div>;
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <Ticket disable_input={true} />;
+        return <Ticket disable_input={true} data={data} />;
       case 1:
-        return <Resolutor disable_input={true} />;
+        return <Resolutor disable_input={true} data={data} />;
       case 2:
-        return <Cliente disable_input={true} />;
+        return <Cliente disable_input={true} data={data} />;
       default:
         return "Unknown step";
     }
@@ -92,14 +91,6 @@ const Edit = () => {
             <Grid item xs={12}>
               <Card>
                 <MDBox pt={3}>
-                  {/* <DataTable
-                  table={{ columns, rows }}
-                  canSearch
-                  isSorted={true}
-                  entriesPerPage={true}
-                  showTotalEntries={true}
-                  noEndBorder
-                /> */}
                   {/*Caja que contiene las etiquetas*/}
                   <Box sx={{ width: "100%" }}>
                     <Stepper activeStep={activeStep}>
