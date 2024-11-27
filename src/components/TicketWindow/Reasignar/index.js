@@ -10,54 +10,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
 import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import PhoneIcon from "@mui/icons-material/Phone";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
-import CodeIcon from "@mui/icons-material/Code";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+// Material Dashboard 2 React components
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+import Card from "@mui/material/Card";
 //api hook
 import { usePutReasignarMutation } from "api/index";
 //card components
 import CardUsers from "./components/index";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
-//proptypes
-import PropTypes from "prop-types";
 import { useGetUsuariosQuery } from "api";
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
-
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -69,35 +35,34 @@ const Reasignar = () => {
   const closeWindowReasignar = useDialogStore((state) => state.closeWindowReasignar);
   const ticketState = useTicketStore();
   const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(null);
   if (isLoading) return <p>Cargando...</p>;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const resolutorSeleccionado = (e) => {
-    e.preventDefault();
-    setIdResolutorSeleccionado(e.target.value);
-  };
-
   const reasignarTicket = async () => {
-    try {
-      const result = await putReasignar({
-        id_usuario_reasignar: idResolutorSeleccionado,
-        id_ticket: ticketState._id,
-      });
-      setTimeout(() => {
-        ticketState.resetValues();
-        closeWindowReasignar();
-      }, 2000);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(value);
+    // try {
+    //   const result = await putReasignar({
+    //     id_usuario_reasignar: value,
+    //     id_ticket: ticketState._id,
+    //   });
+    //   setTimeout(() => {
+    //     ticketState.resetValues();
+    //     closeWindowReasignar();
+    //   }, 2000);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
-  const handleReset = () => {
-    setValue(0);
-  };
+  const options = data.areasResolutores.flatMap((areaObj) =>
+    areaObj.resolutores.map((resolutor) => ({
+      ...resolutor,
+      area: areaObj.area.toUpperCase(), // Incluye el área en mayúsculas para agrupar.
+    }))
+  );
 
   return (
     <React.Fragment>
@@ -105,7 +70,6 @@ const Reasignar = () => {
         fullScreen
         open={isWindowReasignarOpen}
         onClose={() => {
-          handleReset();
           ticketState.resetValues();
           closeWindowReasignar();
         }}
@@ -117,7 +81,6 @@ const Reasignar = () => {
               edge="start"
               color="inherit"
               onClick={() => {
-                handleReset();
                 ticketState.resetValues();
                 closeWindowReasignar();
               }}
@@ -128,85 +91,68 @@ const Reasignar = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cerrar
             </Typography>
-            {ticketState.Reasignado_a ? (
-              <Typography sx={{ flex: 1.5 }} variant="body2" component="p" color={"blue"}>
-                El ticket ya se encuentra reasignado a : {ticketState.Reasignado_a.Nombre}
-              </Typography>
-            ) : null}
             <Button
               variant="contained"
               color="success"
               endIcon={<SaveIcon />}
               sx={{ border: "1px dashed green" }}
               onClick={reasignarTicket}
-              disabled={idResolutorSeleccionado !== "" ? false : true}
+              disabled={value == null ? true : false}
             >
               Reasignar Ticket
             </Button>
           </Toolbar>
         </AppBar>
-        <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-          <Tabs value={value} onChange={handleChange} centered>
-            {data && data.areasResolutores
-              ? data.areasResolutores.map((dt) => <Tab label={dt.area} key={dt.area} />)
-              : null}
-          </Tabs>
-        </Box>
-        {data?.areasResolutores?.length > 0 ? (
-          data.areasResolutores.map((res, index) => (
-            <CustomTabPanel value={value} index={index} key={index}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                  <FormControl>
-                    <RadioGroup
-                      row
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      name="radio-buttons-group"
-                      onChange={resolutorSeleccionado}
-                    >
-                      {res.resolutores.map((user) => (
-                        <Grid item xs={12} sm={6} md={4} key={user._id}>
-                          <List
-                            sx={{
-                              display: "flex",
-                              width: "100%",
-                              bgcolor: "background.paper",
-                              flexDirection: "row-reverse",
-                            }}
-                          >
-                            <ListItem alignItems="flex-start" sx={{ marginBottom: "1rem" }}>
-                              <ListItemAvatar>
-                                <Avatar alt={user.Nombre} src="/static/images/avatar/1.jpg" />
-                              </ListItemAvatar>
-                              <ListItemText
-                                primary={user.Nombre}
-                                secondary={
-                                  <React.Fragment>
-                                    <Typography
-                                      component="span"
-                                      variant="body2"
-                                      sx={{ color: "text.primary", display: "inline" }}
-                                    >
-                                      {user.Correo}
-                                    </Typography>
-                                  </React.Fragment>
-                                }
-                              />
-                            </ListItem>
-                            <Divider variant="inset" component="li" />
-                            <FormControlLabel value={user._id.toString()} control={<Radio />} />
-                          </List>
-                        </Grid>
-                      ))}
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-              </Box>
-            </CustomTabPanel>
-          ))
-        ) : (
-          <p>hola</p>
-        )}
+        <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+          <Grid xs={12}>
+            <Card>
+              <MDBox
+                variant="gradient"
+                bgColor="primary"
+                borderRadius="lg"
+                coloredShadow="info"
+                mx={2}
+                mt={-3}
+                p={2}
+                mb={1}
+                textAlign="center"
+              >
+                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                  Información del Ticket
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={4} pb={3} px={3}>
+                <Box
+                  sx={{
+                    width: "100%",
+                    bgcolor: "background.paper",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  {ticketState.Reasignado_a ? (
+                    <Typography sx={{ flex: 1.5 }} variant="body1" component="p">
+                      El ticket ya se encuentra reasignado a : {ticketState.Reasignado_a.Nombre}
+                    </Typography>
+                  ) : null}
+                  <Autocomplete
+                    id="grouped-demo"
+                    options={options.sort((a, b) => -b.area.localeCompare(a.area))}
+                    groupBy={(option) => option.area}
+                    getOptionLabel={(option) => option.Nombre}
+                    sx={{ width: 500, mt: 5 }}
+                    renderInput={(params) => <TextField {...params} label="Reasignar a:" />}
+                    onChange={(event, value) => {
+                      setValue(value); // Guarda el valor seleccionado en el estado.
+                    }}
+                  />
+                </Box>
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
       </Dialog>
     </React.Fragment>
   );
