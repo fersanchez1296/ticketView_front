@@ -24,8 +24,27 @@ import PropTypes from "prop-types";
 //json
 import estados from "catalogs/estatus.json";
 
+//Api hook
+import { useEditarMutation } from "api/index";
+
 const Cliente = ({ disable_input, data }) => {
+  const [putEditar] = useEditarMutation();
+  const ticketState = useTicketStore();
   const ticket = useTicketStore();
+  const editarTicket = async () => {
+    try {
+      const result = await putEditar({
+        ticketeditado: ticketState,
+      });
+      console.log(ticketState);
+      // setTimeout(() => {
+      //   ticketState.resetValues();
+      //   closeWindowReasignar();
+      // }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12} mb={12}>
@@ -158,7 +177,7 @@ const Cliente = ({ disable_input, data }) => {
             color="success"
             endIcon={<SaveIcon />}
             sx={{ border: "1px dashed green" }}
-            //onClick={postDocumento}
+            onClick={editarTicket}
           >
             Guardar Ticket
           </Button>

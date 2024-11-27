@@ -29,7 +29,23 @@ import { useGuardarMutation } from "api/index";
 import estados from "catalogs/estatus.json";
 
 const Cliente = ({ disable_input, data }) => {
+  const [postGuardar] = useGuardarMutation();
+  const ticketState = useTicketStore();
   const ticket = useTicketStore();
+  const guardarTicket = async () => {
+    try {
+      const result = await postGuardar({
+        ticketnuevo: ticketState,
+      });
+      console.log(ticketState);
+      // setTimeout(() => {
+      //   ticketState.resetValues();
+      //   closeWindowReasignar();
+      // }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12} mb={12}>
@@ -147,7 +163,7 @@ const Cliente = ({ disable_input, data }) => {
                     color="success"
                     endIcon={<SaveIcon />}
                     sx={{ border: "1px dashed green" }}
-                    onClick={postDocumento}
+                    onClick={guardarTicket}
                   >
                     Guardar Ticket
                   </Button>

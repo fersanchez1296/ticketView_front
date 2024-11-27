@@ -106,6 +106,14 @@ export const apiSlice = createApi({
         body: ticketnuevo,
       }),
     }),
+    //Editar ticket
+    editar: builder.mutation({
+      query: ({ ticketeditado }) => ({
+        url: "editar",
+        method: "PUT",
+        body: ticketeditado,
+      }),
+    }),
     //Obtener datos para mostrarlos en los select
     getInfoSelects: builder.query({
       query: () => {
@@ -131,6 +139,7 @@ export const {
   useTicketMutation,
   useGetInfoSelectsQuery,
   useGuardarMutation,
+  useEditarMutation,
   usePutReasignarMutation,
   useDashboardQuery,
 } = apiSlice;
