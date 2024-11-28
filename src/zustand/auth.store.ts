@@ -3,7 +3,9 @@ import { persist, createJSONStorage } from "zustand/middleware";
 interface AuthState {
   isAuthenticated: boolean;
   role: string;
+  Nombre: string;
   setRole: (rol: string) => void;
+  setNombre: (nombre: string) => void;
   setAuth: (authStatus: boolean) => void;
 }
 
@@ -13,7 +15,9 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       isAuthenticated: false,
       role: null,
+      Nombre: null,
       setRole: (rol: string) => set({ role: rol }),
+      setNombre: (nombre: string) => set({ Nombre: nombre }),
       setAuth: (authStatus: boolean) => set({ isAuthenticated: authStatus }),
     }),
     {

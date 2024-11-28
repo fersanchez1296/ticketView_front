@@ -462,7 +462,7 @@ export default function DataTable({ tickets, collection }) {
     Descripcion_cierre: ticket.Descripcion_cierre ? ticket.Descripcion_cierre : "Ticket en curso",
   }));
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 10 };
 
   return (
     <Paper sx={{ height: 550, width: "100%" }}>
