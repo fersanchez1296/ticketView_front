@@ -29,6 +29,7 @@ import { useDialogStore, useTicketStore } from "zustand/index.ts";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+//Visualizar
 const steps = [
   "Información del Ticket",
   "Asignado",

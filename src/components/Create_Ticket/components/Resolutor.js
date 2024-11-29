@@ -23,6 +23,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 //api hook
 import { useGetUsuariosQuery } from "api/index";
@@ -72,6 +74,12 @@ const Reasignar = () => {
   //   setValue(event.target.value); // Actualiza el valor seleccionado
   // };
   //const [createDocumento] = usePostDocumentoMutation();
+  const options = data.areasResolutores.flatMap((areaObj) =>
+    areaObj.resolutores.map((resolutor) => ({
+      ...resolutor,
+      area: areaObj.area.toUpperCase(), // Incluye el área en mayúsculas para agrupar.
+    }))
+  );
 
   const resolutorSeleccionado = (e) => {
     e.preventDefault();
@@ -88,133 +96,52 @@ const Reasignar = () => {
 
   return (
     <React.Fragment>
-      <MDBox
-        variant="gradient"
-        bgColor="dark"
-        borderRadius="lg"
-        coloredShadow="info"
-        mx={2}
-        mt={2}
-        p={2}
-        mb={3}
-        textAlign="center"
-      >
-        <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-          Asignación del ticket
-        </MDTypography>
-      </MDBox>
-      <Box
-        sx={{
-          width: "80%",
-          bgcolor: "background.paper",
-          ml: "5%",
-          p: 2, // Padding interno
-          borderRadius: "8px", // Bordes redondeados
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Sombra
-          border: "1px solid #e0e0e0", // Borde ligero
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: "bold",
-            mb: 2, // Margen inferior
-            textAlign: "center",
-          }}
-        >
-          Selector de Área
-        </Typography>
-        <Grid item xs={12} sm={6} md={12} key={value}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="Selección de área"
-            centered // Centra los tabs
-            variant="scrollable" // Habilita el scroll en caso de muchos tabs
-            scrollButtons="auto" // Muestra los botones de scroll automáticamente
-            sx={{
-              ".MuiTab-root": {
-                fontWeight: "bold",
-                textTransform: "none", // Evita texto en mayúsculas
-                fontSize: "1rem",
-                minWidth: "100px",
-                "&:hover": {
-                  color: "primary.main", // Cambia el color al pasar el ratón
-                },
-              },
-            }}
-          >
-            {data?.areasResolutores?.map((dt) => (
-              <Tab label={dt.area} key={dt.area} />
-            ))}
-          </Tabs>
+      <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+        <Grid xs={12}>
+          <Card>
+            <MDBox
+              variant="gradient"
+              bgColor="primary"
+              borderRadius="lg"
+              coloredShadow="info"
+              mx={2}
+              mt={-3}
+              p={2}
+              mb={0}
+              textAlign="center"
+            >
+              <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                Moderador
+              </MDTypography>
+            </MDBox>
+            <MDBox pt={4} pb={3} px={3}>
+              <Box
+                sx={{
+                  width: "100%",
+                  bgcolor: "background.paper",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <Autocomplete
+                  id="grouped-demo"
+                  options={options.sort((a, b) => -b.area.localeCompare(a.area))}
+                  groupBy={(option) => option.area}
+                  getOptionLabel={(option) => option.Nombre}
+                  sx={{ width: 500, mt: 1 }}
+                  renderInput={(params) => <TextField {...params} label="Asignar a:" />}
+                  onChange={(event, value) => {
+                    setValue(value); // Guarda el valor seleccionado en el estado.
+                    ticketState.setTicketFields("Asignado_a", value);
+                  }}
+                />
+              </Box>
+            </MDBox>
+          </Card>
         </Grid>
-      </Box>
-      {/*<Box sx={{ width: "30%", bgcolor: "background.paper", ml: "5%" }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-autowidth-label">Saleccione área</InputLabel>
-          <Select
-            sx={{ minHeight: "3rem" }}
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={value}
-            onChange={handleChange}
-            label="Seleccione un área"
-          >
-            {data?.areasResolutores?.map((dt) => (
-              <MenuItem value={dt.area} key={dt.area}>
-                {dt.area}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>*/}
-      {/*Mostrar los resolutores correspondientes */}
-      {data?.areasResolutores?.length > 0 && value >= 0 ? (
-        <CustomTabPanel value={value} index={value} key={value}>
-          <Box sx={{ flexGrow: 1, mt: 2 }}>
-            <Grid container spacing={2} justifyContent="center">
-              {/* Mostrar los usuarios (resolutores) de la área seleccionada */}
-              {data.areasResolutores[value]?.resolutores?.map((user) => (
-                <Grid item xs={12} sm={6} md={6} key={user._id}>
-                  <List
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      bgcolor: "background.paper",
-                      padding: 1,
-                      borderRadius: 5,
-                      boxShadow: 2,
-                    }}
-                  >
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar alt={user.Nombre} src="/static/images/avatar/1.jpg" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={user.Nombre}
-                        secondary={
-                          <Typography component="span" variant="body2" color="text.secondary">
-                            {user.Correo}
-                          </Typography>
-                        }
-                      />
-                    </ListItem>
-                    <FormControlLabel
-                      value={user._id.toString()}
-                      control={<Radio />}
-                      label=""
-                      sx={{ marginLeft: "auto" }}
-                    />
-                  </List>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </CustomTabPanel>
-      ) : (
-        <p>No hay resolutores disponibles para esta área.</p>
-      )}
+      </Grid>
     </React.Fragment>
   );
 };

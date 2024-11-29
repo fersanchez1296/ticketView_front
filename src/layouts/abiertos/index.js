@@ -23,6 +23,7 @@ import PropTypes from "prop-types";
 import View from "components/TicketWindow/View";
 import Edit from "components/TicketWindow/Edit";
 import Cerrar from "components/TicketWindow/Cerrar";
+import Reabrir from "components/TicketWindow/Reabrir";
 import Reasignar from "components/TicketWindow/Reasignar";
 import Resolver from "components/TicketWindow/Resolver";
 import Aceptar from "components/TicketWindow/Aceptar";
@@ -78,6 +79,7 @@ function TableData({ collection }) {
       </DashboardLayout>
       <View />
       <Edit />
+      <Reabrir />
       <Cerrar />
       <Reasignar />
       <Resolver />

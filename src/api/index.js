@@ -98,20 +98,98 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["Tickets"],
     }),
+    //REABRIR
+    putReabrir: builder.mutation({
+      query: ({ _id, Descripcion_reabrir, Descripcion_cierre, Descripcion, Asignado_a }) => {
+        const url = `reabrir`;
+        return {
+          url,
+          method: "PUT",
+          body: {
+            _id,
+            Descripcion_reabrir,
+            Descripcion_cierre,
+            Descripcion,
+            Asignado_a,
+          },
+        };
+      },
+      invalidatesTags: ["Tickets"],
+    }),
     //Guardar ticket
     guardar: builder.mutation({
-      query: ({ ticketnuevo }) => ({
+      query: ({
+        Tipo_incidencia,
+        Incidencia_grave,
+        Categoria,
+        Estado,
+        Servicio,
+        Subcategoria,
+        Prioridad,
+        PendingReason,
+        Numero_Oficio,
+        NumeroRec_Oficio,
+        Descripcion,
+        Secretaria,
+        Direccion_general,
+        Direccion_area,
+      }) => ({
         url: "crear",
         method: "POST",
-        body: ticketnuevo,
+        body: {
+          Tipo_incidencia,
+          Incidencia_grave,
+          Categoria,
+          Estado,
+          Servicio,
+          Subcategoria,
+          Prioridad,
+          PendingReason,
+          Numero_Oficio,
+          NumeroRec_Oficio,
+          Descripcion,
+          Secretaria,
+          Direccion_general,
+          Direccion_area,
+        },
       }),
     }),
     //Editar ticket
     editar: builder.mutation({
-      query: ({ ticketeditado }) => ({
+      query: ({
+        Prioridad,
+        Direccion_area,
+        Direccion_general,
+        Secretaria,
+        _id,
+        Descripcion,
+        Estado,
+        Tipo_incidencia,
+        Numero_Oficio,
+        NumeroRec_Oficio,
+        PendingReason,
+        Servicio,
+        Categoria,
+        Subcategoria,
+      }) => ({
         url: "editar",
         method: "PUT",
-        body: ticketeditado,
+        body: {
+          Prioridad,
+          Direccion_area,
+          Direccion_general,
+          Secretaria,
+          _id,
+          Descripcion,
+          Estado,
+          Tipo_incidencia,
+          Numero_Oficio,
+          NumeroRec_Oficio,
+          PendingReason,
+          Servicio,
+          Categoria,
+          Subcategoria,
+        },
       }),
     }),
     //Obtener datos para mostrarlos en los select
@@ -142,4 +220,5 @@ export const {
   useEditarMutation,
   usePutReasignarMutation,
   useDashboardQuery,
+  usePutReabrirMutation,
 } = apiSlice;
