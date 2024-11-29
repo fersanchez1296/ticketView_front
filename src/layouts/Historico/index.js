@@ -47,11 +47,6 @@ function Historico({ collection }) {
   console.log(ticketsArea);
   const handleChange = (value) => setArea(value);
 
-  // Limpieza del debounce al desmontar el componente
-  React.useEffect(() => {
-    return () => handleChange.cancel();
-  }, []);
-
   React.useEffect(() => {
     if (area) {
       setIsFetching(true);
