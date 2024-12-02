@@ -63,6 +63,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import GroupIcon from "@mui/icons-material/Group";
 import Historico from "layouts/Historico/index";
 import FeedIcon from "@mui/icons-material/Feed";
+import Coordinacion from "layouts/coordinacion/index";
 
 const routes = [
   {
@@ -166,12 +167,12 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tickets en mi área",
-    key: "Tickets_en_mi_area",
+    name: "Tickets en mi Coordinación",
+    key: "Tickets_en_mi_Coordinacion",
     rol: ["Moderador"],
     icon: <DomainIcon />,
-    route: "/Tickets_en_mi_area",
-    component: <Historico collection={"Pendientes"} />,
+    route: "/Tickets_en_mi_Coordinacion",
+    component: <Coordinacion collection={"Pendientes"} />,
   },
   // {
   //   type: "collapse",

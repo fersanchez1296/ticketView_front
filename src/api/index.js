@@ -8,7 +8,7 @@ export const apiSlice = createApi({
     baseUrl: "http://localhost:4000/api/",
     credentials: "include",
   }),
-  tagTypes: ["Tickets", "Usuarios", "Dashboard"],
+  tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion"],
   endpoints: (builder) => ({
     //dashboard
     dashboard: builder.query({
@@ -146,6 +146,27 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    getAreasCoordinacion: builder.query({
+      query: () => {
+        const url = `coordinacion`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
+    getTicketsAreaCoordinacion: builder.query({
+      query: (area) => {
+        const url = `historico/area`;
+        return {
+          url,
+          params: { area },
+          method: "GET",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -165,4 +186,5 @@ export const {
   useDashboardQuery,
   useGetHistoricoQuery,
   useGetHistoricoAreaQuery,
+  useGetAreasCoordinacionQuery,
 } = apiSlice;

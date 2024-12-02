@@ -314,75 +314,6 @@ export default function DataTable({ tickets, collection }) {
     { field: "Fecha_hora_cierre", headerName: "Finalizado", width: 250 },
   ];
 
-  const AdminColumns = [
-    {
-      field: "visualizar",
-      headerName: "Visualizar",
-      width: 140,
-      renderCell: (params) => <Btn_view ticket={params.row} />,
-    },
-    {
-      field: "editar",
-      headerName: "Editar",
-      width: 140,
-      renderCell: (params) => <Btn_edit ticket={params.row} />,
-    },
-    {
-      field: "cerrar",
-      headerName: "Cerrar",
-      width: 140,
-      renderCell: (params) => <Btn_cerrar ticket={params.row} />,
-    },
-    {
-      field: "reasignar",
-      headerName: "Reasignar",
-      width: 140,
-      renderCell: (params) => <Btn_reasignar ticket={params.row} />,
-    },
-    {
-      field: "resolver",
-      headerName: "Resolver",
-      width: 140,
-      renderCell: (params) => <Btn_resolver ticket={params.row} />,
-    },
-    {
-      field: "Asignado_a",
-      headerName: "Asignado a:",
-      width: 250,
-      renderCell: (params) => (
-        <Asignado
-          image={team2}
-          nombre={params.row.Asignado_a}
-          dependencia={params.row.Equipo_asignado.Equipo_asignado}
-        />
-      ),
-    },
-    {
-      field: "Cliente",
-      headerName: "Cliente",
-      width: 250,
-      renderCell: (params) => (
-        <Cliente nombre={params.row.Nombre_cliente} dependencia={params.row.Secretaria} />
-      ),
-    },
-    { field: "Id", headerName: "ID", width: 90, align: "center" },
-    {
-      field: "estatus",
-      headerName: "Estatus",
-      width: 130,
-      renderCell: (params) => <Badge content={params.row.Estado.Estado} />,
-    },
-    {
-      field: "prioridad",
-      headerName: "Prioridad",
-      width: 130,
-      renderCell: (params) => <Badge content={params.row.Prioridad} />,
-    },
-    { field: "Tipo_incidencia", headerName: "Tipo", width: 150 },
-    { field: "Fecha_hora_creacion", headerName: "Creado", width: 250 },
-    { field: "Fecha_hora_cierre", headerName: "Finalizado", width: 250 },
-  ];
-
   const ModColumns = [
     {
       field: "visualizar",
@@ -390,7 +321,7 @@ export default function DataTable({ tickets, collection }) {
       width: 140,
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
-    ...(collection !== "Cerrados"
+    ...(collection !== "Cerrados" && collection !== "Resueltos"
       ? [
           {
             field: "reasignar",
@@ -407,6 +338,16 @@ export default function DataTable({ tickets, collection }) {
             headerName: "Aceptar",
             width: 140,
             renderCell: (params) => <Btn_aceptarResolucion ticket={params.row} />,
+          },
+        ]
+      : []),
+    ...(collection !== "Cerrados" && collection !== "Resueltos"
+      ? [
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => <Btn_resolver ticket={params.row} />,
           },
         ]
       : []),
