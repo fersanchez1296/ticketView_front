@@ -21,7 +21,7 @@ import Footer from "examples/Footer";
 //store
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //api
-import { useGetHistoricoQuery, useGetHistoricoAreaQuery } from "api/index";
+import { useGetAreasCoordinacionQuery, useGetHistoricoAreaQuery } from "api/index";
 //components
 import View from "components/TicketWindow/View";
 import Asignado from "./components/Asignado";
@@ -32,12 +32,12 @@ import debounce from "lodash.debounce";
 //propTypes
 import PropTypes from "prop-types";
 
-function Historico({ collection }) {
+function Coordinacion({ collection }) {
   const [area, setArea] = React.useState("");
   const openWindow = useDialogStore((state) => state.openWindow);
   const setTicketFields = useTicketStore((state) => state.setTicketFetch);
   const [isFetching, setIsFetching] = React.useState(false);
-  const { data, refetch, isLoading, error } = useGetHistoricoQuery();
+  const { data, refetch, isLoading, error } = useGetAreasCoordinacionQuery();
   const {
     data: ticketsArea,
     isLoading: loadingTickets,
@@ -90,14 +90,18 @@ function Historico({ collection }) {
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
     {
-      field: "Asignado_a",
-      headerName: "Asignado a:",
+      field: "Asignado_final_a",
+      headerName: "Asignado a",
       width: 250,
       renderCell: (params) => (
         <Asignado
           image={"team2"} // Cambia si deseas imágenes dinámicas
-          nombre={params.row.Asignado_final_a?.Nombre || "Sin asignar"}
-          dependencia={params.row.Asignado_final_a?.Coordinacion || "Sin dependencia"}
+          nombre={
+            params.row.Asignado_final_a ? params.row.Asignado_final_a.Nombre : "Sin Resolutor"
+          }
+          dependencia={
+            params.row.Asignado_final_a ? params.row.Asignado_final_a.Coordinacion : "Sin Area"
+          }
         />
       ),
     },
@@ -107,8 +111,8 @@ function Historico({ collection }) {
       width: 250,
       renderCell: (params) => (
         <Cliente
-          nombre={params.row.Nombre_cliente || "Sin cliente"}
-          dependencia={params.row.Secretaria?.Secretaria || "Sin secretaria"}
+          nombre={params.row.Nombre_cliente ? params.row.Nombre_cliente : "Sin cliente"}
+          dependencia={params.row.Secretaria ? params.row.Secretaria.Secretaria : "Sin secretaria"}
         />
       ),
     },
@@ -201,8 +205,8 @@ function Historico({ collection }) {
   );
 }
 
-Historico.propTypes = {
+Coordinacion.propTypes = {
   collection: PropTypes.string.isRequired,
 };
 
-export default Historico;
+export default Coordinacion;

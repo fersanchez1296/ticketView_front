@@ -44,7 +44,7 @@ import PropTypes from "prop-types";
 import { useAuthStore } from "zustand/auth.store.ts";
 import { Divider, Typography } from "@mui/material";
 const Dashboard_component = ({ data }) => {
-  const { Rol, Nombre } = useAuthStore();
+  const { role, Nombre } = useAuthStore();
   const { sales, tasks } = reportsLineChartData;
   return (
     <DashboardLayout>
@@ -125,7 +125,7 @@ const Dashboard_component = ({ data }) => {
               <ComplexStatisticsCard
                 color="warning"
                 icon="visibility"
-                title={Rol == "Moderador" ? "Para Revision" : "En revision"}
+                title={role == "Moderador" ? "Para Revision" : "En revision"}
                 count={data.revision}
                 percentage={{
                   color: "success",
@@ -276,7 +276,7 @@ const Dashboard_component = ({ data }) => {
               <ComplexStatisticsCard
                 color="warning"
                 icon="visibility"
-                title={Rol == "Moderador" ? "Para Revision" : "En revision"}
+                title={role != "Moderador" ? "Para Revision" : "En revision"}
                 count={data.totalRevision}
                 percentage={{
                   color: "success",

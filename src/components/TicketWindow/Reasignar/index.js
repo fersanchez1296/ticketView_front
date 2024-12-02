@@ -43,18 +43,18 @@ const Reasignar = () => {
 
   const reasignarTicket = async () => {
     console.log(value);
-    // try {
-    //   const result = await putReasignar({
-    //     id_usuario_reasignar: value,
-    //     id_ticket: ticketState._id,
-    //   });
-    //   setTimeout(() => {
-    //     ticketState.resetValues();
-    //     closeWindowReasignar();
-    //   }, 2000);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const result = await putReasignar({
+        id_usuario_reasignar: value,
+        id_ticket: ticketState._id,
+      });
+      setTimeout(() => {
+        ticketState.resetValues();
+        closeWindowReasignar();
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const options = data.areasResolutores.flatMap((areaObj) =>
