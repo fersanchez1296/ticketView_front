@@ -20,8 +20,6 @@ import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
   const ticket = useTicketStore();
-  const setTicketFields = useTicketStore((state) => state.setTicketFields);
-  console.log(data);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       {/*Primer etiqueta */}

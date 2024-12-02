@@ -118,7 +118,7 @@ const Reasignar = () => {
                 textAlign="center"
               >
                 <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  Información del Ticket
+                  Reasignar Ticket
                 </MDTypography>
               </MDBox>
               <MDBox pt={4} pb={3} px={3}>

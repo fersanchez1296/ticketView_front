@@ -50,6 +50,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Historico from "layouts/Historico/index";
 
 const routes = [
   {
@@ -67,7 +68,7 @@ const routes = [
     key: "crear_ticket",
     rol: ["Root", "Administrador"],
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/ticket_nuevo",
+    route: "/crear_ticket",
     component: <Create_Ticket />,
   },
   {
@@ -141,6 +142,15 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/usuarios",
     component: <DataTable collection={"Cerrado"} />,
+  },
+  {
+    type: "collapse",
+    name: "Historico de tickets",
+    key: "Historico_de_tickets",
+    rol: ["Root"],
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/Historico_de_tickets",
+    component: <Historico collection={"Pendientes"} />,
   },
   // {
   //   type: "collapse",

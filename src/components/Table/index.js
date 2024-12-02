@@ -182,7 +182,7 @@ export default function DataTable({ tickets, collection }) {
             renderCell: (params) => <Btn_reabrir ticket={params.row} />,
           },
         ]),
-    ...(collection !== "Cerrados"
+    ...(collection !== "Cerrados" && collection !== "Resueltos" && collection !== "Pendientes"
       ? [
           {
             field: "reasignar",
@@ -203,17 +203,89 @@ export default function DataTable({ tickets, collection }) {
         ]
       : []),
     {
-      field: "Asignado_a",
-      headerName: "Asignados a mí",
+      field: "Creado_por",
+      headerName: "Creado Por",
       width: 250,
       renderCell: (params) => (
         <Asignado
           image={team2}
-          nombre={params.row.Asignado_final.Nombre}
-          dependencia={params.row.Asignado_final.Coordinacion}
+          nombre={params.row.Creado_por.Nombre}
+          dependencia={params.row.Creado_por.Coordinacion}
         />
       ),
     },
+    {
+      field: "Asignado_a",
+      headerName: "Asignado a",
+      width: 250,
+      renderCell: (params) => (
+        <Asignado
+          image={team2}
+          nombre={params.row.Asignado_a.Nombre}
+          dependencia={params.row.Asignado_a.Coordinacion}
+        />
+      ),
+    },
+    {
+      field: "Reasignado_a",
+      headerName: "Reasignado a",
+      width: 250,
+      renderCell: (params) => (
+        <Asignado
+          image={team2}
+          nombre={params.row.Reasignado_a.Nombre}
+          dependencia={params.row.Reasignado_a.Coordinacion}
+        />
+      ),
+    },
+    ...(collection !== "Pendientes"
+      ? [
+          {
+            field: "Resuelto_por",
+            headerName: "Resuelto por",
+            width: 250,
+            renderCell: (params) => (
+              <Asignado
+                image={team2}
+                nombre={
+                  params.row.Resuelto_por && params.row.Resuelto_por.Nombre
+                    ? params.row.Resuelto_por.Nombre
+                    : params.row.Resuelto_por
+                }
+                dependencia={
+                  params.row.Resuelto_por && params.row.Resuelto_por.Coordinacion
+                    ? params.row.Resuelto_por.Coordinacion
+                    : ""
+                }
+              />
+            ),
+          },
+        ]
+      : []),
+    ...(collection === "Cerrados" || collection === "Reabiertos"
+      ? [
+          {
+            field: "Cerrado_por",
+            headerName: "Cerrado por",
+            width: 250,
+            renderCell: (params) => (
+              <Asignado
+                image={team2}
+                nombre={
+                  params.row.Cerrado_por && params.row.Cerrado_por.Nombre
+                    ? params.row.Cerrado_por.Nombre
+                    : params.row.Cerrado_por
+                }
+                dependencia={
+                  params.row.Cerrado_por && params.row.Cerrado_por.Nombre
+                    ? params.row.Cerrado_por.Nombre
+                    : ""
+                }
+              />
+            ),
+          },
+        ]
+      : []),
     {
       field: "Cliente",
       headerName: "Cliente",
@@ -356,8 +428,8 @@ export default function DataTable({ tickets, collection }) {
       renderCell: (params) => (
         <Asignado
           image={team2}
-          nombre={params.row.Asignado_final.Nombre}
-          dependencia={params.row.Asignado_final.Coordinacion}
+          nombre={params.row.Asignado_final_a.Nombre}
+          dependencia={params.row.Asignado_final_a.Coordinacion}
         />
       ),
     },
@@ -463,13 +535,119 @@ export default function DataTable({ tickets, collection }) {
     Descripcion_cierre: ticket.Descripcion_cierre ? ticket.Descripcion_cierre : "Ticket en curso",
   }));
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const paginationModel = { page: 0, pageSize: 10 };
+
+  const commonColumns = [
+    {
+      field: "visualizar",
+      headerName: "Visualizar",
+      width: 140,
+      renderCell: (params) => <Btn_view ticket={params.row} />,
+    },
+    {
+      field: "Cliente",
+      headerName: "Cliente",
+      width: 250,
+      renderCell: (params) => (
+        <Cliente
+          nombre={params.row.Nombre_cliente}
+          dependencia={params.row.Secretaria.Secretaria}
+        />
+      ),
+    },
+    { field: "Id", headerName: "ID", width: 90, align: "center" },
+    {
+      field: "estatus",
+      headerName: "Estatus",
+      width: 130,
+      renderCell: (params) => <Badge content={params.row.Estado.Estado} />,
+    },
+    {
+      field: "prioridad",
+      headerName: "Prioridad",
+      width: 130,
+      renderCell: (params) => <Badge content={params.row.Prioridad.Descripcion} />,
+    },
+    { field: "Tipo_incidencia", headerName: "Tipo", width: 150 },
+    { field: "Fecha_hora_creacion", headerName: "Creado", width: 250 },
+    { field: "Fecha_hora_cierre", headerName: "Finalizado", width: 250 },
+  ];
+
+  const getConditionalColumns = (role, collection) => {
+    let columns = [];
+
+    if (role === "Root" || role === "Admin") {
+      columns.push(
+        {
+          field: "editar",
+          headerName: "Editar",
+          width: 140,
+          renderCell: (params) => <Btn_edit ticket={params.row} />,
+        },
+        {
+          field: "cerrar",
+          headerName: "Cerrar",
+          width: 140,
+          renderCell: (params) => <Btn_cerrar ticket={params.row} />,
+        },
+        ...(collection !== "Cerrados"
+          ? [
+              {
+                field: "resolver",
+                headerName: "Resolver",
+                width: 140,
+                renderCell: (params) => <Btn_resolver ticket={params.row} />,
+              },
+            ]
+          : [])
+      );
+    }
+
+    if (role === "Mod" && collection === "Revisión") {
+      columns.push(
+        {
+          field: "Aceptar",
+          headerName: "Aceptar",
+          width: 140,
+          renderCell: (params) => <Btn_aceptarResolucion ticket={params.row} />,
+        },
+        {
+          field: "Rechazar",
+          headerName: "Rechazar",
+          width: 140,
+          renderCell: (params) => <Btn_rechazarResolucion ticket={params.row} />,
+        }
+      );
+    }
+
+    if (collection === "Cerrados" || collection === "Reabiertos") {
+      columns.push({
+        field: "Cerrado_por",
+        headerName: "Cerrado por",
+        width: 250,
+        renderCell: (params) => (
+          <Asignado
+            image={team2}
+            nombre={params.row.Cerrado_por?.Nombre || ""}
+            dependencia={params.row.Cerrado_por?.Coordinacion || ""}
+          />
+        ),
+      });
+    }
+
+    return columns;
+  };
+
+  const generateColumns = (role, collection) => [
+    ...commonColumns,
+    ...getConditionalColumns(role, collection),
+  ];
 
   return (
     <Paper sx={{ height: 550, width: "100%" }}>
       <DataGrid
         rows={rows}
-        columns={columns}
+        columns={generateColumns(rol, collection)}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10, 15, 20, 25]}
         //checkboxSelection

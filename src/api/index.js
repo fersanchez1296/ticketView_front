@@ -203,6 +203,28 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    //HISTORICO
+    getHistorico: builder.query({
+      query: () => {
+        const url = `historico`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
+    getHistoricoArea: builder.query({
+      query: (area) => {
+        const url = `historico/area`;
+        return {
+          url,
+          params: { area },
+          method: "GET",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -220,5 +242,6 @@ export const {
   useEditarMutation,
   usePutReasignarMutation,
   useDashboardQuery,
-  usePutReabrirMutation,
+  useGetHistoricoQuery,
+  useGetHistoricoAreaQuery,
 } = apiSlice;

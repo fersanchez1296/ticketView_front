@@ -58,6 +58,7 @@ function Basic() {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
   const setRole = useAuthStore((state) => state.setRole);
+  const setNombre = useAuthStore((state) => state.setNombre);
 
   const handleChange = (input, value) => {
     input === "user" ? setUser(value) : setPassword(value);
@@ -68,9 +69,9 @@ function Basic() {
     try {
       const response = await login({ Username, Password });
       if (response.data.status === 200) {
-        console.log(response);
         setAuth(true);
         setRole(response.data.Rol);
+        setNombre(response.data.Nombre);
         navigate("/dashboard");
       }
     } catch (err) {

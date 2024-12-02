@@ -53,8 +53,8 @@ const Resolutor = ({ disable_input }) => {
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Equipo Asignado:"
-                      value={ticket.Equipo_asignado.Equipo_asignado}
+                      label="Area asignada:"
+                      value={ticket.Area_asignado.Area}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
