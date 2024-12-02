@@ -244,4 +244,5 @@ export const {
   useDashboardQuery,
   useGetHistoricoQuery,
   useGetHistoricoAreaQuery,
+  usePutReabrirMutation,
 } = apiSlice;
