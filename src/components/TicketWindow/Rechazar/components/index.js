@@ -3,15 +3,25 @@ import React from "react";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
+import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
 //mui library components
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 //store
 import { useTicketStore } from "zustand/index.ts";
-
+import { usePutRechazarResolucionMutation } from "api";
+//api hook
 const RechazarCard = () => {
+  const [rechazar, { isLoading }] = usePutRechazarResolucionMutation();
   const ticket = useTicketStore();
+  const [feedback, setFeedback] = React.useState("Se envia para cierre");
+  const rechazarResolucion = async () => {
+    try {
+      await rechazar({ _id: ticket._id, motivo_rechazo: feedback });
+    } catch (error) {}
+  };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12} mb={12}>
@@ -64,11 +74,24 @@ const RechazarCard = () => {
                       id="outlined-multiline-static"
                       label="Retroalimetación al usuario"
                       multiline
-                      value={ticket.Descripcion_mandar_a_Escritorio}
+                      value={feedback}
                       rows={10}
-                      defaultValue="Sin información"
+                      onChange={(e) => setFeedback(e.target.value)}
                       sx={{ width: "100%" }}
                     />
+                  </MDBox>
+                </Grid>
+                <Grid xs={12}>
+                  <MDBox mb={2} sx={{ width: "100%" }}>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      endIcon={<SaveIcon />}
+                      sx={{ border: "1px dashed green" }}
+                      //onClick={postDocumento}
+                    >
+                      Enviar al resolutor
+                    </Button>
                   </MDBox>
                 </Grid>
               </Grid>

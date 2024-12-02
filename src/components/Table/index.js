@@ -331,13 +331,23 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection == "Revisión"
+    ...(collection == "Revision"
       ? [
           {
             field: "Aceptar",
             headerName: "Aceptar",
             width: 140,
             renderCell: (params) => <Btn_aceptarResolucion ticket={params.row} />,
+          },
+        ]
+      : []),
+    ...(collection === "Revision"
+      ? [
+          {
+            field: "Rechazar",
+            headerName: "Rechazar",
+            width: 140,
+            renderCell: (params) => <Btn_rechazarResolucion ticket={params.row} />,
           },
         ]
       : []),
@@ -351,25 +361,23 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection === "Revisión"
-      ? [
-          {
-            field: "Rechazar",
-            headerName: "Rechazar",
-            width: 140,
-            renderCell: (params) => <Btn_rechazarResolucion ticket={params.row} />,
-          },
-        ]
-      : []),
     {
       field: "Asignado_a",
-      headerName: "Asignados a mí",
+      headerName: "Asignados a",
       width: 250,
       renderCell: (params) => (
         <Asignado
           image={team2}
-          nombre={params.row.Asignado_final_a.Nombre}
-          dependencia={params.row.Asignado_final_a.Coordinacion}
+          nombre={
+            params.row.Asignado_final_a
+              ? params.row.Asignado_final_a.Nombre
+              : params.row.Asignado_a.Nombre
+          }
+          dependencia={
+            params.row.Asignado_final_a
+              ? params.row.Asignado_final_a.Coordinacion
+              : params.row.Asignado_a.Coordinacion
+          }
         />
       ),
     },
@@ -422,13 +430,13 @@ export default function DataTable({ tickets, collection }) {
       : []),
     {
       field: "Asignado_a",
-      headerName: "Asignados a mí",
+      headerName: "Asignado a",
       width: 250,
       renderCell: (params) => (
         <Asignado
           image={team2}
-          nombre={params.row.Asignado_final.Nombre}
-          dependencia={params.row.Asignado_final.Coordinacion}
+          nombre={params.row.Asignado_final_a.Nombre}
+          dependencia={params.row.Asignado_final_a.Coordinacion}
         />
       ),
     },
@@ -471,7 +479,7 @@ export default function DataTable({ tickets, collection }) {
   const rows = tickets.map((ticket) => ({
     id: ticket.Id,
     ...ticket,
-    Tipo_incidencia: ticket.Tipo_incidencia.Tipo_de_incidencia,
+    Tipo_incidencia: ticket.Tipo_incidencia ? ticket.Tipo_incidencia.Tipo_de_incidencia : "",
     Descripcion_cierre: ticket.Descripcion_cierre ? ticket.Descripcion_cierre : "Ticket en curso",
   }));
 
@@ -592,6 +600,7 @@ export default function DataTable({ tickets, collection }) {
         pageSizeOptions={[5, 10, 15, 20, 25]}
         //checkboxSelection
         sx={{ border: 0 }}
+        getRowId={(row) => row.Id}
       />
     </Paper>
   );

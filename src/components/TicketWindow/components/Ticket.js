@@ -106,7 +106,9 @@ const Ticket = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Tipo Incidencia:"
-                      value={ticket.Tipo_incidencia}
+                      value={
+                        ticket.Tipo_incidencia ? ticket.Tipo_incidencia.Tipo_de_incidencia : ""
+                      }
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required

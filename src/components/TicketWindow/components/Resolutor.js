@@ -81,7 +81,7 @@ const Resolutor = ({ disable_input }) => {
                       id="outlined-multiline-static"
                       label="Descripción a mandar a Escritorio"
                       multiline
-                      value={ticket.Descripcion_mandar_a_Escritorio}
+                      value={ticket.Respuesta_cierre_reasignado}
                       rows={10}
                       defaultValue="Sin información"
                       sx={{ width: "100%" }}

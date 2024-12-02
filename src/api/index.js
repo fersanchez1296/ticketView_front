@@ -97,6 +97,20 @@ export const apiSlice = createApi({
       },
       invalidatesTags: ["Tickets"],
     }),
+    putRechazarResolucion: builder.mutation({
+      query: ({ _id, motivo_rechazo }) => {
+        const url = `resolver/rechazar`;
+        return {
+          url,
+          method: "PUT",
+          body: {
+            _id,
+            motivo_rechazo,
+          },
+        };
+      },
+      invalidatesTags: ["Tickets"],
+    }),
     //Guardar ticket
     guardar: builder.mutation({
       query: ({ ticketnuevo }) => ({
@@ -187,4 +201,5 @@ export const {
   useGetHistoricoQuery,
   useGetHistoricoAreaQuery,
   useGetAreasCoordinacionQuery,
+  usePutRechazarResolucionMutation,
 } = apiSlice;

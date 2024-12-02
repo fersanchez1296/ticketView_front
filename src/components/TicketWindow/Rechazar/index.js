@@ -96,15 +96,6 @@ const Rechazar = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cerrar
             </Typography>
-            <Button
-              variant="contained"
-              color="success"
-              endIcon={<SaveIcon />}
-              sx={{ border: "1px dashed green" }}
-              //onClick={postDocumento}
-            >
-              Enviar al usuario
-            </Button>
           </Toolbar>
         </AppBar>
         <Box sx={{ width: "100%" }}>
