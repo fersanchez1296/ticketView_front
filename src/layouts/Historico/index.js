@@ -96,8 +96,8 @@ function Historico({ collection }) {
       renderCell: (params) => (
         <Asignado
           image={"team2"} // Cambia si deseas imágenes dinámicas
-          nombre={params.row.Asignado_final?.Nombre || "Sin asignar"}
-          dependencia={params.row.Asignado_final?.Coordinacion || "Sin dependencia"}
+          nombre={params.row.Asignado_final_a?.Nombre || "Sin asignar"}
+          dependencia={params.row.Asignado_final_a?.Coordinacion || "Sin dependencia"}
         />
       ),
     },

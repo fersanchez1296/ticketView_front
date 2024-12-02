@@ -54,7 +54,7 @@ export const apiSlice = createApi({
         url: "/logout",
         method: "POST",
       }),
-      invalidatesTags: ["Tickets", "Usuarios"],
+      invalidatesTags: ["Tickets", "Usuarios", "Dashboard"],
     }),
     //REASIGNAR
     //obtener usuarios (reasignar)
@@ -84,14 +84,13 @@ export const apiSlice = createApi({
     }),
     //RESOLVER
     putResolver: builder.mutation({
-      query: ({ Id_ticket, Resuelto_por_id, Descripcion_resolucion }) => {
+      query: ({ _id, Descripcion_resolucion }) => {
         const url = `resolver`;
         return {
           url,
           method: "PUT",
           body: {
-            Id_ticket,
-            Resuelto_por_id,
+            _id,
             Descripcion_resolucion,
           },
         };

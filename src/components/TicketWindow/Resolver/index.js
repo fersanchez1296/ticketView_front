@@ -69,8 +69,7 @@ const Resolver = () => {
   const resolverTicket = async () => {
     try {
       await putTicket({
-        Id_ticket: ticketState._id,
-        Resuelto_por_id: ticketState.Asignado_a_final._id,
+        _id: ticketState._id,
         Descripcion_resolucion: ticketState.Descripcion_resolucion,
       });
       ticketState.resetValues();

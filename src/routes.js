@@ -50,7 +50,19 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import FiberNewIcon from "@mui/icons-material/FiberNew";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
+import RestorePageIcon from "@mui/icons-material/RestorePage";
+import TaskIcon from "@mui/icons-material/Task";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import DoneIcon from "@mui/icons-material/Done";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import DomainIcon from "@mui/icons-material/Domain";
+import HistoryIcon from "@mui/icons-material/History";
+import GroupIcon from "@mui/icons-material/Group";
 import Historico from "layouts/Historico/index";
+import FeedIcon from "@mui/icons-material/Feed";
 
 const routes = [
   {
@@ -67,7 +79,7 @@ const routes = [
     name: "Crear Ticket",
     key: "crear_ticket",
     rol: ["Root", "Administrador"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <FiberNewIcon />,
     route: "/crear_ticket",
     component: <Create_Ticket />,
   },
@@ -76,7 +88,7 @@ const routes = [
     name: "Nuevos",
     key: "nuevos",
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <FeedIcon />,
     route: "/nuevos",
     component: <DataTable collection={"Nuevos"} />,
   },
@@ -85,7 +97,7 @@ const routes = [
     name: "Abiertos",
     key: "abiertos",
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <FileOpenIcon />,
     route: "/abiertos",
     component: <DataTable collection={"En Curso"} />,
   },
@@ -94,7 +106,7 @@ const routes = [
     name: "Reabiertos",
     key: "reabiertos",
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <RestorePageIcon />,
     route: "/reabiertos",
     component: <DataTable collection={"Reabiertos"} />,
   },
@@ -103,7 +115,7 @@ const routes = [
     name: "Resueltos",
     key: "resueltos",
     rol: ["Root", "Administrador", "Moderador"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <DoneIcon />,
     route: "/resueltos",
     component: <DataTable collection={"Resueltos"} />,
   },
@@ -112,34 +124,34 @@ const routes = [
     name: "Pendientes",
     key: "pendientes",
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <PendingActionsIcon />,
     route: "/pendientes",
     component: <DataTable collection={"Pendientes"} />,
-  },
-  {
-    type: "collapse",
-    name: "Cerrados",
-    key: "cerrados",
-    rol: ["Root", "Administrador", "Moderador", "Usuario"],
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/cerrados",
-    component: <DataTable collection={"Cerrados"} />,
   },
   {
     type: "collapse",
     name: "Revisión",
     key: "revision",
     rol: ["Moderador"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <RemoveRedEyeIcon />,
     route: "/revision",
     component: <DataTable collection={"Revision"} />,
+  },
+  {
+    type: "collapse",
+    name: "Cerrados",
+    key: "cerrados",
+    rol: ["Root", "Administrador", "Moderador", "Usuario"],
+    icon: <DoneAllIcon />,
+    route: "/cerrados",
+    component: <DataTable collection={"Cerrados"} />,
   },
   {
     type: "collapse",
     name: "Usuarios",
     key: "usuarios",
     rol: ["Root"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <GroupIcon />,
     route: "/usuarios",
     component: <DataTable collection={"Cerrado"} />,
   },
@@ -148,8 +160,17 @@ const routes = [
     name: "Historico de tickets",
     key: "Historico_de_tickets",
     rol: ["Root"],
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <HistoryIcon />,
     route: "/Historico_de_tickets",
+    component: <Historico collection={"Pendientes"} />,
+  },
+  {
+    type: "collapse",
+    name: "Tickets en mi área",
+    key: "Tickets_en_mi_area",
+    rol: ["Moderador"],
+    icon: <DomainIcon />,
+    route: "/Tickets_en_mi_area",
     component: <Historico collection={"Pendientes"} />,
   },
   // {
