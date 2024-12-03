@@ -3,15 +3,38 @@ import React from "react";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
+import Button from "@mui/material/Button";
+import SaveIcon from "@mui/icons-material/Save";
 //mui library components
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 //store
-import { useTicketStore } from "zustand/index.ts";
-
+import { useTicketStore, useDialogStore } from "zustand/index.ts";
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+//api hook
+import { usePutAceptarResolucionMutation } from "api";
 const AceptarCard = () => {
   const ticket = useTicketStore();
+  const [aceptar, { isLoading }] = usePutAceptarResolucionMutation();
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
+  const closeWindowAceptar = useDialogStore((state) => state.closeWindowAceptar);
+  const aceptarResolucion = async () => {
+    try {
+      const result = await aceptar({ _id: ticket._id });
+      console.log(result);
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+      }
+      setTimeout(() => {
+        ticket.resetValues();
+        closeWindowAceptar();
+      }, 2000);
+    } catch (error) {}
+  };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12} mb={12}>
@@ -62,13 +85,27 @@ const AceptarCard = () => {
                   <MDBox mb={2} sx={{ width: "100%" }}>
                     <TextField
                       id="outlined-multiline-static"
-                      label="Descripción a mandar a Mesa de Servicio"
+                      label="Descripción de cierre por el resolutor"
                       multiline
-                      value={ticket.Descripcion_mandar_a_Escritorio}
+                      value={ticket.Respuesta_cierre_reasignado}
                       rows={10}
+                      disabled={true}
                       defaultValue="Sin información"
                       sx={{ width: "100%" }}
                     />
+                  </MDBox>
+                </Grid>
+                <Grid xs={12}>
+                  <MDBox mb={2} sx={{ width: "100%" }}>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      endIcon={<SaveIcon />}
+                      sx={{ border: "1px dashed green" }}
+                      onClick={aceptarResolucion}
+                    >
+                      Enviar al Mesa de Servicio
+                    </Button>
                   </MDBox>
                 </Grid>
               </Grid>

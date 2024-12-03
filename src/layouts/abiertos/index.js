@@ -29,6 +29,9 @@ import Aceptar from "components/TicketWindow/Aceptar";
 import Rechazar from "components/TicketWindow/Rechazar";
 //Progress
 import Progress from "components/Progress";
+//snackbar
+import SuccessSB from "components/Snackbar/success/index";
+import ErrorSB from "components/Snackbar/error/index";
 function TableData({ collection }) {
   const { data: tickets, refetch, isLoading, error } = useGetTicketsAbiertosQuery({ collection });
 
@@ -76,6 +79,8 @@ function TableData({ collection }) {
         </MDBox>
         <Footer />
       </DashboardLayout>
+      <SuccessSB />
+      <ErrorSB />
       <View />
       <Edit />
       <Cerrar />

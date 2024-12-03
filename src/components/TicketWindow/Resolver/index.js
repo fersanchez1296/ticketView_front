@@ -19,7 +19,8 @@ import { usePutResolverMutation } from "api/index";
 import CardResolver from "./components/index";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
-
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -30,10 +31,9 @@ const Resolver = () => {
   const isWindowResolverOpen = useDialogStore((state) => state.isWindowResolverOpen);
   const closeWindowResolver = useDialogStore((state) => state.closeWindowResolver);
   const ticketState = useTicketStore();
-
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -68,13 +68,22 @@ const Resolver = () => {
 
   const resolverTicket = async () => {
     try {
-      await putTicket({
+      const result = await putTicket({
         _id: ticketState._id,
         Descripcion_resolucion: ticketState.Descripcion_resolucion,
       });
-      ticketState.resetValues();
-      closeWindowResolver();
-    } catch (error) {}
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+      }
+      setTimeout(() => {
+        ticketState.resetValues();
+        closeWindowResolver();
+      }, 2000);
+    } catch (error) {
+      openErrorSB(error, `Status: ${result.error.status}`);
+    }
   };
 
   return (

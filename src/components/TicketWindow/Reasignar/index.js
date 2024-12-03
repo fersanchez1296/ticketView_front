@@ -21,6 +21,8 @@ import Card from "@mui/material/Card";
 import { usePutReasignarMutation } from "api/index";
 //card components
 import CardUsers from "./components/index";
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useGetUsuariosQuery } from "api";
@@ -34,20 +36,22 @@ const Reasignar = () => {
   const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
   const closeWindowReasignar = useDialogStore((state) => state.closeWindowReasignar);
   const ticketState = useTicketStore();
-  const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const [value, setValue] = React.useState(null);
   if (isLoading) return <p>Cargando...</p>;
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   const reasignarTicket = async () => {
     console.log(value);
     try {
       const result = await putReasignar({
-        id_usuario_reasignar: value,
+        id_usuario_reasignar: value._id,
         id_ticket: ticketState._id,
       });
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+      }
       setTimeout(() => {
         ticketState.resetValues();
         closeWindowReasignar();
@@ -60,7 +64,7 @@ const Reasignar = () => {
   const options = data.areasResolutores.flatMap((areaObj) =>
     areaObj.resolutores.map((resolutor) => ({
       ...resolutor,
-      area: areaObj.area.toUpperCase(), // Incluye el área en mayúsculas para agrupar.
+      area: areaObj.area.toUpperCase(),
     }))
   );
 

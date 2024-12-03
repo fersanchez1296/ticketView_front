@@ -96,15 +96,6 @@ const Aceptar = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cerrar
             </Typography>
-            <Button
-              variant="contained"
-              color="success"
-              endIcon={<SaveIcon />}
-              sx={{ border: "1px dashed green" }}
-              //onClick={postDocumento}
-            >
-              Enviar a mesa{" "}
-            </Button>
           </Toolbar>
         </AppBar>
         <Box sx={{ width: "100%" }}>
