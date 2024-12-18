@@ -61,13 +61,13 @@ const Reasignar = () => {
     }
   };
 
-  const options = data.areasResolutores.flatMap((areaObj) =>
+  const options = data.AREASRESOLUTORES.flatMap((areaObj) =>
     areaObj.resolutores.map((resolutor) => ({
       ...resolutor,
       area: areaObj.area.toUpperCase(),
     }))
   );
-
+  console.log(data);
   return (
     <React.Fragment>
       <Dialog

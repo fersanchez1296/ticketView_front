@@ -90,7 +90,7 @@ const routes = [
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <FeedIcon />,
     route: "/nuevos",
-    component: <DataTable collection={"Nuevos"} />,
+    component: <DataTable collection={"nuevos"} />,
   },
   {
     type: "collapse",
@@ -99,7 +99,7 @@ const routes = [
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <FileOpenIcon />,
     route: "/abiertos",
-    component: <DataTable collection={"En Curso"} />,
+    component: <DataTable collection={"en-curso"} />,
   },
   {
     type: "collapse",
@@ -108,7 +108,7 @@ const routes = [
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <RestorePageIcon />,
     route: "/reabiertos",
-    component: <DataTable collection={"Reabiertos"} />,
+    component: <DataTable collection={"reabiertos"} />,
   },
   {
     type: "collapse",
@@ -117,7 +117,7 @@ const routes = [
     rol: ["Root", "Administrador", "Moderador"],
     icon: <DoneIcon />,
     route: "/resueltos",
-    component: <DataTable collection={"Resueltos"} />,
+    component: <DataTable collection={"resueltos"} />,
   },
   {
     type: "collapse",
@@ -126,7 +126,7 @@ const routes = [
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <PendingActionsIcon />,
     route: "/pendientes",
-    component: <DataTable collection={"Pendientes"} />,
+    component: <DataTable collection={"pendientes"} />,
   },
   {
     type: "collapse",
@@ -135,7 +135,7 @@ const routes = [
     rol: ["Moderador"],
     icon: <RemoveRedEyeIcon />,
     route: "/revision",
-    component: <DataTable collection={"Revision"} />,
+    component: <DataTable collection={"revision"} />,
   },
   {
     type: "collapse",
@@ -144,7 +144,7 @@ const routes = [
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <DoneAllIcon />,
     route: "/cerrados",
-    component: <DataTable collection={"Cerrados"} />,
+    component: <DataTable collection={"cerrados"} />,
   },
   {
     type: "collapse",

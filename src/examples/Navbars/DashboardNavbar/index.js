@@ -57,6 +57,7 @@ import {
 
 //store
 import { useTicketStore } from "zustand/index.ts";
+import MDButton from "components/MDButton";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -66,11 +67,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
   const [ticketId, setTicketId] = React.useState("");
   const [postTicket] = usePostTicketMutation();
+  const ticketState = useTicketStore();
+  const setTicketFromFetch = useTicketStore((state) => state.setTicketFromFetch);
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
-  const ticketState = useTicketStore();
 
   useEffect(() => {
     // Setting the navbar type
@@ -97,6 +99,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
+
+  const getTicket = async () => {
+    try {
+      const resultado = postTicket(ticketId);
+      console.log(resultado);
+      //resultado ? setTicketFromFetch(resultado) : null;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -173,15 +185,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </Icon>
               </IconButton>
               {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={buscarTicket}
-              >
-                <Icon sx={iconsStyle}>searchIcon</Icon>
-              </IconButton>
+              <MDButton onClick={() => getTicket()}>
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarIconButton}
+                  onClick={buscarTicket}
+                >
+                  <Icon sx={iconsStyle}>searchIcon</Icon>
+                </IconButton>
+              </MDButton>
+
               {/*Agregar logica para buscar el ticket*/}
             </MDBox>
           </MDBox>

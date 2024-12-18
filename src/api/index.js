@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     //desarrollo
     //baseUrl: "http://localhost:4000/api/",
-    baseUrl: "http://localhost:4000/api/",
+    baseUrl: "http://localhost:4000/api/v1/",
     credentials: "include",
   }),
   tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion"],
@@ -13,7 +13,7 @@ export const apiSlice = createApi({
     //dashboard
     dashboard: builder.query({
       query: () => {
-        const url = `dashboard`;
+        const url = `tickets/dashboard`;
         return {
           url,
           method: "GET",
@@ -45,7 +45,7 @@ export const apiSlice = createApi({
     //login
     login: builder.mutation({
       query: (credentials) => ({
-        url: "/login",
+        url: "auth/login",
         method: "POST",
         body: credentials,
       }),
@@ -61,7 +61,7 @@ export const apiSlice = createApi({
     //logout
     logout: builder.mutation({
       query: () => ({
-        url: "/logout",
+        url: "auth/logout",
         method: "POST",
       }),
       invalidatesTags: ["Tickets", "Usuarios", "Dashboard"],
@@ -70,7 +70,7 @@ export const apiSlice = createApi({
     //obtener usuarios (reasignar)
     getUsuarios: builder.query({
       query: () => {
-        const url = `reasignar/areas`;
+        const url = `tickets/reasignar/areas`;
         return {
           url,
           method: "GET",
@@ -203,7 +203,7 @@ export const apiSlice = createApi({
     //Obtener datos para mostrarlos en los select
     getInfoSelects: builder.query({
       query: () => {
-        const url = `crear/getInfoSelects`;
+        const url = `tickets/crear/getInfoSelects`;
         return {
           url,
           method: "GET",
@@ -214,7 +214,7 @@ export const apiSlice = createApi({
     //HISTORICO
     getHistorico: builder.query({
       query: () => {
-        const url = `historico`;
+        const url = `tickets/historico`;
         return {
           url,
           method: "GET",
@@ -224,7 +224,7 @@ export const apiSlice = createApi({
     }),
     getHistoricoArea: builder.query({
       query: (area) => {
-        const url = `historico/area`;
+        const url = `tickets/historico/area`;
         return {
           url,
           params: { area },
@@ -235,7 +235,7 @@ export const apiSlice = createApi({
     }),
     getAreasCoordinacion: builder.query({
       query: () => {
-        const url = `coordinacion`;
+        const url = `tickets/coordinacion`;
         return {
           url,
           method: "GET",
@@ -245,7 +245,7 @@ export const apiSlice = createApi({
     }),
     getTicketsAreaCoordinacion: builder.query({
       query: (area) => {
-        const url = `historico/area`;
+        const url = `tickets/historico/area`;
         return {
           url,
           params: { area },

@@ -49,6 +49,9 @@ import { useLoginMutation } from "api";
 //store
 import { useAuthStore } from "zustand/auth.store.ts";
 
+//decode token
+import { jwtDecode } from "jwt-decode";
+
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -64,14 +67,30 @@ function Basic() {
     input === "user" ? setUser(value) : setPassword(value);
   };
 
+  function getCookie(name) {
+    const cookies = document.cookie.split(";"); // Divide las cookies
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim(); // Elimina espacios
+      if (cookie.startsWith(`${name}=`)) {
+        return cookie.substring(name.length + 1); // Retorna su valor
+      }
+    }
+    return null;
+  }
+
   const signin = async (e) => {
     e.preventDefault();
     try {
       const response = await login({ Username, Password });
+      const token = getCookie("access_token");
+      console.log(token);
+      const decoded = jwtDecode(token);
+
+      console.log(decoded);
       if (response.data.status === 200) {
         setAuth(true);
-        setRole(response.data.Rol);
-        setNombre(response.data.Nombre);
+        setRole(decoded.rol);
+        setNombre(decoded.nombre);
         navigate("/dashboard");
       }
     } catch (err) {

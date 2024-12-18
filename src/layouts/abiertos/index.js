@@ -35,7 +35,13 @@ import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
 function TableData({ collection }) {
   const { data: tickets, refetch, isLoading, error } = useGetTicketsAbiertosQuery({ collection });
-
+  const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
+  const isWindowReabrirOpen = useDialogStore((state) => state.isWindowReabrirOpen);
+  const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
+  const isWindowCerrarOpen = useDialogStore((state) => state.isWindowCerrarOpen);
+  const isWindowResolverOpen = useDialogStore((state) => state.isWindowResolverOpen);
+  const isWindowAceptarOpen = useDialogStore((state) => state.isWindowAceptarOpen);
+  const isWindowRechazarOpen = useDialogStore((state) => state.isWindowRechazarOpen);
   if (isLoading) return <Progress />;
   if (error) return <div>Error: Reload page</div>;
   const handleClickActualizar = () => {
@@ -83,13 +89,13 @@ function TableData({ collection }) {
       <SuccessSB />
       <ErrorSB />
       <View />
-      <Edit />
-      <Reabrir />
-      <Cerrar />
-      <Reasignar />
-      <Resolver />
-      <Aceptar />
-      <Rechazar />
+      {isWindowEditOpen ? <Edit /> : null}
+      {isWindowReabrirOpen ? <Reabrir /> : null}
+      {isWindowCerrarOpen ? <Cerrar /> : null}
+      {isWindowReasignarOpen ? <Reasignar /> : null}
+      {isWindowResolverOpen ? <Resolver /> : null}
+      {isWindowAceptarOpen ? <Aceptar /> : null}
+      {isWindowRechazarOpen ? <Rechazar /> : null}
     </>
   );
 }
