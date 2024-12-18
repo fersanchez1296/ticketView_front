@@ -31,17 +31,12 @@ import estados from "catalogs/estatus.json";
 const Cliente = ({ disable_input, data }) => {
   const [postGuardar] = useGuardarMutation();
   const ticketState = useTicketStore();
-  const ticket = useTicketStore();
+  const setTicketFields = useTicketStore((state) => state.setTicketFields);
+
   const guardarTicket = async () => {
     try {
-      const result = await postGuardar({
-        ticketnuevo: ticketState,
-      });
+      const result = await postGuardar(ticketState);
       console.log(ticketState);
-      // setTimeout(() => {
-      //   ticketState.resetValues();
-      //   closeWindowReasignar();
-      // }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -77,9 +72,9 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.secretarias.Secretaria}
+                        value={ticketState.Secretaria}
                         label="Secretaría"
-                        onChange={(e) => ticket.setTicketFields("Secretaria", e.target.value)}
+                        onChange={(e) => setTicketFields("Secretaria", e.target.value)}
                       >
                         {data.secretarias.map((est) => {
                           return (
@@ -101,11 +96,9 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.direccion_generales.Direccion_General}
+                        value={ticketState.Direccion_general}
                         label="Estatus"
-                        onChange={(e) =>
-                          ticket.setTicketFields("Direccion_General", e.target.value)
-                        }
+                        onChange={(e) => setTicketFields("Direccion_general", e.target.value)}
                       >
                         {data.direccion_generales.map((est) => {
                           return (
@@ -127,9 +120,9 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.direccion_areas.direccion_area}
+                        value={ticketState.Direccion_area}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("direccion_area", e.target.value)}
+                        onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
                       >
                         {data.direccion_areas.map((est) => {
                           return (
@@ -142,20 +135,54 @@ const Cliente = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
-                {/*Seleccion cliente*/}
+                {/*Introducido por teclado Nombre*/}
                 <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Nombre_cliente:"
-                      value={ticket.Nombre_cliente}
-                      onChange={(e) => ticket.setTicketFields("Nombre_cliente", e.target.value)}
+                      label="Nombre:"
+                      value={ticketState.Nombre_cliente}
+                      onChange={(e) => setTicketFields("Nombre_cliente", e.target.value)}
+                      fullWidth
+                      required
+                    />
+                  </MDBox>
+                </Grid>
+                {/*Introducido por teclado Teléfono*/}
+                <Grid xs={6}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="tel" // Tipo tel para mostrar un teclado numérico en móviles
+                      label="Teléfono:"
+                      value={ticketState.Telefono_cliente}
+                      onChange={(e) => {
+                        // Permite solo números y un límite de longitud
+                        const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
+                        setTicketFields("Telefono_cliente", input);
+                      }}
+                      inputProps={{
+                        maxLength: 10, // Limita el número de caracteres a 10 (ejemplo para teléfonos locales)
+                      }}
+                      fullWidth
+                      required
+                    />
+                  </MDBox>
+                </Grid>
+                {/*Introducido por teclado Correo*/}
+                <Grid xs={6}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="email" // Muestra validación de correo automáticamente
+                      label="Correo:"
+                      value={ticketState.Correo_cliente}
+                      onChange={(e) => setTicketFields("Correo_cliente", e.target.value)}
                       fullWidth
                       required
                     />
                   </MDBox>
                 </Grid>
               </Grid>
+              {/*Botón que envía los daots que se guardan en ticketSatate mediante un post */}
               <AppBar sx={{ position: "relative" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
                   <Button

@@ -45,7 +45,10 @@ const Edit = () => {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-
+  const resetValues = useTicketStore((state) => state.resetValues);
+  React.useEffect(() => {
+    resetValues();
+  }, []);
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };

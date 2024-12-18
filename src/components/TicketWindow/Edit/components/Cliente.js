@@ -30,11 +30,50 @@ import { useEditarMutation } from "api/index";
 const Cliente = ({ disable_input, data }) => {
   const [putEditar] = useEditarMutation();
   const ticketState = useTicketStore();
-  const ticket = useTicketStore();
+  const setTicketFields = useTicketStore((state) => state.setTicketFields);
+  const [Secretaria] = React.useState(null);
+  const [Direccion_general] = React.useState(null);
+  const [Direccion_area] = React.useState(null);
+  const [Prioridad] = React.useState(null);
+  const [Estado] = React.useState(null);
+  const [Tipo_incidencia] = React.useState(null);
+  const [Numero_Oficio] = React.useState(null);
+  const [NumeroRec_Oficio] = React.useState(null);
+  const [PendingReason] = React.useState(null);
+  const [Servicio] = React.useState(null);
+  const [Categoria] = React.useState(null);
+  const [Subcategoria] = React.useState(null);
+  const [Descripcion] = React.useState(null);
+
   const editarTicket = async () => {
+    console.log("EL ticket fue creado por:  " + ticketState.Creado_por);
+    console.log("Prioridad del ticket:  " + ticketState.Prioridad);
+    console.log("Secretaria:  " + ticketState.Secretaria);
+    console.log("Id del ticket: " + ticketState._id);
+    console.log("Descripcion inicial del ticket:  " + ticketState.Descripcion);
+    console.log("Direccion general:  " + ticketState.Direccion_general);
+    console.log("Direccion area:  " + ticketState.Direccion_area);
+    console.log("Estado:  " + ticketState.Estado);
+    console.log("Tipo_incidencia:  " + ticketState.Tipo_incidencia);
+    console.log("Númenro de oficio:  " + Numero_Oficio);
+    console.log("NúmenroRec oficio:  " + NumeroRec_Oficio);
     try {
       const result = await putEditar({
-        ticketeditado: ticketState,
+        Prioridad: Prioridad,
+        Creado_por: ticketState.Creado_por,
+        Secretaria: Secretaria,
+        _id: ticketState._id,
+        Descripcion: Descripcion,
+        Direccion_general: Direccion_general,
+        Direccion_area: Direccion_area,
+        Estado: Estado,
+        Tipo_incidencia: Tipo_incidencia,
+        Numero_Oficio: Numero_Oficio,
+        NumeroRec_Oficio: NumeroRec_Oficio,
+        PendingReason: PendingReason,
+        Servicio: Servicio,
+        Categoria: Categoria,
+        Subcategoria: Subcategoria,
       });
       console.log(ticketState);
       // setTimeout(() => {
@@ -78,7 +117,7 @@ const Cliente = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.secretarias.Secretaria}
                         label="Secretaría"
-                        onChange={(e) => ticket.setTicketFields("Secretaria", e.target.value)}
+                        onChange={(e) => setTicketFields("Secretaria", e.target.value)}
                       >
                         {data.secretarias.map((est) => {
                           return (
@@ -102,9 +141,7 @@ const Cliente = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.direccion_generales.Direccion_General}
                         label="Estatus"
-                        onChange={(e) =>
-                          ticket.setTicketFields("Direccion_General", e.target.value)
-                        }
+                        onChange={(e) => setTicketFields("Direccion_general", e.target.value)}
                       >
                         {data.direccion_generales.map((est) => {
                           return (
@@ -128,7 +165,7 @@ const Cliente = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.direccion_areas.direccion_area}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("direccion_area", e.target.value)}
+                        onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
                       >
                         {data.direccion_areas.map((est) => {
                           return (
@@ -144,25 +181,14 @@ const Cliente = ({ disable_input, data }) => {
                 {/*Seleccion cliente*/}
                 <Grid xs={6}>
                   <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticket.Estado._id}
-                        label="Estatus"
-                        //onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
-                      >
-                        {estados.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                    <MDInput
+                      type="text"
+                      label="Nombre_cliente:"
+                      //value={ticket.Nombre_cliente}
+                      //onChange={(e) => ticket.setTicketFields("Nombre_cliente", e.target.value)}
+                      fullWidth
+                      required
+                    />
                   </MDBox>
                 </Grid>
               </Grid>

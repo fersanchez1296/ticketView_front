@@ -20,6 +20,7 @@ import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
   const ticket = useTicketStore();
+  const setTicketFields = useTicketStore((state) => state.setTicketFields);
   console.log(data);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
@@ -70,7 +71,7 @@ const Ticket = ({ disable_input, data }) => {
                     />
                   </MDBox>
                 </Grid>
-                {/*Seleccion Dirección Prioridad*/}
+                {/*Seleccion Prioridad*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>
                     <FormControl fullWidth>
@@ -79,9 +80,9 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.prioridades.Descripcion}
+                        //value={data.prioridades.Descripcion}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Descripcion", e.target.value)}
+                        onChange={(e) => setTicketFields("Prioridad", e.target.value)}
                       >
                         {data.prioridades.map((est) => {
                           return (
@@ -105,7 +106,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.estados.Estado}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
+                        onChange={(e) => setTicketFields("Estado", e.target.value)}
                       >
                         {data.estados.map((est) => {
                           return (
@@ -129,9 +130,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.tiposTickets.Tipo_de_incidencia}
                         label="Estatus"
-                        onChange={(e) =>
-                          ticket.setTicketFields("Tipo_de_incidencia", e.target.value)
-                        }
+                        onChange={(e) => setTicketFields("Tipo_incidencia", e.target.value)}
                       >
                         {data.tiposTickets.map((est) => {
                           return (
@@ -151,7 +150,7 @@ const Ticket = ({ disable_input, data }) => {
                       type="text"
                       label="Numero_Oficio:"
                       value={ticket.Numero_Oficio}
-                      onChange={(e) => ticket.setTicketFields("Numero_Oficio", e.target.value)}
+                      onChange={(e) => setTicketFields("Numero_Oficio", e.target.value)}
                       fullWidth
                       required
                     />
@@ -164,7 +163,7 @@ const Ticket = ({ disable_input, data }) => {
                       type="text"
                       label="NumeroRec_Oficio:"
                       value={ticket.NumeroRec_Oficio}
-                      onChange={(e) => ticket.setTicketFields("NumeroRec_Oficio", e.target.value)}
+                      onChange={(e) => setTicketFields("NumeroRec_Oficio", e.target.value)}
                       fullWidth
                       required
                     />
@@ -177,7 +176,7 @@ const Ticket = ({ disable_input, data }) => {
                       type="text"
                       label="Pending Reason:"
                       value={ticket.PendingReason}
-                      onChange={(e) => ticket.setTicketFields("PendingReason", e.target.value)}
+                      onChange={(e) => setTicketFields("PendingReason", e.target.value)}
                       fullWidth
                       required
                       disabled={!disable_input}
@@ -247,7 +246,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.servicios.Servicio}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Servicio", e.target.value)}
+                        onChange={(e) => setTicketFields("Servicio", e.target.value)}
                       >
                         {data.servicios.map((est) => {
                           return (
@@ -271,7 +270,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.categorias.Categoria}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Categoria", e.target.value)}
+                        onChange={(e) => setTicketFields("Categoria", e.target.value)}
                       >
                         {data.categorias.map((est) => {
                           return (
@@ -295,7 +294,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={data.subcategoria.Subcategoria}
                         label="Estatus"
-                        onChange={(e) => ticket.setTicketFields("Subcategoria", e.target.value)}
+                        onChange={(e) => setTicketFields("Subcategoria", e.target.value)}
                       >
                         {data.subcategoria.map((est) => {
                           return (
@@ -316,7 +315,7 @@ const Ticket = ({ disable_input, data }) => {
                       label="Descripción del ticket"
                       multiline
                       value={ticket.Descripcion}
-                      onChange={(e) => ticket.setTicketFields("Descripcion", e.target.value)}
+                      onChange={(e) => setTicketFields("Descripcion", e.target.value)}
                       rows={5.2}
                       defaultValue="Sin información"
                       sx={{ width: "100%" }}

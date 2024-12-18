@@ -20,6 +20,7 @@ export default function DataTable({ tickets, collection }) {
   const openWindowEdit = useDialogStore((state) => state.openWindowEdit);
   const openWindowCloseTicket = useDialogStore((state) => state.openWindowCloseTicket);
   const openWindowReasignar = useDialogStore((state) => state.openWindowReasignar);
+  const openWindowReabrir = useDialogStore((state) => state.openWindowReabrir);
   const openWindowResolver = useDialogStore((state) => state.openWindowResolver);
   const openWindowAceptar = useDialogStore((state) => state.openWindowAceptar);
   const openWindowRechazar = useDialogStore((state) => state.openWindowRechazar);
@@ -47,7 +48,7 @@ export default function DataTable({ tickets, collection }) {
       variant={"contained"}
       onClick={() => {
         setTicketFields(ticket.ticket);
-        //openWindow();
+        openWindowReabrir();
       }}
     >
       <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
