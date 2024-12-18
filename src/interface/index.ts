@@ -2,7 +2,7 @@
 export interface TicketProps {
   _id: string;
   Id: number | string;
-  Tipo_de_incidencia: Object;
+  Tipo_incidencia: Object;
   Fecha_hora_creacion: Date | String;
   Fecha_limite_resolucion_SLA: Date | String;
   Fecha_hora_ultima_modificacion: Date | String;
@@ -47,7 +47,7 @@ export type TciketType = TicketProps & TicketMethods;
 export const ticketInitialState: TicketProps = {
   _id: "",
   Id: "",
-  Tipo_de_incidencia: {},
+  Tipo_incidencia: {},
   Fecha_hora_creacion: "",
   Fecha_limite_resolucion_SLA: "",
   Fecha_hora_ultima_modificacion: "",

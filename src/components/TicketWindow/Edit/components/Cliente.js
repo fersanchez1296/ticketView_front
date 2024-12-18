@@ -181,25 +181,14 @@ const Cliente = ({ disable_input, data }) => {
                 {/*Seleccion cliente*/}
                 <Grid xs={6}>
                   <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Cliente</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Estado._id}
-                        label="Estatus"
-                        //onChange={(e) => ticket.setTicketFields("Estado", e.target.value)}
-                      >
-                        {estados.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                    <MDInput
+                      type="text"
+                      label="Nombre_cliente:"
+                      //value={ticket.Nombre_cliente}
+                      //onChange={(e) => ticket.setTicketFields("Nombre_cliente", e.target.value)}
+                      fullWidth
+                      required
+                    />
                   </MDBox>
                 </Grid>
               </Grid>

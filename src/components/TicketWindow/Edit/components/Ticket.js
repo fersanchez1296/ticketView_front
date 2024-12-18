@@ -80,7 +80,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.prioridades.Descripcion}
+                        //value={data.prioridades.Descripcion}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Prioridad", e.target.value)}
                       >

@@ -11,6 +11,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import Button from "@mui/material/Button";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 //store
 import { useTicketStore } from "zustand/index.ts";
 //proptypes
@@ -19,8 +22,19 @@ import PropTypes from "prop-types";
 import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
-  const ticket = useTicketStore();
+  const ticketState = useTicketStore();
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       {/*Primer etiqueta */}
@@ -48,13 +62,13 @@ const Ticket = ({ disable_input, data }) => {
                 <Grid xs={4}>
                   <MDBox mb={2}>
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Tipo de ticket</InputLabel>
+                      <InputLabel id="demo-simple-select-label">Tipo de incidencia</InputLabel>
                       <Select
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.tiposTickets.Tipo_de_incidencia}
-                        label="Estatus"
+                        value={ticketState.Tipo_incidencia}
+                        label="Tipo_incidencia"
                         onChange={(e) => setTicketFields("Tipo_incidencia", e.target.value)}
                       >
                         {data.tiposTickets.map((est) => {
@@ -77,7 +91,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="incidencia-grave-label"
                         id="incidencia-grave-select"
-                        value={ticket.Incidencia_grave}
+                        value={ticketState.Incidencia_grave}
                         label="Incidencia grave"
                         onChange={(e) => setTicketFields("Incidencia_grave", e.target.value)}
                       >
@@ -96,7 +110,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.categorias.Categoria}
+                        value={ticketState.Categoria}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Categoria", e.target.value)}
                       >
@@ -120,7 +134,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.estados.Estado}
+                        value={ticketState.Estado}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Estado", e.target.value)}
                       >
@@ -144,7 +158,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.servicios.Servicio}
+                        value={ticketState.Servicio}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Servicio", e.target.value)}
                       >
@@ -168,7 +182,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.subcategoria.Subcategoria}
+                        value={ticketState.Subcategoria}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Subcategoria", e.target.value)}
                       >
@@ -192,7 +206,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.prioridades.Prioridad}
+                        value={ticketState.Prioridad}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Prioridad", e.target.value)}
                       >
@@ -213,7 +227,7 @@ const Ticket = ({ disable_input, data }) => {
                     <MDInput
                       type="text"
                       label="Pending Reason:"
-                      value={ticket.PendingReason}
+                      value={ticketState.PendingReason}
                       onChange={(e) => setTicketFields("PendingReason", e.target.value)}
                       fullWidth
                       required
@@ -227,7 +241,7 @@ const Ticket = ({ disable_input, data }) => {
                     <MDInput
                       type="text"
                       label="NumeroRec_Oficio:"
-                      value={ticket.NumeroRec_Oficio}
+                      value={ticketState.NumeroRec_Oficio}
                       onChange={(e) => setTicketFields("NumeroRec_Oficio", e.target.value)}
                       fullWidth
                       required
@@ -240,7 +254,7 @@ const Ticket = ({ disable_input, data }) => {
                     <MDInput
                       type="text"
                       label="Numero_Oficio:"
-                      value={ticket.Numero_Oficio}
+                      value={ticketState.Numero_Oficio}
                       onChange={(e) => setTicketFields("Numero_Oficio", e.target.value)}
                       fullWidth
                       required
@@ -254,12 +268,38 @@ const Ticket = ({ disable_input, data }) => {
                       id="outlined-multiline-static"
                       label="Descripción del ticket"
                       multiline
-                      value={ticket.Descripcion}
+                      value={ticketState.Descripcion}
                       onChange={(e) => setTicketFields("Descripcion", e.target.value)}
                       rows={5.2}
                       defaultValue="Sin información"
                       sx={{ width: "100%" }}
                     />
+                  </MDBox>
+                </Grid>
+                {/*Botón para subir archivos*/}
+                <Grid xs={12}>
+                  <MDBox mb={2}>
+                    <Button
+                      component="label"
+                      role={undefined}
+                      variant="contained"
+                      tabIndex={-1}
+                      startIcon={<CloudUploadIcon />}
+                      sx={{
+                        color: "white", // Color del texto
+                        backgroundColor: "#1976d2", // Color de fondo
+                        "&:hover": {
+                          backgroundColor: "#1565c0", // Color de fondo al pasar el mouse
+                        },
+                      }}
+                    >
+                      <MDTypography color="white">Subir archivos</MDTypography>
+                      <VisuallyHiddenInput
+                        type="file"
+                        onChange={(event) => console.log(event.target.files)}
+                        multiple
+                      />
+                    </Button>
                   </MDBox>
                 </Grid>
               </Grid>

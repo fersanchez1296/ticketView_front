@@ -32,6 +32,16 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    //Obtener ticket
+    postTicket: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/tickets/${id}`,
+          method: "POST",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
     //login
     login: builder.mutation({
       query: (credentials) => ({
@@ -117,39 +127,11 @@ export const apiSlice = createApi({
     }),
     //Guardar ticket
     guardar: builder.mutation({
-      query: ({
-        Tipo_incidencia,
-        Incidencia_grave,
-        Categoria,
-        Estado,
-        Servicio,
-        Subcategoria,
-        Prioridad,
-        PendingReason,
-        Numero_Oficio,
-        NumeroRec_Oficio,
-        Descripcion,
-        Secretaria,
-        Direccion_general,
-        Direccion_area,
-      }) => ({
+      query: ({ ticketState }) => ({
         url: "crear",
         method: "POST",
         body: {
-          Tipo_incidencia,
-          Incidencia_grave,
-          Categoria,
-          Estado,
-          Servicio,
-          Subcategoria,
-          Prioridad,
-          PendingReason,
-          Numero_Oficio,
-          NumeroRec_Oficio,
-          Descripcion,
-          Secretaria,
-          Direccion_general,
-          Direccion_area,
+          ticketState,
         },
       }),
     }),
@@ -263,6 +245,8 @@ export const {
   usePutReasignarMutation,
   useDashboardQuery,
   useGetHistoricoQuery,
+  usePostTicketMutation,
   useGetHistoricoAreaQuery,
   useGetAreasCoordinacionQuery,
+  usePutReabrirMutation,
 } = apiSlice;

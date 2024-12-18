@@ -45,7 +45,7 @@ const Reasignar = () => {
     console.log(value);
     try {
       const result = await putReasignar({
-        id_usuario_reasignar: value,
+        id_usuario_reasignar: value._id,
         id_ticket: ticketState._id,
       });
       setTimeout(() => {

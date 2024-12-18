@@ -32,47 +32,11 @@ const Cliente = ({ disable_input, data }) => {
   const [postGuardar] = useGuardarMutation();
   const ticketState = useTicketStore();
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
-  const [Tipo_incidencia] = React.useState(null);
-  const [Incidencia_grave] = React.useState(null);
-  const [Categoria] = React.useState(null);
-  const [Estado] = React.useState(null);
-  const [Servicio] = React.useState(null);
-  const [Subcategoria] = React.useState(null);
-  const [Prioridad] = React.useState(null);
-  const [PendingReason] = React.useState(null);
-  const [NumeroRec_Oficio] = React.useState(null);
-  const [Numero_Oficio] = React.useState(null);
-  const [Descripcion] = React.useState(null);
-  const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
-  const [value, setValue] = React.useState(null);
-  const [Secretaria] = React.useState(null);
-  const [Direccion_general] = React.useState(null);
-  const [Direccion_area] = React.useState(null);
+
   const guardarTicket = async () => {
     try {
-      console.log("Prioridad del ticket:  " + ticketState.Prioridad);
-
-      const result = await postGuardar({
-        Tipo_incidencia: Tipo_incidencia,
-        Incidencia_grave: Incidencia_grave,
-        Categoria: Categoria,
-        Estado: Estado,
-        Servicio: Servicio,
-        Subcategoria: Subcategoria,
-        Prioridad: Prioridad,
-        PendingReason: PendingReason,
-        NumeroRec_Oficio: Numero_Oficio,
-        Numero_Oficio: NumeroRec_Oficio,
-        Descripcion: Descripcion,
-        Secretaria: Secretaria,
-        Direccion_general: Direccion_general,
-        Direccion_area: Direccion_area,
-      });
+      const result = await postGuardar(ticketState);
       console.log(ticketState);
-      // setTimeout(() => {
-      //   ticketState.resetValues();
-      //   closeWindowReasignar();
-      // }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +72,7 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.secretarias.Secretaria}
+                        value={ticketState.Secretaria}
                         label="Secretaría"
                         onChange={(e) => setTicketFields("Secretaria", e.target.value)}
                       >
@@ -132,9 +96,9 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.direccion_generales.Direccion_General}
+                        value={ticketState.Direccion_general}
                         label="Estatus"
-                        onChange={(e) => setTicketFields("Direccion_General", e.target.value)}
+                        onChange={(e) => setTicketFields("Direccion_general", e.target.value)}
                       >
                         {data.direccion_generales.map((est) => {
                           return (
@@ -156,9 +120,9 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.direccion_areas.direccion_area}
+                        value={ticketState.Direccion_area}
                         label="Estatus"
-                        onChange={(e) => setTicketFields("direccion_area", e.target.value)}
+                        onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
                       >
                         {data.direccion_areas.map((est) => {
                           return (
@@ -171,20 +135,54 @@ const Cliente = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
-                {/*Seleccion cliente*/}
+                {/*Introducido por teclado Nombre*/}
                 <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Nombre_cliente:"
-                      //value={ticket.Nombre_cliente}
-                      //onChange={(e) => ticket.setTicketFields("Nombre_cliente", e.target.value)}
+                      label="Nombre:"
+                      value={ticketState.Nombre_cliente}
+                      onChange={(e) => setTicketFields("Nombre_cliente", e.target.value)}
+                      fullWidth
+                      required
+                    />
+                  </MDBox>
+                </Grid>
+                {/*Introducido por teclado Teléfono*/}
+                <Grid xs={6}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="tel" // Tipo tel para mostrar un teclado numérico en móviles
+                      label="Teléfono:"
+                      value={ticketState.Telefono_cliente}
+                      onChange={(e) => {
+                        // Permite solo números y un límite de longitud
+                        const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
+                        setTicketFields("Telefono_cliente", input);
+                      }}
+                      inputProps={{
+                        maxLength: 10, // Limita el número de caracteres a 10 (ejemplo para teléfonos locales)
+                      }}
+                      fullWidth
+                      required
+                    />
+                  </MDBox>
+                </Grid>
+                {/*Introducido por teclado Correo*/}
+                <Grid xs={6}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="email" // Muestra validación de correo automáticamente
+                      label="Correo:"
+                      value={ticketState.Correo_cliente}
+                      onChange={(e) => setTicketFields("Correo_cliente", e.target.value)}
                       fullWidth
                       required
                     />
                   </MDBox>
                 </Grid>
               </Grid>
+              {/*Botón que envía los daots que se guardan en ticketSatate mediante un post */}
               <AppBar sx={{ position: "relative" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
                   <Button

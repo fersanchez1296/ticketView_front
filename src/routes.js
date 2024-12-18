@@ -64,7 +64,6 @@ import GroupIcon from "@mui/icons-material/Group";
 import Historico from "layouts/Historico/index";
 import FeedIcon from "@mui/icons-material/Feed";
 import Coordinacion from "layouts/coordinacion/index";
-
 const routes = [
   {
     type: "collapse",
