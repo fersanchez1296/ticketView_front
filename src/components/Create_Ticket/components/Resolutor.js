@@ -61,15 +61,15 @@ CustomTabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-const Reasignar = () => {
-  const { data, isLoading } = useGetUsuariosQuery();
+const Resolutor = ({ data }) => {
+  //const { data, isLoading } = useGetUsuariosQuery();
   const ticketState = useTicketStore();
   const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
   const [value, setValue] = React.useState(0);
-  if (isLoading) return <p>Cargando...</p>;
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // if (isLoading) return <p>Cargando...</p>;
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
   // const handleChange = (event) => {
   //   setValue(event.target.value); // Actualiza el valor seleccionado
   // };
@@ -146,4 +146,8 @@ const Reasignar = () => {
   );
 };
 
-export default React.memo(Reasignar);
+Resolutor.propTypes = {
+  data: PropTypes.array,
+};
+
+export default React.memo(Resolutor);
