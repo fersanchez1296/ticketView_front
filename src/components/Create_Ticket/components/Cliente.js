@@ -35,8 +35,7 @@ const Cliente = ({ disable_input, data }) => {
 
   const guardarTicket = async () => {
     try {
-      const result = await postGuardar(ticketState);
-      console.log(ticketState);
+      const result = await postGuardar({ ticketState });
     } catch (error) {
       console.log(error);
     }

@@ -56,8 +56,10 @@ import {
 } from "context";
 
 //store
-import { useTicketStore } from "zustand/index.ts";
+import { useTicketStore, useDialogStore } from "zustand/index.ts";
 import MDButton from "components/MDButton";
+
+import View from "components/TicketWindow/View/index";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -68,7 +70,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [ticketId, setTicketId] = React.useState("");
   const [postTicket] = usePostTicketMutation();
   const ticketState = useTicketStore();
-  const setTicketFromFetch = useTicketStore((state) => state.setTicketFromFetch);
+  const openWindow = useDialogStore((state) => state.openWindow);
+  const isWindowViewOpen = useDialogStore((state) => state.isWindowOpen);
+  const setTicketFromFetch = useTicketStore((state) => state.setTicketFetch);
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
@@ -143,66 +147,68 @@ function DashboardNavbar({ absolute, light, isMini }) {
   });
   const buscarTicket = async () => {
     try {
-      const result = await postTicket(ticketId);
       console.log(ticketId);
+      const result = await postTicket(ticketId);
+      console.log(result.data[0]);
+      if (result) {
+        setTicketFromFetch(result.data[0]);
+        openWindow();
+      }
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <AppBar
-      position={absolute ? "absolute" : navbarType}
-      color="inherit"
-      sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
-    >
-      <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <MDBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-        </MDBox>
-        {isMini ? null : (
-          <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1} mt={1}>
-              <MDInput
-                type="number"
-                label="Buscar Ticket:"
-                value={ticketId}
-                onChange={(e) => setTicketId(e.target.value)}
-                fullWidth
-                required
-                //disabled={!disable_input}
-              />
-            </MDBox>
-            <MDBox color={light ? "white" : "inherit"}>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
-              {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
-              <MDButton onClick={() => getTicket()}>
+    <>
+      <AppBar
+        position={absolute ? "absolute" : navbarType}
+        color="inherit"
+        sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
+      >
+        <Toolbar sx={(theme) => navbarContainer(theme)}>
+          <MDBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+            <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+          </MDBox>
+          {isMini ? null : (
+            <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
+              <MDBox pr={1} mt={1}>
+                <MDInput
+                  type="number"
+                  label="Buscar Ticket:"
+                  value={ticketId}
+                  onChange={(e) => setTicketId(e.target.value)}
+                  fullWidth
+                  required
+                  //disabled={!disable_input}
+                />
+              </MDBox>
+              <MDBox color={light ? "white" : "inherit"}>
                 <IconButton
                   size="small"
                   disableRipple
                   color="inherit"
-                  sx={navbarIconButton}
-                  onClick={buscarTicket}
+                  sx={navbarMobileMenu}
+                  onClick={handleMiniSidenav}
                 >
-                  <Icon sx={iconsStyle}>searchIcon</Icon>
+                  <Icon sx={iconsStyle} fontSize="medium">
+                    {miniSidenav ? "menu_open" : "menu"}
+                  </Icon>
                 </IconButton>
-              </MDButton>
+                {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
+                <MDButton onClick={() => buscarTicket()}>
+                  <IconButton size="small" disableRipple color="inherit" sx={navbarIconButton}>
+                    <Icon sx={iconsStyle}>searchIcon</Icon>
+                  </IconButton>
+                </MDButton>
 
-              {/*Agregar logica para buscar el ticket*/}
+                {/*Agregar logica para buscar el ticket*/}
+              </MDBox>
             </MDBox>
-          </MDBox>
-        )}
-      </Toolbar>
-    </AppBar>
+          )}
+        </Toolbar>
+      </AppBar>
+      {isWindowViewOpen ? <View /> : null}
+    </>
   );
 }
 

@@ -36,7 +36,7 @@ export const apiSlice = createApi({
     postTicket: builder.mutation({
       query: (id) => {
         return {
-          url: `/tickets/${id}`,
+          url: `tickets/buscar/${id}`,
           method: "POST",
         };
       },
@@ -155,7 +155,7 @@ export const apiSlice = createApi({
     //Guardar ticket
     guardar: builder.mutation({
       query: ({ ticketState }) => ({
-        url: "crear",
+        url: "/tickets/crear/ticket",
         method: "POST",
         body: {
           ticketState,
