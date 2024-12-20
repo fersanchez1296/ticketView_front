@@ -67,7 +67,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Tickets", "Usuarios", "Dashboard"],
     }),
     //REASIGNAR
-    //obtener usuarios (reasignar)
+    //obtener usuarios (reasignar) ---- cambiar nombre
     getUsuarios: builder.query({
       query: () => {
         const url = `tickets/reasignar/areas`;
@@ -254,6 +254,17 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    //Usuarios --cambiar nombre
+    getAllUsuarios: builder.query({
+      query: () => {
+        const url = `users/`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -278,4 +289,5 @@ export const {
   usePutRechazarResolucionMutation,
   usePutAceptarResolucionMutation,
   usePutReabrirMutation,
+  useGetAllUsuariosQuery,
 } = apiSlice;

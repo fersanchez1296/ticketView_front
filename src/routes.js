@@ -64,6 +64,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import Historico from "layouts/Historico/index";
 import FeedIcon from "@mui/icons-material/Feed";
 import Coordinacion from "layouts/coordinacion/index";
+import Usuarios from "layouts/usuarios/index";
 const routes = [
   {
     type: "collapse",
@@ -153,7 +154,7 @@ const routes = [
     rol: ["Root"],
     icon: <GroupIcon />,
     route: "/usuarios",
-    component: <DataTable collection={"Cerrado"} />,
+    component: <Usuarios />,
   },
   {
     type: "collapse",

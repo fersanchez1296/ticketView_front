@@ -1,5 +1,13 @@
 import { create } from "zustand";
-import { TicketType, ticketInitialState, DialogState, TicketProps } from "interface/index.ts";
+import {
+  TicketType,
+  ticketInitialState,
+  DialogState,
+  TicketProps,
+  UserType,
+  userInitialState,
+  UserProps,
+} from "interface/index.ts";
 export const useTicketStore = create<TicketType>((set) => ({
   ...ticketInitialState,
   setTicketFields: (field: string, value: string) =>
@@ -15,6 +23,26 @@ export const useTicketStore = create<TicketType>((set) => ({
   resetValues: () =>
     set((state) => ({
       ...ticketInitialState,
+      setField: state.setField,
+      resetValues: state.resetValues,
+    })),
+}));
+
+export const useUserStore = create<UserType>((set) => ({
+  ...userInitialState,
+  setUserFields: (field: string, value: string) =>
+    set((state) => ({
+      ...state,
+      [field]: value,
+    })),
+  setUserFetch: (fields: Partial<TicketProps>) =>
+    set((state) => ({
+      ...state,
+      ...fields,
+    })),
+  resetUserValues: () =>
+    set((state) => ({
+      ...userInitialState,
       setField: state.setField,
       resetValues: state.resetValues,
     })),
@@ -53,4 +81,8 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowRechazarOpen: false,
   openWindowRechazar: () => set({ isWindowRechazarOpen: true }),
   closeWindowRechazar: () => set({ isWindowRechazarOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de usuarios:
+  isWindowUsuariosOpen: false,
+  openWindowUsuarios: () => set({ isWindowUsuariosOpen: true }),
+  closeWindowUsuarios: () => set({ isWindowUsuariosOpen: false }),
 }));

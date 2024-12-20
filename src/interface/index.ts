@@ -81,6 +81,40 @@ export const ticketInitialState: TicketProps = {
   Descripcion_resolucion: "",
 };
 
+export interface UserProps {
+  _id: string;
+  Nombre: string;
+  Correo: string;
+  Coordinacion: string;
+  isActive: Boolean;
+  Fecha_creacion: Date | string;
+  Fecha_baja: Date | string;
+  Dependencia: string;
+  Direccion_general: string;
+  Area: Object;
+}
+
+export interface UserMethods {
+  setUserFields: (field: string, value: string | number) => void;
+  setUserFetch: (fields: Partial<UserProps>) => void;
+  resetUserValues: () => void;
+}
+
+export type UserType = UserProps & UserMethods;
+
+export const userInitialState: UserProps = {
+  _id: "",
+  Nombre: "",
+  Correo: "",
+  Coordinacion: "",
+  isActive: false,
+  Fecha_creacion: "",
+  Fecha_baja: "",
+  Dependencia: "",
+  Direccion_general: "",
+  Area: {},
+};
+
 // Propidades y métodos que controlan el abrir y cerrar de ventanas
 
 export interface DialogState {
@@ -116,4 +150,8 @@ export interface DialogState {
   isWindowRechazarOpen: boolean;
   openWindowRechazar: () => void;
   closeWindowRechazar: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de usuarios:
+  isWindowUsuariosOpen: boolean;
+  openWindowUsuarios: () => void;
+  closeWindowUsuarios: () => void;
 }
