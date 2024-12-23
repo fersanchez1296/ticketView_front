@@ -265,6 +265,17 @@ export const apiSlice = createApi({
       },
       providesTags: ["Usuarios"],
     }),
+    updateEstadoUsuarios: builder.mutation({
+      query: ({ estado, userId }) => {
+        const url = `users/${userId}`;
+        return {
+          url,
+          method: "PUT",
+          body: { estado },
+        };
+      },
+      providesTags: ["Usuarios"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -290,4 +301,5 @@ export const {
   usePutAceptarResolucionMutation,
   usePutReabrirMutation,
   useGetAllUsuariosQuery,
+  useUpdateEstadoUsuariosMutation,
 } = apiSlice;

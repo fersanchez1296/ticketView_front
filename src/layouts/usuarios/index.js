@@ -1,5 +1,7 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Card from "@mui/material/Card";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
@@ -36,10 +38,13 @@ import Cliente from "./components/Cliente";
 import Badge from "./components/Badge";
 import VentanaUsuario from "./components/ventanaUsuarios";
 import SwitchActive from "./components/switch";
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 function Index() {
   const isWindowUsuariosOpen = useDialogStore((state) => state.isWindowUsuariosOpen);
   const openWindowUsuarios = useDialogStore((state) => state.openWindowUsuarios);
   const setUserStoreFromFetch = useUserStore((state) => state.setUserFetch);
+  const successSb = useSnackbarStore((state) => state.successSB);
+  const errorSb = useSnackbarStore((state) => state.errorSB);
   const { data, refetch, isLoading, error } = useGetAllUsuariosQuery();
   if (isLoading) return <Progress />;
   //   if (error) return <div>Error: Reload page</div>;
@@ -69,7 +74,9 @@ function Index() {
       field: "isActive",
       headerName: "Estado",
       width: 130,
-      renderCell: (params) => <SwitchActive isActive={params.row.isActive} />,
+      renderCell: (params) => (
+        <SwitchActive isActive={params.row.isActive} userId={params.row._id} />
+      ),
     },
     {
       field: "Nombre",
@@ -100,6 +107,19 @@ function Index() {
       <DashboardLayout>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
+          <MDBox mb={6} ml={2}>
+            <Button
+              variant="contained"
+              color="success"
+              endIcon={<PersonAddIcon />}
+              sx={{ border: "1px solid green" }}
+              //onClick={reasignarTicket}
+              //disabled={value == null ? true : false}
+            >
+              Crear Usuario
+            </Button>
+          </MDBox>
+
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <Card>
@@ -135,8 +155,8 @@ function Index() {
         </MDBox>
         <Footer />
       </DashboardLayout>
-      <SuccessSB />
-      <ErrorSB />
+      {successSb ? <SuccessSB /> : null}
+      {errorSb ? <ErrorSB /> : null}
       {isWindowUsuariosOpen ? <VentanaUsuario /> : null}
     </>
   );
