@@ -39,7 +39,7 @@ const Ticket = ({ disable_input, data }) => {
 
   const handleFileChange = (event) => {
     const archivos = Array.from(event.target.files);
-    setFiles(archivos);
+    setFiles(archivos[0]);
   };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
@@ -300,7 +300,7 @@ const Ticket = ({ disable_input, data }) => {
                       }}
                     >
                       <MDTypography color="white">Subir archivos</MDTypography>
-                      <VisuallyHiddenInput type="file" onChange={handleFileChange} multiple />
+                      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                     </Button>
                   </MDBox>
                 </Grid>

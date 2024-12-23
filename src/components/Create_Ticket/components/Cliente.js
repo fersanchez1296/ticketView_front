@@ -31,13 +31,26 @@ import estados from "catalogs/estatus.json";
 const Cliente = ({ disable_input, data }) => {
   const [postGuardar] = useGuardarMutation();
   const ticketState = useTicketStore();
-  const files = useTicketStore((state) => state.Files);
+  const archivo = useTicketStore((state) => state.Files);
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
 
   const guardarTicket = async () => {
+    const formData = new FormData();
     try {
-      //const result = await postGuardar({ ticketState });
-      console.log(files);
+      formData.append("ticketState", JSON.stringify(ticketState));
+      //console.log(archivo);
+      // Adjunta el archivo directamente
+      if (archivo instanceof File) {
+        formData.append("file", archivo);
+      } else {
+        console.error("El archivo no es válido:", archivo);
+      }
+
+      console.log("Archivo adjuntado:", archivo);
+      console.log("FormData generado:", formData);
+
+      const result = await postGuardar(formData); // Sin destructuración
+      console.log("Resultado del envío:", result);
     } catch (error) {
       console.log(error);
     }

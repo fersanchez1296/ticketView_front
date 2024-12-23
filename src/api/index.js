@@ -154,12 +154,10 @@ export const apiSlice = createApi({
     }),
     //Guardar ticket
     guardar: builder.mutation({
-      query: ({ ticketState }) => ({
+      query: ({ formData }) => ({
         url: "/tickets/crear/ticket",
         method: "POST",
-        body: {
-          ticketState,
-        },
+        body: formData,
       }),
     }),
     //Editar ticket

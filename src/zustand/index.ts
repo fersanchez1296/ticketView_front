@@ -26,7 +26,7 @@ export const useTicketStore = create<TicketType>((set) => ({
       setField: state.setField,
       resetValues: state.resetValues,
     })),
-  setFiles: (newFiles) => set((state) => ({ Files: [...state.Files, ...newFiles] })),
+  setFiles: (newFile) => set({ Files: newFile }),
 }));
 
 export const useUserStore = create<UserType>((set) => ({
