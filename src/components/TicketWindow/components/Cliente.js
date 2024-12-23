@@ -37,7 +37,7 @@ const Cliente = ({ disable_input }) => {
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
               <Grid container spacing={3}>
-                <Grid xs={4}>
+                <Grid xs={3}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -50,7 +50,46 @@ const Cliente = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={4}>
+                <Grid xs={3}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Teléfono del cliente:"
+                      value={ticket.Telefono_cliente}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={3}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Dependencia:"
+                      value={ticket.Dependencia_cliente}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={3}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Correo del cliente:"
+                      value={ticket.Correo_cliente}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={3}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -63,7 +102,7 @@ const Cliente = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={4}>
+                <Grid xs={3}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -76,12 +115,12 @@ const Cliente = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={12}>
+                <Grid xs={3}>
                   <MDBox mb={2} sx={{ width: "100%" }}>
                     <MDInput
                       type="text"
                       label="Dirección Área:"
-                      value={ticket.Direccion_area.direccion_area}
+                      value={ticket.Direccion_area}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
