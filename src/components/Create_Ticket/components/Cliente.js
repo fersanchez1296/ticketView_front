@@ -31,11 +31,13 @@ import estados from "catalogs/estatus.json";
 const Cliente = ({ disable_input, data }) => {
   const [postGuardar] = useGuardarMutation();
   const ticketState = useTicketStore();
+  const files = useTicketStore((state) => state.Files);
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
 
   const guardarTicket = async () => {
     try {
-      const result = await postGuardar({ ticketState });
+      //const result = await postGuardar({ ticketState });
+      console.log(files);
     } catch (error) {
       console.log(error);
     }

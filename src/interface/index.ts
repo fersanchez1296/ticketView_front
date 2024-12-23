@@ -34,12 +34,14 @@ export interface TicketProps {
   Area_reasignado_a?: Object;
   Historia_ticket?: string;
   Descripcion_resolucion: string;
+  Files?: Array<any>;
 }
 
 export interface TicketMethods {
   setTicketFields: (field: string, value: string | number) => void;
   setTicketFetch: (fields: Partial<TicketProps>) => void;
   resetValues: () => void;
+  setFiles: (newFiles: File[]) => void;
 }
 
 export type TciketType = TicketProps & TicketMethods;
@@ -79,6 +81,7 @@ export const ticketInitialState: TicketProps = {
   Area_reasignado_a: "",
   Historia_ticket: "",
   Descripcion_resolucion: "",
+  Files: [],
 };
 
 export interface UserProps {

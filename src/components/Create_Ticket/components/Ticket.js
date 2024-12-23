@@ -22,6 +22,7 @@ import PropTypes from "prop-types";
 import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
+  const setFiles = useTicketStore((state) => state.setFiles);
   const ticketState = useTicketStore();
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
   const VisuallyHiddenInput = styled("input")({
@@ -35,6 +36,11 @@ const Ticket = ({ disable_input, data }) => {
     whiteSpace: "nowrap",
     width: 1,
   });
+
+  const handleFileChange = (event) => {
+    const archivos = Array.from(event.target.files);
+    setFiles(archivos);
+  };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       {/*Primer etiqueta */}
@@ -294,11 +300,7 @@ const Ticket = ({ disable_input, data }) => {
                       }}
                     >
                       <MDTypography color="white">Subir archivos</MDTypography>
-                      <VisuallyHiddenInput
-                        type="file"
-                        onChange={(event) => console.log(event.target.files)}
-                        multiple
-                      />
+                      <VisuallyHiddenInput type="file" onChange={handleFileChange} multiple />
                     </Button>
                   </MDBox>
                 </Grid>
