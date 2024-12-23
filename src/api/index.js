@@ -165,7 +165,7 @@ export const apiSlice = createApi({
     //Editar ticket
     editar: builder.mutation({
       query: ({ ticketState }) => ({
-        url: "editar",
+        url: "/editar",
         method: "PUT",
         body: {
           ticketState,
