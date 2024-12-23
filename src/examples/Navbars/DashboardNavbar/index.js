@@ -200,8 +200,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     <Icon sx={iconsStyle}>searchIcon</Icon>
                   </IconButton>
                 </MDButton>
-
-                {/*Agregar logica para buscar el ticket*/}
               </MDBox>
             </MDBox>
           )}

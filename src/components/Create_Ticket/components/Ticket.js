@@ -5,6 +5,7 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 //mui library components
 import Card from "@mui/material/Card";
+import DeleteIcon from "@mui/icons-material/Delete";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,6 +25,7 @@ import estados from "catalogs/estatus.json";
 const Ticket = ({ disable_input, data }) => {
   const ticketState = useTicketStore();
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
+  const verificar_archivo = 1;
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -302,6 +304,20 @@ const Ticket = ({ disable_input, data }) => {
                     </Button>
                   </MDBox>
                 </Grid>
+                {verificar_archivo && (
+                  <Grid item>
+                    <MDBox mb={2}>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        startIcon={<DeleteIcon />}
+                        //onClick={borrar_archivo}
+                      >
+                        <MDTypography color="white"></MDTypography>
+                      </Button>
+                    </MDBox>
+                  </Grid>
+                )}
               </Grid>
             </MDBox>
           </MDBox>

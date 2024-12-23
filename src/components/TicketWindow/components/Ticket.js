@@ -3,10 +3,13 @@ import React from "react";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
+
 //mui library components
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Button from "@mui/material/Button";
 //store
 import { useTicketStore } from "zustand/index.ts";
 //proptypes
@@ -14,6 +17,8 @@ import PropTypes from "prop-types";
 
 const Ticket = ({ disable_input }) => {
   const ticket = useTicketStore();
+  const verificar_archivo = 1;
+  const ver_archivo = 1;
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={6} mb={12}>
@@ -336,6 +341,20 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
+                {verificar_archivo && (
+                  <Grid item>
+                    <MDBox mb={1}>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        startIcon={<VisibilityIcon />}
+                        onClick={ver_archivo}
+                      >
+                        <MDTypography color="gray">Ver archivo.</MDTypography>
+                      </Button>
+                    </MDBox>
+                  </Grid>
+                )}
                 <Grid xs={12}>
                   <MDBox mb={2}>
                     <TextField
