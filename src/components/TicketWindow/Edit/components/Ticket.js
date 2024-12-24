@@ -58,7 +58,7 @@ const Ticket = ({ disable_input, data }) => {
                     <MDInput
                       type="text"
                       label="Creado por:"
-                      value={ticketState.Creado_por}
+                      value={ticketState.Creado_por.Nombre}
                       fullWidth
                       required
                       disabled={disable_input}

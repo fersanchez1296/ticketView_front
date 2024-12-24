@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -14,6 +14,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 //store
 import { useTicketStore } from "zustand/index.ts";
@@ -37,6 +38,7 @@ const Ticket = ({ disable_input, data }) => {
     whiteSpace: "nowrap",
     width: 1,
   });
+  const seleccionado = ticketState.Prioridad;
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       {/*Primer etiqueta */}
@@ -223,8 +225,37 @@ const Ticket = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
+                {/*Seleccion Tiempo de respuesta*/}
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Tiempo de respuesta</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticketState.Prioridad}
+                        label="Estatus"
+                        onChange={(e) => setTicketFields("Tiempo_respuesta", e.target.value)}
+                      >
+                        {data.prioridades.map((est) => (
+                          <MenuItem value={est._id} key={est._id}>
+                            {/* Submenú para mostrar tiempos de respuesta */}
+                            {est.Tiempo_respuesta && (
+                              <ul>
+                                {est.Tiempo_respuesta.map((tiempo, index) => (
+                                  <li key={index}>{tiempo}</li>
+                                ))}
+                              </ul>
+                            )}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </MDBox>
+                </Grid>
                 {/*Pending reason */}
-                <Grid xs={8}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
