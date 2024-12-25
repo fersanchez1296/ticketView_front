@@ -24,6 +24,7 @@ import estados from "catalogs/estatus.json";
 const Ticket = ({ disable_input, data }) => {
   const setFiles = useTicketStore((state) => state.setFiles);
   const ticketState = useTicketStore();
+  //const [file, setFile] = React.useState(null);
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",

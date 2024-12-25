@@ -37,7 +37,7 @@ const Cliente = ({ disable_input, data }) => {
   const guardarTicket = async () => {
     const formData = new FormData();
     try {
-      formData.append("ticketState", JSON.stringify(ticketState));
+      //formData.append("ticketState", JSON.stringify(ticketState));
       //console.log(archivo);
       // Adjunta el archivo directamente
       if (archivo instanceof File) {
