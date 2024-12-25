@@ -13,7 +13,6 @@ export interface TicketProps {
   Categoria: Object;
   Servicio: Object;
   Subcategoria: Object;
-  Nombre_cliente: string;
   Secretaria?: Object;
   Direccion_general?: Object;
   Direccion_area?: Object | null;
@@ -34,6 +33,10 @@ export interface TicketProps {
   Area_reasignado_a?: Object;
   Historia_ticket?: string;
   Descripcion_resolucion: string;
+  Nombre_cliente: string;
+  Telefono_cliente: string;
+  Correo_cliente: string;
+  Dependencia_cliente: string;
   Files?: File | null;
 }
 
@@ -81,6 +84,9 @@ export const ticketInitialState: TicketProps = {
   Area_reasignado_a: "",
   Historia_ticket: "",
   Descripcion_resolucion: "",
+  Telefono_cliente: "",
+  Correo_cliente: "",
+  Dependencia_cliente: "",
   Files: null,
 };
 

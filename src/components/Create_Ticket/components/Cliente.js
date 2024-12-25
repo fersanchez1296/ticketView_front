@@ -35,6 +35,10 @@ const Cliente = ({ disable_input, data }) => {
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
 
   const guardarTicket = async () => {
+    try {
+      const result = await postGuardar({ ticketState });
+      console.log(result);
+      console.log(ticketState);
     const formData = new FormData();
     try {
       //formData.append("ticketState", JSON.stringify(ticketState));
@@ -149,7 +153,7 @@ const Cliente = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
-                {/*Introducido por teclado Nombre*/}
+                {/*Introducido por teclado Nombre del cliente*/}
                 <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
@@ -190,6 +194,19 @@ const Cliente = ({ disable_input, data }) => {
                       label="Correo:"
                       value={ticketState.Correo_cliente}
                       onChange={(e) => setTicketFields("Correo_cliente", e.target.value)}
+                      fullWidth
+                      required
+                    />
+                  </MDBox>
+                </Grid>
+                {/*Introducido por teclado Dependencia del cliente*/}
+                <Grid xs={6}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Dependencia:"
+                      value={ticketState.Dependencia_cliente}
+                      onChange={(e) => setTicketFields("Dependencia_cliente", e.target.value)}
                       fullWidth
                       required
                     />

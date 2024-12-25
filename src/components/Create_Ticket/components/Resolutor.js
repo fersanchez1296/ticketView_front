@@ -66,14 +66,6 @@ const Resolutor = ({ data }) => {
   const ticketState = useTicketStore();
   const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
   const [value, setValue] = React.useState(0);
-  // if (isLoading) return <p>Cargando...</p>;
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
-  // const handleChange = (event) => {
-  //   setValue(event.target.value); // Actualiza el valor seleccionado
-  // };
-  //const [createDocumento] = usePostDocumentoMutation();
   const options = data.areasResolutores.flatMap((areaObj) =>
     areaObj.resolutores.map((resolutor) => ({
       ...resolutor,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -19,8 +19,15 @@ import PropTypes from "prop-types";
 import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
-  const ticket = useTicketStore();
+  const ticketState = useTicketStore();
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
+  // useEffect(() => {
+  //   // Si no hay un valor asignado para prioridades y hay elementos en data.prioridades
+  //   if (!ticketState.prioridades && data.prioridades.length > 0) {
+  //     // Establecer el primer valor de data.prioridades como valor predeterminado
+  //     setTicketFields("prioridades", data.prioridades[0]._id);
+  //   }
+  // }, [ticketState.prioridades, data.prioridades, setTicketFields]);
   console.log(data);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
@@ -51,7 +58,7 @@ const Ticket = ({ disable_input, data }) => {
                     <MDInput
                       type="text"
                       label="Creado por:"
-                      value={ticket.Creado_por}
+                      value={ticketState.Creado_por.Nombre}
                       fullWidth
                       required
                       disabled={disable_input}
@@ -64,7 +71,7 @@ const Ticket = ({ disable_input, data }) => {
                     <MDInput
                       type="text"
                       label="ID:"
-                      value={ticket.Id}
+                      value={ticketState.Id}
                       fullWidth
                       required
                       disabled={disable_input}
@@ -80,7 +87,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        //value={data.prioridades.Descripcion}
+                        value={ticketState.prioridades}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Prioridad", e.target.value)}
                       >
@@ -104,7 +111,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.estados.Estado}
+                        value={ticketState.Estado}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Estado", e.target.value)}
                       >
@@ -128,7 +135,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.tiposTickets.Tipo_de_incidencia}
+                        value={ticketState.Tipo_de_incidencia}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Tipo_incidencia", e.target.value)}
                       >
@@ -144,12 +151,12 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Introducido por teclado Numero_Oficio*/}
-                <Grid xs={6}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
                       label="Numero_Oficio:"
-                      value={ticket.Numero_Oficio}
+                      value={ticketState.Numero_Oficio}
                       onChange={(e) => setTicketFields("Numero_Oficio", e.target.value)}
                       fullWidth
                       required
@@ -157,12 +164,12 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Introducido por teclado NumeroRec_Oficio*/}
-                <Grid xs={6}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
                       label="NumeroRec_Oficio:"
-                      value={ticket.NumeroRec_Oficio}
+                      value={ticketState.NumeroRec_Oficio}
                       onChange={(e) => setTicketFields("NumeroRec_Oficio", e.target.value)}
                       fullWidth
                       required
@@ -170,12 +177,12 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Pending reason */}
-                <Grid xs={8}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
                       label="Pending Reason:"
-                      value={ticket.PendingReason}
+                      value={ticketState.PendingReason}
                       onChange={(e) => setTicketFields("PendingReason", e.target.value)}
                       fullWidth
                       required
@@ -184,12 +191,12 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Fecha de creación de ticket */}
-                <Grid xs={5}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
                       label="Fecha de Creación:"
-                      value={ticket.Fecha_hora_creacion}
+                      value={ticketState.Fecha_hora_creacion}
                       fullWidth
                       required
                       disabled={disable_input}
@@ -197,12 +204,12 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Fecha limite de solución de ticket */}
-                <Grid xs={5}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
                       label="Fecha límite de resolución:"
-                      value={ticket.Fecha_limite_resolucion_SLA}
+                      value={ticketState.Fecha_limite_resolucion_SLA}
                       fullWidth
                       required
                       disabled={disable_input}
@@ -244,7 +251,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.servicios.Servicio}
+                        value={ticketState.Servicio}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Servicio", e.target.value)}
                       >
@@ -268,7 +275,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.categorias.Categoria}
+                        value={ticketState.Categoria}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Categoria", e.target.value)}
                       >
@@ -292,7 +299,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.subcategoria.Subcategoria}
+                        value={ticketState.Subcategoria}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Subcategoria", e.target.value)}
                       >
@@ -314,7 +321,7 @@ const Ticket = ({ disable_input, data }) => {
                       id="outlined-multiline-static"
                       label="Descripción del ticket"
                       multiline
-                      value={ticket.Descripcion}
+                      value={ticketState.Descripcion}
                       onChange={(e) => setTicketFields("Descripcion", e.target.value)}
                       rows={5.2}
                       defaultValue="Sin información"
