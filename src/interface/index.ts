@@ -31,7 +31,6 @@ export interface TicketProps {
   PendingReason?: string;
   Reasignado_a?: Object;
   Area_reasignado_a?: Object;
-  Historia_ticket?: string;
   Descripcion_resolucion: string;
   Nombre_cliente: string;
   Telefono_cliente: string;
@@ -82,7 +81,6 @@ export const ticketInitialState: TicketProps = {
   PendingReason: "",
   Reasignado_a: "",
   Area_reasignado_a: "",
-  Historia_ticket: "",
   Descripcion_resolucion: "",
   Telefono_cliente: "",
   Correo_cliente: "",

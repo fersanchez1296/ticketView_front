@@ -35,13 +35,9 @@ const Cliente = ({ disable_input, data }) => {
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
 
   const guardarTicket = async () => {
-    try {
-      const result = await postGuardar({ ticketState });
-      console.log(result);
-      console.log(ticketState);
     const formData = new FormData();
     try {
-      //formData.append("ticketState", JSON.stringify(ticketState));
+      formData.append("ticketState", JSON.stringify(ticketState));
       //console.log(archivo);
       // Adjunta el archivo directamente
       if (archivo instanceof File) {
@@ -49,7 +45,7 @@ const Cliente = ({ disable_input, data }) => {
       } else {
         console.error("El archivo no es válido:", archivo);
       }
-
+      console.log(ticketState);
       console.log("Archivo adjuntado:", archivo);
       console.log("FormData generado:", formData);
 
