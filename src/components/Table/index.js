@@ -332,7 +332,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection == "Revision"
+    ...(collection == "revision"
       ? [
           {
             field: "Aceptar",
@@ -342,7 +342,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection === "Revision"
+    ...(collection === "revision"
       ? [
           {
             field: "Rechazar",
@@ -352,7 +352,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection !== "Cerrados" && collection !== "Resueltos"
+    ...(collection !== "Cerrados" && collection !== "Resueltos" && collection !== "revision"
       ? [
           {
             field: "resolver",

@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 const Ticket = ({ disable_input }) => {
   const ticket = useTicketStore();
   const Files = useTicketStore((state) => state.Files);
-
+  console.log(Files);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={6} mb={12}>
@@ -342,11 +342,16 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                {Files ? null : (
+                {!Files ? null : (
                   <Grid item>
                     <MDBox mb={1}>
                       {/* modificar link */}
-                      <a href="https://www.google.com" target="_blank" rel="noreferrer">
+                      {/* modificar ruta dinamica del link */}
+                      <a
+                        href="http://localhost:4400/files/uploads/1735235715307-document.pdf"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         <Button
                           variant="contained"
                           color="error"

@@ -120,7 +120,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Dirección Área:"
-                      value={ticket.Direccion_area}
+                      value={ticket.Direccion_area.direccion_area}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required

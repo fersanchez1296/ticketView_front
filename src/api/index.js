@@ -80,7 +80,7 @@ export const apiSlice = createApi({
     }),
     putReasignar: builder.mutation({
       query: ({ id_usuario_reasignar, id_ticket }) => {
-        const url = `reasignar`;
+        const url = `tickets/reasignar`;
         return {
           url,
           method: "PUT",
@@ -95,7 +95,7 @@ export const apiSlice = createApi({
     //RESOLVER
     putResolver: builder.mutation({
       query: ({ _id, Descripcion_resolucion }) => {
-        const url = `resolver`;
+        const url = `tickets/resolver`;
         return {
           url,
           method: "PUT",
@@ -109,7 +109,7 @@ export const apiSlice = createApi({
     }),
     putRechazarResolucion: builder.mutation({
       query: ({ _id, motivo_rechazo }) => {
-        const url = `resolver/rechazar`;
+        const url = `tickets/resolver/rechazar`;
         return {
           url,
           method: "PUT",
@@ -123,7 +123,7 @@ export const apiSlice = createApi({
     }),
     putAceptarResolucion: builder.mutation({
       query: ({ _id }) => {
-        const url = `resolver/aceptar`;
+        const url = `tickets/resolver/aceptar`;
         return {
           url,
           method: "PUT",
@@ -285,6 +285,17 @@ export const apiSlice = createApi({
       },
       providesTags: ["Usuarios"],
     }),
+    cerrarTicket: builder.mutation({
+      query: ({ _id, Descripcion_cierre, Causa }) => {
+        const url = `tickets/cerrar`;
+        return {
+          url,
+          method: "PUT",
+          body: { _id, Descripcion_cierre, Causa },
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -311,4 +322,5 @@ export const {
   usePutReabrirMutation,
   useGetAllUsuariosQuery,
   useUpdateEstadoUsuariosMutation,
+  useCerrarTicketMutation,
 } = apiSlice;

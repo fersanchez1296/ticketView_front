@@ -38,7 +38,7 @@ function TableData({ collection }) {
   const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
   const isWindowReabrirOpen = useDialogStore((state) => state.isWindowReabrirOpen);
   const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
-  const isWindowCerrarOpen = useDialogStore((state) => state.isWindowCerrarOpen);
+  const isWindowCloseTicketOpen = useDialogStore((state) => state.isWindowCloseTicketOpen);
   const isWindowResolverOpen = useDialogStore((state) => state.isWindowResolverOpen);
   const isWindowAceptarOpen = useDialogStore((state) => state.isWindowAceptarOpen);
   const isWindowRechazarOpen = useDialogStore((state) => state.isWindowRechazarOpen);
@@ -91,7 +91,7 @@ function TableData({ collection }) {
       <View />
       {isWindowEditOpen ? <Edit /> : null}
       {isWindowReabrirOpen ? <Reabrir /> : null}
-      {isWindowCerrarOpen ? <Cerrar /> : null}
+      {isWindowCloseTicketOpen ? <Cerrar /> : null}
       {isWindowReasignarOpen ? <Reasignar /> : null}
       {isWindowResolverOpen ? <Resolver /> : null}
       {isWindowAceptarOpen ? <Aceptar /> : null}

@@ -216,15 +216,27 @@ const Ticket = ({ disable_input, data }) => {
                   <MDBox mb={2}>
                     <FormControl fullWidth>
                       <InputLabel htmlFor="grouped-native-select">Prioridad</InputLabel>
-                      <Select native defaultValue="" id="grouped-native-select" label="Prioridad">
+                      <Select
+                        native
+                        defaultValue=""
+                        id="grouped-native-select"
+                        label="Prioridad"
+                        onChange={(e) => {
+                          const [prioridad, tiempo] = e.target.value.split("|");
+                          setTicketFields("Prioridad", prioridad);
+                          console.log("Prioridad:", prioridad);
+                          console.log("Tiempo de respuesta:", tiempo);
+                          // Aquí puedes manejar los valores seleccionados, por ejemplo, guardarlos en el estado
+                        }}
+                      >
                         <option aria-label="None" value="" />
                         {data.prioridades.map((prioridad) => {
                           if (prioridad.Tiempo_respuesta) {
                             return (
                               <optgroup label={prioridad.Descripcion} key={prioridad._id}>
                                 {prioridad.Tiempo_respuesta.map((t, index) => (
-                                  <option value={t} key={index}>
-                                    {t >= 24 ? `${t / 24} día(s) ` : `${t} horas`}
+                                  <option value={`${prioridad._id}|${t}`} key={index}>
+                                    {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
                                   </option>
                                 ))}
                               </optgroup>

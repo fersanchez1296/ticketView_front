@@ -26,6 +26,7 @@ import Ticket from "../components/Ticket";
 
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useCerrarTicketMutation } from "api";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,6 +35,7 @@ const steps = ["Cerrar Ticket"];
 
 const CerrarCard = () => {
   const ticket = useTicketStore();
+  const setTicketFields = useTicketStore((state) => state.setTicketFields);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12}>
@@ -60,18 +62,6 @@ const CerrarCard = () => {
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Número Rec oficio:"
-                      value={ticket.NumeroRec_Oficio}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
                       label="Número oficio:"
                       value={ticket.Numero_Oficio}
                       //onChange={(e) => setEditor("editor", e.target.value)}
@@ -85,10 +75,11 @@ const CerrarCard = () => {
                     <MDInput
                       type="text"
                       label="Cerrado Por:"
-                      value={ticket.Cerrado_por}
+                      value={ticket.Cerrado_por.Nombre}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
+                      disabled={true}
                     />
                   </MDBox>
                 </Grid>
@@ -97,10 +88,11 @@ const CerrarCard = () => {
                     <MDInput
                       type="text"
                       label="Resuelto Por:"
-                      value={ticket.Resuelto_por}
+                      value={ticket.Resuelto_por.Nombre}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
+                      disabled={true}
                     />
                   </MDBox>
                 </Grid>
@@ -110,7 +102,7 @@ const CerrarCard = () => {
                       type="text"
                       label="Causa:"
                       value={ticket.Causa}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      onChange={(e) => setTicketFields("Causa", e.target.value)}
                       fullWidth
                       required
                     />
@@ -125,6 +117,7 @@ const CerrarCard = () => {
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
+                      disabled={true}
                     />
                   </MDBox>
                 </Grid>
@@ -135,8 +128,8 @@ const CerrarCard = () => {
                       label="Descripción de cierre"
                       multiline
                       value={ticket.Descripcion_cierre}
+                      onChange={(e) => setTicketFields("Descripcion_cierre", e.target.value)}
                       rows={5.2}
-                      defaultValue="Sin información"
                       sx={{ width: "100%" }}
                     />
                   </MDBox>
@@ -151,6 +144,7 @@ const CerrarCard = () => {
 };
 
 const Cerrar = () => {
+  const [closeTicket] = useCerrarTicketMutation();
   const isWindowCloseTicketOpen = useDialogStore((state) => state.isWindowCloseTicketOpen);
   const closeWindowCloseTicket = useDialogStore((state) => state.closeWindowCloseTicket);
   const ticketState = useTicketStore();
@@ -191,6 +185,19 @@ const Cerrar = () => {
     }
   }
 
+  const cerrarTicket = async (req, res) => {
+    try {
+      const respuesta = closeTicket({
+        _id: ticketState._id,
+        Descripcion_cierre: ticketState.Descripcion_cierre,
+        Causa: ticketState.Causa,
+      });
+      console.log(respuesta);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <React.Fragment>
       <Dialog
@@ -220,6 +227,16 @@ const Cerrar = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cerrar
             </Typography>
+            <Button
+              variant="contained"
+              color="success"
+              endIcon={<SaveIcon />}
+              sx={{ border: "1px solid green" }}
+              onClick={cerrarTicket}
+              //disabled={true}
+            >
+              Cerrar Ticket
+            </Button>
           </Toolbar>
         </AppBar>
         <Box sx={{ width: "100%" }}>

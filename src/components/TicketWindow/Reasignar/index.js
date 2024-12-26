@@ -41,12 +41,12 @@ const Reasignar = () => {
   if (isLoading) return <p>Cargando...</p>;
 
   const reasignarTicket = async () => {
-    console.log(value);
     try {
       const result = await putReasignar({
         id_usuario_reasignar: value._id,
         id_ticket: ticketState._id,
       });
+      console.log("resultado de reasignar ticket", result);
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
       } else {

@@ -46,8 +46,6 @@ const Cliente = ({ disable_input, data }) => {
         console.error("El archivo no es válido:", archivo);
       }
       console.log(ticketState);
-      console.log("Archivo adjuntado:", archivo);
-      console.log("FormData generado:", formData);
 
       const result = await postGuardar(formData); // Sin destructuración
       console.log("Resultado del envío:", result);
