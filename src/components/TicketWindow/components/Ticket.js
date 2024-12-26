@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -17,8 +18,8 @@ import PropTypes from "prop-types";
 
 const Ticket = ({ disable_input }) => {
   const ticket = useTicketStore();
-  const verificar_archivo = 1;
-  const ver_archivo = 1;
+  const Files = useTicketStore((state) => state.Files);
+
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={6} mb={12}>
@@ -341,17 +342,20 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                {verificar_archivo && (
+                {Files ? null : (
                   <Grid item>
                     <MDBox mb={1}>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        startIcon={<VisibilityIcon />}
-                        onClick={ver_archivo}
-                      >
-                        <MDTypography color="gray">Ver archivo.</MDTypography>
-                      </Button>
+                      {/* modificar link */}
+                      <a href="https://www.google.com" target="_blank" rel="noreferrer">
+                        <Button
+                          variant="contained"
+                          color="error"
+                          startIcon={<VisibilityIcon />}
+                          //onClick={verArchivo}
+                        >
+                          <MDTypography color="gray">Ver archivo.</MDTypography>
+                        </Button>
+                      </a>
                     </MDBox>
                   </Grid>
                 )}

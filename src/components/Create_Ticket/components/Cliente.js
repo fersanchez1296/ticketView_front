@@ -188,6 +188,7 @@ const Cliente = ({ disable_input, data }) => {
                     <MDInput
                       type="email" // Muestra validación de correo automáticamente
                       label="Correo:"
+                      pattern=".+@example\.mx"
                       value={ticketState.Correo_cliente}
                       onChange={(e) => setTicketFields("Correo_cliente", e.target.value)}
                       fullWidth

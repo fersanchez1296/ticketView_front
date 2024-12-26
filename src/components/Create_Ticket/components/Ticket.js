@@ -15,6 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Typography from "@mui/material/Typography";
+import ListSubheader from "@mui/material/ListSubheader";
 import { styled } from "@mui/material/styles";
 //store
 import { useTicketStore } from "zustand/index.ts";
@@ -25,10 +26,11 @@ import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
   const setFiles = useTicketStore((state) => state.setFiles);
+  const Files = useTicketStore((state) => state.Files);
+  const [setedFiles, setSetedFiles] = React.useState(false);
   const ticketState = useTicketStore();
   //const [file, setFile] = React.useState(null);
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
-  const verificar_archivo = 1;
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -45,6 +47,7 @@ const Ticket = ({ disable_input, data }) => {
   const handleFileChange = (event) => {
     const archivos = Array.from(event.target.files);
     setFiles(archivos[0]);
+    setSetedFiles(true);
   };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
@@ -208,55 +211,32 @@ const Ticket = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
-                {/*Seleccion Prioridad*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Prioridad</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Prioridad}
-                        label="Estatus"
-                        onChange={(e) => setTicketFields("Prioridad", e.target.value)}
-                      >
-                        {data.prioridades.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Descripcion}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </MDBox>
-                </Grid>
                 {/*Seleccion Tiempo de respuesta*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Tiempo de respuesta</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Prioridad}
-                        label="Estatus"
-                        onChange={(e) => setTicketFields("Tiempo_respuesta", e.target.value)}
-                      >
-                        {data.prioridades.map((est) => (
-                          <MenuItem value={est._id} key={est._id}>
-                            {/* Submenú para mostrar tiempos de respuesta */}
-                            {est.Tiempo_respuesta && (
-                              <ul>
-                                {est.Tiempo_respuesta.map((tiempo, index) => (
-                                  <li key={index}>{tiempo}</li>
+                      <InputLabel htmlFor="grouped-native-select">Prioridad</InputLabel>
+                      <Select native defaultValue="" id="grouped-native-select" label="Prioridad">
+                        <option aria-label="None" value="" />
+                        {data.prioridades.map((prioridad) => {
+                          if (prioridad.Tiempo_respuesta) {
+                            return (
+                              <optgroup label={prioridad.Descripcion} key={prioridad._id}>
+                                {prioridad.Tiempo_respuesta.map((t, index) => (
+                                  <option value={t} key={index}>
+                                    {t >= 24 ? `${t / 24} día(s) ` : `${t} horas`}
+                                  </option>
                                 ))}
-                              </ul>
-                            )}
-                          </MenuItem>
-                        ))}
+                              </optgroup>
+                            );
+                          } else {
+                            console.error(
+                              "Tiempo_respuesta no está definido en prioridad:",
+                              prioridad
+                            );
+                            return null; // O alguna forma de manejar esta situación
+                          }
+                        })}
                       </Select>
                     </FormControl>
                   </MDBox>
@@ -276,7 +256,7 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Introducido por teclado NumeroRec_Oficio*/}
-                <Grid xs={6}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -289,7 +269,7 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Introducido por teclado Numero_Oficio*/}
-                <Grid xs={6}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -325,6 +305,7 @@ const Ticket = ({ disable_input, data }) => {
                       variant="contained"
                       tabIndex={-1}
                       startIcon={<CloudUploadIcon />}
+                      disabled={Files && setedFiles ? true : false}
                       sx={{
                         color: "white", // Color del texto
                         backgroundColor: "#1976d2", // Color de fondo
@@ -333,25 +314,29 @@ const Ticket = ({ disable_input, data }) => {
                         },
                       }}
                     >
-                      <MDTypography color="white">Subir archivos</MDTypography>
+                      <MDTypography color="white">
+                        {Files && setedFiles ? Files.name : "Subir Archivos"}
+                      </MDTypography>
                       <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                     </Button>
                   </MDBox>
                 </Grid>
-                {verificar_archivo && (
+                {Files && setedFiles ? (
                   <Grid item>
                     <MDBox mb={2}>
                       <Button
                         variant="contained"
                         color="error"
                         startIcon={<DeleteIcon />}
-                        //onClick={borrar_archivo}
+                        onClick={() => {
+                          setFiles(null), setSetedFiles(false);
+                        }}
                       >
-                        <MDTypography color="white"></MDTypography>
+                        <MDTypography color="black">Eliminar Archivo</MDTypography>
                       </Button>
                     </MDBox>
                   </Grid>
-                )}
+                ) : null}
               </Grid>
             </MDBox>
           </MDBox>
