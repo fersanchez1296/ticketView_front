@@ -26,6 +26,8 @@ import CardUsers from "./components/index";
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useGetUsuariosQuery } from "api";
 import { setDirection } from "context";
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -36,6 +38,7 @@ const Reabrir = () => {
   const { data, isLoading } = useGetUsuariosQuery();
   const isWindowReabrirOpen = useDialogStore((state) => state.isWindowReabrirOpen);
   const closeWindowReabrir = useDialogStore((state) => state.closeWindowReabrir);
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const ticketState = useTicketStore();
   const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
   const [Asignado_a, setAsignado_a] = React.useState(null);
@@ -46,11 +49,6 @@ const Reabrir = () => {
   };
 
   const reabrirTicket = async () => {
-    console.log(ticketState._id);
-    console.log(Asignado_a);
-    console.log(ticketState.Descripcion);
-    console.log(Descripcion_reabrir);
-    console.log(ticketState.Descripcion_cierre);
     try {
       const result = await putReabrir({
         _id: ticketState._id,
@@ -59,6 +57,11 @@ const Reabrir = () => {
         Descripcion: ticketState.Descripcion,
         Asignado_a,
       });
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+      }
       setTimeout(() => {
         ticketState.resetValues();
         closeWindowReabrir();
@@ -68,7 +71,7 @@ const Reabrir = () => {
     }
   };
 
-  const options = data.areasResolutores.flatMap((areaObj) =>
+  const options = data.AREASRESOLUTORES.flatMap((areaObj) =>
     areaObj.resolutores.map((resolutor) => ({
       ...resolutor,
       area: areaObj.area.toUpperCase(), // Incluye el área en mayúsculas para agrupar.

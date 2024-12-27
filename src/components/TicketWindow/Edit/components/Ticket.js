@@ -29,6 +29,7 @@ const Ticket = ({ disable_input, data }) => {
   //   }
   // }, [ticketState.prioridades, data.prioridades, setTicketFields]);
   console.log(data);
+  console.log(ticketState);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       {/*Estado ticket */}
@@ -87,7 +88,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.prioridades}
+                        value={ticketState.Prioridad._id}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Prioridad", e.target.value)}
                       >
@@ -111,7 +112,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.Estado}
+                        value={ticketState.Estado.Estado}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Estado", e.target.value)}
                       >
@@ -135,11 +136,12 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.Tipo_de_incidencia}
+                        value={ticketState.Tipo_incidencia._id}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Tipo_incidencia", e.target.value)}
                       >
                         {data.tiposTickets.map((est) => {
+                          console.log(ticketState.Tipo_de_incidencia);
                           return (
                             <MenuItem value={est._id} key={est._id}>
                               {est.Tipo_de_incidencia}
@@ -251,7 +253,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.Servicio}
+                        value={ticketState.Servicio._id}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Servicio", e.target.value)}
                       >
@@ -275,7 +277,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.Categoria}
+                        value={ticketState.Categoria._id}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Categoria", e.target.value)}
                       >
@@ -299,7 +301,7 @@ const Ticket = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.Subcategoria}
+                        value={ticketState.Subcategoria._id}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Subcategoria", e.target.value)}
                       >

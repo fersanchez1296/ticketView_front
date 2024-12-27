@@ -18,7 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Card from "@mui/material/Card";
 import SaveIcon from "@mui/material/IconButton";
 //store
-import { useTicketStore } from "zustand/index.ts";
+import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //proptypes
 import PropTypes from "prop-types";
 //json
@@ -30,13 +30,21 @@ import { useEditarMutation } from "api/index";
 const Cliente = ({ disable_input, data }) => {
   const [putEditar] = useEditarMutation();
   const ticketState = useTicketStore();
+  const closeWindowEditar = useDialogStore((state) => state.closeWindowEditar);
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
 
   const editarTicket = async () => {
     try {
       const result = await putEditar({ ticketState });
-      console.log(result);
-      console.log(ticketState);
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+      }
+      setTimeout(() => {
+        ticketState.resetValues();
+        closeWindowEditar();
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +80,7 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={data.Secretaria}
+                        value={ticketState.Secretaria._id}
                         label="Secretaría"
                         onChange={(e) => setTicketFields("Secretaria", e.target.value)}
                       >
@@ -96,7 +104,7 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.Direccion_General}
+                        value={ticketState.Direccion_general._id}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Direccion_general", e.target.value)}
                       >
@@ -120,7 +128,7 @@ const Cliente = ({ disable_input, data }) => {
                         sx={{ minHeight: "3rem" }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={ticketState.direccion_area}
+                        value={ticketState.Direccion_area._id}
                         label="Estatus"
                         onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
                       >

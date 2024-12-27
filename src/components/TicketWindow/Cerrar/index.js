@@ -27,6 +27,8 @@ import Ticket from "../components/Ticket";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useCerrarTicketMutation } from "api";
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -148,7 +150,7 @@ const Cerrar = () => {
   const isWindowCloseTicketOpen = useDialogStore((state) => state.isWindowCloseTicketOpen);
   const closeWindowCloseTicket = useDialogStore((state) => state.closeWindowCloseTicket);
   const ticketState = useTicketStore();
-  //const [createDocumento] = usePostDocumentoMutation();
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -187,12 +189,21 @@ const Cerrar = () => {
 
   const cerrarTicket = async (req, res) => {
     try {
-      const respuesta = closeTicket({
+      const respuesta = await closeTicket({
         _id: ticketState._id,
         Descripcion_cierre: ticketState.Descripcion_cierre,
         Causa: ticketState.Causa,
       });
       console.log(respuesta);
+      if (respuesta.error) {
+        openErrorSB(respuesta.error.data.desc, `Status: ${respuesta.error.status}`);
+      } else {
+        openSuccessSB(respuesta.data.desc, `Status: 200`);
+      }
+      setTimeout(() => {
+        ticketState.resetValues();
+        closeWindowCloseTicket();
+      }, 2000);
     } catch (error) {
       console.log(error);
     }

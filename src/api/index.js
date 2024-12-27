@@ -164,7 +164,7 @@ export const apiSlice = createApi({
     //Editar ticket
     editar: builder.mutation({
       query: ({ ticketState }) => ({
-        url: "/editar",
+        url: "/tickets/editar",
         method: "PUT",
         body: {
           ticketState,
@@ -233,10 +233,9 @@ export const apiSlice = createApi({
     }),
     getHistoricoArea: builder.query({
       query: (area) => {
-        const url = `tickets/historico/area`;
+        const url = `tickets/historico/area?area=${area}`;
         return {
           url,
-          params: { area },
           method: "GET",
         };
       },

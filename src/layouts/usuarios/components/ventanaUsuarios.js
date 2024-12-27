@@ -18,6 +18,10 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import Card from "@mui/material/Card";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 //api hook
 import { usePutReasignarMutation } from "api/index";
 //snackbar store
@@ -218,6 +222,30 @@ const VentanaUsuarios = () => {
                         />
                       </MDBox>
                     </Grid>
+                    {/*Seleccion dek rol del usuario*/}
+                    {/* <Grid xs={4}>
+                      <MDBox mb={2}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
+                          <Select
+                            sx={{ minHeight: "3rem" }}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            //value={ticketState.Servicio}
+                            label="Estatus"
+                            //onChange={(e) => setTicketFields("Servicio", e.target.value)}
+                          >
+                            {data.servicios.map((est) => {
+                              return (
+                                <MenuItem value={est._id} key={est._id}>
+                                  {est.Servicio}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </MDBox>
+                    </Grid> */}
                   </Grid>
                 </MDBox>
               </MDBox>

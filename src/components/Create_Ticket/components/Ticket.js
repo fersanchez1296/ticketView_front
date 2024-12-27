@@ -224,8 +224,10 @@ const Ticket = ({ disable_input, data }) => {
                         onChange={(e) => {
                           const [prioridad, tiempo] = e.target.value.split("|");
                           setTicketFields("Prioridad", prioridad);
+                          setTicketFields("Fecha_limite_resolucion_SLA", tiempo);
+                          setTicketFields("Fecha_limite_respuesta_SLA", tiempo);
                           console.log("Prioridad:", prioridad);
-                          console.log("Tiempo de respuesta:", tiempo);
+                          console.log(ticketState.Fecha_limite_respuesta_SLA);
                           // Aquí puedes manejar los valores seleccionados, por ejemplo, guardarlos en el estado
                         }}
                       >

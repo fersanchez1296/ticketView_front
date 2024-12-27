@@ -58,7 +58,7 @@ function Index() {
       }}
     >
       <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
-        {`Visualizar`}
+        {`Editar`}
       </MDTypography>
     </MDButton>
   );

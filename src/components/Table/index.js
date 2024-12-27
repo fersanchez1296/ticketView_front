@@ -155,7 +155,7 @@ export default function DataTable({ tickets, collection }) {
       width: 140,
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
-    ...(collection !== "Cerrados"
+    ...(collection !== "cerrados" && collection !== "resueltos"
       ? [
           {
             field: "editar",
@@ -165,7 +165,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection !== "Cerrados"
+    ...(collection !== "cerrados"
       ? [
           {
             field: "cerrar",
@@ -182,7 +182,7 @@ export default function DataTable({ tickets, collection }) {
             renderCell: (params) => <Btn_reabrir ticket={params.row} />,
           },
         ]),
-    ...(collection !== "Cerrados" && collection !== "Resueltos" && collection !== "Pendientes"
+    ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "pendientes"
       ? [
           {
             field: "reasignar",
@@ -192,7 +192,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection !== "Cerrados" && collection !== "Resueltos"
+    ...(collection !== "cerrados" && collection !== "resueltos"
       ? [
           {
             field: "resolver",
@@ -322,7 +322,7 @@ export default function DataTable({ tickets, collection }) {
       width: 140,
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
-    ...(collection !== "Cerrados" && collection !== "Resueltos"
+    ...(collection !== "cerrados" && collection !== "resueltos"
       ? [
           {
             field: "reasignar",
@@ -352,7 +352,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection !== "Cerrados" && collection !== "Resueltos" && collection !== "revision"
+    ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "revision"
       ? [
           {
             field: "resolver",
@@ -419,7 +419,7 @@ export default function DataTable({ tickets, collection }) {
       width: 140,
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
-    ...(collection !== "Cerrados"
+    ...(collection !== "cerrados"
       ? [
           {
             field: "resolver",
