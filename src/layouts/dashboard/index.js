@@ -153,18 +153,40 @@ const Dashboard_component = ({ data }) => {
         </Grid>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={12}>
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
-                  title="website views"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
+                  title="Tickets por area"
+                  // description="Last Campaign Performance"
+                  // date="campaign sent 2 days ago"
                   chart={reportsBarChartData}
+                  glosary={[
+                    "1-ADMINISTRATIVO",
+                    "2-AUDITORÍA DE TI",
+                    "3-DC-BASE DE DATOS",
+                    "4-DC-CCTV/CDA",
+                    "5-DC-INFRAESTRUCTURA",
+                    "6-DC-TELEFONÍA",
+                    "7-DESARROLLO",
+                    "8-DIRECCIÓN",
+                    "9-EGRESOS",
+                    "10-ESCRITORIO AYUDA",
+                    "11-INGRESOS",
+                    "12-NÓMINA",
+                    "13-PLANEACION TECNOLOGICA",
+                    "14-PLANEACION Y PROYECTOS",
+                    "15-ST GESTIÓN DE ACCESOS",
+                    "16-ST GESTIÓN DE ACTIVOS",
+                    "17-ST SOPORTE TI",
+                    "18-WEB DESARROLLO",
+                    "19-PROYECTOS ESPECIALES",
+                    "20-DC-REDES Y TELECOMUNICACIONES",
+                  ]}
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={12}>
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
@@ -179,7 +201,7 @@ const Dashboard_component = ({ data }) => {
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="dark"

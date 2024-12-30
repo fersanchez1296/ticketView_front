@@ -27,12 +27,14 @@ import { useGuardarMutation } from "api/index";
 
 //json
 import estados from "catalogs/estatus.json";
-
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const Cliente = ({ disable_input, data }) => {
   const [postGuardar] = useGuardarMutation();
   const ticketState = useTicketStore();
   const archivo = useTicketStore((state) => state.Files);
   const setTicketFields = useTicketStore((state) => state.setTicketFields);
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
 
   const guardarTicket = async () => {
     const formData = new FormData();
@@ -45,10 +47,13 @@ const Cliente = ({ disable_input, data }) => {
       } else {
         console.error("El archivo no es válido:", archivo);
       }
-      console.log(ticketState);
-
-      const result = await postGuardar(formData); // Sin destructuración
-      console.log("Resultado del envío:", result);
+      const result = await postGuardar(formData);
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+        ticketState.resetValues();
+      }
     } catch (error) {
       console.log(error);
     }

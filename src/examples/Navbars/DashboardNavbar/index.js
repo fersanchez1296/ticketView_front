@@ -58,9 +58,12 @@ import {
 //store
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
 import MDButton from "components/MDButton";
-
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import View from "components/TicketWindow/View/index";
-
+//snackbar
+import SuccessSB from "components/Snackbar/success/index";
+import ErrorSB from "components/Snackbar/error/index";
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
@@ -77,6 +80,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
 
   useEffect(() => {
     // Setting the navbar type
@@ -147,10 +151,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
   });
   const buscarTicket = async () => {
     try {
-      console.log(ticketId);
       const result = await postTicket(ticketId);
-      console.log(result.data[0]);
-      if (result) {
+      console.log(result);
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
         setTicketFromFetch(result.data[0]);
         openWindow();
       }
@@ -206,6 +212,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </Toolbar>
       </AppBar>
       {isWindowViewOpen ? <View /> : null}
+      <SuccessSB />
+      <ErrorSB />
     </>
   );
 }

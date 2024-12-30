@@ -51,7 +51,11 @@ import { useAuthStore } from "zustand/auth.store.ts";
 
 //decode token
 import { jwtDecode } from "jwt-decode";
-
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+//snackbar
+import SuccessSB from "components/Snackbar/success/index";
+import ErrorSB from "components/Snackbar/error/index";
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -62,6 +66,7 @@ function Basic() {
   const setAuth = useAuthStore((state) => state.setAuth);
   const setRole = useAuthStore((state) => state.setRole);
   const setNombre = useAuthStore((state) => state.setNombre);
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
 
   const handleChange = (input, value) => {
     input === "user" ? setUser(value) : setPassword(value);
@@ -82,12 +87,12 @@ function Basic() {
     e.preventDefault();
     try {
       const response = await login({ Username, Password });
-      const token = getCookie("access_token");
-      console.log(token);
-      const decoded = jwtDecode(token);
-
-      console.log(decoded);
-      if (response.data.status === 200) {
+      if (response.error) {
+        openErrorSB(response.error.data.desc, `Status: ${response.error.status}`);
+      } else {
+        const token = getCookie("access_token");
+        const decoded = jwtDecode(token);
+        openSuccessSB(response.data.desc, `Status: 200`);
         setAuth(true);
         setRole(decoded.rol);
         setNombre(decoded.nombre);
@@ -143,6 +148,8 @@ function Basic() {
           </MDBox>
         </MDBox>
       </Card>
+      <SuccessSB />
+      <ErrorSB />
     </BasicLayout>
   );
 }

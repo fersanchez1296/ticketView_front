@@ -342,7 +342,7 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                {Files === "" || Files === "Sin oficios" ? null : (
+                {!Files ? null : (
                   <Grid item>
                     <MDBox mb={1}>
                       {/* modificar link */}

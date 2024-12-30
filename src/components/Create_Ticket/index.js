@@ -31,7 +31,9 @@ import Cliente from "./components/Cliente";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useGetInfoSelectsQuery } from "api/index";
-
+//snackbar
+import SuccessSB from "components/Snackbar/success/index";
+import ErrorSB from "components/Snackbar/error/index";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -146,6 +148,8 @@ const Edit = () => {
         </MDBox>
         <Footer />
       </DashboardLayout>
+      <SuccessSB />
+      <ErrorSB />
     </React.Fragment>
   );
 };

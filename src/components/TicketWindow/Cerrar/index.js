@@ -194,7 +194,6 @@ const Cerrar = () => {
         Descripcion_cierre: ticketState.Descripcion_cierre,
         Causa: ticketState.Causa,
       });
-      console.log(respuesta);
       if (respuesta.error) {
         openErrorSB(respuesta.error.data.desc, `Status: ${respuesta.error.status}`);
       } else {

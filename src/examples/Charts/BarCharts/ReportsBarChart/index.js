@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useMemo } from "react";
-
+import Grid from "@mui/material/Grid";
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
@@ -44,7 +44,7 @@ import configs from "examples/Charts/BarCharts/ReportsBarChart/configs";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function ReportsBarChart({ color, title, description, date, chart }) {
+function ReportsBarChart({ color, title, description, date, chart, glosary }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
 
   return (
@@ -76,12 +76,28 @@ function ReportsBarChart({ color, title, description, date, chart }) {
           </MDTypography>
           <Divider />
           <MDBox display="flex" alignItems="center">
-            <MDTypography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
-              <Icon>schedule</Icon>
-            </MDTypography>
+            <MDTypography
+              variant="button"
+              color="text"
+              lineHeight={1}
+              sx={{ mt: 0.15, mr: 0.5 }}
+            ></MDTypography>
             <MDTypography variant="button" color="text" fontWeight="light">
               {date}
             </MDTypography>
+          </MDBox>
+          <MDBox display="flex" alignItems="center">
+            <Grid container spacing={3}>
+              {!glosary
+                ? null
+                : glosary.map((g) => (
+                    <Grid item xs={4} md={4} lg={2} key={g} sx={{ fontSize: "0.95rem" }}>
+                      <MDTypography variant="p" color="text" fontWeight="regular">
+                        {g}
+                      </MDTypography>
+                    </Grid>
+                  ))}
+            </Grid>
           </MDBox>
         </MDBox>
       </MDBox>
@@ -102,6 +118,7 @@ ReportsBarChart.propTypes = {
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   date: PropTypes.string.isRequired,
   chart: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired,
+  glosary: PropTypes.array,
 };
 
 export default ReportsBarChart;
