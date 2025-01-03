@@ -347,11 +347,7 @@ const Ticket = ({ disable_input }) => {
                     <MDBox mb={1}>
                       {/* modificar link */}
                       {/* modificar ruta dinamica del link */}
-                      <a
-                        href="http://localhost:4400/files/uploads/1735235715307-document.pdf"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={ticket.Files.url} target="_blank" rel="noreferrer">
                         <Button
                           variant="contained"
                           color="error"
