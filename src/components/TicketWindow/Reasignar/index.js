@@ -13,6 +13,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -126,33 +129,124 @@ const Reasignar = () => {
                 </MDTypography>
               </MDBox>
               <MDBox pt={4} pb={3} px={3}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    bgcolor: "background.paper",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "column",
-                  }}
+                <Grid
+                  spacing={2}
+                  sx={{ mt: 5, display: "flex", flexDirection: "row", justifyContent: "center" }}
                 >
-                  {ticketState.Reasignado_a ? (
+                  {/* {ticketState.Reasignado_a ? (
                     <Typography sx={{ flex: 1.5 }} variant="body1" component="p">
                       El ticket ya se encuentra reasignado a : {ticketState.Reasignado_a.Nombre}
                     </Typography>
-                  ) : null}
-                  <Autocomplete
-                    id="grouped-demo"
-                    options={options.sort((a, b) => -b.area.localeCompare(a.area))}
-                    groupBy={(option) => option.area}
-                    getOptionLabel={(option) => option.Nombre}
-                    sx={{ width: 500, mt: 5 }}
-                    renderInput={(params) => <TextField {...params} label="Reasignar a:" />}
-                    onChange={(event, value) => {
-                      setValue(value); // Guarda el valor seleccionado en el estado.
-                    }}
-                  />
-                </Box>
+                  ) : null} */}
+                  <Grid xs={12}>
+                    <FormControl sx={{ width: 500 }}>
+                      <InputLabel htmlFor="grouped-native-select">Prioridad</InputLabel>
+                      <Select
+                        native
+                        defaultValue=""
+                        id="grouped-native-select"
+                        label="Prioridad"
+                        onChange={(e) => {
+                          const [prioridad, tiempo] = e.target.value.split("|");
+                          setTicketFields("Prioridad", prioridad);
+                          setTicketFields("Fecha_limite_resolucion_SLA", tiempo);
+                          setTicketFields("Fecha_limite_respuesta_SLA", tiempo);
+                        }}
+                      >
+                        <option aria-label="None" value="" />
+                        {data.prioridades.map((prioridad) => {
+                          if (prioridad.Tiempo_respuesta) {
+                            return (
+                              <optgroup label={prioridad.Descripcion} key={prioridad._id}>
+                                {prioridad.Tiempo_respuesta.map((t, index) => (
+                                  <option value={`${prioridad._id}|${t}`} key={index}>
+                                    {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            );
+                          } else {
+                            console.error(
+                              "Tiempo_respuesta no está definido en prioridad:",
+                              prioridad
+                            );
+                            return null; // O alguna forma de manejar esta situación
+                          }
+                        })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12}>
+                    <FormControl sx={{ width: 500 }}>
+                      <InputLabel htmlFor="grouped-native-select">Reasignar a</InputLabel>
+                      <Select
+                        native
+                        defaultValue=""
+                        id="grouped-native-select"
+                        label="Reasignar a"
+                        onChange={(e) => {
+                          const [area, resol] = e.target.value.split("|");
+                          setTicketFields("area", area);
+                          setTicketFields("Fecha_limite_resolucion_SLA", resol);
+                          setTicketFields("Fecha_limite_respuesta_SLA", resol);
+                        }}
+                      >
+                        <option aria-label="None" value="" />
+                        {data.AREASRESOLUTORES.map((area) => {
+                          if (area) {
+                            return (
+                              <optgroup label={area.area} key={area.area}>
+                                {area.resolutores.map((t, index) => (
+                                  <option value={`${t.Nombre}|${t}`} key={index}>
+                                    {t.Nombre}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            );
+                          } else {
+                            console.error("Tiempo_respuesta no está definido en prioridad:");
+                            return null; // O alguna forma de manejar esta situación
+                          }
+                        })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12}>
+                    <FormControl sx={{ width: 500 }}>
+                      <InputLabel htmlFor="grouped-native-select">Reasignar a</InputLabel>
+                      <Select
+                        native
+                        defaultValue=""
+                        id="grouped-native-select"
+                        label="Reasignar a"
+                        onChange={(e) => {
+                          const [area, resol] = e.target.value.split("|");
+                          setTicketFields("area", area);
+                          setTicketFields("Fecha_limite_resolucion_SLA", resol);
+                          setTicketFields("Fecha_limite_respuesta_SLA", resol);
+                        }}
+                      >
+                        <option aria-label="None" value="" />
+                        {data.AREASRESOLUTORES.map((area) => {
+                          if (area) {
+                            return (
+                              <optgroup label={area.area} key={area.area}>
+                                {area.resolutores.map((t, index) => (
+                                  <option value={`${t.Nombre}|${t}`} key={index}>
+                                    {t.Nombre}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            );
+                          } else {
+                            console.error("Tiempo_respuesta no está definido en prioridad:");
+                            return null; // O alguna forma de manejar esta situación
+                          }
+                        })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
               </MDBox>
             </Card>
           </Grid>
