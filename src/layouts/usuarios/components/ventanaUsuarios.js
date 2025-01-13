@@ -41,7 +41,7 @@ const VentanaUsuarios = (disable_input) => {
   const resetUserStore = useUserStore((state) => state.resetUserValues);
   const userStore = useUserStore();
   const setUserFields = useUserStore((state) => state.setUserFields);
-  const Nombre_A = userStore.Nombre;
+  const Nombre_A = userStore.Correo;
   const [postCrearUsuario] = useCrearUsuarioMutation();
   const crearUsuario = async () => {
     try {
@@ -196,7 +196,7 @@ const VentanaUsuarios = (disable_input) => {
                         <MDInput
                           type="text"
                           label="Área:"
-                          value={userStore.Area}
+                          value={Nombre_A === "" ? userStore.Area.Area : userStore.Area}
                           onChange={(e) => setUserFields("Area", e.target.value)}
                           fullWidth
                           required

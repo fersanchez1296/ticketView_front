@@ -39,6 +39,7 @@ import Badge from "./components/Badge";
 import VentanaUsuario from "./components/ventanaUsuarios";
 import SwitchActive from "./components/switch";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+import React, { useState } from "react";
 function Index() {
   const isWindowUsuariosOpen = useDialogStore((state) => state.isWindowUsuariosOpen);
   const openWindowUsuarios = useDialogStore((state) => state.openWindowUsuarios);
@@ -48,6 +49,10 @@ function Index() {
   const { data, refetch, isLoading, error } = useGetAllUsuariosQuery();
   if (isLoading) return <Progress />;
   //   if (error) return <div>Error: Reload page</div>;
+  //Esto permitira abrir la pantalla para crear el usuario y tambien otras acciones
+  const handleClick = () => {
+    openWindowUsuarios();
+  };
   const Btn_view = (user) => (
     <MDButton
       color={"info"}
@@ -114,7 +119,7 @@ function Index() {
               endIcon={<PersonAddIcon />}
               sx={{ border: "1px solid green" }}
               onClick={() => {
-                openWindowUsuarios();
+                handleClick();
               }}
             >
               Crear Usuario
