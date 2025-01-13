@@ -92,10 +92,10 @@ export interface UserProps {
   _id: string;
   Nombre: string;
   Correo: string;
+  Username: string;
+  Rol: string;
   Coordinacion: string;
   isActive: Boolean;
-  Fecha_creacion: Date | string;
-  Fecha_baja: Date | string;
   Dependencia: string;
   Direccion_general: string;
   Area: Object;
@@ -113,10 +113,10 @@ export const userInitialState: UserProps = {
   _id: "",
   Nombre: "",
   Correo: "",
+  Username: "",
+  Rol: "",
   Coordinacion: "",
-  isActive: false,
-  Fecha_creacion: "",
-  Fecha_baja: "",
+  isActive: true,
   Dependencia: "",
   Direccion_general: "",
   Area: {},

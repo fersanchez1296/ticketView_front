@@ -65,7 +65,7 @@ function Index() {
   let columns: GridColDef[] = [
     {
       field: "visualizar",
-      headerName: "Visualizar",
+      headerName: "Editar",
       hideable: false,
       width: 140,
       renderCell: (params) => <Btn_view user={params.row} />,
@@ -113,8 +113,9 @@ function Index() {
               color="success"
               endIcon={<PersonAddIcon />}
               sx={{ border: "1px solid green" }}
-              //onClick={reasignarTicket}
-              //disabled={value == null ? true : false}
+              onClick={() => {
+                openWindowUsuarios();
+              }}
             >
               Crear Usuario
             </Button>

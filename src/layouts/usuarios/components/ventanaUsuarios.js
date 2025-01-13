@@ -23,41 +23,40 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 //api hook
-import { usePutReasignarMutation } from "api/index";
+import { useCrearUsuarioMutation } from "api/index";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
 import { useDialogStore, useUserStore } from "zustand/index.ts";
 import { useGetUsuariosQuery } from "api";
+//proptypes
+import PropTypes from "prop-types";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const VentanaUsuarios = () => {
+const VentanaUsuarios = (disable_input) => {
   const isWindowUsuariosOpen = useDialogStore((state) => state.isWindowUsuariosOpen);
   const closeWindowUsuarios = useDialogStore((state) => state.closeWindowUsuarios);
   const resetUserStore = useUserStore((state) => state.resetUserValues);
   const userStore = useUserStore();
-  //   const reasignarTicket = async () => {
-  //     console.log(value);
-  //     try {
-  //       const result = await putReasignar({
-  //         id_usuario_reasignar: value._id,
-  //         id_ticket: ticketState._id,
-  //       });
-  //       if (result.error) {
-  //         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-  //       } else {
-  //         openSuccessSB(result.data.desc, `Status: 200`);
-  //       }
-  //       setTimeout(() => {
-  //         ticketState.resetValues();
-  //         closeWindowReasignar();
-  //       }, 2000);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const setUserFields = useUserStore((state) => state.setUserFields);
+  const Nombre_A = userStore.Nombre;
+  const [postCrearUsuario] = useCrearUsuarioMutation();
+  const crearUsuario = async () => {
+    try {
+      const result = await postCrearUsuario(userStore);
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+        userStore.resetValues();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <React.Fragment>
       <Dialog
@@ -90,14 +89,14 @@ const VentanaUsuarios = () => {
               color="success"
               endIcon={<SaveIcon />}
               sx={{ border: "1px dashed green" }}
-              //onClick={reasignarTicket}
+              onClick={crearUsuario}
               //disabled={value == null ? true : false}
             >
-              Guardar
+              {Nombre_A === "" ? "Crear Usuario" : "Guardar Usuario"}
             </Button>
           </Toolbar>
         </AppBar>
-        <Grid container sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+        <Grid container sx={{ mt: 5, display: "flex", justifyContent: "centFer" }}>
           <Grid xs={10}>
             <Card>
               <MDBox
@@ -112,7 +111,7 @@ const VentanaUsuarios = () => {
                 textAlign="center"
               >
                 <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  {userStore.Nombre}
+                  {Nombre_A === "" ? "Crear usuario" : "Usuario:  " + userStore.Nombre}
                 </MDTypography>
               </MDBox>
               <MDBox pt={4} pb={3} px={3}>
@@ -124,11 +123,33 @@ const VentanaUsuarios = () => {
                           type="text"
                           label="Nombre:"
                           value={userStore.Nombre}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
+                          onChange={(e) => setUserFields("Nombre", e.target.value)}
                           fullWidth
                           required
-                          //disabled={disable_input}
                         />
+                      </MDBox>
+                    </Grid>
+                    {/*Seleccion del rol del usuario*/}
+                    <Grid xs={5.8}>
+                      <MDBox mt={2} ml={2}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">Rol</InputLabel>
+                          <Select
+                            sx={{ minHeight: "3rem" }}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={userStore.Rol}
+                            label="Rol de usuario:"
+                            onChange={(e) => setUserFields("Rol", e.target.value)}
+                          >
+                            {/* Definimos los roles directamente aquí */}
+                            {["Administrador", "Moderador", "Resolutor"].map((role) => (
+                              <MenuItem value={role} key={role}>
+                                {role}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
                       </MDBox>
                     </Grid>
                     <Grid xs={6}>
@@ -137,10 +158,10 @@ const VentanaUsuarios = () => {
                           type="text"
                           label="Username:"
                           value={userStore.Username}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
+                          onChange={(e) => setUserFields("Username", e.target.value)}
                           fullWidth
                           required
-                          //disabled={disable_input}
+                          disabled={!disable_input}
                         />
                       </MDBox>
                     </Grid>
@@ -150,23 +171,10 @@ const VentanaUsuarios = () => {
                           type="text"
                           label="Correo:"
                           value={userStore.Correo}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
+                          onChange={(e) => setUserFields("Correo", e.target.value)}
                           fullWidth
                           required
-                          //disabled={disable_input}
-                        />
-                      </MDBox>
-                    </Grid>
-                    <Grid xs={6}>
-                      <MDBox m={2}>
-                        <MDInput
-                          type="text"
-                          label="Estado:"
-                          value={userStore.isActive}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
-                          fullWidth
-                          required
-                          //disabled={disable_input}
+                          disabled={!disable_input}
                         />
                       </MDBox>
                     </Grid>
@@ -176,10 +184,10 @@ const VentanaUsuarios = () => {
                           type="text"
                           label="Coordinación:"
                           value={userStore.Coordinacion}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
+                          onChange={(e) => setUserFields("Coordinacion", e.target.value)}
                           fullWidth
                           required
-                          //disabled={disable_input}
+                          disabled={!disable_input}
                         />
                       </MDBox>
                     </Grid>
@@ -189,10 +197,10 @@ const VentanaUsuarios = () => {
                           type="text"
                           label="Área:"
                           value={userStore.Area}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
+                          onChange={(e) => setUserFields("Area", e.target.value)}
                           fullWidth
                           required
-                          //disabled={disable_input}
+                          disabled={!disable_input}
                         />
                       </MDBox>
                     </Grid>
@@ -202,10 +210,10 @@ const VentanaUsuarios = () => {
                           type="text"
                           label="Dependencia:"
                           value={userStore.Dependencia}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
+                          onChange={(e) => setUserFields("Dependencia", e.target.value)}
                           fullWidth
                           required
-                          //disabled={disable_input}
+                          disabled={!disable_input}
                         />
                       </MDBox>
                     </Grid>
@@ -214,38 +222,14 @@ const VentanaUsuarios = () => {
                         <MDInput
                           type="text"
                           label="Dirección general:"
-                          value={userStore.Direccion_general}
-                          //onChange={(e) => setEditor("editor", e.target.value)}
+                          value={userStore.Direcion_general}
+                          onChange={(e) => setUserFields("Direcion_general", e.target.value)}
                           fullWidth
                           required
-                          //disabled={disable_input}
+                          disabled={!disable_input}
                         />
                       </MDBox>
                     </Grid>
-                    {/*Seleccion dek rol del usuario*/}
-                    {/* <Grid xs={4}>
-                      <MDBox mb={2}>
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
-                          <Select
-                            sx={{ minHeight: "3rem" }}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            //value={ticketState.Servicio}
-                            label="Estatus"
-                            //onChange={(e) => setTicketFields("Servicio", e.target.value)}
-                          >
-                            {data.servicios.map((est) => {
-                              return (
-                                <MenuItem value={est._id} key={est._id}>
-                                  {est.Servicio}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </MDBox>
-                    </Grid> */}
                   </Grid>
                 </MDBox>
               </MDBox>
@@ -255,6 +239,9 @@ const VentanaUsuarios = () => {
       </Dialog>
     </React.Fragment>
   );
+};
+VentanaUsuarios.propTypes = {
+  disable_input: PropTypes.bool,
 };
 
 export default React.memo(VentanaUsuarios);

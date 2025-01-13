@@ -171,44 +171,6 @@ export const apiSlice = createApi({
         },
       }),
     }),
-    // //Editar ticket
-    // editar: builder.mutation({
-    //   query: ({
-    //     Prioridad,
-    //     Direccion_area,
-    //     Direccion_general,
-    //     Secretaria,
-    //     _id,
-    //     Descripcion,
-    //     Estado,
-    //     Tipo_incidencia,
-    //     Numero_Oficio,
-    //     NumeroRec_Oficio,
-    //     PendingReason,
-    //     Servicio,
-    //     Categoria,
-    //     Subcategoria,
-    //   }) => ({
-    //     url: "editar",
-    //     method: "PUT",
-    //     body: {
-    //       Prioridad,
-    //       Direccion_area,
-    //       Direccion_general,
-    //       Secretaria,
-    //       _id,
-    //       Descripcion,
-    //       Estado,
-    //       Tipo_incidencia,
-    //       Numero_Oficio,
-    //       NumeroRec_Oficio,
-    //       PendingReason,
-    //       Servicio,
-    //       Categoria,
-    //       Subcategoria,
-    //     },
-    //   }),
-    // }),
     //Obtener datos para mostrarlos en los select
     getInfoSelects: builder.query({
       query: () => {
@@ -295,6 +257,15 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    //Crear Usuario
+    crearUsuario: builder.mutation({
+      query: (formData) => ({
+        url: "register",
+        method: "POST",
+        body: formData,
+        formData: true,
+      }),
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -322,4 +293,5 @@ export const {
   useGetAllUsuariosQuery,
   useUpdateEstadoUsuariosMutation,
   useCerrarTicketMutation,
+  useCrearUsuarioMutation,
 } = apiSlice;
