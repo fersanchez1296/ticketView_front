@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     //desarrollo
     //baseUrl: "http://localhost:4000/api/",
-    baseUrl: "http://localhost:4000/api/v1/",
+    baseUrl: `http://${process.env.REACT_APP_APIGATEWAY_HOST}:${process.env.REACT_APP_APIGATEWAY_PORT}/api/v1/`,
     credentials: "include",
   }),
   tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion"],
@@ -171,44 +171,6 @@ export const apiSlice = createApi({
         },
       }),
     }),
-    // //Editar ticket
-    // editar: builder.mutation({
-    //   query: ({
-    //     Prioridad,
-    //     Direccion_area,
-    //     Direccion_general,
-    //     Secretaria,
-    //     _id,
-    //     Descripcion,
-    //     Estado,
-    //     Tipo_incidencia,
-    //     Numero_Oficio,
-    //     NumeroRec_Oficio,
-    //     PendingReason,
-    //     Servicio,
-    //     Categoria,
-    //     Subcategoria,
-    //   }) => ({
-    //     url: "editar",
-    //     method: "PUT",
-    //     body: {
-    //       Prioridad,
-    //       Direccion_area,
-    //       Direccion_general,
-    //       Secretaria,
-    //       _id,
-    //       Descripcion,
-    //       Estado,
-    //       Tipo_incidencia,
-    //       Numero_Oficio,
-    //       NumeroRec_Oficio,
-    //       PendingReason,
-    //       Servicio,
-    //       Categoria,
-    //       Subcategoria,
-    //     },
-    //   }),
-    // }),
     //Obtener datos para mostrarlos en los select
     getInfoSelects: builder.query({
       query: () => {

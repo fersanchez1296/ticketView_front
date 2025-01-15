@@ -16,6 +16,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -212,39 +214,13 @@ const Reasignar = () => {
                     </FormControl>
                   </Grid>
                   <Grid xs={12}>
-                    <FormControl sx={{ width: 500 }}>
-                      <InputLabel htmlFor="grouped-native-select">Reasignar a</InputLabel>
-                      <Select
-                        native
-                        defaultValue=""
-                        id="grouped-native-select"
-                        label="Reasignar a"
-                        onChange={(e) => {
-                          const [area, resol] = e.target.value.split("|");
-                          setTicketFields("area", area);
-                          setTicketFields("Fecha_limite_resolucion_SLA", resol);
-                          setTicketFields("Fecha_limite_respuesta_SLA", resol);
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        {data.AREASRESOLUTORES.map((area) => {
-                          if (area) {
-                            return (
-                              <optgroup label={area.area} key={area.area}>
-                                {area.resolutores.map((t, index) => (
-                                  <option value={`${t.Nombre}|${t}`} key={index}>
-                                    {t.Nombre}
-                                  </option>
-                                ))}
-                              </optgroup>
-                            );
-                          } else {
-                            console.error("Tiempo_respuesta no está definido en prioridad:");
-                            return null; // O alguna forma de manejar esta situación
-                          }
-                        })}
-                      </Select>
-                    </FormControl>
+                    <FormControlLabel
+                      control={<Switch name="vistoBueno" />}
+                      // control={
+                      //   <Switch checked={state.gilad} onChange={handleChange} name="gilad" />
+                      // }
+                      label="Visto Bueno"
+                    />
                   </Grid>
                 </Grid>
               </MDBox>

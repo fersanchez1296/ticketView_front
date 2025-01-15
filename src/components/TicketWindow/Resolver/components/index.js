@@ -7,11 +7,34 @@ import MDInput from "components/MDInput";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
+import Button from "@mui/material/Button";
 //store
 import { useTicketStore } from "zustand/index.ts";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 
 const CardResolver = () => {
   const ticket = useTicketStore();
+  const setFiles = useTicketStore((state) => state.setFiles);
+  const [setedFiles, setSetedFiles] = React.useState(false);
+  const Files = useTicketStore((state) => state.Files);
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+
+  const handleFileChange = (event) => {
+    const archivos = Array.from(event.target.files);
+    setFiles(archivos[0]);
+    setSetedFiles(true);
+  };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={6} mb={12}>
@@ -60,6 +83,30 @@ const CardResolver = () => {
                         ticket.setTicketFields("Descripcion_resolucion", e.target.value)
                       }
                     />
+                  </MDBox>
+                </Grid>
+                <Grid xs={12}>
+                  <MDBox mb={2}>
+                    <Button
+                      component="label"
+                      role={undefined}
+                      variant="contained"
+                      tabIndex={-1}
+                      startIcon={<CloudUploadIcon />}
+                      disabled={Files && setedFiles ? true : false}
+                      sx={{
+                        color: "white", // Color del texto
+                        backgroundColor: "#1976d2", // Color de fondo
+                        "&:hover": {
+                          backgroundColor: "#1565c0", // Color de fondo al pasar el mouse
+                        },
+                      }}
+                    >
+                      <MDTypography color="white">
+                        {Files && setedFiles ? Files.name : "Subir Archivos"}
+                      </MDTypography>
+                      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+                    </Button>
                   </MDBox>
                 </Grid>
               </Grid>

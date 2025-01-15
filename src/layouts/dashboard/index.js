@@ -43,6 +43,8 @@ import PropTypes from "prop-types";
 //auth store
 import { useAuthStore } from "zustand/auth.store.ts";
 import { Divider, Typography } from "@mui/material";
+//react router dom
+import { useNavigate } from "react-router-dom";
 const Dashboard_component = ({ data }) => {
   const { role, Nombre } = useAuthStore();
   const { sales, tasks } = reportsLineChartData;
@@ -381,11 +383,14 @@ const Dashboard_component = ({ data }) => {
   );
 };
 function Dashboard() {
+  const navigate = useNavigate();
   const { data, isLoading } = useDashboardQuery();
   if (isLoading) {
     return <Progress />;
-  } else {
+  } else if (data) {
     return <Dashboard_component data={data} />;
+  } else {
+    navigate("/login");
   }
 }
 
