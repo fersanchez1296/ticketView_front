@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     //desarrollo
     //baseUrl: "http://localhost:4000/api/",
-    baseUrl: `http://api-gateway:4000/api/v1/`,
+    baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
   tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion"],
