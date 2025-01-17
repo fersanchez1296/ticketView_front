@@ -122,6 +122,42 @@ export const userInitialState: UserProps = {
   Area: {},
 };
 
+//client interface
+
+export interface ClientProps {
+  _id: string;
+  Nombre: string;
+  Correo: string;
+  Coordinacion: string;
+  isActive: Boolean;
+  Fecha_creacion: Date | string;
+  Fecha_baja: Date | string;
+  Dependencia: string;
+  Direccion_general: string;
+  Area: Object;
+}
+
+export interface ClientMethods {
+  setClientesFields: (field: string, value: string | number) => void;
+  setClientesFetch: (fields: Partial<ClientProps>) => void;
+  resetClientesStore: () => void;
+}
+
+export type ClientType = ClientProps & ClientMethods;
+
+export const clientInitialState: ClientProps = {
+  _id: "",
+  Nombre: "",
+  Correo: "",
+  Coordinacion: "",
+  isActive: false,
+  Fecha_creacion: "",
+  Fecha_baja: "",
+  Dependencia: "",
+  Direccion_general: "",
+  Area: {},
+};
+
 // Propidades y métodos que controlan el abrir y cerrar de ventanas
 
 export interface DialogState {
@@ -161,4 +197,8 @@ export interface DialogState {
   isWindowUsuariosOpen: boolean;
   openWindowUsuarios: () => void;
   closeWindowUsuarios: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de clientes:
+  isWindowClientesOpen: boolean;
+  openWindowClientes: () => void;
+  closeWindowClientes: () => void;
 }
