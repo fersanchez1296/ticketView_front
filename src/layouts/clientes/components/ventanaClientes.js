@@ -23,7 +23,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 //api hook
-import { usePutReasignarMutation } from "api/index";
+import { usePostClienteMutation, useUpdateClienteMutation } from "api/index";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
@@ -44,11 +44,55 @@ const VentanaClientes = () => {
   const [nuevaDArea, setNuevaDArea] = useState(false);
   const [nuevaDependencia, setNuevaDependencia] = useState(false);
   const clientesStore = useClientesStore();
+  const [postCliente] = usePostClienteMutation();
+  const [updateCliente] = useUpdateClienteMutation();
   const { data, isLoading, isError } = useGetSelectDataClientesQuery();
   if (isLoading) {
     return <div>Cargando...</div>;
   }
-  console.log(clientesStore);
+
+  const guardarCliente = async () => {
+    if (!clientesStore.isEdit) {
+      const result = await postCliente({ body: clientesStore });
+      console.log("Creando");
+      //console.log(result);
+    } else {
+      const result = await updateCliente({
+        body: {
+          nuevaDependencia: clientesStore.nuevaDependencia,
+          nuevaSecretaria: clientesStore.nuevaSecretaria,
+          nuevaDArea: clientesStore.nuevaDArea,
+          nuevaDGeneral: clientesStore.nuevaDGeneral,
+          Correo: clientesStore.Correo,
+          Nombre: clientesStore.Nombre,
+          Secretaria:
+            typeof clientesStore.Secretaria === "string"
+              ? clientesStore.Secretaria
+              : clientesStore.Secretaria._id,
+          Direccion_General:
+            typeof clientesStore.Direccion_General === "string"
+              ? clientesStore.Direccion_General
+              : clientesStore.Direccion_General._id,
+          direccion_area:
+            typeof clientesStore.direccion_area === "string"
+              ? clientesStore.direccion_area
+              : clientesStore.direccion_area._id,
+          Dependencia:
+            typeof clientesStore.Dependencia === "string"
+              ? clientesStore.Dependencia
+              : clientesStore.Dependencia._id,
+          Telefono: clientesStore.Telefono,
+          Extension: clientesStore.Extension,
+          Ubicacion: clientesStore.Ubicacion,
+        },
+        clientId: clientesStore._id,
+      });
+      console.log("Editando");
+      console.log(clientesStore);
+      console.log(result);
+    }
+    clientesStore.resetClientesStore();
+  };
   return (
     <React.Fragment>
       <Dialog
@@ -81,7 +125,7 @@ const VentanaClientes = () => {
               color="success"
               endIcon={<SaveIcon />}
               sx={{ border: "1px dashed green" }}
-              //onClick={reasignarTicket}
+              onClick={() => guardarCliente()}
               //disabled={value == null ? true : false}
             >
               Guardar Cliente
@@ -125,7 +169,9 @@ const VentanaClientes = () => {
                           type="text"
                           label="Nombre:"
                           value={clientesStore.Nombre}
-                          onChange={(e) => setTicketFields("Nombre_cliente", e.target.value)}
+                          onChange={(e) =>
+                            clientesStore.setClientesFields("Nombre", e.target.value)
+                          }
                           fullWidth
                           required
                         />
@@ -139,7 +185,9 @@ const VentanaClientes = () => {
                           label="Correo:"
                           pattern=".+@example\.mx"
                           value={clientesStore.Correo}
-                          onChange={(e) => setTicketFields("Correo_cliente", e.target.value)}
+                          onChange={(e) =>
+                            clientesStore.setClientesFields("Correo", e.target.value)
+                          }
                           fullWidth
                           required
                         />
@@ -155,7 +203,7 @@ const VentanaClientes = () => {
                           onChange={(e) => {
                             // Permite solo números y un límite de longitud
                             const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
-                            setTicketFields("Telefono_cliente", input);
+                            clientesStore.setClientesFields("Telefono", input);
                           }}
                           inputProps={{
                             maxLength: 10, // Limita el número de caracteres a 10 (ejemplo para teléfonos locales)
@@ -175,7 +223,7 @@ const VentanaClientes = () => {
                           onChange={(e) => {
                             // Permite solo números y un límite de longitud
                             const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
-                            setTicketFields("Telefono_cliente", input);
+                            clientesStore.setClientesFields("Extension", input);
                           }}
                           inputProps={{
                             maxLength: 10, // Limita el número de caracteres a 10 (ejemplo para teléfonos locales)
@@ -197,9 +245,15 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.Secretaria._id}
+                              value={
+                                typeof clientesStore.Secretaria === "string"
+                                  ? clientesStore.Secretaria
+                                  : clientesStore.Secretaria._id
+                              }
                               label="Secretaría"
-                              onChange={(e) => setTicketFields("Secretaria", e.target.value)}
+                              onChange={(e) =>
+                                clientesStore.setClientesFields("Secretaria", e.target.value)
+                              }
                             >
                               {data.secretarias.map((est) => {
                                 return (
@@ -214,7 +268,10 @@ const VentanaClientes = () => {
                           <MDInput
                             type="text"
                             label="Ingrese la nueva Secretaria"
-                            // value={clientesStore.Resuelto_por.Nombre}
+                            value={clientesStore.nuevaSecretaria}
+                            onChange={(e) =>
+                              clientesStore.setClientesFields("nuevaSecretaria", e.target.value)
+                            }
                             fullWidth
                             required
                           />
@@ -243,9 +300,15 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.Direccion_General._id}
+                              value={
+                                typeof clientesStore.Direccion_General === "string"
+                                  ? clientesStore.Direccion_General
+                                  : clientesStore.Direccion_General._id
+                              }
                               label="Estatus"
-                              onChange={(e) => setTicketFields("Direccion_general", e.target.value)}
+                              onChange={(e) =>
+                                clientesStore.setClientesFields("Direccion_General", e.target.value)
+                              }
                             >
                               {data.dgenerales.map((est) => {
                                 return (
@@ -260,7 +323,10 @@ const VentanaClientes = () => {
                           <MDInput
                             type="text"
                             label="Ingrese la nueva Direccion General"
-                            // value={clientesStore.Resuelto_por.Nombre}
+                            value={clientesStore.nuevaDGeneral}
+                            onChange={(e) =>
+                              clientesStore.setClientesFields("nuevaDGeneral", e.target.value)
+                            }
                             fullWidth
                             required
                           />
@@ -288,9 +354,15 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.direccion_area._id}
+                              value={
+                                typeof clientesStore.direccion_area === "string"
+                                  ? clientesStore.direccion_area
+                                  : clientesStore.direccion_area._id
+                              }
                               label="Estatus"
-                              onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
+                              onChange={(e) =>
+                                clientesStore.setClientesFields("direccion_area", e.target.value)
+                              }
                             >
                               {data.dareas.map((est) => {
                                 return (
@@ -305,7 +377,10 @@ const VentanaClientes = () => {
                           <MDInput
                             type="text"
                             label="Ingrese la nueva Direccion de Area"
-                            // value={clientesStore.Resuelto_por.Nombre}
+                            value={clientesStore.nuevaDArea}
+                            onChange={(e) =>
+                              clientesStore.setClientesFields("nuevaDArea", e.target.value)
+                            }
                             fullWidth
                             required
                           />
@@ -333,9 +408,15 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.Dependencia._id}
+                              value={
+                                typeof clientesStore.Dependencia === "string"
+                                  ? clientesStore.Dependencia
+                                  : clientesStore.Dependencia._id
+                              }
                               label="Dependencia"
-                              //onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
+                              onChange={(e) =>
+                                clientesStore.setClientesFields("Dependencia", e.target.value)
+                              }
                             >
                               {data.dependencias.map((est) => {
                                 return (
@@ -350,7 +431,10 @@ const VentanaClientes = () => {
                           <MDInput
                             type="text"
                             label="Ingrese la nueva Dependencia"
-                            // value={clientesStore.Resuelto_por.Nombre}
+                            value={clientesStore.nuevaDependencia}
+                            onChange={(e) =>
+                              clientesStore.setClientesFields("nuevaDependencia", e.target.value)
+                            }
                             fullWidth
                             required
                           />
@@ -363,6 +447,21 @@ const VentanaClientes = () => {
                             />
                           }
                           label="Nueva dependencia"
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={12}>
+                      <MDBox mb={2}>
+                        <TextField
+                          id="outlined-multiline-static"
+                          label="Ubicacion del cliente:"
+                          multiline
+                          value={clientesStore.Ubicacion}
+                          onChange={(e) =>
+                            clientesStore.setClientesFields("Ubicacion", e.target.value)
+                          }
+                          rows={5}
+                          sx={{ width: "100%" }}
                         />
                       </MDBox>
                     </Grid>

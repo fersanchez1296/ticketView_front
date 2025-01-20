@@ -33,6 +33,7 @@ function Clientes() {
   const isWindowClientesOpen = useDialogStore((state) => state.isWindowClientesOpen);
   const openWindowClientes = useDialogStore((state) => state.openWindowClientes);
   const setClientesStore = useClientesStore((state) => state.setClientesFetch);
+  const setClientesFields = useClientesStore((state) => state.setClientesFields);
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
   const { data, refetch, isLoading, error } = useGetAllClientesQuery();
@@ -44,6 +45,7 @@ function Clientes() {
       onClick={() => {
         console.log(client);
         setClientesStore(client.client);
+        setClientesFields("isEdit", true);
         openWindowClientes();
       }}
     >
@@ -96,7 +98,7 @@ function Clientes() {
               color="success"
               endIcon={<PersonAddIcon />}
               sx={{ border: "1px solid green" }}
-              //onClick={reasignarTicket}
+              onClick={() => openWindowClientes()}
               //disabled={value == null ? true : false}
             >
               Crear Cliente

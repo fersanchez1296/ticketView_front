@@ -129,6 +129,7 @@ export const userInitialState: UserProps = {
 //client interface
 
 export interface ClientProps {
+  _id: string;
   nuevaDependencia: string;
   nuevaSecretaria: string;
   nuevaDArea: string;
@@ -142,6 +143,7 @@ export interface ClientProps {
   Telefono: string;
   Extension: string;
   Ubicacion: string;
+  isEdit: boolean;
 }
 
 export interface ClientMethods {
@@ -153,6 +155,7 @@ export interface ClientMethods {
 export type ClientType = ClientProps & ClientMethods;
 
 export const clientInitialState: ClientProps = {
+  _id: "",
   nuevaDependencia: "",
   nuevaSecretaria: "",
   nuevaDArea: "",
@@ -166,6 +169,7 @@ export const clientInitialState: ClientProps = {
   Telefono: "",
   Extension: "",
   Ubicacion: "",
+  isEdit: false,
 };
 
 // Propidades y métodos que controlan el abrir y cerrar de ventanas

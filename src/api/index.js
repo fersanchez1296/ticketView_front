@@ -258,6 +258,17 @@ export const apiSlice = createApi({
       providesTags: ["Tickets"],
     }),
     //clientes
+    postCliente: builder.mutation({
+      query: ({ body }) => {
+        const url = `clients/`;
+        return {
+          url,
+          body,
+          method: "POST",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
     getAllClientes: builder.query({
       query: () => {
         const url = `clients/`;
@@ -289,12 +300,12 @@ export const apiSlice = createApi({
       providesTags: ["Clientes"],
     }),
     updateCliente: builder.mutation({
-      query: ({ estado, clientId }) => {
+      query: ({ body, clientId }) => {
         const url = `clients/${clientId}`;
         return {
           url,
           method: "PUT",
-          body: { estado },
+          body,
         };
       },
       providesTags: ["Clientes"],
@@ -330,4 +341,5 @@ export const {
   useUpdateClienteMutation,
   useGetSelectDataClientesQuery,
   useLazyGetClienteQuery,
+  usePostClienteMutation,
 } = apiSlice;
