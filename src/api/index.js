@@ -8,7 +8,7 @@ export const apiSlice = createApi({
     //baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
-  tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion"],
+  tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion", "Clientes"],
   endpoints: (builder) => ({
     //dashboard
     dashboard: builder.query({
@@ -257,6 +257,48 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    //clientes
+    getAllClientes: builder.query({
+      query: () => {
+        const url = `clients/`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getCliente: builder.query({
+      query: (correo) => {
+        const url = `clients/${correo}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getSelectDataClientes: builder.query({
+      query: () => {
+        const url = `clients/selectData`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    updateCliente: builder.mutation({
+      query: ({ estado, clientId }) => {
+        const url = `clients/${clientId}`;
+        return {
+          url,
+          method: "PUT",
+          body: { estado },
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -284,4 +326,8 @@ export const {
   useGetAllUsuariosQuery,
   useUpdateEstadoUsuariosMutation,
   useCerrarTicketMutation,
+  useGetAllClientesQuery,
+  useUpdateClienteMutation,
+  useGetSelectDataClientesQuery,
+  useLazyGetClienteQuery,
 } = apiSlice;

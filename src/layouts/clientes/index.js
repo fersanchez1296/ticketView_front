@@ -18,7 +18,7 @@ import team2 from "assets/images/team-2.jpg";
 //store
 import { useClientesStore, useDialogStore } from "zustand/index.ts";
 //api
-import { useGetAllUsuariosQuery } from "api/index";
+import { useGetAllClientesQuery } from "api/index";
 //Progress
 import Progress from "components/Progress";
 //snackbar
@@ -35,14 +35,14 @@ function Clientes() {
   const setClientesStore = useClientesStore((state) => state.setClientesFetch);
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
-  const { data, refetch, isLoading, error } = useGetAllUsuariosQuery();
+  const { data, refetch, isLoading, error } = useGetAllClientesQuery();
   if (isLoading) return <Progress />;
-  //   if (error) return <div>Error: Reload page</div>;
   const Btn_view = (client) => (
     <MDButton
       color={"info"}
       variant={"contained"}
       onClick={() => {
+        console.log(client);
         setClientesStore(client.client);
         openWindowClientes();
       }}
@@ -58,15 +58,7 @@ function Clientes() {
       headerName: "Editar",
       hideable: false,
       width: 140,
-      renderCell: (params) => <Btn_view user={params.row} />,
-    },
-    {
-      field: "isActive",
-      headerName: "Estado",
-      width: 130,
-      renderCell: (params) => (
-        <SwitchActive isActive={params.row.isActive} userId={params.row._id} />
-      ),
+      renderCell: (params) => <Btn_view client={params.row} />,
     },
     {
       field: "Nombre",
@@ -76,20 +68,21 @@ function Clientes() {
         <Asignado image={team2} nombre={params.row.Nombre} dependencia={params.row.Coordinacion} />
       ),
     },
-    { field: "Username", headerName: "Username", width: 140 },
-    { field: "Correo", headerName: "Correo", width: 140 },
-    { field: "Coordinacion", headerName: "Coordinación", width: 140 },
-    { field: "Area", headerName: "Área", width: 120 },
-    { field: "Direccion_general", headerName: "Direccion General", width: 160 },
-    { field: "Dependencia", headerName: "Dependencia", width: 140 },
-    { field: "Fecha_creacion", headerName: "Fecha alta", width: 140 },
-    { field: "Fecha_baja", headerName: "Fecha baja", width: 140 },
+    { field: "Correo", headerName: "Correo", width: 200 },
+    { field: "Telext", headerName: "Teléfono", width: 200 },
+    { field: "secretarioNombre", headerName: "Secretaria", width: 180 },
+    { field: "direccionGeneralNombre", headerName: "Direccion General", width: 180 },
+    { field: "direccionAreaNombre", headerName: "Direccion de Area", width: 180 },
+    { field: "dependenciaNombre", headerName: "Dependencia", width: 180 },
   ];
-  const rows = data.map((usuario) => ({
-    ...usuario,
-    id: usuario._id,
-    Area: !usuario.Area ? "Sin areas asignadas" : usuario.Area.map((area) => area.Area),
-    Username: usuario.Username ? usuario.Username : "Sin usuario",
+  const rows = data.map((cliente) => ({
+    ...cliente,
+    id: cliente._id,
+    Telext: `${cliente.Telefono} - ext: ${cliente.Extension}`,
+    secretarioNombre: cliente.Secretaria.Secretaria,
+    direccionAreaNombre: cliente.direccion_area.direccion_area,
+    direccionGeneralNombre: cliente.Direccion_General.Direccion_General,
+    dependenciaNombre: cliente.Dependencia.Dependencia,
   }));
   const paginationModel = { page: 0, pageSize: 10 };
   return (

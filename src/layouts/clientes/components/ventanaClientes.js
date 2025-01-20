@@ -28,7 +28,7 @@ import { usePutReasignarMutation } from "api/index";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
 import { useDialogStore, useClientesStore } from "zustand/index.ts";
-import { useGetUsuariosQuery } from "api";
+import { useGetSelectDataClientesQuery } from "api";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -44,6 +44,11 @@ const VentanaClientes = () => {
   const [nuevaDArea, setNuevaDArea] = useState(false);
   const [nuevaDependencia, setNuevaDependencia] = useState(false);
   const clientesStore = useClientesStore();
+  const { data, isLoading, isError } = useGetSelectDataClientesQuery();
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+  console.log(clientesStore);
   return (
     <React.Fragment>
       <Dialog
@@ -119,7 +124,7 @@ const VentanaClientes = () => {
                         <MDInput
                           type="text"
                           label="Nombre:"
-                          value={clientesStore.Nombre_cliente}
+                          value={clientesStore.Nombre}
                           onChange={(e) => setTicketFields("Nombre_cliente", e.target.value)}
                           fullWidth
                           required
@@ -133,7 +138,7 @@ const VentanaClientes = () => {
                           type="email" // Muestra validación de correo automáticamente
                           label="Correo:"
                           pattern=".+@example\.mx"
-                          value={clientesStore.Correo_cliente}
+                          value={clientesStore.Correo}
                           onChange={(e) => setTicketFields("Correo_cliente", e.target.value)}
                           fullWidth
                           required
@@ -146,7 +151,7 @@ const VentanaClientes = () => {
                         <MDInput
                           type="tel" // Tipo tel para mostrar un teclado numérico en móviles
                           label="Teléfono:"
-                          value={clientesStore.Telefono_cliente}
+                          value={clientesStore.Telefono}
                           onChange={(e) => {
                             // Permite solo números y un límite de longitud
                             const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
@@ -166,7 +171,7 @@ const VentanaClientes = () => {
                         <MDInput
                           type="tel" // Tipo tel para mostrar un teclado numérico en móviles
                           label="Extensión:"
-                          value={clientesStore.Telefono_cliente}
+                          value={clientesStore.Extension}
                           onChange={(e) => {
                             // Permite solo números y un límite de longitud
                             const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
@@ -192,17 +197,17 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.Secretaria}
+                              value={clientesStore.Secretaria._id}
                               label="Secretaría"
                               onChange={(e) => setTicketFields("Secretaria", e.target.value)}
                             >
-                              {/* {data.secretarias.map((est) => {
+                              {data.secretarias.map((est) => {
                                 return (
                                   <MenuItem value={est._id} key={est._id}>
                                     {est.Secretaria}
                                   </MenuItem>
                                 );
-                              })} */}
+                              })}
                             </Select>
                           </FormControl>
                         ) : (
@@ -238,17 +243,17 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.Direccion_general}
+                              value={clientesStore.Direccion_General._id}
                               label="Estatus"
                               onChange={(e) => setTicketFields("Direccion_general", e.target.value)}
                             >
-                              {/* {data.direccion_generales.map((est) => {
-                              return (
-                                <MenuItem value={est._id} key={est._id}>
-                                  {est.Direccion_General}
-                                </MenuItem>
-                              );
-                            })} */}
+                              {data.dgenerales.map((est) => {
+                                return (
+                                  <MenuItem value={est._id} key={est._id}>
+                                    {est.Direccion_General}
+                                  </MenuItem>
+                                );
+                              })}
                             </Select>
                           </FormControl>
                         ) : (
@@ -283,17 +288,17 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.Direccion_area}
+                              value={clientesStore.direccion_area._id}
                               label="Estatus"
                               onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
                             >
-                              {/* {data.direccion_areas.map((est) => {
-                              return (
-                                <MenuItem value={est._id} key={est._id}>
-                                  {est.direccion_area}
-                                </MenuItem>
-                              );
-                            })} */}
+                              {data.dareas.map((est) => {
+                                return (
+                                  <MenuItem value={est._id} key={est._id}>
+                                    {est.direccion_area}
+                                  </MenuItem>
+                                );
+                              })}
                             </Select>
                           </FormControl>
                         ) : (
@@ -328,17 +333,17 @@ const VentanaClientes = () => {
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
-                              value={clientesStore.Direccion_area}
-                              label="Estatus"
-                              onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
+                              value={clientesStore.Dependencia._id}
+                              label="Dependencia"
+                              //onChange={(e) => setTicketFields("Direccion_area", e.target.value)}
                             >
-                              {/* {data.direccion_areas.map((est) => {
-                              return (
-                                <MenuItem value={est._id} key={est._id}>
-                                  {est.direccion_area}
-                                </MenuItem>
-                              );
-                            })} */}
+                              {data.dependencias.map((est) => {
+                                return (
+                                  <MenuItem value={est._id} key={est._id}>
+                                    {est.Dependencia}
+                                  </MenuItem>
+                                );
+                              })}
                             </Select>
                           </FormControl>
                         ) : (

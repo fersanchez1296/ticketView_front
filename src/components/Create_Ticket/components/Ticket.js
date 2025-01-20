@@ -274,22 +274,9 @@ const Ticket = ({ disable_input, data }) => {
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="NumeroRec_Oficio:"
+                      label="Oficio de recepción:"
                       value={ticketState.NumeroRec_Oficio}
                       onChange={(e) => setTicketFields("NumeroRec_Oficio", e.target.value)}
-                      fullWidth
-                      required
-                    />
-                  </MDBox>
-                </Grid>
-                {/*Introducido por teclado Numero_Oficio*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Numero_Oficio:"
-                      value={ticketState.Numero_Oficio}
-                      onChange={(e) => setTicketFields("Numero_Oficio", e.target.value)}
                       fullWidth
                       required
                     />

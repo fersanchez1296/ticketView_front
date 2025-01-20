@@ -34,8 +34,10 @@ export interface TicketProps {
   Descripcion_resolucion: string;
   Nombre_cliente: string;
   Telefono_cliente: string;
+  Extension_cliente: string;
+  Ubicacion_cliente: string;
   Correo_cliente: string;
-  Dependencia_cliente: string;
+  Dependencia_cliente: Object;
   Files?: File | null;
 }
 
@@ -83,8 +85,10 @@ export const ticketInitialState: TicketProps = {
   Area_reasignado_a: "",
   Descripcion_resolucion: "",
   Telefono_cliente: "",
+  Extension_cliente: "",
+  Ubicacion_cliente: "",
   Correo_cliente: "",
-  Dependencia_cliente: "",
+  Dependencia_cliente: {},
   Files: null,
 };
 
@@ -125,16 +129,19 @@ export const userInitialState: UserProps = {
 //client interface
 
 export interface ClientProps {
-  _id: string;
-  Nombre: string;
+  nuevaDependencia: string;
+  nuevaSecretaria: string;
+  nuevaDArea: string;
+  nuevaDGeneral: string;
   Correo: string;
-  Coordinacion: string;
-  isActive: Boolean;
-  Fecha_creacion: Date | string;
-  Fecha_baja: Date | string;
-  Dependencia: string;
-  Direccion_general: string;
-  Area: Object;
+  Nombre: string;
+  Secretaria: Object;
+  Direccion_General: Object;
+  direccion_area: Object;
+  Dependencia: Object;
+  Telefono: string;
+  Extension: string;
+  Ubicacion: string;
 }
 
 export interface ClientMethods {
@@ -146,16 +153,19 @@ export interface ClientMethods {
 export type ClientType = ClientProps & ClientMethods;
 
 export const clientInitialState: ClientProps = {
-  _id: "",
-  Nombre: "",
+  nuevaDependencia: "",
+  nuevaSecretaria: "",
+  nuevaDArea: "",
+  nuevaDGeneral: "",
   Correo: "",
-  Coordinacion: "",
-  isActive: false,
-  Fecha_creacion: "",
-  Fecha_baja: "",
-  Dependencia: "",
-  Direccion_general: "",
-  Area: {},
+  Nombre: "",
+  Secretaria: {},
+  Direccion_General: {},
+  direccion_area: {},
+  Dependencia: {},
+  Telefono: "",
+  Extension: "",
+  Ubicacion: "",
 };
 
 // Propidades y métodos que controlan el abrir y cerrar de ventanas
