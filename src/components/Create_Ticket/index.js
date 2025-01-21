@@ -44,6 +44,7 @@ const Edit = () => {
   const closeWindowEdit = useDialogStore((state) => state.closeWindowEdit);
   const ticketState = useTicketStore();
   const { data, isLoading } = useGetInfoSelectsQuery();
+  console.log("Data");
   console.log(data);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());

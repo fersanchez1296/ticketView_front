@@ -36,7 +36,7 @@ export const useUserStore = create<UserType>((set) => ({
       ...state,
       [field]: value,
     })),
-  setUserFetch: (fields: Partial<TicketProps>) =>
+  setUserFetch: (fields: Partial<UserProps>) =>
     set((state) => ({
       ...state,
       ...fields,

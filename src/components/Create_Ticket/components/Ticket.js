@@ -25,6 +25,7 @@ import PropTypes from "prop-types";
 import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
+  console.log(data);
   const setFiles = useTicketStore((state) => state.setFiles);
   const Files = useTicketStore((state) => state.Files);
   const [setedFiles, setSetedFiles] = React.useState(false);

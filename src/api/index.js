@@ -224,17 +224,6 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
-    //Usuarios --cambiar nombre
-    getAllUsuarios: builder.query({
-      query: () => {
-        const url = `users/`;
-        return {
-          url,
-          method: "GET",
-        };
-      },
-      providesTags: ["Usuarios"],
-    }),
     updateEstadoUsuarios: builder.mutation({
       query: ({ estado, userId }) => {
         const url = `users/${userId}`;
@@ -259,12 +248,49 @@ export const apiSlice = createApi({
     }),
     //Crear Usuario
     crearUsuario: builder.mutation({
-      query: (formData) => ({
-        url: "register",
+      query: (userStore) => ({
+        url: "users/crear",
         method: "POST",
-        body: formData,
-        formData: true,
+        body: userStore,
       }),
+    }),
+    //Editar estado Usuario
+    editarUsuario: builder.mutation({
+      query: ({ userStore, id }) => ({
+        url: `users/${id}`,
+        method: "PUT",
+        body: userStore,
+      }),
+    }),
+    //Editar Usuario
+    updateUsuario: builder.mutation({
+      query: ({ userStore, id }) => ({
+        url: `users/editar/${id}`,
+        method: "PUT",
+        body: userStore,
+      }),
+    }),
+    //Usuarios --cambiar nombre
+    getAllUsuarios: builder.query({
+      query: () => {
+        const url = `users/`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
+    }),
+    //Roles de usuarios
+    getSelectRol: builder.query({
+      query: () => {
+        const url = `users/usuarios/roles`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
     }),
   }),
   keepUnusedDataFor: 300,
@@ -291,7 +317,10 @@ export const {
   usePutAceptarResolucionMutation,
   usePutReabrirMutation,
   useGetAllUsuariosQuery,
+  useGetSelectRolQuery,
   useUpdateEstadoUsuariosMutation,
   useCerrarTicketMutation,
   useCrearUsuarioMutation,
+  useEditarUsuarioMutation,
+  useUpdateUsuarioMutation,
 } = apiSlice;

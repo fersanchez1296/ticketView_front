@@ -92,7 +92,6 @@ export interface UserProps {
   _id: string;
   Nombre: string;
   Correo: string;
-  Username: string;
   Rol: string;
   Coordinacion: string;
   isActive: Boolean;
@@ -113,7 +112,6 @@ export const userInitialState: UserProps = {
   _id: "",
   Nombre: "",
   Correo: "",
-  Username: "",
   Rol: "",
   Coordinacion: "",
   isActive: true,
