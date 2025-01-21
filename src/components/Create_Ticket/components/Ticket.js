@@ -18,19 +18,19 @@ import Typography from "@mui/material/Typography";
 import ListSubheader from "@mui/material/ListSubheader";
 import { styled } from "@mui/material/styles";
 //store
-import { useTicketStore } from "zustand/index.ts";
+import { useCrearTicketStore } from "../store/crearTicket.store.ts";
 //proptypes
 import PropTypes from "prop-types";
 //json
 import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
-  const setFiles = useTicketStore((state) => state.setFiles);
-  const Files = useTicketStore((state) => state.Files);
+  const setFiles = useCrearTicketStore((state) => state.crearTicketSetFiles);
+  const Files = useCrearTicketStore((state) => state.Files);
   const [setedFiles, setSetedFiles] = React.useState(false);
-  const ticketState = useTicketStore();
+  const ticketState = useCrearTicketStore();
   //const [file, setFile] = React.useState(null);
-  const setTicketFields = useTicketStore((state) => state.setTicketFields);
+  const setCrearTicketFields = useCrearTicketStore((state) => state.setCrearTicketFields);
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -83,7 +83,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={ticketState.Tipo_incidencia}
                         label="Tipo_incidencia"
-                        onChange={(e) => setTicketFields("Tipo_incidencia", e.target.value)}
+                        onChange={(e) => setCrearTicketFields("Tipo_incidencia", e.target.value)}
                       >
                         {data.tiposTickets.map((est) => {
                           return (
@@ -107,7 +107,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="incidencia-grave-select"
                         value={ticketState.Incidencia_grave}
                         label="Incidencia grave"
-                        onChange={(e) => setTicketFields("Incidencia_grave", e.target.value)}
+                        onChange={(e) => setCrearTicketFields("Incidencia_grave", e.target.value)}
                       >
                         <MenuItem value="1">Grave</MenuItem>
                         <MenuItem value="0">No grave</MenuItem>
@@ -126,7 +126,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={ticketState.Categoria}
                         label="Estatus"
-                        onChange={(e) => setTicketFields("Categoria", e.target.value)}
+                        onChange={(e) => setCrearTicketFields("Categoria", e.target.value)}
                       >
                         {data.categorias.map((est) => {
                           return (
@@ -150,7 +150,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={ticketState.Estado}
                         label="Estatus"
-                        onChange={(e) => setTicketFields("Estado", e.target.value)}
+                        onChange={(e) => setCrearTicketFields("Estado", e.target.value)}
                       >
                         {data.estados.map((est) => {
                           return (
@@ -174,7 +174,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={ticketState.Servicio}
                         label="Estatus"
-                        onChange={(e) => setTicketFields("Servicio", e.target.value)}
+                        onChange={(e) => setCrearTicketFields("Servicio", e.target.value)}
                       >
                         {data.servicios.map((est) => {
                           return (
@@ -198,7 +198,7 @@ const Ticket = ({ disable_input, data }) => {
                         id="demo-simple-select"
                         value={ticketState.Subcategoria}
                         label="Estatus"
-                        onChange={(e) => setTicketFields("Subcategoria", e.target.value)}
+                        onChange={(e) => setCrearTicketFields("Subcategoria", e.target.value)}
                       >
                         {data.subcategoria.map((est) => {
                           return (
@@ -223,9 +223,9 @@ const Ticket = ({ disable_input, data }) => {
                         label="Prioridad"
                         onChange={(e) => {
                           const [prioridad, tiempo] = e.target.value.split("|");
-                          setTicketFields("Prioridad", prioridad);
-                          setTicketFields("Fecha_limite_resolucion_SLA", tiempo);
-                          setTicketFields("Fecha_limite_respuesta_SLA", tiempo);
+                          setCrearTicketFields("Prioridad", prioridad);
+                          setCrearTicketFields("Fecha_limite_resolucion_SLA", tiempo);
+                          setCrearTicketFields("Fecha_limite_respuesta_SLA", tiempo);
                           console.log("Prioridad:", prioridad);
                           console.log(ticketState.Fecha_limite_respuesta_SLA);
                           // Aquí puedes manejar los valores seleccionados, por ejemplo, guardarlos en el estado
@@ -262,7 +262,7 @@ const Ticket = ({ disable_input, data }) => {
                       type="text"
                       label="Pending Reason:"
                       value={ticketState.PendingReason}
-                      onChange={(e) => setTicketFields("PendingReason", e.target.value)}
+                      onChange={(e) => setCrearTicketFields("PendingReason", e.target.value)}
                       fullWidth
                       required
                       disabled={!disable_input}
@@ -276,7 +276,7 @@ const Ticket = ({ disable_input, data }) => {
                       type="text"
                       label="Oficio de recepción:"
                       value={ticketState.NumeroRec_Oficio}
-                      onChange={(e) => setTicketFields("NumeroRec_Oficio", e.target.value)}
+                      onChange={(e) => setCrearTicketFields("NumeroRec_Oficio", e.target.value)}
                       fullWidth
                       required
                     />
@@ -290,7 +290,7 @@ const Ticket = ({ disable_input, data }) => {
                       label="Descripción del ticket"
                       multiline
                       value={ticketState.Descripcion}
-                      onChange={(e) => setTicketFields("Descripcion", e.target.value)}
+                      onChange={(e) => setCrearTicketFields("Descripcion", e.target.value)}
                       rows={5.2}
                       defaultValue="Sin información"
                       sx={{ width: "100%" }}

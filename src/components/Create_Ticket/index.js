@@ -29,7 +29,8 @@ import Resolutor from "./components/Resolutor";
 import Cliente from "./components/Cliente";
 
 //store
-import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useDialogStore } from "zustand/index.ts";
+import { useCrearTicketStore } from "./store/crearTicket.store.ts";
 import { useGetInfoSelectsQuery } from "api/index";
 //snackbar
 import SuccessSB from "components/Snackbar/success/index";
@@ -40,14 +41,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const steps = ["Información del Ticket", "Resolutor", "Cliente"];
 
 const Edit = () => {
-  const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
-  const closeWindowEdit = useDialogStore((state) => state.closeWindowEdit);
-  const ticketState = useTicketStore();
   const { data, isLoading } = useGetInfoSelectsQuery();
-  console.log(data);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  const resetValues = useTicketStore((state) => state.resetValues);
+  const resetValues = useCrearTicketStore((state) => state.crearTicketResetValues);
   React.useEffect(() => {
     resetValues();
   }, []);

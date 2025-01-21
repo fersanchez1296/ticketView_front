@@ -280,8 +280,8 @@ export const apiSlice = createApi({
       providesTags: ["Clientes"],
     }),
     getCliente: builder.query({
-      query: (correo) => {
-        const url = `clients/${correo}`;
+      query: ({ Correo }) => {
+        const url = `clients/${Correo}`;
         return {
           url,
           method: "GET",
