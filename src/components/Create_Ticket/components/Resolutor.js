@@ -113,7 +113,7 @@ const Resolutor = ({ data }) => {
                   renderInput={(params) => <TextField {...params} label="Asignar a:" />}
                   onChange={(event, value) => {
                     setValue(value); // Guarda el valor seleccionado en el estado.
-                    crearTicketStore.crearTicketSetFiles("Asignado_a", value);
+                    crearTicketStore.setCrearTicketFields("Asignado_a", value);
                   }}
                 />
               </Box>

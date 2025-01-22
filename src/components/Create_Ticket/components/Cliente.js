@@ -38,12 +38,15 @@ import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const Cliente = ({ disable_input, data }) => {
   const crearTicketStore = useCrearTicketStore();
   const clientesStore = useClientesStore();
+  const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
+  const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const archivo = useCrearTicketStore((state) => state.Files);
   const [postGuardar] = useGuardarMutation();
   const [postCliente] = usePostClienteMutation();
   const [buscarCliente, setBuscarCliente] = React.useState(false);
 
   const guardarTicket = async () => {
+    console.log(archivo);
     const formData = new FormData();
     try {
       formData.append("ticketState", JSON.stringify(crearTicketStore));
@@ -58,7 +61,7 @@ const Cliente = ({ disable_input, data }) => {
         return result;
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
-        crearTicketStore.resetValues();
+        crearTicketStore.crearTicketResetValues();
         return result;
       }
     } catch (error) {
@@ -74,7 +77,7 @@ const Cliente = ({ disable_input, data }) => {
 
   const procesarTicket = async () => {
     if (!buscarCliente) {
-      //const saveTicket = await guardarTicket();
+      const saveTicket = await guardarTicket();
       console.log(crearTicketStore);
     } else {
       const saveCliente = await guardarCliente();
