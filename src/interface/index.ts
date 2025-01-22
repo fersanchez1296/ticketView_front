@@ -34,8 +34,10 @@ export interface TicketProps {
   Descripcion_resolucion: string;
   Nombre_cliente: string;
   Telefono_cliente: string;
+  Extension_cliente: string;
+  Ubicacion_cliente: string;
   Correo_cliente: string;
-  Dependencia_cliente: string;
+  Dependencia_cliente: Object;
   Files?: File | null;
 }
 
@@ -83,8 +85,10 @@ export const ticketInitialState: TicketProps = {
   Area_reasignado_a: "",
   Descripcion_resolucion: "",
   Telefono_cliente: "",
+  Extension_cliente: "",
+  Ubicacion_cliente: "",
   Correo_cliente: "",
-  Dependencia_cliente: "",
+  Dependencia_cliente: {},
   Files: null,
 };
 
@@ -118,6 +122,52 @@ export const userInitialState: UserProps = {
   Dependencia: "",
   Direccion_general: "",
   Area: {},
+};
+
+//client interface
+
+export interface ClientProps {
+  _id: string;
+  nuevaDependencia: string;
+  nuevaSecretaria: string;
+  nuevaDArea: string;
+  nuevaDGeneral: string;
+  Correo: string;
+  Nombre: string;
+  Secretaria: Object;
+  Direccion_General: Object;
+  direccion_area: Object;
+  Dependencia: Object;
+  Telefono: string;
+  Extension: string;
+  Ubicacion: string;
+  isEdit: boolean;
+}
+
+export interface ClientMethods {
+  setClientesFields: (field: string, value: string | number) => void;
+  setClientesFetch: (fields: Partial<ClientProps>) => void;
+  resetClientesStore: () => void;
+}
+
+export type ClientType = ClientProps & ClientMethods;
+
+export const clientInitialState: ClientProps = {
+  _id: "",
+  nuevaDependencia: "",
+  nuevaSecretaria: "",
+  nuevaDArea: "",
+  nuevaDGeneral: "",
+  Correo: "",
+  Nombre: "",
+  Secretaria: {},
+  Direccion_General: {},
+  direccion_area: {},
+  Dependencia: {},
+  Telefono: "",
+  Extension: "",
+  Ubicacion: "",
+  isEdit: false,
 };
 
 // Propidades y métodos que controlan el abrir y cerrar de ventanas
@@ -159,4 +209,8 @@ export interface DialogState {
   isWindowUsuariosOpen: boolean;
   openWindowUsuarios: () => void;
   closeWindowUsuarios: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de clientes:
+  isWindowClientesOpen: boolean;
+  openWindowClientes: () => void;
+  closeWindowClientes: () => void;
 }

@@ -4,11 +4,11 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //desarrollo
-    //baseUrl: "http://localhost:4000/api/",
     baseUrl: "http://localhost:4000/api/v1/",
+    //baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
-  tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion"],
+  tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion", "Clientes"],
   endpoints: (builder) => ({
     //dashboard
     dashboard: builder.query({
@@ -246,6 +246,59 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    //clientes
+    postCliente: builder.mutation({
+      query: ({ body }) => {
+        const url = `clients/`;
+        return {
+          url,
+          body,
+          method: "POST",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getAllClientes: builder.query({
+      query: () => {
+        const url = `clients/`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getCliente: builder.query({
+      query: ({ Correo }) => {
+        const url = `clients/${Correo}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getSelectDataClientes: builder.query({
+      query: () => {
+        const url = `clients/selectData`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    updateCliente: builder.mutation({
+      query: ({ body, clientId }) => {
+        const url = `clients/${clientId}`;
+        return {
+          url,
+          method: "PUT",
+          body,
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
     //Crear Usuario
     crearUsuario: builder.mutation({
       query: (userStore) => ({
@@ -320,6 +373,11 @@ export const {
   useGetSelectRolQuery,
   useUpdateEstadoUsuariosMutation,
   useCerrarTicketMutation,
+  useGetAllClientesQuery,
+  useUpdateClienteMutation,
+  useGetSelectDataClientesQuery,
+  useLazyGetClienteQuery,
+  usePostClienteMutation,
   useCrearUsuarioMutation,
   useEditarUsuarioMutation,
   useUpdateUsuarioMutation,
