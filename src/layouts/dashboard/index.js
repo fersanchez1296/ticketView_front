@@ -69,11 +69,11 @@ const Dashboard_component = ({ data }) => {
                 icon="event_available"
                 title="Abiertos"
                 count={data.abiertos}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+55%",
+                //   label: "than lask week",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -84,11 +84,11 @@ const Dashboard_component = ({ data }) => {
                 icon="event_repeat"
                 title="Reabiertos"
                 count={data.reabiertos}
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+3%",
+                //   label: "than last month",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -99,11 +99,11 @@ const Dashboard_component = ({ data }) => {
                 icon="event"
                 title="Nuevos"
                 count={data.nuevos}
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+1%",
+                //   label: "than yesterday",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -114,11 +114,11 @@ const Dashboard_component = ({ data }) => {
                 icon="pending_actions"
                 title="Pendientes"
                 count={data.pendientes}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "",
+                //   label: "Just updated",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -129,11 +129,11 @@ const Dashboard_component = ({ data }) => {
                 icon="visibility"
                 title={role == "Moderador" ? "Para Revision" : "En revision"}
                 count={data.revision}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "",
+                //   label: "Just updated",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -144,16 +144,16 @@ const Dashboard_component = ({ data }) => {
                 icon="event_busy"
                 title="Cerrados"
                 count={data.cerrados}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "",
+                //   label: "Just updated",
+                // }}
               />
             </MDBox>
           </Grid>
         </Grid>
-        <MDBox mt={4.5}>
+        {/* <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={12}>
               <MDBox mb={3}>
@@ -215,7 +215,7 @@ const Dashboard_component = ({ data }) => {
               </MDBox>
             </Grid>
           </Grid>
-        </MDBox>
+        </MDBox> */}
         {/* <MDBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>
@@ -242,11 +242,11 @@ const Dashboard_component = ({ data }) => {
                 icon="event_available"
                 title="Abiertos"
                 count={data.totalAbiertos}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+55%",
+                //   label: "than lask week",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -257,11 +257,11 @@ const Dashboard_component = ({ data }) => {
                 icon="event_repeat"
                 title="Reabiertos"
                 count={data.totalReabiertos}
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+3%",
+                //   label: "than last month",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -272,11 +272,11 @@ const Dashboard_component = ({ data }) => {
                 icon="event"
                 title="Nuevos"
                 count={data.totalNuevos}
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+1%",
+                //   label: "than yesterday",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -287,11 +287,11 @@ const Dashboard_component = ({ data }) => {
                 icon="pending_actions"
                 title="Pendientes"
                 count={data.totalPendientes}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "",
+                //   label: "Just updated",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -302,11 +302,11 @@ const Dashboard_component = ({ data }) => {
                 icon="visibility"
                 title={role != "Moderador" ? "Para Revision" : "En revision"}
                 count={data.totalRevision}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "",
+                //   label: "Just updated",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -317,16 +317,16 @@ const Dashboard_component = ({ data }) => {
                 icon="event_busy"
                 title="Cerrados"
                 count={data.totalCerrados}
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
+                // percentage={{
+                //   color: "success",
+                //   amount: "",
+                //   label: "Just updated",
+                // }}
               />
             </MDBox>
           </Grid>
         </Grid>
-        <MDBox mt={4.5}>
+        {/* <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
@@ -366,7 +366,7 @@ const Dashboard_component = ({ data }) => {
               </MDBox>
             </Grid>
           </Grid>
-        </MDBox>
+        </MDBox> */}
         {/* <MDBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>

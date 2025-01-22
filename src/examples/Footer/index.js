@@ -62,7 +62,7 @@ function Footer({ company, links }) {
       >
         &copy; {new Date().getFullYear()}
         <MDTypography variant="button" fontWeight="medium">
-          &nbsp;{"Dirección de Tecnología de la Información Financiera"}&nbsp;
+          &nbsp;{"Instituto de Pensiones del Estado de Jalisco"}&nbsp;
         </MDTypography>
       </MDBox>
       <MDBox

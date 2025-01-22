@@ -47,7 +47,6 @@ const BuscarCliente = ({ disable_input, data }) => {
         crearTicketStore.Nombre_cliente = result.data.Nombre;
         crearTicketStore.Telefono_cliente = result.data.Telefono;
         crearTicketStore.Extension_cliente = result.data.Extension;
-        crearTicketStore.Secretaria = result.data.Secretaria._id;
         crearTicketStore.Direccion_general = result.data.Direccion_General._id;
         crearTicketStore.Direccion_area = result.data.direccion_area._id;
         crearTicketStore.Dependencia_cliente = result.data.Dependencia._id;
@@ -165,31 +164,6 @@ const BuscarCliente = ({ disable_input, data }) => {
                       fullWidth
                       required
                     />
-                  </MDBox>
-                </Grid>
-                {/*Seleccion secretaria*/}
-                <Grid xs={6} sx={{ display: clienteExiste ? "block" : "none" }}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Secretaría</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        disabled={clienteExiste ? true : false}
-                        value={crearTicketStore.Secretaria}
-                        label="Secretaría"
-                        onChange={(e) => crearTicketFields("Secretaria", e.target.value)}
-                      >
-                        {data.secretarias.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Secretaria}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
                   </MDBox>
                 </Grid>
                 {/*Seleccion Dirección general*/}

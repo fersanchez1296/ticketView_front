@@ -1,31 +1,15 @@
 import React, { Suspense, lazy, startTransition } from "react";
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
 //mui library components
 import Button from "@mui/material/Button";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Card from "@mui/material/Card";
 import SaveIcon from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@mui/material/Unstable_Grid2";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 //store
 import { useClientesStore } from "zustand/index.ts";
-import { useCrearTicketStore } from "../store/crearTicket.store.ts";
+import { useCrearTicketStore, useIsNuevoClienteStore } from "../store/crearTicket.store.ts";
 //proptypes
 import PropTypes from "prop-types";
 //api hook
@@ -42,11 +26,14 @@ const Cliente = ({ disable_input, data }) => {
   const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const archivo = useCrearTicketStore((state) => state.Files);
   const [postGuardar] = useGuardarMutation();
-  const [postCliente] = usePostClienteMutation();
   const [buscarCliente, setBuscarCliente] = React.useState(false);
+  const setIsNuevoCliente = useIsNuevoClienteStore((state) => state.setIsNuevoCliente);
+  const isNuevoClienteResetValues = useIsNuevoClienteStore(
+    (state) => state.isNuevoClienteResetValues
+  );
+  const isNuevoCliente = useIsNuevoClienteStore((state) => state.isNuevoCliente);
 
   const guardarTicket = async () => {
-    console.log(archivo);
     const formData = new FormData();
     try {
       formData.append("ticketState", JSON.stringify(crearTicketStore));
@@ -55,6 +42,9 @@ const Cliente = ({ disable_input, data }) => {
       } else {
         console.error("El archivo no es válido:", archivo);
       }
+      if (isNuevoCliente) {
+        formData.append("nuevoCliente", JSON.stringify(clientesStore));
+      }
       const result = await postGuardar(formData);
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
@@ -62,6 +52,8 @@ const Cliente = ({ disable_input, data }) => {
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
         crearTicketStore.crearTicketResetValues();
+        clientesStore.resetClientesStore();
+        isNuevoClienteResetValues();
         return result;
       }
     } catch (error) {
@@ -69,24 +61,6 @@ const Cliente = ({ disable_input, data }) => {
     }
   };
 
-  const guardarCliente = async () => {
-    const result = await postCliente({ body: clientesStore });
-    clientesStore.resetClientesStore();
-    return result;
-  };
-
-  const procesarTicket = async () => {
-    if (!buscarCliente) {
-      const saveTicket = await guardarTicket();
-      console.log(crearTicketStore);
-    } else {
-      const saveCliente = await guardarCliente();
-      if (saveCliente.data.status === 200) {
-        //const saveTicket = await guardarTicket();
-        console.log(saveTicket);
-      }
-    }
-  };
   return (
     <>
       <Grid
@@ -100,7 +74,9 @@ const Cliente = ({ disable_input, data }) => {
               <Typography>Buscar Cliente</Typography>
               <Switch
                 checked={buscarCliente}
-                onChange={(e) => setBuscarCliente(e.target.checked)}
+                onChange={(e) => {
+                  setBuscarCliente(e.target.checked), setIsNuevoCliente(!isNuevoCliente);
+                }}
               />
               <Typography>Nuevo Cliente</Typography>
             </Stack>
@@ -119,7 +95,7 @@ const Cliente = ({ disable_input, data }) => {
             color="success"
             endIcon={<SaveIcon />}
             sx={{ border: "1.5px solid green", width: "100%" }}
-            onClick={() => procesarTicket()}
+            onClick={() => guardarTicket()}
           >
             Guardar Ticket
           </Button>

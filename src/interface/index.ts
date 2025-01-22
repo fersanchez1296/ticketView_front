@@ -13,7 +13,6 @@ export interface TicketProps {
   Categoria: Object;
   Servicio: Object;
   Subcategoria: Object;
-  Secretaria?: Object;
   Direccion_general?: Object;
   Direccion_area?: Object | null;
   Descripcion: string;
@@ -65,7 +64,6 @@ export const ticketInitialState: TicketProps = {
   Servicio: {},
   Subcategoria: {},
   Nombre_cliente: "",
-  Secretaria: {},
   Direccion_general: {},
   Direccion_area: {},
   Descripcion: "",
@@ -131,12 +129,10 @@ export const userInitialState: UserProps = {
 export interface ClientProps {
   _id: string;
   nuevaDependencia: string;
-  nuevaSecretaria: string;
   nuevaDArea: string;
   nuevaDGeneral: string;
   Correo: string;
   Nombre: string;
-  Secretaria: Object;
   Direccion_General: Object;
   direccion_area: Object;
   Dependencia: Object;
@@ -157,12 +153,10 @@ export type ClientType = ClientProps & ClientMethods;
 export const clientInitialState: ClientProps = {
   _id: "",
   nuevaDependencia: "",
-  nuevaSecretaria: "",
   nuevaDArea: "",
   nuevaDGeneral: "",
   Correo: "",
   Nombre: "",
-  Secretaria: {},
   Direccion_General: {},
   direccion_area: {},
   Dependencia: {},
