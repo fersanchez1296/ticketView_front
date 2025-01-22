@@ -68,10 +68,8 @@ const VentanaUsuarios = (disable_input) => {
   }
   const crearUsuario = async () => {
     resetUserStore();
-    console.log("UserStore crear usuario", userStore);
     try {
       const result = await postCrearUsuario(userStore);
-      console.log(result);
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
       } else {
@@ -83,8 +81,6 @@ const VentanaUsuarios = (disable_input) => {
     }
   };
   const editarUsuario = async () => {
-    console.log("UserStore editar usuario", userStore);
-    console.log("Id que se ve a enviar", userStore._id);
     try {
       const result = await putEditarUsuario({ userStore, id: userStore._id });
       console.log(result);
