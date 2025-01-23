@@ -9,16 +9,20 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import Grid from "@mui/material/Unstable_Grid2";
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+import MDInput from "components/MDInput";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { styled } from "@mui/material/styles";
 //api hook
 import { usePutResolverMutation } from "api/index";
-//card components
-import CardResolver from "./components/index";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useResolverTicketStore } from "./store/resolverTicket.store.ts";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -27,62 +31,54 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const steps = ["Resolver ticket"];
 
 const Resolver = () => {
+  //Si da error el componente es porque en los tickets no existe la propiedad visto bueno
   const [putTicket, { isLoading }] = usePutResolverMutation();
   const isWindowResolverOpen = useDialogStore((state) => state.isWindowResolverOpen);
   const closeWindowResolver = useDialogStore((state) => state.closeWindowResolver);
-  const ticketState = useTicketStore();
+  const resolverTicketStore = useResolverTicketStore();
+  const ticketId = useTicketStore((state) => state._id);
+  const vistoBueno = useTicketStore((state) => state.vistoBueno);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
+  React.useEffect(() => {
+    resolverTicketStore.setResolverTicketFields("vistoBueno", vistoBueno);
+  }, []);
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+  const handleFileChange = (event) => {
+    const archivos = Array.from(event.target.files);
+    resolverTicketStore.resolverTicketSetFiles(archivos[0]);
   };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return <CardResolver />;
-      default:
-        return "Unknown step";
-    }
-  }
 
   const resolverTicket = async () => {
+    const formData = new FormData();
     try {
-      const result = await putTicket({
-        _id: ticketState._id,
-        Descripcion_resolucion: ticketState.Descripcion_resolucion,
-      });
+      formData.append("resolverTicketStore", JSON.stringify(resolverTicketStore));
+      if (resolverTicketStore.Files instanceof File) {
+        formData.append("file", resolverTicketStore.Files);
+      }
+      console.log(formData);
+      const result = await putTicket({ formData, ticketId });
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+        return result;
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
+        resolverTicketStore.resolverTicketResetValues();
+        return result;
       }
-      setTimeout(() => {
-        ticketState.resetValues();
-        closeWindowResolver();
-      }, 2000);
     } catch (error) {
-      openErrorSB(error, `Status: ${result.error.status}`);
+      openErrorSB("Ocurrio un error al resolver el ticket.", `Status: ${result.error.status}`);
     }
   };
 
@@ -92,8 +88,7 @@ const Resolver = () => {
         fullScreen
         open={isWindowResolverOpen}
         onClose={() => {
-          handleReset();
-          ticketState.resetValues();
+          resolverTicketStore.resolverTicketResetValues();
           closeWindowResolver();
         }}
         TransitionComponent={Transition}
@@ -104,8 +99,7 @@ const Resolver = () => {
               edge="start"
               color="inherit"
               onClick={() => {
-                handleReset();
-                ticketState.resetValues();
+                resolverTicketStore.resolverTicketResetValues();
                 closeWindowResolver();
               }}
               aria-label="close"
@@ -119,53 +113,101 @@ const Resolver = () => {
               variant="contained"
               color="success"
               endIcon={<SaveIcon />}
-              sx={{ border: "1px dashed green" }}
+              sx={{ border: "1px solid green" }}
               onClick={resolverTicket}
-              disabled={ticketState.Descripcion_resolucion === "" ? true : false}
+              disabled={resolverTicketStore.Respuesta_cierre_reasignado === "" ? true : false}
             >
               Resolver Ticket
             </Button>
           </Toolbar>
         </AppBar>
-        <Box sx={{ width: "100%" }}>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-              Atras
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-
-            {activeStep !== steps.length && (
-              <Button
-                onClick={handleNext}
-                disabled={activeStep === steps.length - 1 ? true : false}
+        <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+          <Grid xs={6} mb={12}>
+            <Card>
+              <MDBox
+                variant="gradient"
+                bgColor="primary"
+                borderRadius="lg"
+                coloredShadow="info"
+                mx={2}
+                mt={-3}
+                p={2}
+                mb={1}
+                textAlign="center"
               >
-                Siguiente
-              </Button>
-            )}
-          </Box>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>No hay más por ver</Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
-          )}
-        </Box>
+                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                  Resolver Ticket
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={4} pb={3} px={3}>
+                <MDBox component="form" role="form">
+                  <Grid container spacing={3}>
+                    <Grid xs={12}>
+                      <MDBox mb={2} sx={{ width: "100%" }}>
+                        <TextField
+                          id="outlined-multiline-static"
+                          label="Descripción de resolución:"
+                          multiline
+                          value={resolverTicketStore.Respuesta_cierre_reasignado}
+                          rows={10}
+                          sx={{ width: "100%" }}
+                          onChange={(e) =>
+                            resolverTicketStore.setResolverTicketFields(
+                              "Respuesta_cierre_reasignado",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={12}>
+                      <MDBox mb={2}>
+                        <Button
+                          component="label"
+                          role={undefined}
+                          variant="contained"
+                          tabIndex={-1}
+                          startIcon={<CloudUploadIcon color="white" />}
+                          disabled={resolverTicketStore.Files ? true : false}
+                          sx={{
+                            color: "white", // Color del texto
+                            backgroundColor: "#1976d2", // Color de fondo
+                            "&:hover": {
+                              backgroundColor: "#1565c0", // Color de fondo al pasar el mouse
+                            },
+                          }}
+                        >
+                          <MDTypography color="white">
+                            {resolverTicketStore.Files
+                              ? resolverTicketStore.Files.name
+                              : "Subir Archivos"}
+                          </MDTypography>
+                          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+                        </Button>
+                      </MDBox>
+                    </Grid>
+                    {resolverTicketStore.Files ? (
+                      <Grid item>
+                        <MDBox mb={2}>
+                          <Button
+                            variant="contained"
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            onClick={() => {
+                              resolverTicketStore.resolverTicketSetFiles(null);
+                            }}
+                          >
+                            <MDTypography color="black">Eliminar Archivo</MDTypography>
+                          </Button>
+                        </MDBox>
+                      </Grid>
+                    ) : null}
+                  </Grid>
+                </MDBox>
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
       </Dialog>
     </React.Fragment>
   );

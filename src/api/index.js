@@ -79,30 +79,26 @@ export const apiSlice = createApi({
       providesTags: ["Usuarios", "Tickets"],
     }),
     putReasignar: builder.mutation({
-      query: ({ id_usuario_reasignar, id_ticket }) => {
-        const url = `tickets/reasignar`;
+      query: ({ reasignarTicketStore, ticketId }) => {
+        console.log(ticketId);
+        const url = `tickets/reasignar/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: {
-            id_usuario_reasignar,
-            id_ticket,
-          },
+          body: reasignarTicketStore,
         };
       },
       invalidatesTags: ["Tickets"],
     }),
     //RESOLVER
     putResolver: builder.mutation({
-      query: ({ _id, Descripcion_resolucion }) => {
-        const url = `tickets/resolver`;
+      query: ({ formData, ticketId }) => {
+        const url = `tickets/resolver/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: {
-            _id,
-            Descripcion_resolucion,
-          },
+          body: formData,
+          formData: true,
         };
       },
       invalidatesTags: ["Tickets"],

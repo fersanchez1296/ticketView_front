@@ -24,8 +24,6 @@ import MDTypography from "components/MDTypography";
 import Card from "@mui/material/Card";
 //api hook
 import { usePutReasignarMutation } from "api/index";
-//card components
-import CardUsers from "./components/index";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
@@ -43,40 +41,31 @@ const Reasignar = () => {
   const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
   const closeWindowReasignar = useDialogStore((state) => state.closeWindowReasignar);
   const reasignarTicketStore = useReasignarTicketStore();
+  const ticketId = useTicketStore((state) => state._id);
   const vistoBueno = useReasignarTicketStore((state) => state.vistoBueno);
+  const [modificarTiempo, setModificarTiempo] = React.useState(false);
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const [value, setValue] = React.useState(null);
   if (isLoading) return <p>Cargando...</p>;
 
   const reasignarTicket = async () => {
     try {
-      console.log(reasignarTicketStore);
-      // const result = await putReasignar({
-      //   id_usuario_reasignar: value._id,
-      //   id_ticket: reasignarTicketStore._id,
-      // });
-      //console.log("resultado de reasignar ticket", result);
-      // if (result.error) {
-      //   openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-      // } else {
-      //   openSuccessSB(result.data.desc, `Status: 200`);
-      // }
-      // setTimeout(() => {
-      //   reasignarTicketStore.reasignarTicketResetValues();
-      //   closeWindowReasignar();
-      // }, 2000);
+      const result = await putReasignar({ reasignarTicketStore, ticketId });
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+      }
+      setTimeout(() => {
+        reasignarTicketStore.reasignarTicketResetValues();
+        reasignarTicketStore.reasignarTicketResetValues();
+        closeWindowReasignar();
+      }, 2000);
     } catch (error) {
-      console.log(error);
+      openErrorSB("Ocurrio un error inesperado al reasignar el ticket.", `Status: 200`);
     }
   };
 
-  // const options = data.AREASRESOLUTORES.flatMap((areaObj) =>
-  //   areaObj.resolutores.map((resolutor) => ({
-  //     ...resolutor,
-  //     area: areaObj.area.toUpperCase(),
-  //   }))
-  // );
-  console.log(data);
   return (
     <React.Fragment>
       <Dialog
@@ -110,7 +99,7 @@ const Reasignar = () => {
               endIcon={<SaveIcon />}
               sx={{ border: "1px dashed green" }}
               onClick={reasignarTicket}
-              //disabled={value == null ? true : false}
+              disabled={reasignarTicketStore.Reasignado_a === "" ? true : false}
             >
               Reasignar Ticket
             </Button>
@@ -137,52 +126,15 @@ const Reasignar = () => {
               <MDBox pt={4} pb={3} px={3}>
                 <Grid
                   spacing={2}
-                  sx={{ mt: 5, display: "flex", flexDirection: "row", justifyContent: "center" }}
+                  sx={{
+                    mt: 5,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "0.8rem",
+                  }}
                 >
-                  <Grid xs={12}>
-                    <FormControl sx={{ width: 500 }}>
-                      <InputLabel htmlFor="grouped-native-select">Tiempo de resolución</InputLabel>
-                      <Select
-                        native
-                        defaultValue=""
-                        id="grouped-native-select"
-                        label="Tiempo de resolución"
-                        onChange={(e) => {
-                          const [prioridad, tiempo] = e.target.value.split("|");
-                          reasignarTicketStore.setReasignarTicketFields("Prioridad", prioridad);
-                          reasignarTicketStore.setReasignarTicketFields(
-                            "Fecha_limite_resolucion_SLA",
-                            tiempo
-                          );
-                          reasignarTicketStore.setReasignarTicketFields(
-                            "Fecha_limite_respuesta_SLA",
-                            tiempo
-                          );
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        {data.prioridades.map((prioridad) => {
-                          if (prioridad.Tiempo_respuesta) {
-                            return (
-                              <optgroup label={prioridad.Descripcion} key={prioridad._id}>
-                                {prioridad.Tiempo_respuesta.map((t, index) => (
-                                  <option value={`${prioridad._id}|${t}`} key={index}>
-                                    {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
-                                  </option>
-                                ))}
-                              </optgroup>
-                            );
-                          } else {
-                            console.error(
-                              "Tiempo_respuesta no está definido en prioridad:",
-                              prioridad
-                            );
-                            return null;
-                          }
-                        })}
-                      </Select>
-                    </FormControl>
-                  </Grid>
                   <Grid xs={12}>
                     <FormControl sx={{ width: 500 }}>
                       <InputLabel htmlFor="grouped-native-select">Reasignar a</InputLabel>
@@ -192,7 +144,7 @@ const Reasignar = () => {
                         id="grouped-native-select"
                         label="Reasignar a"
                         onChange={(e) => {
-                          const [reasignado_a, area_id] = e.target.value.split("|");
+                          const [reasignado_a, area_id, correo, nombre] = e.target.value.split("|");
                           reasignarTicketStore.setReasignarTicketFields(
                             "Reasignado_a",
                             reasignado_a
@@ -201,6 +153,8 @@ const Reasignar = () => {
                             "Area_reasignado_a",
                             area_id
                           ); // ID del área
+                          reasignarTicketStore.setReasignarTicketFields("Correo", correo); // Correo
+                          reasignarTicketStore.setReasignarTicketFields("Nombre", nombre); // Nombre
                         }}
                       >
                         <option aria-label="None" value="" />
@@ -209,14 +163,16 @@ const Reasignar = () => {
                             return (
                               <optgroup label={area.area.area} key={area.area._id}>
                                 {area.resolutores.map((t, index) => (
-                                  <option value={`${t._id}|${area.area._id}`} key={index}>
+                                  <option
+                                    value={`${t._id}|${area.area._id}|${t.Correo}|${t.Nombre}`}
+                                    key={index}
+                                  >
                                     {t.Nombre}
                                   </option>
                                 ))}
                               </optgroup>
                             );
                           } else {
-                            console.error("Área no está definida en las resolutores:");
                             return null;
                           }
                         })}
@@ -227,9 +183,80 @@ const Reasignar = () => {
                     <FormControlLabel
                       control={
                         <Switch
+                          checked={modificarTiempo}
+                          onChange={() =>
+                            setModificarTiempo((prev) => {
+                              if (prev) {
+                                reasignarTicketStore.setReasignarTicketFields("Prioridad", "");
+                                reasignarTicketStore.setReasignarTicketFields(
+                                  "Fecha_limite_resolucion_SLA",
+                                  ""
+                                );
+                                reasignarTicketStore.setReasignarTicketFields(
+                                  "Fecha_limite_respuesta_SLA",
+                                  ""
+                                );
+                              }
+                              return !prev;
+                            })
+                          }
+                          name="tiempoRespuesta"
+                        />
+                      }
+                      label="Modificar tiempo resolución"
+                    />
+                  </Grid>
+                  {modificarTiempo ? (
+                    <Grid xs={12} sx={{ display: modificarTiempo ? "block" : "none" }}>
+                      <FormControl sx={{ width: 500 }}>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Tiempo de resolución
+                        </InputLabel>
+                        <Select
+                          native
+                          defaultValue=""
+                          id="grouped-native-select"
+                          label="Tiempo de resolución"
+                          onChange={(e) => {
+                            const [prioridad, tiempo] = e.target.value.split("|");
+                            reasignarTicketStore.setReasignarTicketFields("Prioridad", prioridad);
+                            reasignarTicketStore.setReasignarTicketFields(
+                              "Fecha_limite_resolucion_SLA",
+                              tiempo
+                            );
+                            reasignarTicketStore.setReasignarTicketFields(
+                              "Fecha_limite_respuesta_SLA",
+                              tiempo
+                            );
+                          }}
+                        >
+                          <option aria-label="None" value="" />
+                          {data.prioridades.map((prioridad) => {
+                            if (prioridad.Tiempo_respuesta) {
+                              return (
+                                <optgroup label={prioridad.Descripcion} key={prioridad._id}>
+                                  {prioridad.Tiempo_respuesta.map((t, index) => (
+                                    <option value={`${prioridad._id}|${t}`} key={index}>
+                                      {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
+                                    </option>
+                                  ))}
+                                </optgroup>
+                              );
+                            } else {
+                              return null;
+                            }
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                  ) : null}
+                  <Grid xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Switch
                           checked={vistoBueno}
                           onChange={() =>
-                            reasignarTicketStore.setReasignarTicketFields("vistoBueno", true)
+                            reasignarTicketStore.setReasignarTicketFields("vistoBueno", !vistoBueno)
                           }
                           name="vistoBueno"
                         />
