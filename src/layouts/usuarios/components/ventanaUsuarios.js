@@ -153,6 +153,7 @@ const VentanaUsuarios = (disable_input) => {
               <MDBox pt={4} pb={3} px={3}>
                 <MDBox component="form" role="form">
                   <Grid container spacing={2} sx={{ display: "flex" }}>
+                    {/* Nombre */}
                     <Grid xs={5.8}>
                       <MDBox ml={2} mt={2}>
                         <MDInput
@@ -163,104 +164,6 @@ const VentanaUsuarios = (disable_input) => {
                           fullWidth
                           required
                         />
-                      </MDBox>
-                    </Grid>
-                    {/*Seleccion del rol del usuario*/}
-                    <Grid xs={5.8}>
-                      <MDBox ml={2} mt={2}>
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">Rol de usuario</InputLabel>
-                          <Select
-                            sx={{ minHeight: "3rem" }}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={userStore.Rol}
-                            label="Rol de usuario"
-                            onChange={(e) => setUserFields("Rol", e.target.value)}
-                          >
-                            {dataroles.roles.map((est) => {
-                              return (
-                                <MenuItem value={est._id} key={est._id}>
-                                  {est.Rol}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </MDBox>
-                    </Grid>
-                    <Grid xs={5.8}>
-                      <MDBox ml={2} mt={2}>
-                        <MDInput
-                          type="text"
-                          label="Username:"
-                          value={userStore.Username}
-                          //onChange={(e) => setUserFields("Username", e.target.value)}
-                          fullWidth
-                          required
-                          disabled={disable_input}
-                        />
-                      </MDBox>
-                    </Grid>
-                    <Grid xs={6}>
-                      <MDBox m={2}>
-                        <MDInput
-                          type="text"
-                          label="Correo:"
-                          value={userStore.Correo}
-                          onChange={(e) => setUserFields("Correo", e.target.value)}
-                          fullWidth
-                          required
-                          disabled={!disable_input}
-                        />
-                      </MDBox>
-                    </Grid>
-                    {/*Seleccion del coordinacion del usuario*/}
-                    <Grid xs={5.8}>
-                      <MDBox ml={2} mt={2}>
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">Coordinación</InputLabel>
-                          <Select
-                            sx={{ minHeight: "3rem" }}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={Nombre_A === "" ? userStore.Area : userStore.Coordinacion}
-                            label="Coordinacion de usuario"
-                            onChange={(e) => setUserFields("Coordinacion", e.target.value)}
-                          >
-                            {dataroles.coordinaciones.map((est) => {
-                              return (
-                                <MenuItem value={est._id} key={est._id}>
-                                  {est.coordinacion}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </MDBox>
-                    </Grid>
-                    {/*Seleccion del area del usuario*/}
-                    <Grid xs={5.8}>
-                      <MDBox ml={2} mt={2}>
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">Área</InputLabel>
-                          <Select
-                            sx={{ minHeight: "3rem" }}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={userStore.Area}
-                            label="Area de usuario"
-                            onChange={(e) => setUserFields("Area", e.target.value)}
-                          >
-                            {dataroles.areas.map((est) => {
-                              return (
-                                <MenuItem value={est._id} key={est._id}>
-                                  {est.Area}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
                       </MDBox>
                     </Grid>
                     {/*Seleccion dependencia del usuario*/}
@@ -287,6 +190,30 @@ const VentanaUsuarios = (disable_input) => {
                         </FormControl>
                       </MDBox>
                     </Grid>
+                    {/*Seleccion del rol del usuario*/}
+                    <Grid xs={5.8}>
+                      <MDBox ml={2} mt={2}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">Rol de usuario</InputLabel>
+                          <Select
+                            sx={{ minHeight: "3rem" }}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={userStore.Rol}
+                            label="Rol de usuario"
+                            onChange={(e) => setUserFields("Rol", e.target.value)}
+                          >
+                            {dataroles.roles.map((est) => {
+                              return (
+                                <MenuItem value={est._id} key={est._id}>
+                                  {est.Rol}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </MDBox>
+                    </Grid>
                     {/*Seleccion de direccion general del usuario*/}
                     <Grid xs={5.8}>
                       <MDBox ml={2} mt={2}>
@@ -304,6 +231,81 @@ const VentanaUsuarios = (disable_input) => {
                               return (
                                 <MenuItem value={est._id} key={est._id}>
                                   {est.Direccion_General}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </MDBox>
+                    </Grid>
+                    {/* <Grid xs={5.8}>
+                      <MDBox ml={2} mt={2}>
+                        <MDInput
+                          type="text"
+                          label="Username:"
+                          value={userStore.Username}
+                          //onChange={(e) => setUserFields("Username", e.target.value)}
+                          fullWidth
+                          required
+                          disabled={disable_input}
+                        />
+                      </MDBox>
+                    </Grid> */}
+                    {/*Imput correo*/}
+                    <Grid xs={6}>
+                      <MDBox m={2}>
+                        <MDInput
+                          type="text"
+                          label="Correo:"
+                          value={userStore.Correo}
+                          onChange={(e) => setUserFields("Correo", e.target.value)}
+                          fullWidth
+                          required
+                          disabled={!disable_input}
+                        />
+                      </MDBox>
+                    </Grid>
+                    {/*Seleccion del area del usuario*/}
+                    <Grid xs={5.6}>
+                      <MDBox mt={2}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">Dirección de área</InputLabel>
+                          <Select
+                            sx={{ minHeight: "3rem" }}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={userStore.Area}
+                            label="Area de usuario"
+                            onChange={(e) => setUserFields("Area", e.target.value)}
+                          >
+                            {dataroles.areas.map((est) => {
+                              return (
+                                <MenuItem value={est._id} key={est._id}>
+                                  {est.Area}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </MDBox>
+                    </Grid>
+                    {/*Seleccion del coordinacion del usuario*/}
+                    <Grid xs={5.8}>
+                      <MDBox ml={2}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">Coordinación</InputLabel>
+                          <Select
+                            sx={{ minHeight: "3rem" }}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={userStore.Coordinacion}
+                            label="Coordinacion de usuario"
+                            onChange={(e) => setUserFields("Coordinacion", e.target.value)}
+                          >
+                            {dataroles.coordinaciones.map((est) => {
+                              return (
+                                <MenuItem value={est._id} key={est._id}>
+                                  {est.coordinacion}
                                 </MenuItem>
                               );
                             })}
