@@ -39,7 +39,8 @@ const VentanaClientes = () => {
   const isWindowClientesOpen = useDialogStore((state) => state.isWindowClientesOpen);
   const closeWindowClientes = useDialogStore((state) => state.closeWindowClientes);
   const resetClientesStore = useClientesStore((state) => state.resetClientesStore);
-  const [nuevaSecretaria, setNuevaSecretaria] = useState(false);
+  const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
+  const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const [nuevaDGeneral, setNuevaDGeneral] = useState(false);
   const [nuevaDArea, setNuevaDArea] = useState(false);
   const [nuevaDependencia, setNuevaDependencia] = useState(false);
@@ -53,23 +54,17 @@ const VentanaClientes = () => {
   console.log("Ventana Cliente");
   console.log(data);
   const guardarCliente = async () => {
+    let result;
     if (!clientesStore.isEdit) {
-      const result = await postCliente({ body: clientesStore });
-      console.log("Creando");
-      //console.log(result);
+      result = await postCliente({ body: clientesStore });
     } else {
-      const result = await updateCliente({
+      result = await updateCliente({
         body: {
           nuevaDependencia: clientesStore.nuevaDependencia,
-          nuevaSecretaria: clientesStore.nuevaSecretaria,
           nuevaDArea: clientesStore.nuevaDArea,
           nuevaDGeneral: clientesStore.nuevaDGeneral,
           Correo: clientesStore.Correo,
           Nombre: clientesStore.Nombre,
-          Secretaria:
-            typeof clientesStore.Secretaria === "string"
-              ? clientesStore.Secretaria
-              : clientesStore.Secretaria._id,
           Direccion_General:
             typeof clientesStore.Direccion_General === "string"
               ? clientesStore.Direccion_General
@@ -88,11 +83,14 @@ const VentanaClientes = () => {
         },
         clientId: clientesStore._id,
       });
-      console.log("Editando");
-      console.log(clientesStore);
-      console.log(result);
     }
-    clientesStore.resetClientesStore();
+    if (result.error) {
+      openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+    } else {
+      openSuccessSB(result.data.desc, `Status: 200`);
+      clientesStore.resetClientesStore();
+      closeWindowClientes();
+    }
   };
   return (
     <React.Fragment>
@@ -234,32 +232,32 @@ const VentanaClientes = () => {
                         />
                       </MDBox>
                     </Grid>
-                    {/*Seleccion secretaria*/}
+                    {/*Introducido por teclado Dependencia del cliente*/}
                     <Grid xs={6}>
                       <MDBox mb={2} px={2}>
-                        {!nuevaSecretaria ? (
+                        {!nuevaDependencia ? (
                           <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
-                              Seleccione la Secretaría
+                              Seleccione la Dependencia
                             </InputLabel>
                             <Select
                               sx={{ minHeight: "3rem" }}
                               labelId="demo-simple-select-label"
                               id="demo-simple-select"
                               value={
-                                typeof clientesStore.Secretaria === "string"
-                                  ? clientesStore.Secretaria
-                                  : clientesStore.Secretaria._id
+                                typeof clientesStore.Dependencia === "string"
+                                  ? clientesStore.Dependencia
+                                  : clientesStore.Dependencia._id
                               }
-                              label="Secretaría"
+                              label="Dependencia"
                               onChange={(e) =>
-                                clientesStore.setClientesFields("Secretaria", e.target.value)
+                                clientesStore.setClientesFields("Dependencia", e.target.value)
                               }
                             >
-                              {/* {data.secretarias.map((est) => {
+                              {data.dependencias.map((est) => {
                                 return (
                                   <MenuItem value={est._id} key={est._id}>
-                                    {est.Secretaria}
+                                    {est.Dependencia}
                                   </MenuItem>
                                 );
                               })} */}
@@ -268,10 +266,10 @@ const VentanaClientes = () => {
                         ) : (
                           <MDInput
                             type="text"
-                            label="Ingrese la nueva Secretaria"
-                            value={clientesStore.nuevaSecretaria}
+                            label="Ingrese la nueva Dependencia"
+                            value={clientesStore.nuevaDependencia}
                             onChange={(e) =>
-                              clientesStore.setClientesFields("nuevaSecretaria", e.target.value)
+                              clientesStore.setClientesFields("nuevaDependencia", e.target.value)
                             }
                             fullWidth
                             required
@@ -280,15 +278,14 @@ const VentanaClientes = () => {
                         <FormControlLabel
                           control={
                             <Switch
-                              checked={nuevaSecretaria}
-                              onChange={(e) => setNuevaSecretaria(e.target.checked)}
+                              checked={nuevaDependencia}
+                              onChange={(e) => setNuevaDependencia(e.target.checked)}
                             />
                           }
-                          label="Nueva Secretaria"
+                          label="Nueva dependencia"
                         />
                       </MDBox>
                     </Grid>
-
                     {/*Seleccion Dirección general*/}
                     <Grid xs={6}>
                       <MDBox mb={2} px={2}>
@@ -394,60 +391,6 @@ const VentanaClientes = () => {
                             />
                           }
                           label="Nueva direccion de Area"
-                        />
-                      </MDBox>
-                    </Grid>
-                    {/*Introducido por teclado Dependencia del cliente*/}
-                    <Grid xs={6}>
-                      <MDBox mb={2} px={2}>
-                        {!nuevaDependencia ? (
-                          <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                              Seleccione la Dependencia
-                            </InputLabel>
-                            <Select
-                              sx={{ minHeight: "3rem" }}
-                              labelId="demo-simple-select-label"
-                              id="demo-simple-select"
-                              value={
-                                typeof clientesStore.Dependencia === "string"
-                                  ? clientesStore.Dependencia
-                                  : clientesStore.Dependencia._id
-                              }
-                              label="Dependencia"
-                              onChange={(e) =>
-                                clientesStore.setClientesFields("Dependencia", e.target.value)
-                              }
-                            >
-                              {data.dependencias.map((est) => {
-                                return (
-                                  <MenuItem value={est._id} key={est._id}>
-                                    {est.Dependencia}
-                                  </MenuItem>
-                                );
-                              })}
-                            </Select>
-                          </FormControl>
-                        ) : (
-                          <MDInput
-                            type="text"
-                            label="Ingrese la nueva Dependencia"
-                            value={clientesStore.nuevaDependencia}
-                            onChange={(e) =>
-                              clientesStore.setClientesFields("nuevaDependencia", e.target.value)
-                            }
-                            fullWidth
-                            required
-                          />
-                        )}
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={nuevaDependencia}
-                              onChange={(e) => setNuevaDependencia(e.target.checked)}
-                            />
-                          }
-                          label="Nueva dependencia"
                         />
                       </MDBox>
                     </Grid>

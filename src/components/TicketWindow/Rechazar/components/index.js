@@ -100,7 +100,7 @@ const RechazarCard = () => {
                       variant="contained"
                       color="success"
                       endIcon={<SaveIcon />}
-                      sx={{ border: "1px dashed green" }}
+                      sx={{ border: "2px solid red" }}
                       onClick={rechazarResolucion}
                     >
                       Enviar al resolutor

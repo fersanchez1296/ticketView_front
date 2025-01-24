@@ -138,7 +138,7 @@ function Configurator() {
         px={3}
       >
         <MDBox>
-          <MDTypography variant="h5">Configuración de TicketView</MDTypography>
+          <MDTypography variant="h5">Configuración de Chermina</MDTypography>
         </MDBox>
 
         <Icon

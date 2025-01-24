@@ -22,19 +22,20 @@ const AceptarCard = () => {
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const closeWindowAceptar = useDialogStore((state) => state.closeWindowAceptar);
   const aceptarResolucion = async () => {
-    try {
-      const result = await aceptar({ _id: ticket._id });
-      console.log(result);
-      if (result.error) {
-        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-      } else {
-        openSuccessSB(result.data.desc, `Status: 200`);
-      }
-      setTimeout(() => {
-        ticket.resetValues();
-        closeWindowAceptar();
-      }, 2000);
-    } catch (error) {}
+    console.log(ticket);
+    // try {
+    //   const result = await aceptar({ _id: ticket._id });
+    //   console.log(result);
+    //   if (result.error) {
+    //     openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+    //   } else {
+    //     openSuccessSB(result.data.desc, `Status: 200`);
+    //   }
+    //   setTimeout(() => {
+    //     ticket.resetValues();
+    //     closeWindowAceptar();
+    //   }, 2000);
+    // } catch (error) {}
   };
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
@@ -102,7 +103,7 @@ const AceptarCard = () => {
                       variant="contained"
                       color="success"
                       endIcon={<SaveIcon />}
-                      sx={{ border: "1px dashed green" }}
+                      sx={{ border: `2px solid green` }}
                       onClick={aceptarResolucion}
                     >
                       Enviar al Mesa de Servicio

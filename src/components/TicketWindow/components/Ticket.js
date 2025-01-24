@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 const Ticket = ({ disable_input }) => {
   const ticket = useTicketStore();
   const Files = useTicketStore((state) => state.Files);
-  console.log(Files);
+  console.log(ticket);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={6} mb={12}>
@@ -112,9 +112,7 @@ const Ticket = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Tipo Incidencia:"
-                      value={
-                        ticket.Tipo_incidencia ? ticket.Tipo_incidencia.Tipo_de_incidencia : ""
-                      }
+                      value={ticket.Tipo_incidencia ? ticket.Tipo_incidencia : ""}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -255,7 +253,7 @@ const Ticket = ({ disable_input }) => {
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Número Rec oficio:"
+                      label="Oficio de recepción:"
                       value={ticket.NumeroRec_Oficio}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
@@ -268,7 +266,7 @@ const Ticket = ({ disable_input }) => {
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Número oficio:"
+                      label="Oficio de cierre:"
                       value={ticket.Numero_Oficio}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
@@ -281,7 +279,7 @@ const Ticket = ({ disable_input }) => {
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Pending Reason:"
+                      label="Razón pendiente:"
                       value={ticket.PendingReason}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
@@ -347,7 +345,7 @@ const Ticket = ({ disable_input }) => {
                     <MDBox mb={1}>
                       {/* modificar link */}
                       {/* modificar ruta dinamica del link */}
-                      <a href={ticket.Files.url} target="_blank" rel="noreferrer">
+                      <a href={ticket.Files[0].url} target="_blank" rel="noreferrer">
                         <Button
                           variant="contained"
                           color="error"

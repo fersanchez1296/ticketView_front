@@ -1,4 +1,3 @@
-// Propiedades y métodos del componente de los tickets abiertos
 export interface CrearTicketProps {
   Tipo_incidencia: Object;
   Estado: Object;
@@ -7,7 +6,6 @@ export interface CrearTicketProps {
   Categoria: Object;
   Servicio: Object;
   Subcategoria: Object;
-  Secretaria?: Object;
   Direccion_general?: Object;
   Direccion_area?: Object | null;
   Descripcion: string;
@@ -54,8 +52,22 @@ export const crearTicketInitialState: CrearTicketProps = {
   Ubicacion_cliente: "",
   Correo_cliente: "",
   Dependencia_cliente: {},
-  Secretaria: {},
   Direccion_general: {},
   Direccion_area: {},
   Files: null,
+};
+
+export interface isNuevoClienteProps {
+  isNuevoCliente: boolean;
+}
+
+export interface isNuevoClienteMethods {
+  setIsNuevoCliente: (value: boolean) => void;
+  isNuevoClienteResetValues: () => void;
+}
+
+export type isNuevoClienteType = isNuevoClienteProps & isNuevoClienteMethods;
+
+export const isNuevoClienteInitialState: isNuevoClienteProps = {
+  isNuevoCliente: false,
 };

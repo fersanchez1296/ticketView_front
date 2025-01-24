@@ -97,49 +97,6 @@ const Ticket = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
-                {/*Seleccion gravedad de la incidencia*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="incidencia-grave-label">Incidencia grave</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="incidencia-grave-label"
-                        id="incidencia-grave-select"
-                        value={ticketState.Incidencia_grave}
-                        label="Incidencia grave"
-                        onChange={(e) => setCrearTicketFields("Incidencia_grave", e.target.value)}
-                      >
-                        <MenuItem value="1">Grave</MenuItem>
-                        <MenuItem value="0">No grave</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </MDBox>
-                </Grid>
-                {/*Seleccion categoria del ticket*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Categoría</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Categoria}
-                        label="Estatus"
-                        onChange={(e) => setCrearTicketFields("Categoria", e.target.value)}
-                      >
-                        {data.categorias.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Categoria}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </MDBox>
-                </Grid>
                 {/*Seleccion tipo de Estado*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>
@@ -157,54 +114,6 @@ const Ticket = ({ disable_input, data }) => {
                           return (
                             <MenuItem value={est._id} key={est._id}>
                               {est.Estado}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </MDBox>
-                </Grid>
-                {/*Seleccion tipo de Servicio*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Servicio}
-                        label="Estatus"
-                        onChange={(e) => setCrearTicketFields("Servicio", e.target.value)}
-                      >
-                        {data.servicios.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Servicio}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </MDBox>
-                </Grid>
-                {/*Seleccion tipo de subcategoria*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Subcategoría</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Subcategoria}
-                        label="Estatus"
-                        onChange={(e) => setCrearTicketFields("Subcategoria", e.target.value)}
-                      >
-                        {data.subcategoria.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Subcategoria}
                             </MenuItem>
                           );
                         })}
@@ -251,6 +160,78 @@ const Ticket = ({ disable_input, data }) => {
                             );
                             return null; // O alguna forma de manejar esta situación
                           }
+                        })}
+                      </Select>
+                    </FormControl>
+                  </MDBox>
+                </Grid>
+                {/*Seleccion tipo de Servicio*/}
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticketState.Servicio}
+                        label="Estatus"
+                        onChange={(e) => setCrearTicketFields("Servicio", e.target.value)}
+                      >
+                        {data.servicios.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Servicio}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </MDBox>
+                </Grid>
+                {/*Seleccion categoria del ticket*/}
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Categoría</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticketState.Categoria}
+                        label="Estatus"
+                        onChange={(e) => setCrearTicketFields("Categoria", e.target.value)}
+                      >
+                        {data.categorias.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Categoria}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </MDBox>
+                </Grid>
+                {/*Seleccion tipo de subcategoria*/}
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Subcategoría</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={ticketState.Subcategoria}
+                        label="Estatus"
+                        onChange={(e) => setCrearTicketFields("Subcategoria", e.target.value)}
+                      >
+                        {data.subcategoria.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Subcategoria}
+                            </MenuItem>
+                          );
                         })}
                       </Select>
                     </FormControl>
