@@ -63,7 +63,7 @@ const Resolver = () => {
   const resolverTicket = async () => {
     const formData = new FormData();
     try {
-      formData.append("resolverTicketStore", JSON.stringify(resolverTicketStore));
+      formData.append("ticketData", JSON.stringify(resolverTicketStore));
       if (resolverTicketStore.Files instanceof File) {
         formData.append("file", resolverTicketStore.Files);
       }
@@ -74,6 +74,7 @@ const Resolver = () => {
         return result;
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
+        closeWindowResolver();
         resolverTicketStore.resolverTicketResetValues();
         return result;
       }

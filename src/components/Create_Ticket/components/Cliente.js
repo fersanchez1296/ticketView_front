@@ -57,7 +57,10 @@ const Cliente = ({ disable_input, data }) => {
         return result;
       }
     } catch (error) {
-      console.log(error);
+      openErrorSB(
+        "Ocurrió un error inesperado al actualizar el ticket.",
+        `Status: ${result.error.status}`
+      );
     }
   };
 
