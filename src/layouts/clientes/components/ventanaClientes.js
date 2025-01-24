@@ -50,7 +50,8 @@ const VentanaClientes = () => {
   if (isLoading) {
     return <div>Cargando...</div>;
   }
-
+  console.log("Ventana Cliente");
+  console.log(data);
   const guardarCliente = async () => {
     if (!clientesStore.isEdit) {
       const result = await postCliente({ body: clientesStore });
@@ -255,13 +256,13 @@ const VentanaClientes = () => {
                                 clientesStore.setClientesFields("Secretaria", e.target.value)
                               }
                             >
-                              {data.secretarias.map((est) => {
+                              {/* {data.secretarias.map((est) => {
                                 return (
                                   <MenuItem value={est._id} key={est._id}>
                                     {est.Secretaria}
                                   </MenuItem>
                                 );
-                              })}
+                              })} */}
                             </Select>
                           </FormControl>
                         ) : (

@@ -205,13 +205,13 @@ const NuevoCliente = () => {
                               clientesStore.setClientesFields("Secretaria", e.target.value)
                             }
                           >
-                            {data.secretarias.map((est) => {
+                            {/* {data.secretarias.map((est) => {
                               return (
                                 <MenuItem value={est._id} key={est._id}>
                                   {est.Secretaria}
                                 </MenuItem>
                               );
-                            })}
+                            })} */}
                           </Select>
                         </FormControl>
                       ) : (

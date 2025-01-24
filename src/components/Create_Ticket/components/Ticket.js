@@ -31,6 +31,7 @@ const Ticket = ({ disable_input, data }) => {
   const ticketState = useCrearTicketStore();
   //const [file, setFile] = React.useState(null);
   const setCrearTicketFields = useCrearTicketStore((state) => state.setCrearTicketFields);
+  console.log(data);
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
