@@ -18,13 +18,15 @@ import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import { usePutAceptarResolucionMutation } from "api";
 const AceptarCard = () => {
   const ticket = useTicketStore();
+  const ticketId = useTicketStore((state) => state._id);
+  const resolutor = useTicketStore((state) => state.Resuelto_por.Nombre);
   const [aceptar, { isLoading }] = usePutAceptarResolucionMutation();
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const closeWindowAceptar = useDialogStore((state) => state.closeWindowAceptar);
   const aceptarResolucion = async () => {
-    console.log(ticket);
+    console.log(ticketId, resolutor);
     // try {
-    //   const result = await aceptar({ _id: ticket._id });
+    //   const result = await aceptar({ ticketId, resolutor });
     //   console.log(result);
     //   if (result.error) {
     //     openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);

@@ -118,14 +118,12 @@ export const apiSlice = createApi({
       invalidatesTags: ["Tickets"],
     }),
     putAceptarResolucion: builder.mutation({
-      query: ({ _id }) => {
-        const url = `tickets/resolver/aceptar`;
+      query: ({ ticketId, resolutor }) => {
+        const url = `tickets/resolver/aceptar/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: {
-            _id,
-          },
+          body: resolutor,
         };
       },
       invalidatesTags: ["Tickets"],
