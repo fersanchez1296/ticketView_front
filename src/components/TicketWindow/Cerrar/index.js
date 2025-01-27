@@ -9,202 +9,65 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
-//api hook
-//import { usePostDocumentoMutation } from "api/api.slice";
-//card components
-import Ticket from "../components/Ticket";
-
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { styled } from "@mui/material/styles";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useCerrarTicketStore } from "./store/cerrarTicket.store.ts";
 import { useCerrarTicketMutation } from "api";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const steps = ["Cerrar Ticket"];
-
-const CerrarCard = () => {
-  const ticket = useTicketStore();
-  const setTicketFields = useTicketStore((state) => state.setTicketFields);
-  return (
-    <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
-      <Grid xs={12}>
-        <Card>
-          <MDBox
-            variant="gradient"
-            bgColor="primary"
-            borderRadius="lg"
-            coloredShadow="info"
-            mx={2}
-            mt={-3}
-            p={2}
-            mb={1}
-            textAlign="center"
-          >
-            <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Cerrar Ticket
-            </MDTypography>
-          </MDBox>
-          <MDBox pt={4} pb={3} px={3}>
-            <MDBox component="form" role="form">
-              <Grid container spacing={3}>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Número oficio:"
-                      value={ticket.Numero_Oficio}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Cerrado Por:"
-                      value={ticket.Cerrado_por.Nombre}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={true}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Resuelto Por:"
-                      value={ticket.Resuelto_por.Nombre}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={true}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Causa:"
-                      value={ticket.Causa}
-                      onChange={(e) => setTicketFields("Causa", e.target.value)}
-                      fullWidth
-                      required
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Fecha y hora de Cierre:"
-                      value={ticket.Fecha_hora_cierre}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={true}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={12}>
-                  <MDBox mb={2}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Descripción de cierre"
-                      multiline
-                      value={ticket.Descripcion_cierre}
-                      onChange={(e) => setTicketFields("Descripcion_cierre", e.target.value)}
-                      rows={5.2}
-                      sx={{ width: "100%" }}
-                    />
-                  </MDBox>
-                </Grid>
-              </Grid>
-            </MDBox>
-          </MDBox>
-        </Card>
-      </Grid>
-    </Grid>
-  );
-};
 
 const Cerrar = () => {
   const [closeTicket] = useCerrarTicketMutation();
   const isWindowCloseTicketOpen = useDialogStore((state) => state.isWindowCloseTicketOpen);
   const closeWindowCloseTicket = useDialogStore((state) => state.closeWindowCloseTicket);
-  const ticketState = useTicketStore();
+  const cerrarTicketStore = useCerrarTicketStore();
+  const descripcion_cierre_resolutor = useTicketStore((state) => state.Respuesta_cierre_reasignado);
+  const ticketId = useTicketStore((state) => state._id);
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+  const handleFileChange = (event) => {
+    const archivos = Array.from(event.target.files);
+    cerrarTicketStore.cerrarTicketSetFiles(archivos[0]);
   };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return <CerrarCard />;
-      default:
-        return "Unknown step";
-    }
-  }
-
-  const cerrarTicket = async (req, res) => {
+  const cerrarTicket = async () => {
+    const formData = new FormData();
     try {
-      const respuesta = await closeTicket({
-        _id: ticketState._id,
-        Descripcion_cierre: ticketState.Descripcion_cierre,
-        Causa: ticketState.Causa,
-      });
-      if (respuesta.error) {
-        openErrorSB(respuesta.error.data.desc, `Status: ${respuesta.error.status}`);
-      } else {
-        openSuccessSB(respuesta.data.desc, `Status: 200`);
+      formData.append("ticketData", JSON.stringify(cerrarTicketStore));
+      if (cerrarTicketStore.Files instanceof File) {
+        formData.append("file", cerrarTicketStore.Files);
       }
-      setTimeout(() => {
-        ticketState.resetValues();
+      const result = await closeTicket({ ticketId, formData });
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
         closeWindowCloseTicket();
-      }, 2000);
+        cerrarTicketStore.cerrarTicketResetValues();
+      }
     } catch (error) {
-      console.log(error);
+      openErrorSB("Ocurrio un error al cerrar el ticket.", `Status: 500`);
     }
   };
 
@@ -214,8 +77,7 @@ const Cerrar = () => {
         fullScreen
         open={isWindowCloseTicketOpen}
         onClose={() => {
-          handleReset();
-          ticketState.resetValues();
+          cerrarTicketStore.cerrarTicketResetValues();
           closeWindowCloseTicket();
         }}
         TransitionComponent={Transition}
@@ -226,8 +88,7 @@ const Cerrar = () => {
               edge="start"
               color="inherit"
               onClick={() => {
-                handleReset();
-                ticketState.resetValues();
+                cerrarTicketStore.cerrarTicketResetValues();
                 closeWindowCloseTicket();
               }}
               aria-label="close"
@@ -243,51 +104,145 @@ const Cerrar = () => {
               endIcon={<SaveIcon />}
               sx={{ border: "1px solid green" }}
               onClick={cerrarTicket}
-              //disabled={true}
+              disabled={
+                cerrarTicketStore.Causa === "" || cerrarTicketStore.Descripcion_cierre === ""
+                  ? true
+                  : false
+              }
             >
               Cerrar Ticket
             </Button>
           </Toolbar>
         </AppBar>
-        <Box sx={{ width: "100%" }}>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-              Atras
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-
-            {activeStep !== steps.length && (
-              <Button
-                onClick={handleNext}
-                disabled={activeStep === steps.length - 1 ? true : false}
+        <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+          <Grid xs={12}>
+            <Card>
+              <MDBox
+                variant="gradient"
+                bgColor="primary"
+                borderRadius="lg"
+                coloredShadow="info"
+                mx={2}
+                mt={-3}
+                p={2}
+                mb={1}
+                textAlign="center"
               >
-                Siguiente
-              </Button>
-            )}
-          </Box>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>No hay más por ver</Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
-          )}
-        </Box>
+                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                  Cerrar Ticket
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={4} pb={3} px={3}>
+                <MDBox component="form" role="form">
+                  <Grid container spacing={3}>
+                    {/* Oficio de cierre */}
+                    <Grid xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput
+                          type="text"
+                          label="Número de oficio de cierre:"
+                          value={cerrarTicketStore.Numero_Oficio}
+                          onChange={(e) =>
+                            cerrarTicketStore.setCerrarTicketFields("Numero_Oficio", e.target.value)
+                          }
+                          fullWidth
+                          required
+                        />
+                      </MDBox>
+                    </Grid>
+                    {/* Causa de cierre */}
+                    <Grid xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput
+                          type="text"
+                          label="Causa de cierre:"
+                          value={cerrarTicketStore.Causa}
+                          onChange={(e) =>
+                            cerrarTicketStore.setCerrarTicketFields("Causa", e.target.value)
+                          }
+                          fullWidth
+                          required
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={12}>
+                      <MDBox mb={2}>
+                        <TextField
+                          id="outlined-multiline-static"
+                          label="Descripción de cierre del resolutor"
+                          multiline
+                          disabled
+                          value={descripcion_cierre_resolutor}
+                          rows={5.2}
+                          sx={{ width: "100%" }}
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={12}>
+                      <MDBox mb={2}>
+                        <TextField
+                          id="outlined-multiline-static"
+                          label="Descripción de cierre"
+                          multiline
+                          value={cerrarTicketStore.Descripcion_cierre}
+                          onChange={(e) =>
+                            cerrarTicketStore.setCerrarTicketFields(
+                              "Descripcion_cierre",
+                              e.target.value
+                            )
+                          }
+                          rows={5.2}
+                          sx={{ width: "100%" }}
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={12}>
+                      <MDBox mb={2}>
+                        <Button
+                          component="label"
+                          variant="contained"
+                          tabIndex={-1}
+                          startIcon={<CloudUploadIcon color="white" />}
+                          disabled={cerrarTicketStore.Files ? true : false}
+                          sx={{
+                            color: "white",
+                            backgroundColor: "#1976d2",
+                            "&:hover": {
+                              backgroundColor: "#1565c0",
+                            },
+                          }}
+                        >
+                          <MDTypography color="white">
+                            {cerrarTicketStore.Files
+                              ? cerrarTicketStore.Files.name
+                              : "Subir Archivos"}
+                          </MDTypography>
+                          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+                        </Button>
+                      </MDBox>
+                    </Grid>
+                    {cerrarTicketStore.Files ? (
+                      <Grid item>
+                        <MDBox mb={2}>
+                          <Button
+                            variant="contained"
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            onClick={() => {
+                              cerrarTicketStore.cerrarTicketSetFiles(null);
+                            }}
+                          >
+                            <MDTypography color="black">Eliminar Archivo</MDTypography>
+                          </Button>
+                        </MDBox>
+                      </Grid>
+                    ) : null}
+                  </Grid>
+                </MDBox>
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
       </Dialog>
     </React.Fragment>
   );

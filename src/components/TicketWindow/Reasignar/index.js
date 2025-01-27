@@ -24,13 +24,13 @@ import MDTypography from "components/MDTypography";
 import Card from "@mui/material/Card";
 //api hook
 import { usePutReasignarMutation } from "api/index";
-//card components
-import CardUsers from "./components/index";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useReasignarTicketStore } from "./store/reasignarTicket.store.ts";
 import { useGetUsuariosQuery } from "api";
+import { arSA } from "@mui/material/locale";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -40,46 +40,39 @@ const Reasignar = () => {
   const { data, isLoading } = useGetUsuariosQuery();
   const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
   const closeWindowReasignar = useDialogStore((state) => state.closeWindowReasignar);
-  const ticketState = useTicketStore();
+  const reasignarTicketStore = useReasignarTicketStore();
+  const ticketId = useTicketStore((state) => state._id);
+  const vistoBueno = useReasignarTicketStore((state) => state.vistoBueno);
+  const [modificarTiempo, setModificarTiempo] = React.useState(false);
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const [value, setValue] = React.useState(null);
   if (isLoading) return <p>Cargando...</p>;
 
   const reasignarTicket = async () => {
     try {
-      const result = await putReasignar({
-        id_usuario_reasignar: value._id,
-        id_ticket: ticketState._id,
-      });
-      console.log("resultado de reasignar ticket", result);
+      const result = await putReasignar({ reasignarTicketStore, ticketId });
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
       }
       setTimeout(() => {
-        ticketState.resetValues();
+        reasignarTicketStore.reasignarTicketResetValues();
+        reasignarTicketStore.reasignarTicketResetValues();
         closeWindowReasignar();
       }, 2000);
     } catch (error) {
-      console.log(error);
+      openErrorSB("Ocurrio un error inesperado al reasignar el ticket.", `Status: 200`);
     }
   };
 
-  const options = data.AREASRESOLUTORES.flatMap((areaObj) =>
-    areaObj.resolutores.map((resolutor) => ({
-      ...resolutor,
-      area: areaObj.area.toUpperCase(),
-    }))
-  );
-  console.log(data);
   return (
     <React.Fragment>
       <Dialog
         fullScreen
         open={isWindowReasignarOpen}
         onClose={() => {
-          ticketState.resetValues();
+          reasignarTicketStore.reasignarTicketResetValues();
           closeWindowReasignar();
         }}
         TransitionComponent={Transition}
@@ -90,7 +83,7 @@ const Reasignar = () => {
               edge="start"
               color="inherit"
               onClick={() => {
-                ticketState.resetValues();
+                reasignarTicketStore.reasignarTicketResetValues();
                 closeWindowReasignar();
               }}
               aria-label="close"
@@ -106,7 +99,7 @@ const Reasignar = () => {
               endIcon={<SaveIcon />}
               sx={{ border: "1px dashed green" }}
               onClick={reasignarTicket}
-              disabled={value == null ? true : false}
+              disabled={reasignarTicketStore.Reasignado_a === "" ? true : false}
             >
               Reasignar Ticket
             </Button>
@@ -133,51 +126,15 @@ const Reasignar = () => {
               <MDBox pt={4} pb={3} px={3}>
                 <Grid
                   spacing={2}
-                  sx={{ mt: 5, display: "flex", flexDirection: "row", justifyContent: "center" }}
+                  sx={{
+                    mt: 5,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "0.8rem",
+                  }}
                 >
-                  {/* {ticketState.Reasignado_a ? (
-                    <Typography sx={{ flex: 1.5 }} variant="body1" component="p">
-                      El ticket ya se encuentra reasignado a : {ticketState.Reasignado_a.Nombre}
-                    </Typography>
-                  ) : null} */}
-                  <Grid xs={12}>
-                    <FormControl sx={{ width: 500 }}>
-                      <InputLabel htmlFor="grouped-native-select">Prioridad</InputLabel>
-                      <Select
-                        native
-                        defaultValue=""
-                        id="grouped-native-select"
-                        label="Prioridad"
-                        onChange={(e) => {
-                          const [prioridad, tiempo] = e.target.value.split("|");
-                          setTicketFields("Prioridad", prioridad);
-                          setTicketFields("Fecha_limite_resolucion_SLA", tiempo);
-                          setTicketFields("Fecha_limite_respuesta_SLA", tiempo);
-                        }}
-                      >
-                        <option aria-label="None" value="" />
-                        {data.prioridades.map((prioridad) => {
-                          if (prioridad.Tiempo_respuesta) {
-                            return (
-                              <optgroup label={prioridad.Descripcion} key={prioridad._id}>
-                                {prioridad.Tiempo_respuesta.map((t, index) => (
-                                  <option value={`${prioridad._id}|${t}`} key={index}>
-                                    {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
-                                  </option>
-                                ))}
-                              </optgroup>
-                            );
-                          } else {
-                            console.error(
-                              "Tiempo_respuesta no está definido en prioridad:",
-                              prioridad
-                            );
-                            return null; // O alguna forma de manejar esta situación
-                          }
-                        })}
-                      </Select>
-                    </FormControl>
-                  </Grid>
                   <Grid xs={12}>
                     <FormControl sx={{ width: 500 }}>
                       <InputLabel htmlFor="grouped-native-select">Reasignar a</InputLabel>
@@ -187,27 +144,36 @@ const Reasignar = () => {
                         id="grouped-native-select"
                         label="Reasignar a"
                         onChange={(e) => {
-                          const [area, resol] = e.target.value.split("|");
-                          setTicketFields("area", area);
-                          setTicketFields("Fecha_limite_resolucion_SLA", resol);
-                          setTicketFields("Fecha_limite_respuesta_SLA", resol);
+                          const [reasignado_a, area_id, correo, nombre] = e.target.value.split("|");
+                          reasignarTicketStore.setReasignarTicketFields(
+                            "Reasignado_a",
+                            reasignado_a
+                          ); // ID del resolutor
+                          reasignarTicketStore.setReasignarTicketFields(
+                            "Area_reasignado_a",
+                            area_id
+                          ); // ID del área
+                          reasignarTicketStore.setReasignarTicketFields("Correo", correo); // Correo
+                          reasignarTicketStore.setReasignarTicketFields("Nombre", nombre); // Nombre
                         }}
                       >
                         <option aria-label="None" value="" />
                         {data.AREASRESOLUTORES.map((area) => {
                           if (area) {
                             return (
-                              <optgroup label={area.area} key={area.area}>
+                              <optgroup label={area.area.area} key={area.area._id}>
                                 {area.resolutores.map((t, index) => (
-                                  <option value={`${t.Nombre}|${t}`} key={index}>
+                                  <option
+                                    value={`${t._id}|${area.area._id}|${t.Correo}|${t.Nombre}`}
+                                    key={index}
+                                  >
                                     {t.Nombre}
                                   </option>
                                 ))}
                               </optgroup>
                             );
                           } else {
-                            console.error("Tiempo_respuesta no está definido en prioridad:");
-                            return null; // O alguna forma de manejar esta situación
+                            return null;
                           }
                         })}
                       </Select>
@@ -215,10 +181,86 @@ const Reasignar = () => {
                   </Grid>
                   <Grid xs={12}>
                     <FormControlLabel
-                      control={<Switch name="vistoBueno" />}
-                      // control={
-                      //   <Switch checked={state.gilad} onChange={handleChange} name="gilad" />
-                      // }
+                      control={
+                        <Switch
+                          checked={modificarTiempo}
+                          onChange={() =>
+                            setModificarTiempo((prev) => {
+                              if (prev) {
+                                reasignarTicketStore.setReasignarTicketFields("Prioridad", "");
+                                reasignarTicketStore.setReasignarTicketFields(
+                                  "Fecha_limite_resolucion_SLA",
+                                  ""
+                                );
+                                reasignarTicketStore.setReasignarTicketFields(
+                                  "Fecha_limite_respuesta_SLA",
+                                  ""
+                                );
+                              }
+                              return !prev;
+                            })
+                          }
+                          name="tiempoRespuesta"
+                        />
+                      }
+                      label="Modificar tiempo resolución"
+                    />
+                  </Grid>
+                  {modificarTiempo ? (
+                    <Grid xs={12} sx={{ display: modificarTiempo ? "block" : "none" }}>
+                      <FormControl sx={{ width: 500 }}>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Tiempo de resolución
+                        </InputLabel>
+                        <Select
+                          native
+                          defaultValue=""
+                          id="grouped-native-select"
+                          label="Tiempo de resolución"
+                          onChange={(e) => {
+                            const [prioridad, tiempo] = e.target.value.split("|");
+                            reasignarTicketStore.setReasignarTicketFields("Prioridad", prioridad);
+                            reasignarTicketStore.setReasignarTicketFields(
+                              "Fecha_limite_resolucion_SLA",
+                              tiempo
+                            );
+                            reasignarTicketStore.setReasignarTicketFields(
+                              "Fecha_limite_respuesta_SLA",
+                              tiempo
+                            );
+                          }}
+                        >
+                          <option aria-label="None" value="" />
+                          {data.prioridades.map((prioridad) => {
+                            if (prioridad.Tiempo_respuesta) {
+                              return (
+                                <optgroup label={prioridad.Descripcion} key={prioridad._id}>
+                                  {prioridad.Tiempo_respuesta.map((t, index) => (
+                                    <option value={`${prioridad._id}|${t}`} key={index}>
+                                      {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
+                                    </option>
+                                  ))}
+                                </optgroup>
+                              );
+                            } else {
+                              return null;
+                            }
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                  ) : null}
+                  <Grid xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={vistoBueno}
+                          onChange={() =>
+                            reasignarTicketStore.setReasignarTicketFields("vistoBueno", !vistoBueno)
+                          }
+                          name="vistoBueno"
+                        />
+                      }
                       label="Visto Bueno"
                     />
                   </Grid>

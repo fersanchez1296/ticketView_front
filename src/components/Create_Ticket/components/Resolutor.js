@@ -29,7 +29,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 //api hook
 import { useGetUsuariosQuery } from "api/index";
 //store
-import { useTicketStore } from "zustand/index.ts";
+import { useCrearTicketStore } from "../store/crearTicket.store.ts";
 //proptypes
 import PropTypes from "prop-types";
 //json
@@ -37,7 +37,7 @@ import estados from "catalogs/estatus.json";
 
 {
   /**const Resolutor = ({ disable_input, data }) => {
-  const ticket = useTicketStore();
+  const ticket = useCrearTicketStore();
   console.log(data);*/
 }
 function CustomTabPanel(props) {
@@ -63,7 +63,7 @@ CustomTabPanel.propTypes = {
 };
 const Resolutor = ({ data }) => {
   //const { data, isLoading } = useGetUsuariosQuery();
-  const ticketState = useTicketStore();
+  const crearTicketStore = useCrearTicketStore();
   const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
   const [value, setValue] = React.useState(0);
   const options = data.areasResolutores.flatMap((areaObj) =>
@@ -72,19 +72,6 @@ const Resolutor = ({ data }) => {
       area: areaObj.area.toUpperCase(), // Incluye el área en mayúsculas para agrupar.
     }))
   );
-
-  const resolutorSeleccionado = (e) => {
-    e.preventDefault();
-    setIdResolutorSeleccionado(e.target.value);
-  };
-
-  const reasignarTicket = () => {
-    console.log(idResolutorSeleccionado);
-  };
-
-  const handleReset = () => {
-    setValue(0);
-  };
 
   return (
     <React.Fragment>
@@ -126,7 +113,7 @@ const Resolutor = ({ data }) => {
                   renderInput={(params) => <TextField {...params} label="Asignar a:" />}
                   onChange={(event, value) => {
                     setValue(value); // Guarda el valor seleccionado en el estado.
-                    ticketState.setTicketFields("Asignado_a", value);
+                    crearTicketStore.setCrearTicketFields("Asignado_a", value);
                   }}
                 />
               </Box>

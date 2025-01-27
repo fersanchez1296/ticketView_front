@@ -68,7 +68,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Dependencia:"
-                      value={ticket.Dependencia_cliente}
+                      value={ticket.Dependencia_cliente.Dependencia}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -82,19 +82,6 @@ const Cliente = ({ disable_input }) => {
                       type="text"
                       label="Correo del cliente:"
                       value={ticket.Correo_cliente}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={3}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Secretaría:"
-                      value={ticket.Secretaria.Secretaria}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -124,6 +111,19 @@ const Cliente = ({ disable_input }) => {
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={12}>
+                  <MDBox mb={2} sx={{ width: "100%" }}>
+                    <TextField
+                      id="outlined-multiline-static"
+                      label="Ubicación del cliente:"
+                      multiline
+                      value={ticket.Ubicacion_cliente}
+                      rows={10}
+                      sx={{ width: "100%" }}
                       disabled={disable_input}
                     />
                   </MDBox>

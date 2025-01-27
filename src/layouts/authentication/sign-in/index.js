@@ -66,10 +66,20 @@ function Basic() {
   const setAuth = useAuthStore((state) => state.setAuth);
   const setRole = useAuthStore((state) => state.setRole);
   const setNombre = useAuthStore((state) => state.setNombre);
+  const [keyPressed, setKeyPressed] = useState("");
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-
+  React.useEffect(() => {
+    document.addEventListener("keyup", handleKeyDown);
+    return () => document.removeEventListener("keyup", handleKeyDown);
+  }, []);
   const handleChange = (input, value) => {
     input === "user" ? setUser(value) : setPassword(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      signin(event);
+    }
   };
 
   function getCookie(name) {
@@ -84,7 +94,7 @@ function Basic() {
   }
 
   const signin = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       const response = await login({ Username, Password });
       if (response.error) {
@@ -141,7 +151,13 @@ function Basic() {
               />
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" onClick={(e) => signin(e)} fullWidth>
+              <MDButton
+                variant="gradient"
+                color="info"
+                onClick={(e) => signin(e)}
+                onKeyDown={handleKeyDown}
+                fullWidth
+              >
                 Iniciar Sesión
               </MDButton>
             </MDBox>

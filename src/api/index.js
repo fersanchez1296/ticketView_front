@@ -4,11 +4,11 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //desarrollo
-    //baseUrl: "http://localhost:4000/api/",
-    baseUrl: `http://172.16.1.13:4000/api/v1/`,
+    baseUrl: "http://localhost:4000/api/v1/",
+    //baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
-  tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion"],
+  tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion", "Clientes"],
   endpoints: (builder) => ({
     //dashboard
     dashboard: builder.query({
@@ -79,57 +79,51 @@ export const apiSlice = createApi({
       providesTags: ["Usuarios", "Tickets"],
     }),
     putReasignar: builder.mutation({
-      query: ({ id_usuario_reasignar, id_ticket }) => {
-        const url = `tickets/reasignar`;
+      query: ({ reasignarTicketStore, ticketId }) => {
+        console.log(ticketId);
+        const url = `tickets/reasignar/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: {
-            id_usuario_reasignar,
-            id_ticket,
-          },
+          body: reasignarTicketStore,
         };
       },
       invalidatesTags: ["Tickets"],
     }),
     //RESOLVER
     putResolver: builder.mutation({
-      query: ({ _id, Descripcion_resolucion }) => {
-        const url = `tickets/resolver`;
+      query: ({ formData, ticketId }) => {
+        const url = `tickets/resolver/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: {
-            _id,
-            Descripcion_resolucion,
-          },
+          body: formData,
+          formData: true,
         };
       },
       invalidatesTags: ["Tickets"],
     }),
     putRechazarResolucion: builder.mutation({
-      query: ({ _id, motivo_rechazo }) => {
-        const url = `tickets/resolver/rechazar`;
+      query: ({ ticketId, feedback, Nombre }) => {
+        const url = `tickets/resolver/rechazar/${ticketId}`;
         return {
           url,
           method: "PUT",
           body: {
-            _id,
-            motivo_rechazo,
+            feedback,
+            Nombre,
           },
         };
       },
       invalidatesTags: ["Tickets"],
     }),
     putAceptarResolucion: builder.mutation({
-      query: ({ _id }) => {
-        const url = `tickets/resolver/aceptar`;
+      query: ({ ticketId, Nombre }) => {
+        const url = `tickets/resolver/aceptar/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: {
-            _id,
-          },
+          body: { Nombre },
         };
       },
       invalidatesTags: ["Tickets"],
@@ -224,17 +218,6 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
-    //Usuarios --cambiar nombre
-    getAllUsuarios: builder.query({
-      query: () => {
-        const url = `users/`;
-        return {
-          url,
-          method: "GET",
-        };
-      },
-      providesTags: ["Usuarios"],
-    }),
     updateEstadoUsuarios: builder.mutation({
       query: ({ estado, userId }) => {
         const url = `users/${userId}`;
@@ -247,15 +230,115 @@ export const apiSlice = createApi({
       providesTags: ["Usuarios"],
     }),
     cerrarTicket: builder.mutation({
-      query: ({ _id, Descripcion_cierre, Causa }) => {
-        const url = `tickets/cerrar`;
+      query: ({ ticketId, formData }) => {
+        const url = `tickets/cerrar/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: { _id, Descripcion_cierre, Causa },
+          body: formData,
+          formData: true,
         };
       },
-      providesTags: ["Tickets"],
+      invalidatesTags: ["Tickets"],
+    }),
+    //clientes
+    postCliente: builder.mutation({
+      query: ({ body }) => {
+        const url = `clients/`;
+        return {
+          url,
+          body,
+          method: "POST",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getAllClientes: builder.query({
+      query: () => {
+        const url = `clients/`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getCliente: builder.query({
+      query: ({ Correo }) => {
+        const url = `clients/${Correo}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    getSelectDataClientes: builder.query({
+      query: () => {
+        const url = `clients/selectData`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    updateCliente: builder.mutation({
+      query: ({ body, clientId }) => {
+        const url = `clients/${clientId}`;
+        return {
+          url,
+          method: "PUT",
+          body,
+        };
+      },
+      providesTags: ["Clientes"],
+    }),
+    //Crear Usuario
+    crearUsuario: builder.mutation({
+      query: (userStore) => ({
+        url: "users/crear",
+        method: "POST",
+        body: userStore,
+      }),
+    }),
+    //Editar estado Usuario
+    editarUsuario: builder.mutation({
+      query: ({ userStore, id }) => ({
+        url: `users/${id}`,
+        method: "PUT",
+        body: userStore,
+      }),
+    }),
+    //Editar Usuario
+    updateUsuario: builder.mutation({
+      query: ({ userStore, id }) => ({
+        url: `users/editar/${id}`,
+        method: "PUT",
+        body: userStore,
+      }),
+    }),
+    //Usuarios --cambiar nombre
+    getAllUsuarios: builder.query({
+      query: () => {
+        const url = `users/`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
+    }),
+    //Roles de usuarios
+    getSelectRol: builder.query({
+      query: () => {
+        const url = `users/usuarios/roles`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
     }),
   }),
   keepUnusedDataFor: 300,
@@ -282,6 +365,15 @@ export const {
   usePutAceptarResolucionMutation,
   usePutReabrirMutation,
   useGetAllUsuariosQuery,
+  useGetSelectRolQuery,
   useUpdateEstadoUsuariosMutation,
   useCerrarTicketMutation,
+  useGetAllClientesQuery,
+  useUpdateClienteMutation,
+  useGetSelectDataClientesQuery,
+  useLazyGetClienteQuery,
+  usePostClienteMutation,
+  useCrearUsuarioMutation,
+  useEditarUsuarioMutation,
+  useUpdateUsuarioMutation,
 } = apiSlice;

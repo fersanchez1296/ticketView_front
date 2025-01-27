@@ -71,30 +71,6 @@ const Cliente = ({ disable_input, data }) => {
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
               <Grid container spacing={3}>
-                {/*Seleccion secretaria*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Secretaría</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Secretaria._id}
-                        label="Secretaría"
-                        onChange={(e) => setTicketFields("Secretaria", e.target.value)}
-                      >
-                        {data.secretarias.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Secretaria}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </MDBox>
-                </Grid>
                 {/*Seleccion Dirección general*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>

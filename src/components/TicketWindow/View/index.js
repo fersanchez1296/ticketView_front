@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 //mui library component
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -20,6 +20,12 @@ import Resolutor from "../components/Resolutor";
 import Reasignado from "../components/Reasignado";
 import Cliente from "../components/Cliente";
 import HistoriaTicket from "../components/HistoriaTicket";
+const LazyArchivos = lazy(() => import("../components/Archivos"));
+const LazyHistoriaTicket = lazy(() => import("../components/HistoriaTicket"));
+const LazyCliente = lazy(() => import("../components/Cliente"));
+const LazyReasignado = lazy(() => import("../components/Reasignado"));
+const LazyResolutor = lazy(() => import("../components/Resolutor"));
+const LazyTicket = lazy(() => import("../components/Ticket"));
 //animations
 import { NoData } from "components/Animation";
 
@@ -36,6 +42,7 @@ const steps = [
   "Reasignado",
   "Cliente",
   "Historia del Ticket",
+  "Archivos",
 ];
 
 const View = () => {
@@ -80,15 +87,45 @@ const View = () => {
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <Ticket disable_input={true} />;
+        return (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyTicket disable_input={true} />
+          </Suspense>
+        );
       case 1:
-        return <Resolutor disable_input={true} />;
+        return (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyResolutor disable_input={true} />
+          </Suspense>
+        );
       case 2:
-        return <Reasignado disable_input={true} />;
+        return (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyReasignado disable_input={true} />
+          </Suspense>
+        );
       case 3:
-        return <Cliente disable_input={true} />;
+        return (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyCliente disable_input={true} />
+          </Suspense>
+        );
       case 4:
-        return ticketState.Historia_ticket != [] ? <HistoriaTicket /> : <NoData />;
+        return (
+          <Suspense fallback={<div>Loading...</div>}>
+            {ticketState.Historia_ticket != [] ? (
+              <LazyHistoriaTicket disable_input={true} />
+            ) : (
+              <NoData />
+            )}
+          </Suspense>
+        );
+      case 5:
+        return (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyArchivos />
+          </Suspense>
+        );
       default:
         return "Unknown step";
     }

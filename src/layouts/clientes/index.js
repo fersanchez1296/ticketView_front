@@ -15,18 +15,10 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 // Images
 import team2 from "assets/images/team-2.jpg";
-// Data
-import abiertosTableData from "layouts/abiertos/data/abiertosTableData";
 //store
-import { useUserStore, useDialogStore } from "zustand/index.ts";
+import { useClientesStore, useDialogStore } from "zustand/index.ts";
 //api
-import { useGetAllUsuariosQuery } from "api/index";
-//mui table
-import DataTable from "components/Table/index";
-//propTypes
-import PropTypes from "prop-types";
-//view component
-import View from "components/TicketWindow/View";
+import { useGetAllClientesQuery } from "api/index";
 //Progress
 import Progress from "components/Progress";
 //snackbar
@@ -34,36 +26,28 @@ import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
 //components
 import Asignado from "./components/Asignado";
-import Cliente from "./components/Cliente";
-import Badge from "./components/Badge";
-import VentanaUsuario from "./components/ventanaUsuarios";
+import VentanaUsuario from "./components/ventanaClientes";
 import SwitchActive from "./components/switch";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-import React, { useState, useEffect } from "react";
-function Index() {
-  const isWindowUsuariosOpen = useDialogStore((state) => state.isWindowUsuariosOpen);
-  const openWindowUsuarios = useDialogStore((state) => state.openWindowUsuarios);
-  const setUserStoreFromFetch = useUserStore((state) => state.setUserFetch);
-  const resetUserStore = useUserStore((state) => state.resetUserValues);
+function Clientes() {
+  const isWindowClientesOpen = useDialogStore((state) => state.isWindowClientesOpen);
+  const openWindowClientes = useDialogStore((state) => state.openWindowClientes);
+  const setClientesStore = useClientesStore((state) => state.setClientesFetch);
+  const setClientesFields = useClientesStore((state) => state.setClientesFields);
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
-  const openSuccessSb = useSnackbarStore((state) => state.openSuccessSB);
-  const userStore = useUserStore();
-  const { data, refetch, isLoading, error } = useGetAllUsuariosQuery();
+  const { data, refetch, isLoading, error } = useGetAllClientesQuery();
+  console.log(data);
   if (isLoading) return <Progress />;
-  //   if (error) return <div>Error: Reload page</div>;
-  //Esto permitira abrir la pantalla para crear el usuario y tambien otras acciones
-  const handleClick = () => {
-    resetUserStore();
-    openWindowUsuarios();
-  };
-  const Btn_view = (user) => (
+  const Btn_view = (client) => (
     <MDButton
       color={"info"}
       variant={"contained"}
       onClick={() => {
-        setUserStoreFromFetch(user.user);
-        openWindowUsuarios();
+        console.log(client);
+        setClientesStore(client.client);
+        setClientesFields("isEdit", true);
+        openWindowClientes();
       }}
     >
       <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
@@ -73,19 +57,11 @@ function Index() {
   );
   let columns: GridColDef[] = [
     {
-      field: "visualizar",
+      field: "Editar",
       headerName: "Editar",
       hideable: false,
       width: 140,
-      renderCell: (params) => <Btn_view user={params.row} />,
-    },
-    {
-      field: "isActive",
-      headerName: "Estado",
-      width: 130,
-      renderCell: (params) => (
-        <SwitchActive isActive={params.row.isActive} userId={params.row._id} />
-      ),
+      renderCell: (params) => <Btn_view client={params.row} />,
     },
     {
       field: "Nombre",
@@ -95,20 +71,19 @@ function Index() {
         <Asignado image={team2} nombre={params.row.Nombre} dependencia={params.row.Coordinacion} />
       ),
     },
-    { field: "Username", headerName: "Username", width: 140 },
-    { field: "Correo", headerName: "Correo", width: 140 },
-    { field: "Coordinacion", headerName: "Coordinación", width: 140 },
-    { field: "Area", headerName: "Área", width: 120 },
-    { field: "Direccion_general", headerName: "Direccion General", width: 160 },
-    { field: "Dependencia", headerName: "Dependencia", width: 140 },
-    { field: "Fecha_creacion", headerName: "Fecha alta", width: 140 },
-    { field: "Fecha_baja", headerName: "Fecha baja", width: 140 },
+    { field: "Correo", headerName: "Correo", width: 200 },
+    { field: "Telext", headerName: "Teléfono", width: 200 },
+    { field: "dependenciaNombre", headerName: "Dependencia", width: 180 },
+    { field: "direccionGeneralNombre", headerName: "Direccion General", width: 180 },
+    { field: "direccionAreaNombre", headerName: "Direccion de Area", width: 180 },
   ];
-  const rows = data.map((usuario) => ({
-    ...usuario,
-    id: usuario._id,
-    Area: !usuario.Area ? "Sin areas asignadas" : usuario.Area.map((area) => area.Area),
-    Username: usuario.Username ? usuario.Username : "Sin usuario",
+  const rows = data.map((cliente) => ({
+    ...cliente,
+    id: cliente._id,
+    Telext: `${cliente.Telefono} - ext: ${cliente.Extension}`,
+    direccionAreaNombre: cliente.direccion_area.direccion_area,
+    dependenciaNombre: cliente.Dependencia.Dependencia,
+    direccionGeneralNombre: cliente.Direccion_General.Direccion_General,
   }));
   const paginationModel = { page: 0, pageSize: 10 };
   return (
@@ -122,11 +97,10 @@ function Index() {
               color="success"
               endIcon={<PersonAddIcon />}
               sx={{ border: "1px solid green" }}
-              onClick={() => {
-                handleClick();
-              }}
+              onClick={() => openWindowClientes()}
+              //disabled={value == null ? true : false}
             >
-              Crear Usuario
+              Crear Cliente
             </Button>
           </MDBox>
 
@@ -167,10 +141,9 @@ function Index() {
       </DashboardLayout>
       {successSb ? <SuccessSB /> : null}
       {errorSb ? <ErrorSB /> : null}
-      {openSuccessSb ? <openSuccessSB /> : null}
-      {isWindowUsuariosOpen ? <VentanaUsuario /> : null}
+      {isWindowClientesOpen ? <VentanaUsuario /> : null}
     </>
   );
 }
 
-export default Index;
+export default Clientes;
