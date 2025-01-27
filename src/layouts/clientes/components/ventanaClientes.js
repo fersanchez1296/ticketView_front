@@ -51,7 +51,8 @@ const VentanaClientes = () => {
   if (isLoading) {
     return <div>Cargando...</div>;
   }
-
+  console.log("Ventana Cliente");
+  console.log(data);
   const guardarCliente = async () => {
     let result;
     if (!clientesStore.isEdit) {
@@ -259,7 +260,7 @@ const VentanaClientes = () => {
                                     {est.Dependencia}
                                   </MenuItem>
                                 );
-                              })}
+                              })} */}
                             </Select>
                           </FormControl>
                         ) : (

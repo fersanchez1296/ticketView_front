@@ -37,6 +37,7 @@ function Clientes() {
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
   const { data, refetch, isLoading, error } = useGetAllClientesQuery();
+  console.log(data);
   if (isLoading) return <Progress />;
   const Btn_view = (client) => (
     <MDButton
