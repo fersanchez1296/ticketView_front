@@ -42,6 +42,8 @@ const steps = ["Información del Ticket", "Resolutor", "Cliente"];
 
 const Edit = () => {
   const { data, isLoading } = useGetInfoSelectsQuery();
+  console.log("Data");
+  console.log(data);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const resetValues = useCrearTicketStore((state) => state.crearTicketResetValues);

@@ -154,7 +154,7 @@ const NuevoCliente = () => {
                                   {est.Dependencia}
                                 </MenuItem>
                               );
-                            })}
+                            })} */}
                           </Select>
                         </FormControl>
                       ) : (

@@ -39,15 +39,24 @@ import Badge from "./components/Badge";
 import VentanaUsuario from "./components/ventanaUsuarios";
 import SwitchActive from "./components/switch";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+import React, { useState, useEffect } from "react";
 function Index() {
   const isWindowUsuariosOpen = useDialogStore((state) => state.isWindowUsuariosOpen);
   const openWindowUsuarios = useDialogStore((state) => state.openWindowUsuarios);
   const setUserStoreFromFetch = useUserStore((state) => state.setUserFetch);
+  const resetUserStore = useUserStore((state) => state.resetUserValues);
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
+  const openSuccessSb = useSnackbarStore((state) => state.openSuccessSB);
+  const userStore = useUserStore();
   const { data, refetch, isLoading, error } = useGetAllUsuariosQuery();
   if (isLoading) return <Progress />;
   //   if (error) return <div>Error: Reload page</div>;
+  //Esto permitira abrir la pantalla para crear el usuario y tambien otras acciones
+  const handleClick = () => {
+    resetUserStore();
+    openWindowUsuarios();
+  };
   const Btn_view = (user) => (
     <MDButton
       color={"info"}
@@ -65,7 +74,7 @@ function Index() {
   let columns: GridColDef[] = [
     {
       field: "visualizar",
-      headerName: "Visualizar",
+      headerName: "Editar",
       hideable: false,
       width: 140,
       renderCell: (params) => <Btn_view user={params.row} />,
@@ -113,8 +122,9 @@ function Index() {
               color="success"
               endIcon={<PersonAddIcon />}
               sx={{ border: "1px solid green" }}
-              //onClick={reasignarTicket}
-              //disabled={value == null ? true : false}
+              onClick={() => {
+                handleClick();
+              }}
             >
               Crear Usuario
             </Button>
@@ -157,6 +167,7 @@ function Index() {
       </DashboardLayout>
       {successSb ? <SuccessSB /> : null}
       {errorSb ? <ErrorSB /> : null}
+      {openSuccessSb ? <openSuccessSB /> : null}
       {isWindowUsuariosOpen ? <VentanaUsuario /> : null}
     </>
   );
