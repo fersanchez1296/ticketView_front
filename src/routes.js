@@ -89,7 +89,7 @@ const routes = [
     type: "collapse",
     name: "Nuevos",
     key: "nuevos",
-    rol: ["Root", "Administrador", "Moderador", "Usuario"],
+    rol: ["Root", "Administrador", "Moderador"],
     icon: <FeedIcon />,
     route: "/nuevos",
     component: <DataTable collection={"nuevos"} />,

@@ -37,7 +37,7 @@ export interface TicketProps {
   Ubicacion_cliente: string;
   Correo_cliente: string;
   Dependencia_cliente: Object;
-  Files?: File | null;
+  Files?: File | Array<any>;
 }
 
 export interface TicketMethods {
@@ -87,7 +87,7 @@ export const ticketInitialState: TicketProps = {
   Ubicacion_cliente: "",
   Correo_cliente: "",
   Dependencia_cliente: {},
-  Files: null,
+  Files: [],
 };
 
 export interface UserProps {

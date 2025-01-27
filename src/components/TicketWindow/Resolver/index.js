@@ -37,12 +37,14 @@ const Resolver = () => {
   const closeWindowResolver = useDialogStore((state) => state.closeWindowResolver);
   const resolverTicketStore = useResolverTicketStore();
   const ticketId = useTicketStore((state) => state._id);
+  const area_reasignado = useTicketStore((state) => state.Area_asignado._id);
   const vistoBueno = useTicketStore((state) => state.vistoBueno);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   React.useEffect(() => {
     resolverTicketStore.setResolverTicketFields("vistoBueno", vistoBueno);
+    resolverTicketStore.setResolverTicketFields("Area_reasignado_a", area_reasignado);
   }, []);
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -67,7 +69,7 @@ const Resolver = () => {
       if (resolverTicketStore.Files instanceof File) {
         formData.append("file", resolverTicketStore.Files);
       }
-      console.log(formData);
+      console.log(resolverTicketStore.Files);
       const result = await putTicket({ formData, ticketId });
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
@@ -165,7 +167,6 @@ const Resolver = () => {
                       <MDBox mb={2}>
                         <Button
                           component="label"
-                          role={undefined}
                           variant="contained"
                           tabIndex={-1}
                           startIcon={<CloudUploadIcon color="white" />}

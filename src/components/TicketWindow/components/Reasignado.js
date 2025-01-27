@@ -66,11 +66,25 @@ const Reasignado = ({ disable_input }) => {
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
-                      label="Fecha límite de respuesta según SLA:"
+                      label="Fecha límite de resolución:"
                       value={ticket.Fecha_limite_respuesta_SLA}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={12}>
+                  <MDBox mb={2} sx={{ width: "100%" }}>
+                    <TextField
+                      id="outlined-multiline-static"
+                      label="Descripción a mandar a Escritorio"
+                      multiline
+                      value={ticket.Respuesta_cierre_reasignado}
+                      rows={10}
+                      defaultValue="Sin información"
+                      sx={{ width: "100%" }}
                       disabled={disable_input}
                     />
                   </MDBox>

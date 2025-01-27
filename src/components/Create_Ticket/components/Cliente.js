@@ -46,6 +46,7 @@ const Cliente = ({ disable_input, data }) => {
         formData.append("nuevoCliente", JSON.stringify(clientesStore));
       }
       const result = await postGuardar(formData);
+      console.log(formData);
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
         return result;

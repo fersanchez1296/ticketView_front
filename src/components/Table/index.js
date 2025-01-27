@@ -103,20 +103,20 @@ export default function DataTable({ tickets, collection }) {
     </MDButton>
   );
 
-  const Btn_edit = (ticket) => (
-    <MDButton
-      color={"success"}
-      variant={"contained"}
-      onClick={() => {
-        setTicketFields(ticket.ticket);
-        openWindowEdit();
-      }}
-    >
-      <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
-        {`Editar`}
-      </MDTypography>
-    </MDButton>
-  );
+  // const Btn_edit = (ticket) => (
+  //   <MDButton
+  //     color={"success"}
+  //     variant={"contained"}
+  //     onClick={() => {
+  //       setTicketFields(ticket.ticket);
+  //       openWindowEdit();
+  //     }}
+  //   >
+  //     <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
+  //       {`Editar`}
+  //     </MDTypography>
+  //   </MDButton>
+  // );
 
   const Btn_aceptarResolucion = (ticket) => (
     <MDButton
@@ -155,16 +155,16 @@ export default function DataTable({ tickets, collection }) {
       width: 140,
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
-    ...(collection !== "cerrados" && collection !== "resueltos"
-      ? [
-          {
-            field: "editar",
-            headerName: "Editar",
-            width: 140,
-            renderCell: (params) => <Btn_edit ticket={params.row} />,
-          },
-        ]
-      : []),
+    // ...(collection !== "cerrados" && collection !== "resueltos"
+    //   ? [
+    //       {
+    //         field: "editar",
+    //         headerName: "Editar",
+    //         width: 140,
+    //         renderCell: (params) => <Btn_edit ticket={params.row} />,
+    //       },
+    //     ]
+    //   : []),
     ...(collection !== "cerrados"
       ? [
           {

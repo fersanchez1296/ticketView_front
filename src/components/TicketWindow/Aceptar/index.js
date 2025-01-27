@@ -13,59 +13,48 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+import MDInput from "components/MDInput";
+import Grid from "@mui/material/Unstable_Grid2";
+import Card from "@mui/material/Card";
+import TextField from "@mui/material/TextField";
 //api hook
-//import { usePostDocumentoMutation } from "api/api.slice";
-//card components
-import AceptarCard from "./components/index";
-
+import { usePutAceptarResolucionMutation } from "api";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
-
+//snackbar store
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const steps = ["Aceptar Resolución"];
 
 const Aceptar = () => {
   const isWindowAceptarOpen = useDialogStore((state) => state.isWindowAceptarOpen);
   const closeWindowAceptar = useDialogStore((state) => state.closeWindowAceptar);
-  const ticketState = useTicketStore();
-  //const [createDocumento] = usePostDocumentoMutation();
+  const [aceptar, { isLoading }] = usePutAceptarResolucionMutation();
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
+  const ticketStore = useTicketStore();
+  const ticketId = useTicketStore((state) => state._id);
+  const Nombre_resolutor = useTicketStore((state) => state.Resuelto_por.Nombre);
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
+  const aceptarResolucion = async () => {
+    try {
+      const result = await aceptar({ ticketId, Nombre: Nombre_resolutor });
+      console.log(result);
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+      }
+      setTimeout(() => {
+        ticketStore.resetValues();
+        closeWindowAceptar();
+      }, 2000);
+    } catch (error) {
+      openErrorSB("Ocurrió un error al procesar la solicitud.", `Status: ${result.error.status}`);
     }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
   };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return <AceptarCard />;
-      default:
-        return "Unknown step";
-    }
-  }
 
   return (
     <React.Fragment>
@@ -73,8 +62,7 @@ const Aceptar = () => {
         fullScreen
         open={isWindowAceptarOpen}
         onClose={() => {
-          handleReset();
-          ticketState.resetValues();
+          ticketStore.resetValues();
           closeWindowAceptar();
         }}
         TransitionComponent={Transition}
@@ -85,8 +73,7 @@ const Aceptar = () => {
               edge="start"
               color="inherit"
               onClick={() => {
-                handleReset();
-                ticketState.resetValues();
+                ticketStore.resetValues();
                 closeWindowAceptar();
               }}
               aria-label="close"
@@ -98,45 +85,84 @@ const Aceptar = () => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Box sx={{ width: "100%" }}>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-              Atras
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-
-            {activeStep !== steps.length && (
-              <Button
-                onClick={handleNext}
-                disabled={activeStep === steps.length - 1 ? true : false}
+        <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+          <Grid xs={12} mb={12}>
+            <Card>
+              <MDBox
+                variant="gradient"
+                bgColor="success"
+                borderRadius="lg"
+                coloredShadow="info"
+                mx={2}
+                mt={-3}
+                p={2}
+                mb={1}
+                textAlign="center"
               >
-                Siguiente
-              </Button>
-            )}
-          </Box>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>No hay más por ver</Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
-          )}
-        </Box>
+                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                  Resolución aceptada
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={4} pb={3} px={3}>
+                <MDBox component="form" role="form">
+                  <Grid container spacing={2}>
+                    <Grid xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput
+                          type="text"
+                          label="Resuelto por:"
+                          value={ticketStore.Resuelto_por.Nombre}
+                          fullWidth
+                          required
+                          disabled={true}
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={6}>
+                      <MDBox mb={2}>
+                        <MDInput
+                          type="text"
+                          label="Equipo Asignado:"
+                          value={ticketStore.Resuelto_por.Coordinacion}
+                          fullWidth
+                          required
+                          disabled={true}
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={12}>
+                      <MDBox mb={2} sx={{ width: "100%" }}>
+                        <TextField
+                          id="outlined-multiline-static"
+                          label="Descripción de cierre por el resolutor"
+                          multiline
+                          value={ticketStore.Respuesta_cierre_reasignado}
+                          rows={10}
+                          disabled={true}
+                          defaultValue="Sin información"
+                          sx={{ width: "100%" }}
+                        />
+                      </MDBox>
+                    </Grid>
+                    <Grid xs={12}>
+                      <MDBox mb={2} sx={{ width: "100%" }}>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          endIcon={<SaveIcon />}
+                          sx={{ border: `2px solid green` }}
+                          onClick={aceptarResolucion}
+                        >
+                          Enviar al Mesa de Servicio
+                        </Button>
+                      </MDBox>
+                    </Grid>
+                  </Grid>
+                </MDBox>
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
       </Dialog>
     </React.Fragment>
   );

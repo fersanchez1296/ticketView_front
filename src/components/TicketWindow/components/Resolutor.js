@@ -75,20 +75,6 @@ const Resolutor = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={12}>
-                  <MDBox mb={2} sx={{ width: "100%" }}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Descripción a mandar a Escritorio"
-                      multiline
-                      value={ticket.Respuesta_cierre_reasignado}
-                      rows={10}
-                      defaultValue="Sin información"
-                      sx={{ width: "100%" }}
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
               </Grid>
             </MDBox>
           </MDBox>

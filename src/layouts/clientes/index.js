@@ -72,19 +72,17 @@ function Clientes() {
     },
     { field: "Correo", headerName: "Correo", width: 200 },
     { field: "Telext", headerName: "Teléfono", width: 200 },
-    { field: "secretarioNombre", headerName: "Secretaria", width: 180 },
+    { field: "dependenciaNombre", headerName: "Dependencia", width: 180 },
     { field: "direccionGeneralNombre", headerName: "Direccion General", width: 180 },
     { field: "direccionAreaNombre", headerName: "Direccion de Area", width: 180 },
-    { field: "dependenciaNombre", headerName: "Dependencia", width: 180 },
   ];
   const rows = data.map((cliente) => ({
     ...cliente,
     id: cliente._id,
     Telext: `${cliente.Telefono} - ext: ${cliente.Extension}`,
-    secretarioNombre: cliente.Secretaria.Secretaria,
     direccionAreaNombre: cliente.direccion_area.direccion_area,
-    direccionGeneralNombre: cliente.Direccion_General.Direccion_General,
     dependenciaNombre: cliente.Dependencia.Dependencia,
+    direccionGeneralNombre: cliente.Direccion_General.Direccion_General,
   }));
   const paginationModel = { page: 0, pageSize: 10 };
   return (

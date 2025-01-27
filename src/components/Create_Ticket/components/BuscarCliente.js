@@ -219,50 +219,28 @@ const BuscarCliente = ({ disable_input, data }) => {
                 {/*Introducido por teclado Dependencia del cliente*/}
                 <Grid xs={6} sx={{ display: clienteExiste ? "block" : "none" }}>
                   <MDBox mb={2}>
-                    {!nuevaDependencia ? (
-                      <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Dependencia</InputLabel>
-                        <Select
-                          sx={{ minHeight: "3rem" }}
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          disabled={clienteExiste ? true : false}
-                          value={crearTicketStore.Dependencia_cliente}
-                          label="Dependencia"
-                          onChange={(e) =>
-                            crearTicketStore.setClientesFields("Dependencia", e.target.value)
-                          }
-                        >
-                          {data.dependencias.map((est) => {
-                            return (
-                              <MenuItem value={est._id} key={est._id}>
-                                {est.Dependencia}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      </FormControl>
-                    ) : (
-                      <MDInput
-                        type="text"
-                        label="Ingrese la nueva Dependencia"
-                        value={clientesStore.nuevaDependencia}
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">Dependencia</InputLabel>
+                      <Select
+                        sx={{ minHeight: "3rem" }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        disabled={clienteExiste ? true : false}
+                        value={crearTicketStore.Dependencia_cliente}
+                        label="Dependencia"
                         onChange={(e) =>
-                          clientesStore.setClientesFields("nuevaDependencia", e.target.value)
+                          crearTicketStore.setClientesFields("Dependencia", e.target.value)
                         }
-                        fullWidth
-                        required
-                      />
-                    )}
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={nuevaDependencia}
-                          onChange={(e) => setNuevaDependencia(e.target.checked)}
-                        />
-                      }
-                      label="Nueva dependencia"
-                    />
+                      >
+                        {data.dependencias.map((est) => {
+                          return (
+                            <MenuItem value={est._id} key={est._id}>
+                              {est.Dependencia}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
                   </MDBox>
                 </Grid>
                 {/*Introducido por teclado ubicacion del cliente*/}

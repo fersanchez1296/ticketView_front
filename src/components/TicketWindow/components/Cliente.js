@@ -115,6 +115,19 @@ const Cliente = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
+                <Grid xs={12}>
+                  <MDBox mb={2} sx={{ width: "100%" }}>
+                    <TextField
+                      id="outlined-multiline-static"
+                      label="Ubicación del cliente:"
+                      multiline
+                      value={ticket.Ubicacion_cliente}
+                      rows={10}
+                      sx={{ width: "100%" }}
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
               </Grid>
             </MDBox>
           </MDBox>

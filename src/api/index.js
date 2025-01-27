@@ -104,26 +104,26 @@ export const apiSlice = createApi({
       invalidatesTags: ["Tickets"],
     }),
     putRechazarResolucion: builder.mutation({
-      query: ({ _id, motivo_rechazo }) => {
-        const url = `tickets/resolver/rechazar`;
+      query: ({ ticketId, feedback, Nombre }) => {
+        const url = `tickets/resolver/rechazar/${ticketId}`;
         return {
           url,
           method: "PUT",
           body: {
-            _id,
-            motivo_rechazo,
+            feedback,
+            Nombre,
           },
         };
       },
       invalidatesTags: ["Tickets"],
     }),
     putAceptarResolucion: builder.mutation({
-      query: ({ ticketId, resolutor }) => {
+      query: ({ ticketId, Nombre }) => {
         const url = `tickets/resolver/aceptar/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: resolutor,
+          body: { Nombre },
         };
       },
       invalidatesTags: ["Tickets"],
@@ -241,15 +241,16 @@ export const apiSlice = createApi({
       providesTags: ["Usuarios"],
     }),
     cerrarTicket: builder.mutation({
-      query: ({ _id, Descripcion_cierre, Causa }) => {
-        const url = `tickets/cerrar`;
+      query: ({ ticketId, formData }) => {
+        const url = `tickets/cerrar/${ticketId}`;
         return {
           url,
           method: "PUT",
-          body: { _id, Descripcion_cierre, Causa },
+          body: formData,
+          formData: true,
         };
       },
-      providesTags: ["Tickets"],
+      invalidatesTags: ["Tickets"],
     }),
     //clientes
     postCliente: builder.mutation({
