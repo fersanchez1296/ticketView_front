@@ -53,11 +53,10 @@ const VentanaClientes = () => {
   }
 
   const guardarCliente = async () => {
-    let result;
     if (!clientesStore.isEdit) {
-      result = await postCliente({ body: clientesStore });
+      const result = await postCliente({ body: clientesStore });
     } else {
-      result = await updateCliente({
+      const result = await updateCliente({
         body: {
           nuevaDependencia: clientesStore.nuevaDependencia,
           nuevaDArea: clientesStore.nuevaDArea,

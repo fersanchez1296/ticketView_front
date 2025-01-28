@@ -15,10 +15,19 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 // Images
 import team2 from "assets/images/team-2.jpg";
+// Data
+import abiertosTableData from "layouts/abiertos/data/abiertosTableData";
 //store
-import { useClientesStore, useDialogStore } from "zustand/index.ts";
+import { useDialogStore } from "zustand/index.ts";
+import { useUserStore } from "./store/usuarios.store.ts";
 //api
-import { useGetAllClientesQuery } from "api/index";
+import { useGetAllUsuariosQuery } from "api/index";
+//mui table
+import DataTable from "components/Table/index";
+//propTypes
+import PropTypes from "prop-types";
+//view component
+import View from "components/TicketWindow/View";
 //Progress
 import Progress from "components/Progress";
 //snackbar
@@ -26,26 +35,29 @@ import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
 //components
 import Asignado from "./components/Asignado";
-import VentanaClientes from "./components/ventanaClientes";
+import Cliente from "./components/Cliente";
+import Badge from "./components/Badge";
+import VentanaUsuario from "./components/ventanaUsuarios";
 import SwitchActive from "./components/switch";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-function Clientes() {
-  const isWindowClientesOpen = useDialogStore((state) => state.isWindowClientesOpen);
-  const openWindowClientes = useDialogStore((state) => state.openWindowClientes);
-  const setClientesStore = useClientesStore((state) => state.setClientesFetch);
-  const setClientesFields = useClientesStore((state) => state.setClientesFields);
+function Index() {
+  const isWindowUsuariosOpen = useDialogStore((state) => state.isWindowUsuariosOpen);
+  const openWindowUsuarios = useDialogStore((state) => state.openWindowUsuarios);
+  const setUsuariosStore = useUserStore((state) => state.setUsuariosFetch);
+  const setUsuariosFields = useUserStore((state) => state.setUsuarioFields);
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
-  const { data, refetch, isLoading, error } = useGetAllClientesQuery();
+  const { data, refetch, isLoading, error } = useGetAllUsuariosQuery();
   if (isLoading) return <Progress />;
-  const Btn_view = (client) => (
+  //   if (error) return <div>Error: Reload page</div>;
+  const Btn_view = (user) => (
     <MDButton
       color={"info"}
       variant={"contained"}
       onClick={() => {
-        setClientesStore(client.client);
-        setClientesFields("isEdit", true);
-        openWindowClientes();
+        setUsuariosStore(user.user);
+        setUsuariosFields("isEdit", true);
+        openWindowUsuarios();
       }}
     >
       <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
@@ -55,11 +67,19 @@ function Clientes() {
   );
   let columns: GridColDef[] = [
     {
-      field: "Editar",
-      headerName: "Editar",
+      field: "visualizar",
+      headerName: "Visualizar",
       hideable: false,
       width: 140,
-      renderCell: (params) => <Btn_view client={params.row} />,
+      renderCell: (params) => <Btn_view user={params.row} />,
+    },
+    {
+      field: "isActive",
+      headerName: "Estado",
+      width: 130,
+      renderCell: (params) => (
+        <SwitchActive isActive={params.row.isActive} userId={params.row._id} />
+      ),
     },
     {
       field: "Nombre",
@@ -69,19 +89,17 @@ function Clientes() {
         <Asignado image={team2} nombre={params.row.Nombre} dependencia={params.row.Coordinacion} />
       ),
     },
-    { field: "Correo", headerName: "Correo", width: 200 },
-    { field: "Telext", headerName: "Teléfono", width: 200 },
-    { field: "dependenciaNombre", headerName: "Dependencia", width: 180 },
-    { field: "direccionGeneralNombre", headerName: "Direccion General", width: 180 },
-    { field: "direccionAreaNombre", headerName: "Direccion de Area", width: 180 },
+    { field: "Username", headerName: "Username", width: 140 },
+    { field: "Correo", headerName: "Correo", width: 140 },
+    { field: "Dependencia", headerName: "Dependencia", width: 140 },
+    { field: "Direccion_general", headerName: "Direccion General", width: 160 },
+    { field: "Area", headerName: "Área", width: 120 },
   ];
-  const rows = data.map((cliente) => ({
-    ...cliente,
-    id: cliente._id,
-    Telext: `${cliente.Telefono} - ext: ${cliente.Extension}`,
-    direccionAreaNombre: cliente.direccion_area.direccion_area,
-    dependenciaNombre: cliente.Dependencia.Dependencia,
-    direccionGeneralNombre: cliente.Direccion_General.Direccion_General,
+  const rows = data.map((usuario) => ({
+    ...usuario,
+    id: usuario._id,
+    Area: !usuario.Area ? "Sin areas asignadas" : usuario.Area.map((area) => area.Area),
+    Username: usuario.Username ? usuario.Username : "Sin usuario",
   }));
   const paginationModel = { page: 0, pageSize: 10 };
   return (
@@ -95,10 +113,10 @@ function Clientes() {
               color="success"
               endIcon={<PersonAddIcon />}
               sx={{ border: "1px solid green" }}
-              onClick={() => openWindowClientes()}
+              onClick={() => openWindowUsuarios()}
               //disabled={value == null ? true : false}
             >
-              Crear Cliente
+              Crear Usuario
             </Button>
           </MDBox>
 
@@ -139,9 +157,9 @@ function Clientes() {
       </DashboardLayout>
       {successSb ? <SuccessSB /> : null}
       {errorSb ? <ErrorSB /> : null}
-      {isWindowClientesOpen ? <VentanaClientes /> : null}
+      {isWindowUsuariosOpen ? <VentanaUsuario /> : null}
     </>
   );
 }
 
-export default Clientes;
+export default Index;

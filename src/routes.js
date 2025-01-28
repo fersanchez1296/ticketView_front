@@ -65,6 +65,7 @@ import Historico from "layouts/Historico/index";
 import FeedIcon from "@mui/icons-material/Feed";
 import Coordinacion from "layouts/coordinacion/index";
 import Usuarios from "layouts/usuarios/index";
+import Usuarios2 from "layouts/usuarios2/index";
 import Clientes from "layouts/clientes/index";
 const routes = [
   {
@@ -156,6 +157,15 @@ const routes = [
     icon: <GroupIcon />,
     route: "/usuarios",
     component: <Usuarios />,
+  },
+  {
+    type: "collapse",
+    name: "Usuarios2",
+    key: "usuarios2",
+    rol: ["Root"],
+    icon: <GroupIcon />,
+    route: "/usuarios2",
+    component: <Usuarios2 />,
   },
   {
     type: "collapse",
