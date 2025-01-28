@@ -117,6 +117,7 @@ const BuscarCliente = ({ disable_input, data }) => {
                       variant="contained"
                       color="success"
                       endIcon={<SearchIcon />}
+                      disabled={!crearTicketStore.Correo_cliente ? true : false}
                       sx={{ border: "1px dashed green" }}
                       onClick={() => buscarCliente(crearTicketStore.Correo_cliente)}
                     >

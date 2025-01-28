@@ -196,31 +196,33 @@ const Cerrar = () => {
                         />
                       </MDBox>
                     </Grid>
-                    <Grid xs={12}>
-                      <MDBox mb={2}>
-                        <Button
-                          component="label"
-                          variant="contained"
-                          tabIndex={-1}
-                          startIcon={<CloudUploadIcon color="white" />}
-                          disabled={cerrarTicketStore.Files ? true : false}
-                          sx={{
-                            color: "white",
-                            backgroundColor: "#1976d2",
-                            "&:hover": {
-                              backgroundColor: "#1565c0",
-                            },
-                          }}
-                        >
-                          <MDTypography color="white">
-                            {cerrarTicketStore.Files
-                              ? cerrarTicketStore.Files.name
-                              : "Subir Archivos"}
-                          </MDTypography>
-                          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-                        </Button>
-                      </MDBox>
-                    </Grid>
+                    {!cerrarTicketStore.Numero_Oficio ? null : (
+                      <Grid xs={12}>
+                        <MDBox mb={2}>
+                          <Button
+                            component="label"
+                            variant="contained"
+                            tabIndex={-1}
+                            startIcon={<CloudUploadIcon color="white" />}
+                            disabled={cerrarTicketStore.Files ? true : false}
+                            sx={{
+                              color: "white",
+                              backgroundColor: "#1976d2",
+                              "&:hover": {
+                                backgroundColor: "#1565c0",
+                              },
+                            }}
+                          >
+                            <MDTypography color="white">
+                              {cerrarTicketStore.Files
+                                ? cerrarTicketStore.Files.name
+                                : "Subir Archivos"}
+                            </MDTypography>
+                            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+                          </Button>
+                        </MDBox>
+                      </Grid>
+                    )}
                     {cerrarTicketStore.Files ? (
                       <Grid item>
                         <MDBox mb={2}>
