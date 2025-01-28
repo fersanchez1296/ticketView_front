@@ -53,10 +53,11 @@ const VentanaClientes = () => {
   }
 
   const guardarCliente = async () => {
+    let result;
     if (!clientesStore.isEdit) {
-      const result = await postCliente({ body: clientesStore });
+      result = await postCliente({ body: clientesStore });
     } else {
-      const result = await updateCliente({
+      result = await updateCliente({
         body: {
           nuevaDependencia: clientesStore.nuevaDependencia,
           nuevaDArea: clientesStore.nuevaDArea,
@@ -81,13 +82,13 @@ const VentanaClientes = () => {
         },
         clientId: clientesStore._id,
       });
-    }
-    if (result.error) {
-      openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-    } else {
-      openSuccessSB(result.data.desc, `Status: 200`);
-      clientesStore.resetClientesStore();
-      closeWindowClientes();
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+        clientesStore.resetClientesStore();
+        closeWindowClientes();
+      }
     }
   };
   return (
