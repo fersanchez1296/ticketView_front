@@ -174,14 +174,15 @@ export default function DataTable({ tickets, collection }) {
             renderCell: (params) => <Btn_cerrar ticket={params.row} />,
           },
         ]
-      : [
-          {
-            field: "reabrir",
-            headerName: "Reabrir",
-            width: 140,
-            renderCell: (params) => <Btn_reabrir ticket={params.row} />,
-          },
-        ]),
+      : // : [
+        //     {
+        //       field: "reabrir",
+        //       headerName: "Reabrir",
+        //       width: 140,
+        //       renderCell: (params) => <Btn_reabrir ticket={params.row} />,
+        //     },
+        //   ]),
+        []),
     ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "pendientes"
       ? [
           {

@@ -340,24 +340,6 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                {!Files ? null : (
-                  <Grid item>
-                    <MDBox mb={1}>
-                      {/* modificar link */}
-                      {/* modificar ruta dinamica del link */}
-                      <a href={ticket.Files.url} target="_blank" rel="noreferrer">
-                        <Button
-                          variant="contained"
-                          color="error"
-                          startIcon={<VisibilityIcon />}
-                          //onClick={verArchivo}
-                        >
-                          <MDTypography color="gray">Ver archivo.</MDTypography>
-                        </Button>
-                      </a>
-                    </MDBox>
-                  </Grid>
-                )}
                 <Grid xs={12}>
                   <MDBox mb={2}>
                     <TextField
