@@ -227,18 +227,18 @@ export default function DataTable({ tickets, collection }) {
         />
       ),
     },
-    {
-      field: "Reasignado_a",
-      headerName: "Reasignado a",
-      width: 250,
-      renderCell: (params) => (
-        <Asignado
-          image={team2}
-          nombre={params.row.Reasignado_a.Nombre}
-          dependencia={params.row.Reasignado_a.Coordinacion}
-        />
-      ),
-    },
+    // {
+    //   field: "Reasignado_a",
+    //   headerName: "Reasignado a",
+    //   width: 250,
+    //   renderCell: (params) => (
+    //     <Asignado
+    //       image={team2}
+    //       nombre={params.row.Reasignado_a.Nombre}
+    //       dependencia={params.row.Reasignado_a.Coordinacion}
+    //     />
+    //   ),
+    // },
     ...(collection !== "Pendientes"
       ? [
           {
