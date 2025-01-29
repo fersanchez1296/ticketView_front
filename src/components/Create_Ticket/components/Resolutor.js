@@ -66,12 +66,12 @@ const Resolutor = ({ data }) => {
   const crearTicketStore = useCrearTicketStore();
   const [idResolutorSeleccionado, setIdResolutorSeleccionado] = React.useState("");
   const [value, setValue] = React.useState(0);
-  const options = data.areasResolutores.flatMap((areaObj) =>
-    areaObj.resolutores.map((resolutor) => ({
-      ...resolutor,
-      area: areaObj.area.toUpperCase(), // Incluye el área en mayúsculas para agrupar.
-    }))
-  );
+  // const options = data.areasResolutores.flatMap((areaObj) =>
+  //   areaObj.resolutores.map((resolutor) => ({
+  //     ...resolutor,
+  //     area: areaObj.area.toUpperCase(), // Incluye el área en mayúsculas para agrupar.
+  //   }))
+  // );
 
   return (
     <React.Fragment>
@@ -104,7 +104,38 @@ const Resolutor = ({ data }) => {
                   flexDirection: "column",
                 }}
               >
-                <Autocomplete
+                <FormControl sx={{ width: 500 }}>
+                  <InputLabel htmlFor="grouped-native-select">Reasignar a</InputLabel>
+                  <Select
+                    native
+                    defaultValue=""
+                    id="grouped-native-select"
+                    label="Reasignar a"
+                    onChange={(e) => {
+                      const [asignado_a, area_id] = e.target.value.split("|");
+                      crearTicketStore.setCrearTicketFields("Asignado_a", asignado_a);
+                      crearTicketStore.setCrearTicketFields("Area_asignado", area_id);
+                    }}
+                  >
+                    <option aria-label="None" value="" />
+                    {data.areasResolutores.map((area) => {
+                      if (area) {
+                        return (
+                          <optgroup label={area.area.area} key={area.area._id}>
+                            {area.resolutores.map((t, index) => (
+                              <option value={`${t._id}|${area.area._id}`} key={index}>
+                                {t.Nombre}
+                              </option>
+                            ))}
+                          </optgroup>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </Select>
+                </FormControl>
+                {/* <Autocomplete
                   id="grouped-demo"
                   options={options.sort((a, b) => -b.area.localeCompare(a.area))}
                   groupBy={(option) => option.area}
@@ -112,10 +143,10 @@ const Resolutor = ({ data }) => {
                   sx={{ width: 500, mt: 1 }}
                   renderInput={(params) => <TextField {...params} label="Asignar a:" />}
                   onChange={(event, value) => {
-                    setValue(value); // Guarda el valor seleccionado en el estado.
+                    setValue(value);
                     crearTicketStore.setCrearTicketFields("Asignado_a", value);
                   }}
-                />
+                /> */}
               </Box>
             </MDBox>
           </Card>

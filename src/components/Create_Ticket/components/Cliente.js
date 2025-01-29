@@ -47,16 +47,16 @@ const Cliente = ({ disable_input, data }) => {
       }
       const result = await postGuardar(formData);
       console.log(formData);
-      if (result.error) {
-        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-        return result;
-      } else {
-        openSuccessSB(result.data.desc, `Status: 200`);
-        crearTicketStore.crearTicketResetValues();
-        clientesStore.resetClientesStore();
-        isNuevoClienteResetValues();
-        return result;
-      }
+      // if (result.error) {
+      //   openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      //   return result;
+      // } else {
+      //   openSuccessSB(result.data.desc, `Status: 200`);
+      //   crearTicketStore.crearTicketResetValues();
+      //   clientesStore.resetClientesStore();
+      //   isNuevoClienteResetValues();
+      //   return result;
+      // }
     } catch (error) {
       openErrorSB(
         "Ocurrió un error inesperado al actualizar el ticket.",

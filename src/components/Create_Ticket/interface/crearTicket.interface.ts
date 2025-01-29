@@ -1,7 +1,7 @@
 export interface CrearTicketProps {
   Tipo_incidencia: Object;
   Estado: Object;
-  Area_asignado: Object;
+  Area_asignado: Object | String;
   Asignado_a: Object;
   Categoria: Object;
   Servicio: Object;
@@ -35,7 +35,7 @@ export type CrearTicketType = CrearTicketProps & CrearTicketMethods;
 export const crearTicketInitialState: CrearTicketProps = {
   Tipo_incidencia: {},
   Estado: {},
-  Area_asignado: {},
+  Area_asignado: "",
   Asignado_a: "",
   Categoria: {},
   Servicio: {},
