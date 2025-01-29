@@ -305,6 +305,41 @@ export const apiSlice = createApi({
       },
       providesTags: ["Clientes"],
     }),
+    //Editar Usuario
+    updateUsuario: builder.mutation({
+      query: ({ userStore, id }) => ({
+        url: `users/editar/${id}`,
+        method: "PUT",
+        body: userStore,
+      }),
+    }),
+    //Editar estado Usuario
+    editarUsuario: builder.mutation({
+      query: ({ userStore, id }) => ({
+        url: `users/${id}`,
+        method: "PUT",
+        body: userStore,
+      }),
+    }),
+    //Crear Usuario
+    crearUsuario: builder.mutation({
+      query: (userStore) => ({
+        url: "users/crear",
+        method: "POST",
+        body: userStore,
+      }),
+    }),
+    //Roles de usuarios
+    getSelectRol: builder.query({
+      query: () => {
+        const url = `users/usuarios/roles`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
+    }),
   }),
   keepUnusedDataFor: 300,
 });
@@ -337,4 +372,8 @@ export const {
   useGetSelectDataClientesQuery,
   useLazyGetClienteQuery,
   usePostClienteMutation,
+  useUpdateUsuarioMutation,
+  useEditarUsuarioMutation,
+  useCrearUsuarioMutation,
+  useGetSelectRolQuery,
 } = apiSlice;

@@ -104,11 +104,7 @@ const Cerrar = () => {
               endIcon={<SaveIcon />}
               sx={{ border: "1px solid green" }}
               onClick={cerrarTicket}
-              disabled={
-                cerrarTicketStore.Causa === "" || cerrarTicketStore.Descripcion_cierre === ""
-                  ? true
-                  : false
-              }
+              disabled={cerrarTicketStore.Descripcion_cierre === "" ? true : false}
             >
               Cerrar Ticket
             </Button>
@@ -144,21 +140,6 @@ const Cerrar = () => {
                           value={cerrarTicketStore.Numero_Oficio}
                           onChange={(e) =>
                             cerrarTicketStore.setCerrarTicketFields("Numero_Oficio", e.target.value)
-                          }
-                          fullWidth
-                          required
-                        />
-                      </MDBox>
-                    </Grid>
-                    {/* Causa de cierre */}
-                    <Grid xs={6}>
-                      <MDBox mb={2}>
-                        <MDInput
-                          type="text"
-                          label="Causa de cierre:"
-                          value={cerrarTicketStore.Causa}
-                          onChange={(e) =>
-                            cerrarTicketStore.setCerrarTicketFields("Causa", e.target.value)
                           }
                           fullWidth
                           required

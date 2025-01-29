@@ -64,8 +64,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import Historico from "layouts/Historico/index";
 import FeedIcon from "@mui/icons-material/Feed";
 import Coordinacion from "layouts/coordinacion/index";
-import Usuarios from "layouts/usuarios/index";
-import Usuarios2 from "layouts/usuarios2/index";
+//import Usuarios from "layouts/usuarios/index";
+import Usuarios from "layouts/usuarios2/index";
 import Clientes from "layouts/clientes/index";
 const routes = [
   {
@@ -149,6 +149,15 @@ const routes = [
     route: "/cerrados",
     component: <DataTable collection={"cerrados"} />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Usuarios",
+  //   key: "usuarios",
+  //   rol: ["Root"],
+  //   icon: <GroupIcon />,
+  //   route: "/usuarios",
+  //   component: <Usuarios />,
+  // },
   {
     type: "collapse",
     name: "Usuarios",
@@ -157,15 +166,6 @@ const routes = [
     icon: <GroupIcon />,
     route: "/usuarios",
     component: <Usuarios />,
-  },
-  {
-    type: "collapse",
-    name: "Usuarios2",
-    key: "usuarios2",
-    rol: ["Root"],
-    icon: <GroupIcon />,
-    route: "/usuarios2",
-    component: <Usuarios2 />,
   },
   {
     type: "collapse",

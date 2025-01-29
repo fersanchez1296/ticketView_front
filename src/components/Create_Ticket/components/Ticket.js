@@ -236,17 +236,18 @@ const Ticket = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
-                {/*Pending reason */}
-                <Grid xs={4}>
+                {/*Introducido por teclado Descripción del ticket*/}
+                <Grid xs={12}>
                   <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Pending Reason:"
-                      value={ticketState.PendingReason}
-                      onChange={(e) => setCrearTicketFields("PendingReason", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={!disable_input}
+                    <TextField
+                      id="outlined-multiline-static"
+                      label="Descripción del ticket"
+                      multiline
+                      value={ticketState.Descripcion}
+                      onChange={(e) => setCrearTicketFields("Descripcion", e.target.value)}
+                      rows={5.2}
+                      defaultValue="Sin información"
+                      sx={{ width: "100%" }}
                     />
                   </MDBox>
                 </Grid>
@@ -260,21 +261,6 @@ const Ticket = ({ disable_input, data }) => {
                       onChange={(e) => setCrearTicketFields("NumeroRec_Oficio", e.target.value)}
                       fullWidth
                       required
-                    />
-                  </MDBox>
-                </Grid>
-                {/*Introducido por teclado Descripción del ticket*/}
-                <Grid xs={12}>
-                  <MDBox mb={2}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Descripción del ticket"
-                      multiline
-                      value={ticketState.Descripcion}
-                      onChange={(e) => setCrearTicketFields("Descripcion", e.target.value)}
-                      rows={5.2}
-                      defaultValue="Sin información"
-                      sx={{ width: "100%" }}
                     />
                   </MDBox>
                 </Grid>

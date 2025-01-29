@@ -113,6 +113,7 @@ const Resolutor = ({ data }) => {
                     label="Reasignar a"
                     onChange={(e) => {
                       const [asignado_a, area_id] = e.target.value.split("|");
+                      console.log(asignado_a, area_id);
                       crearTicketStore.setCrearTicketFields("Asignado_a", asignado_a);
                       crearTicketStore.setCrearTicketFields("Area_asignado", area_id);
                     }}
