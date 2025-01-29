@@ -1,7 +1,6 @@
 export interface CerrarTicketProps {
   Files?: File | null;
   Descripcion_cierre: String;
-  Causa: String;
   Numero_Oficio: string;
 }
 
@@ -16,6 +15,5 @@ export type CerrarTicketType = CerrarTicketProps & CerrarTicketMethods;
 export const cerrarTicketInitialState: CerrarTicketProps = {
   Files: null,
   Descripcion_cierre: "",
-  Causa: "",
   Numero_Oficio: "",
 };
