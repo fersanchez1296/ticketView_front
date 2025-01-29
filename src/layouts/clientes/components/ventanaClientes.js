@@ -83,16 +83,19 @@ const VentanaClientes = () => {
           },
           clientId: clientesStore._id,
         });
-        if (result.error) {
-          openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-        } else {
-          openSuccessSB(result.data.desc, `Status: 200`);
-          clientesStore.resetClientesStore();
-          closeWindowClientes();
-        }
+      }
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+        clientesStore.resetClientesStore();
+        closeWindowClientes();
       }
     } catch (error) {
-      openErrorSB("Ocurrio un error guardar al guardar el cliente", `Status: ${result.error.status}`);
+      openErrorSB(
+        "Ocurrio un error guardar al guardar el cliente",
+        `Status: ${result.error.status}`
+      );
     }
   };
   return (
