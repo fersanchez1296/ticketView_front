@@ -53,42 +53,46 @@ const VentanaClientes = () => {
   }
 
   const guardarCliente = async () => {
-    let result;
-    if (!clientesStore.isEdit) {
-      result = await postCliente({ body: clientesStore });
-    } else {
-      result = await updateCliente({
-        body: {
-          nuevaDependencia: clientesStore.nuevaDependencia,
-          nuevaDArea: clientesStore.nuevaDArea,
-          nuevaDGeneral: clientesStore.nuevaDGeneral,
-          Correo: clientesStore.Correo,
-          Nombre: clientesStore.Nombre,
-          Direccion_General:
-            typeof clientesStore.Direccion_General === "string"
-              ? clientesStore.Direccion_General
-              : clientesStore.Direccion_General._id,
-          direccion_area:
-            typeof clientesStore.direccion_area === "string"
-              ? clientesStore.direccion_area
-              : clientesStore.direccion_area._id,
-          Dependencia:
-            typeof clientesStore.Dependencia === "string"
-              ? clientesStore.Dependencia
-              : clientesStore.Dependencia._id,
-          Telefono: clientesStore.Telefono,
-          Extension: clientesStore.Extension,
-          Ubicacion: clientesStore.Ubicacion,
-        },
-        clientId: clientesStore._id,
-      });
-      if (result.error) {
-        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+    try {
+      let result;
+      if (!clientesStore.isEdit) {
+        result = await postCliente({ body: clientesStore });
       } else {
-        openSuccessSB(result.data.desc, `Status: 200`);
-        clientesStore.resetClientesStore();
-        closeWindowClientes();
+        result = await updateCliente({
+          body: {
+            nuevaDependencia: clientesStore.nuevaDependencia,
+            nuevaDArea: clientesStore.nuevaDArea,
+            nuevaDGeneral: clientesStore.nuevaDGeneral,
+            Correo: clientesStore.Correo,
+            Nombre: clientesStore.Nombre,
+            Direccion_General:
+              typeof clientesStore.Direccion_General === "string"
+                ? clientesStore.Direccion_General
+                : clientesStore.Direccion_General._id,
+            direccion_area:
+              typeof clientesStore.direccion_area === "string"
+                ? clientesStore.direccion_area
+                : clientesStore.direccion_area._id,
+            Dependencia:
+              typeof clientesStore.Dependencia === "string"
+                ? clientesStore.Dependencia
+                : clientesStore.Dependencia._id,
+            Telefono: clientesStore.Telefono,
+            Extension: clientesStore.Extension,
+            Ubicacion: clientesStore.Ubicacion,
+          },
+          clientId: clientesStore._id,
+        });
+        if (result.error) {
+          openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+        } else {
+          openSuccessSB(result.data.desc, `Status: 200`);
+          clientesStore.resetClientesStore();
+          closeWindowClientes();
+        }
       }
+    } catch (error) {
+      openErrorSB("Ocurrio un error guardar al guardar el cliente", `Status: ${result.error.status}`);
     }
   };
   return (
