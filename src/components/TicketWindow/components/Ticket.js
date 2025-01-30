@@ -36,135 +36,6 @@ const Ticket = ({ disable_input }) => {
             textAlign="center"
           >
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Estado Ticket
-            </MDTypography>
-          </MDBox>
-          <MDBox pt={4} pb={3} px={3}>
-            <MDBox component="form" role="form">
-              <Grid container spacing={3}>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Creado por:"
-                      value={ticket.Creado_por.Nombre}
-                      //onChange={(e) => setAutores("autores", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2} xs={4}>
-                    <MDInput
-                      type="text"
-                      label="ID:"
-                      value={ticket.Id}
-                      //onChange={(e) => setAutores("autores", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Prioridad:"
-                      value={ticket.Prioridad.Descripcion}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Incidencia Grave:"
-                      value={ticket.Incidencia_grave}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Estatus:"
-                      value={ticket.Estado.Estado}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Tipo Incidencia:"
-                      value={ticket.Tipo_incidencia ? ticket.Tipo_incidencia : ""}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Fecha de Creación:"
-                      value={ticket.Fecha_hora_creacion}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Fecha límite de resolución:"
-                      value={ticket.Fecha_limite_resolucion_SLA}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-              </Grid>
-            </MDBox>
-          </MDBox>
-        </Card>
-      </Grid>
-      <Grid xs={6} mb={12}>
-        <Card>
-          <MDBox
-            variant="gradient"
-            bgColor="primary"
-            borderRadius="lg"
-            coloredShadow="info"
-            mx={2}
-            mt={-3}
-            p={2}
-            mb={1}
-            textAlign="center"
-          >
-            <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
               Información del Ticket
             </MDTypography>
           </MDBox>
@@ -229,6 +100,122 @@ const Ticket = ({ disable_input }) => {
           </MDBox>
         </Card>
       </Grid>
+      <Grid xs={6} mb={12}>
+        <Card>
+          <MDBox
+            variant="gradient"
+            bgColor="primary"
+            borderRadius="lg"
+            coloredShadow="info"
+            mx={2}
+            mt={-3}
+            p={2}
+            mb={1}
+            textAlign="center"
+          >
+            <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+              Estado Ticket
+            </MDTypography>
+          </MDBox>
+          <MDBox pt={4} pb={3} px={3}>
+            <MDBox component="form" role="form">
+              <Grid container spacing={3}>
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Creado por:"
+                      value={ticket.Creado_por.Nombre}
+                      //onChange={(e) => setAutores("autores", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={4}>
+                  <MDBox mb={2} xs={4}>
+                    <MDInput
+                      type="text"
+                      label="ID:"
+                      value={ticket.Id}
+                      //onChange={(e) => setAutores("autores", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Prioridad:"
+                      value={ticket.Prioridad.Descripcion}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Estatus:"
+                      value={ticket.Estado.Estado}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Tipo Incidencia:"
+                      value={ticket.Tipo_incidencia ? ticket.Tipo_incidencia : ""}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Fecha de Creación:"
+                      value={ticket.Fecha_hora_creacion}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+                <Grid xs={4}>
+                  <MDBox mb={2}>
+                    <MDInput
+                      type="text"
+                      label="Fecha límite de resolución:"
+                      value={ticket.Fecha_limite_resolucion_SLA}
+                      //onChange={(e) => setEditor("editor", e.target.value)}
+                      fullWidth
+                      required
+                      disabled={disable_input}
+                    />
+                  </MDBox>
+                </Grid>
+              </Grid>
+            </MDBox>
+          </MDBox>
+        </Card>
+      </Grid>
       <Grid xs={12}>
         <Card>
           <MDBox
@@ -243,13 +230,13 @@ const Ticket = ({ disable_input }) => {
             textAlign="center"
           >
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Información del Ticket
+              Resolución del ticket
             </MDTypography>
           </MDBox>
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
               <Grid container spacing={3}>
-                <Grid xs={3}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -262,7 +249,7 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={3}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -275,20 +262,7 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={3}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Razón pendiente:"
-                      value={ticket.PendingReason}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={3}>
+                <Grid xs={4}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -301,7 +275,7 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={4}>
+                <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
@@ -314,20 +288,7 @@ const Ticket = ({ disable_input }) => {
                     />
                   </MDBox>
                 </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Causa:"
-                      value={ticket.Causa}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
+                <Grid xs={6}>
                   <MDBox mb={2}>
                     <MDInput
                       type="text"
