@@ -81,7 +81,9 @@ function Clientes() {
     Telext: `${cliente.Telefono} - ext: ${cliente.Extension}`,
     direccionAreaNombre: cliente.direccion_area.direccion_area,
     dependenciaNombre: cliente.Dependencia.Dependencia,
-    direccionGeneralNombre: cliente.Direccion_General.Direccion_General,
+    direccionGeneralNombre: cliente.Direccion_General
+      ? cliente.Direccion_General.Direccion_General
+      : "Sin direccion general",
   }));
   const paginationModel = { page: 0, pageSize: 10 };
   return (

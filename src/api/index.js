@@ -4,8 +4,8 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //desarrollo
-    //baseUrl: "http://localhost:4000/api/v1/",
-    baseUrl: `http://172.16.1.13:4000/api/v1/`,
+    baseUrl: "http://localhost:4000/api/v1/",
+    //baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
   tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion", "Clientes"],
@@ -238,7 +238,7 @@ export const apiSlice = createApi({
           body: { estado },
         };
       },
-      providesTags: ["Usuarios"],
+      invalidatesTags: ["Usuarios"],
     }),
     cerrarTicket: builder.mutation({
       query: ({ ticketId, formData }) => {
@@ -262,7 +262,7 @@ export const apiSlice = createApi({
           method: "POST",
         };
       },
-      providesTags: ["Clientes"],
+      invalidatesTags: ["Clientes"],
     }),
     getAllClientes: builder.query({
       query: () => {
@@ -303,7 +303,7 @@ export const apiSlice = createApi({
           body,
         };
       },
-      providesTags: ["Clientes"],
+      invalidatesTags: ["Clientes"],
     }),
     //Editar Usuario
     updateUsuario: builder.mutation({
@@ -312,6 +312,7 @@ export const apiSlice = createApi({
         method: "PUT",
         body: userStore,
       }),
+      invalidatesTags: ["Usuarios"],
     }),
     //Editar estado Usuario
     editarUsuario: builder.mutation({
@@ -320,6 +321,7 @@ export const apiSlice = createApi({
         method: "PUT",
         body: userStore,
       }),
+      invalidatesTags: ["Usuarios"],
     }),
     //Crear Usuario
     crearUsuario: builder.mutation({
@@ -328,6 +330,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: userStore,
       }),
+      invalidatesTags: ["Usuarios"],
     }),
     //Roles de usuarios
     getSelectRol: builder.query({
