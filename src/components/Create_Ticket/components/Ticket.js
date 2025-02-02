@@ -96,30 +96,6 @@ const Ticket = ({ disable_input, data }) => {
                     </FormControl>
                   </MDBox>
                 </Grid>
-                {/*Seleccion tipo de Estado*/}
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Estado</InputLabel>
-                      <Select
-                        sx={{ minHeight: "3rem" }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={ticketState.Estado}
-                        label="Estatus"
-                        onChange={(e) => setCrearTicketFields("Estado", e.target.value)}
-                      >
-                        {data.estados.map((est) => {
-                          return (
-                            <MenuItem value={est._id} key={est._id}>
-                              {est.Estado}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </MDBox>
-                </Grid>
                 {/*Seleccion Tiempo de respuesta*/}
                 <Grid xs={4}>
                   <MDBox mb={2}>
