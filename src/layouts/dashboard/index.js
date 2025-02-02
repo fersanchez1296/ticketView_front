@@ -12,7 +12,8 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+//React
+import { NavLink } from "react-router-dom";
 // @mui material components
 import Grid from "@mui/material/Grid";
 
@@ -64,92 +65,105 @@ const Dashboard_component = ({ data }) => {
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="event_available"
-                title="Abiertos"
-                count={data.abiertos}
-                // percentage={{
-                //   color: "success",
-                //   amount: "+55%",
-                //   label: "than lask week",
-                // }}
-              />
+              <NavLink to={"/abiertos"}>
+                <ComplexStatisticsCard
+                  color="primary"
+                  icon="event_available"
+                  title="Abiertos"
+                  count={data.abiertos}
+                  onClick={() => navigate("/abiertos")}
+                  // percentage={{
+                  //   color: "success",
+                  //   amount: "+55%",
+                  //   label: "than lask week",
+                  // }}
+                />
+              </NavLink>
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="secondary"
-                icon="event_repeat"
-                title="Reabiertos"
-                count={data.reabiertos}
-                // percentage={{
-                //   color: "success",
-                //   amount: "+3%",
-                //   label: "than last month",
-                // }}
-              />
+              <NavLink to={"/reabiertos"}>
+                <ComplexStatisticsCard
+                  color="secondary"
+                  icon="event_repeat"
+                  title="Reabiertos"
+                  count={data.reabiertos}
+                  // percentage={{
+                  //   color: "success",
+                  //   amount: "+3%",
+                  //   label: "than last month",
+                  // }}
+                />
+              </NavLink>
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="event"
-                title="Nuevos"
-                count={data.nuevos}
-                // percentage={{
-                //   color: "success",
-                //   amount: "+1%",
-                //   label: "than yesterday",
-                // }}
-              />
+              <NavLink to={"/nuevos"}>
+                <ComplexStatisticsCard
+                  color="primary"
+                  icon="event"
+                  title="Nuevos"
+                  count={data.nuevos}
+                  // percentage={{
+                  //   color: "success",
+                  //   amount: "+1%",
+                  //   label: "than yesterday",
+                  // }}
+                />
+              </NavLink>
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="pending_actions"
-                title="Pendientes"
-                count={data.pendientes}
-                // percentage={{
-                //   color: "success",
-                //   amount: "",
-                //   label: "Just updated",
-                // }}
-              />
+              <NavLink to={"/pendientes"}>
+                <ComplexStatisticsCard
+                  color="primary"
+                  icon="pending_actions"
+                  title="Pendientes"
+                  count={data.pendientes}
+                  // percentage={{
+                  //   color: "success",
+                  //   amount: "",
+                  //   label: "Just updated",
+                  // }}
+                />
+              </NavLink>
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="secondary"
-                icon="visibility"
-                title={role == "Moderador" ? "Para Revision" : "En revision"}
-                count={data.revision}
-                // percentage={{
-                //   color: "success",
-                //   amount: "",
-                //   label: "Just updated",
-                // }}
-              />
+              <NavLink to={"/revision"}>
+                <ComplexStatisticsCard
+                  color="secondary"
+                  icon="visibility"
+                  title={role == "Moderador" ? "Para Revision" : "En revision"}
+                  count={data.revision}
+                  // percentage={{
+                  //   color: "success",
+                  //   amount: "",
+                  //   label: "Just updated",
+                  // }}
+                />
+              </NavLink>
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="event_busy"
-                title="Cerrados"
-                count={data.cerrados}
-                // percentage={{
-                //   color: "success",
-                //   amount: "",
-                //   label: "Just updated",
-                // }}
-              />
+              <NavLink to={"/cerrados"}>
+                <ComplexStatisticsCard
+                  color="primary"
+                  icon="event_busy"
+                  title="Cerrados"
+                  count={data.cerrados}
+                  // percentage={{
+                  //   color: "success",
+                  //   amount: "",
+                  //   label: "Just updated",
+                  // }}
+                />
+              </NavLink>
             </MDBox>
           </Grid>
         </Grid>
