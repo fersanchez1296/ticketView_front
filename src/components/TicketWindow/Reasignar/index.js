@@ -94,10 +94,10 @@ const Reasignar = () => {
               Cerrar
             </Typography>
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="primary"
               endIcon={<SaveIcon />}
-              sx={{ border: "1px dashed green" }}
+              sx={{ color: "Black" }}
               onClick={reasignarTicket}
               disabled={reasignarTicketStore.Reasignado_a === "" ? true : false}
             >

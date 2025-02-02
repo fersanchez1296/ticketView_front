@@ -125,10 +125,10 @@ const VentanaUsuarios = (disable_input) => {
               Cerrar
             </Typography>
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="primary"
               endIcon={<SaveIcon />}
-              sx={{ border: "1px dashed green" }}
+              sx={{ color: "#7557C1" }}
               onClick={metodoEnvio ? crearUsuario : editarUsuario}
             >
               {nombreBoton}
@@ -139,8 +139,8 @@ const VentanaUsuarios = (disable_input) => {
           <Grid xs={10}>
             <Card>
               <MDBox
-                variant="gradient"
-                bgColor="secondary"
+                //variant="gradient"
+                bgColor="primary"
                 borderRadius="lg"
                 coloredShadow="info"
                 mx={2}

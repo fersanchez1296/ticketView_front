@@ -20,8 +20,8 @@ const Cliente = ({ disable_input }) => {
       <Grid xs={12} mb={12}>
         <Card>
           <MDBox
-            variant="gradient"
-            bgColor="secondary"
+            //variant="gradient"
+            bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}

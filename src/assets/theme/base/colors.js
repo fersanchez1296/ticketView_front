@@ -45,18 +45,18 @@ const colors = {
   },
 
   primary: {
-    main: "#e91e63",
-    focus: "#e91e63",
+    main: "#7557C1",
+    focus: "#7557C1",
   },
 
   secondary: {
-    main: "#7b809a",
-    focus: "#8f93a9",
+    main: "#FF3D6E",
+    focus: "#FF3D6E",
   },
 
   info: {
     main: "#1A73E8",
-    focus: "#1662C4",
+    focus: "#1A73E8",
   },
 
   success: {
@@ -98,13 +98,13 @@ const colors = {
 
   gradients: {
     primary: {
-      main: "#EC407A",
-      state: "#D81B60",
+      main: "#7557C1",
+      state: "#7557C1",
     },
 
     secondary: {
-      main: "#747b8a",
-      state: "#495361",
+      main: "#FF3D6E",
+      state: "#cF3D6E",
     },
 
     info: {

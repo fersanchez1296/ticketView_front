@@ -55,8 +55,8 @@ const Ticket = ({ disable_input, data }) => {
       <Grid xs={12} mb={17.5}>
         <Card>
           <MDBox
-            variant="gradient"
-            bgColor="dark"
+            //variant="gradient"
+            bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}
@@ -270,20 +270,13 @@ const Ticket = ({ disable_input, data }) => {
                     <MDBox mb={2}>
                       <Button
                         component="label"
-                        role={undefined}
-                        variant="contained"
+                        variant="outlined"
+                        color="primary"
                         tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
+                        startIcon={<CloudUploadIcon color="primary" />}
                         disabled={Files && setedFiles ? true : false}
-                        sx={{
-                          color: "white", // Color del texto
-                          backgroundColor: "#1976d2", // Color de fondo
-                          "&:hover": {
-                            backgroundColor: "#1565c0", // Color de fondo al pasar el mouse
-                          },
-                        }}
                       >
-                        <MDTypography color="white">
+                        <MDTypography color="primary">
                           {Files && setedFiles ? Files.name : "Subir Archivos"}
                         </MDTypography>
                         <VisuallyHiddenInput type="file" onChange={handleFileChange} />

@@ -59,7 +59,7 @@ function Index() {
   };
   const Btn_view = (user) => (
     <MDButton
-      color={"info"}
+      color={"primary"}
       variant={"contained"}
       onClick={() => {
         setUserStoreFromFetch(user.user);
@@ -118,10 +118,10 @@ function Index() {
         <MDBox pt={6} pb={3}>
           <MDBox mb={6} ml={2}>
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="primary"
+              sx={{ color: "#7557c1" }}
               endIcon={<PersonAddIcon />}
-              sx={{ border: "1px solid green" }}
               onClick={() => {
                 handleClick();
               }}
@@ -138,10 +138,10 @@ function Index() {
                   mt={-3}
                   py={3}
                   px={2}
-                  variant="gradient"
-                  bgColor="info"
+                  //variant="gradient"
+                  bgColor="primary"
                   borderRadius="lg"
-                  coloredShadow="info"
+                  //coloredShadow="primary"
                 >
                   <MDTypography variant="h6" color="white">
                     Usuarios

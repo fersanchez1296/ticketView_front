@@ -126,10 +126,10 @@ const VentanaClientes = () => {
               Cerrar
             </Typography>
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="primary"
               endIcon={<SaveIcon />}
-              sx={{ border: "1px dashed green" }}
+              sx={{ color: "#7557c1" }}
               onClick={() => guardarCliente()}
               //disabled={value == null ? true : false}
             >
@@ -150,10 +150,10 @@ const VentanaClientes = () => {
           <Grid xs={12} mb={12} mx={5}>
             <Card>
               <MDBox
-                variant="gradient"
-                bgColor="secondary"
+                //variant="gradient"
+                bgColor="primary"
                 borderRadius="lg"
-                coloredShadow="info"
+                //coloredShadow="info"
                 mx={6}
                 mt={-3}
                 p={2}

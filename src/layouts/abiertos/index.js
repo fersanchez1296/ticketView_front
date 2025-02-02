@@ -60,8 +60,8 @@ function TableData({ collection }) {
                   mt={-3}
                   py={3}
                   px={2}
-                  variant="gradient"
-                  bgColor="info"
+                  //variant="gradient"
+                  bgColor="primary"
                   borderRadius="lg"
                   coloredShadow="info"
                 >

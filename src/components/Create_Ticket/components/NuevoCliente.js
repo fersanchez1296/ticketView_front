@@ -42,8 +42,8 @@ const NuevoCliente = () => {
         <Grid xs={12} mb={12} mx={5}>
           <Card>
             <MDBox
-              variant="gradient"
-              bgColor="secondary"
+              //variant="gradient"
+              bgColor="primary"
               borderRadius="lg"
               coloredShadow="info"
               mx={6}

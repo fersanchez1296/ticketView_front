@@ -27,6 +27,8 @@ import StepLabel from "@mui/material/StepLabel";
 import Ticket from "./components/Ticket";
 import Resolutor from "./components/Resolutor";
 import Cliente from "./components/Cliente";
+import { styled } from "@mui/material/styles";
+import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector";
 
 //store
 import { useDialogStore } from "zustand/index.ts";
@@ -38,7 +40,7 @@ import ErrorSB from "components/Snackbar/error/index";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const steps = ["Información del Ticket", "Resolutor", "Cliente"];
+const steps = ["Información del Ticket", "Moderador", "Cliente"];
 
 const Edit = () => {
   const { data, isLoading } = useGetInfoSelectsQuery();
@@ -94,7 +96,7 @@ const Edit = () => {
                 <MDBox pt={3}>
                   {/*Caja que contiene las etiquetas*/}
                   <Box sx={{ width: "100%" }}>
-                    <Stepper activeStep={activeStep}>
+                    <Stepper activeStep={activeStep} alternativeLabel bgColor="primary">
                       {steps.map((label, index) => {
                         const stepProps = {};
                         const labelProps = {};
@@ -104,7 +106,9 @@ const Edit = () => {
                         }
                         return (
                           <Step key={label} {...stepProps}>
-                            <StepLabel {...labelProps}>{label}</StepLabel>
+                            <StepLabel {...labelProps} color="primary">
+                              {label}
+                            </StepLabel>
                           </Step>
                         );
                       })}
@@ -116,7 +120,7 @@ const Edit = () => {
                         onClick={handleBack}
                         sx={{ mr: 1 }}
                       >
-                        Atras
+                        <Typography variant="h5">Atras</Typography>
                       </Button>
                       <Box sx={{ flex: "1 1 auto" }} />
 
@@ -125,7 +129,9 @@ const Edit = () => {
                           onClick={handleNext}
                           disabled={activeStep === steps.length - 1 ? true : false}
                         >
-                          Siguiente
+                          <Typography variant="h5" color={"info"}>
+                            Siguiente
+                          </Typography>
                         </Button>
                       )}
                     </Box>

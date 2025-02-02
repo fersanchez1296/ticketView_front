@@ -39,9 +39,8 @@ import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import hacienda from "assets/images/dep_hacienda.png";
-import jalisco from "assets/images/jalisco.png";
+//import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/bg-profile.jpeg";
 
 //api
 import { useLoginMutation } from "api";
@@ -119,9 +118,9 @@ function Basic() {
       <Card>
         <MDBox
           variant="gradient"
-          bgColor="info"
+          bgColor="primary"
           borderRadius="lg"
-          coloredShadow="info"
+          coloredShadow="secondary"
           mx={2}
           mt={-3}
           p={2}
@@ -129,7 +128,7 @@ function Basic() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Iniciar Sesión
+            Chermina
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
@@ -153,7 +152,7 @@ function Basic() {
             <MDBox mt={4} mb={1}>
               <MDButton
                 variant="gradient"
-                color="info"
+                color="primary"
                 onClick={(e) => signin(e)}
                 onKeyDown={handleKeyDown}
                 fullWidth

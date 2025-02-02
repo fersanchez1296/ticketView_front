@@ -25,7 +25,7 @@ const Ticket = ({ disable_input }) => {
       <Grid xs={6} mb={12}>
         <Card>
           <MDBox
-            variant="gradient"
+            //variant="gradient"
             bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"
@@ -154,7 +154,7 @@ const Ticket = ({ disable_input }) => {
       <Grid xs={6} mb={12}>
         <Card>
           <MDBox
-            variant="gradient"
+            //variant="gradient"
             bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"
@@ -232,7 +232,7 @@ const Ticket = ({ disable_input }) => {
       <Grid xs={12}>
         <Card>
           <MDBox
-            variant="gradient"
+            //variant="gradient"
             bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"

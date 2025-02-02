@@ -19,8 +19,8 @@ const Resolutor = ({ disable_input }) => {
       <Grid xs={12} mb={12}>
         <Card>
           <MDBox
-            variant="gradient"
-            bgColor="success"
+            //variant="gradient"
+            bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}
@@ -30,7 +30,7 @@ const Resolutor = ({ disable_input }) => {
             textAlign="center"
           >
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Asignación
+              Moderador
             </MDTypography>
           </MDBox>
           <MDBox pt={4} pb={3} px={3}>

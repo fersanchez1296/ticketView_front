@@ -83,14 +83,24 @@ const Rechazar = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cerrar
             </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ color: "Black" }}
+              endIcon={<SaveIcon />}
+              disabled={!feedback ? true : false}
+              onClick={rechazarResolucion}
+            >
+              Enviar al resolutor
+            </Button>
           </Toolbar>
         </AppBar>
         <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
           <Grid xs={12} mb={12}>
             <Card>
               <MDBox
-                variant="gradient"
-                bgColor="error"
+                //variant="gradient"
+                bgColor="primary"
                 borderRadius="lg"
                 coloredShadow="info"
                 mx={2}
@@ -141,20 +151,6 @@ const Rechazar = () => {
                           onChange={(e) => setFeedback(e.target.value)}
                           sx={{ width: "100%" }}
                         />
-                      </MDBox>
-                    </Grid>
-                    <Grid xs={12}>
-                      <MDBox mb={2} sx={{ width: "100%" }}>
-                        <Button
-                          variant="contained"
-                          color="success"
-                          endIcon={<SaveIcon />}
-                          sx={{ border: "2px solid red" }}
-                          disabled={!feedback ? true : false}
-                          onClick={rechazarResolucion}
-                        >
-                          Enviar al resolutor
-                        </Button>
                       </MDBox>
                     </Grid>
                   </Grid>

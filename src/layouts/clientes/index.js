@@ -40,7 +40,7 @@ function Clientes() {
   if (isLoading) return <Progress />;
   const Btn_view = (client) => (
     <MDButton
-      color={"info"}
+      color={"primary"}
       variant={"contained"}
       onClick={() => {
         setClientesStore(client.client);
@@ -91,10 +91,10 @@ function Clientes() {
         <MDBox pt={6} pb={3}>
           <MDBox mb={6} ml={2}>
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="primary"
               endIcon={<PersonAddIcon />}
-              sx={{ border: "1px solid green" }}
+              sx={{ color: "#7557c1" }}
               onClick={() => openWindowClientes()}
               //disabled={value == null ? true : false}
             >
@@ -110,10 +110,10 @@ function Clientes() {
                   mt={-3}
                   py={3}
                   px={2}
-                  variant="gradient"
-                  bgColor="info"
+                  //variant="gradient"
+                  bgColor="primary"
                   borderRadius="lg"
-                  coloredShadow="info"
+                  //coloredShadow="primary"
                 >
                   <MDTypography variant="h6" color="white">
                     Usuarios

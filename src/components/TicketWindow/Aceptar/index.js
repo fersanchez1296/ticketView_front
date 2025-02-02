@@ -83,14 +83,23 @@ const Aceptar = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Cerrar
             </Typography>
+            <Button
+              variant="outlined"
+              color="primary"
+              sx={{ color: "Black" }}
+              endIcon={<SaveIcon />}
+              onClick={aceptarResolucion}
+            >
+              Enviar a Centro de Ayuda
+            </Button>
           </Toolbar>
         </AppBar>
         <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
           <Grid xs={12} mb={12}>
             <Card>
               <MDBox
-                variant="gradient"
-                bgColor="success"
+                //variant="gradient"
+                bgColor="primary"
                 borderRadius="lg"
                 coloredShadow="info"
                 mx={2}
@@ -142,19 +151,6 @@ const Aceptar = () => {
                           defaultValue="Sin información"
                           sx={{ width: "100%" }}
                         />
-                      </MDBox>
-                    </Grid>
-                    <Grid xs={12}>
-                      <MDBox mb={2} sx={{ width: "100%" }}>
-                        <Button
-                          variant="contained"
-                          color="success"
-                          endIcon={<SaveIcon />}
-                          sx={{ border: `2px solid green` }}
-                          onClick={aceptarResolucion}
-                        >
-                          Enviar al Mesa de Servicio
-                        </Button>
                       </MDBox>
                     </Grid>
                   </Grid>

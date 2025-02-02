@@ -29,7 +29,7 @@ export default function DataTable({ tickets, collection }) {
 
   const Btn_view = (ticket) => (
     <MDButton
-      color={"info"}
+      color={"primary"}
       variant={"contained"}
       onClick={() => {
         setTicketFields(ticket.ticket);
@@ -59,7 +59,7 @@ export default function DataTable({ tickets, collection }) {
 
   const Btn_cerrar = (ticket) => (
     <MDButton
-      color={"primary"}
+      color={"secondary"}
       variant={"contained"}
       onClick={() => {
         setTicketFields(ticket.ticket);

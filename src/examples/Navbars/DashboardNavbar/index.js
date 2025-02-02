@@ -201,9 +201,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   </Icon>
                 </IconButton>
                 {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
-                <MDButton onClick={() => buscarTicket()}>
+                <MDButton onClick={() => buscarTicket()} color={"primary"}>
                   <IconButton size="small" disableRipple color="inherit" sx={navbarIconButton}>
-                    <Icon sx={iconsStyle}>searchIcon</Icon>
+                    <Icon sx={{ iconsStyle, color: "white" }}>searchIcon</Icon>
                   </IconButton>
                 </MDButton>
               </MDBox>

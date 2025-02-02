@@ -65,7 +65,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="success"
+                color="primary"
                 icon="event_available"
                 title="Abiertos"
                 count={data.abiertos}
@@ -80,7 +80,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="success"
+                color="secondary"
                 icon="event_repeat"
                 title="Reabiertos"
                 count={data.reabiertos}
@@ -95,7 +95,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="info"
+                color="primary"
                 icon="event"
                 title="Nuevos"
                 count={data.nuevos}
@@ -110,7 +110,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="warning"
+                color="primary"
                 icon="pending_actions"
                 title="Pendientes"
                 count={data.pendientes}
@@ -125,7 +125,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="warning"
+                color="secondary"
                 icon="visibility"
                 title={role == "Moderador" ? "Para Revision" : "En revision"}
                 count={data.revision}
@@ -140,7 +140,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="error"
+                color="primary"
                 icon="event_busy"
                 title="Cerrados"
                 count={data.cerrados}
@@ -238,7 +238,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="success"
+                color="primary"
                 icon="event_available"
                 title="Abiertos"
                 count={data.totalAbiertos}
@@ -253,7 +253,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="success"
+                color="secondary"
                 icon="event_repeat"
                 title="Reabiertos"
                 count={data.totalReabiertos}
@@ -268,7 +268,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="info"
+                color="primary"
                 icon="event"
                 title="Nuevos"
                 count={data.totalNuevos}
@@ -283,7 +283,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="warning"
+                color="primary"
                 icon="pending_actions"
                 title="Pendientes"
                 count={data.totalPendientes}
@@ -298,7 +298,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="warning"
+                color="secondary"
                 icon="visibility"
                 title={role != "Moderador" ? "Para Revision" : "En revision"}
                 count={data.totalRevision}
@@ -313,7 +313,7 @@ const Dashboard_component = ({ data }) => {
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="error"
+                color="primary"
                 icon="event_busy"
                 title="Cerrados"
                 count={data.totalCerrados}

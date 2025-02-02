@@ -88,17 +88,15 @@ const CardResolver = () => {
                 <Grid xs={12}>
                   <MDBox mb={2}>
                     <Button
-                      component="label"
-                      role={undefined}
-                      variant="contained"
+                      variant="outlined"
                       tabIndex={-1}
                       startIcon={<CloudUploadIcon />}
                       disabled={Files && setedFiles ? true : false}
                       sx={{
-                        color: "white", // Color del texto
-                        backgroundColor: "#1976d2", // Color de fondo
+                        color: "white",
+                        backgroundColor: "red",
                         "&:hover": {
-                          backgroundColor: "#1565c0", // Color de fondo al pasar el mouse
+                          backgroundColor: "red",
                         },
                       }}
                     >

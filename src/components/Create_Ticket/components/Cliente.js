@@ -1,12 +1,13 @@
 import React, { Suspense, lazy, startTransition } from "react";
 //mui library components
 import Button from "@mui/material/Button";
-import SaveIcon from "@mui/material/IconButton";
+import SaveIcon from "@mui/material/Icon";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import FormGroup from "@mui/material/FormGroup";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
+import MDBox from "components/MDBox/index.js";
 //store
 import { useClientesStore } from "zustand/index.ts";
 import { useCrearTicketStore, useIsNuevoClienteStore } from "../store/crearTicket.store.ts";
@@ -71,17 +72,33 @@ const Cliente = ({ disable_input, data }) => {
         spacing={1}
         sx={{ mt: 5, mb: 5, mx: 5, display: "flex", justifyContent: "center" }}
       >
+        <Grid xs={6}></Grid>
         <Grid xs={12}>
           <FormGroup>
-            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-              <Typography>Buscar Cliente</Typography>
-              <Switch
-                checked={buscarCliente}
-                onChange={(e) => {
-                  setBuscarCliente(e.target.checked), setIsNuevoCliente(!isNuevoCliente);
-                }}
-              />
-              <Typography>Nuevo Cliente</Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ alignItems: "center", justifyContent: "space-between" }}
+            >
+              <MDBox sx={{ display: "flex" }}>
+                <Typography>Buscar Cliente</Typography>
+                <Switch
+                  checked={buscarCliente}
+                  onChange={(e) => {
+                    setBuscarCliente(e.target.checked), setIsNuevoCliente(!isNuevoCliente);
+                  }}
+                />
+                <Typography>Nuevo Cliente</Typography>
+              </MDBox>
+              <Button
+                variant="outlined"
+                color="primary"
+                endIcon={<SaveIcon />}
+                sx={{ color: "#7557c1" }}
+                onClick={() => guardarTicket()}
+              >
+                Guardar Ticket
+              </Button>
             </Stack>
           </FormGroup>
         </Grid>
@@ -92,17 +109,6 @@ const Cliente = ({ disable_input, data }) => {
           </Suspense>
         </Grid>
         {/*Botón que envía los daots que se guardan en ticketSatate mediante un post */}
-        <Grid xs={12}>
-          <Button
-            variant="contained"
-            color="success"
-            endIcon={<SaveIcon />}
-            sx={{ border: "1.5px solid green", width: "100%" }}
-            onClick={() => guardarTicket()}
-          >
-            Guardar Ticket
-          </Button>
-        </Grid>
       </Grid>
     </>
   );

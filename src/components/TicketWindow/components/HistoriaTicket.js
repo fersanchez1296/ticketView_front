@@ -26,8 +26,8 @@ const HistoriaTicket = () => {
       <Grid xs={12} mb={12}>
         <Card>
           <MDBox
-            variant="gradient"
-            bgColor="success"
+            //variant="gradient"
+            bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}

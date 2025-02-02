@@ -50,8 +50,8 @@ import routes from "routes";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
 // Images
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import brandWhite from "assets/images/ipejal.jpg";
+import brandDark from "assets/images/ipejal.jpg";
 
 import SignIn from "layouts/authentication/sign-in";
 import PrivateRoute from "layouts/authentication/sign-in/PrivateRoutes";

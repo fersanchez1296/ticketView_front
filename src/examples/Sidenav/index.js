@@ -181,7 +181,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </MDTypography>
         </MDBox>
         <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+          {brand && (
+            <MDBox component="img" src={brand} alt="Brand" width="2rem" borderRadius="50%" />
+          )}
           <MDBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
@@ -205,8 +207,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           onClick={signout}
           target="_blank"
           rel="noreferrer"
-          variant="gradient"
-          color="error"
+          //variant="gradient"
+          color="primary"
           fullWidth
         >
           Log out
@@ -218,7 +220,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
 // Setting default values for the props of Sidenav
 Sidenav.defaultProps = {
-  color: "info",
+  color: "primary",
   brand: "",
 };
 

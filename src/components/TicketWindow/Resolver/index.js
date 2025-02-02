@@ -113,10 +113,10 @@ const Resolver = () => {
               Cerrar
             </Typography>
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="primary"
               endIcon={<SaveIcon />}
-              sx={{ border: "1px solid green" }}
+              sx={{ color: "Black" }}
               onClick={resolverTicket}
               disabled={resolverTicketStore.Respuesta_cierre_reasignado === "" ? true : false}
             >
@@ -167,19 +167,13 @@ const Resolver = () => {
                       <MDBox mb={2}>
                         <Button
                           component="label"
-                          variant="contained"
+                          variant="outlined"
+                          color="primary"
                           tabIndex={-1}
-                          startIcon={<CloudUploadIcon color="white" />}
+                          startIcon={<CloudUploadIcon color="primary" />}
                           disabled={resolverTicketStore.Files ? true : false}
-                          sx={{
-                            color: "white", // Color del texto
-                            backgroundColor: "#1976d2", // Color de fondo
-                            "&:hover": {
-                              backgroundColor: "#1565c0", // Color de fondo al pasar el mouse
-                            },
-                          }}
                         >
-                          <MDTypography color="white">
+                          <MDTypography color="primary">
                             {resolverTicketStore.Files
                               ? resolverTicketStore.Files.name
                               : "Subir Archivos"}
@@ -192,9 +186,9 @@ const Resolver = () => {
                       <Grid item>
                         <MDBox mb={2}>
                           <Button
-                            variant="contained"
-                            color="error"
-                            startIcon={<DeleteIcon />}
+                            variant="outlined"
+                            color="secondary"
+                            startIcon={<DeleteIcon color="secondary" />}
                             onClick={() => {
                               resolverTicketStore.resolverTicketSetFiles(null);
                             }}

@@ -64,8 +64,8 @@ const BuscarCliente = ({ disable_input, data }) => {
       <Grid xs={12} mb={12}>
         <Card>
           <MDBox
-            variant="gradient"
-            bgColor="secondary"
+            //variant="gradient"
+            bgColor="primary"
             borderRadius="lg"
             coloredShadow="info"
             mx={2}
@@ -114,11 +114,12 @@ const BuscarCliente = ({ disable_input, data }) => {
                 <Grid xs={6} sx={{ display: !clienteExiste ? "block" : "none" }}>
                   <MDBox mb={2}>
                     <Button
-                      variant="contained"
-                      color="success"
-                      endIcon={<SearchIcon />}
+                      variant="outlined"
+                      color="primary"
+                      size="medium"
+                      endIcon={<SearchIcon color="primary" />}
+                      sx={{ color: "#7557c1" }}
                       disabled={!crearTicketStore.Correo_cliente ? true : false}
-                      sx={{ border: "1px dashed green" }}
                       onClick={() => buscarCliente(crearTicketStore.Correo_cliente)}
                     >
                       Buscar Cliente

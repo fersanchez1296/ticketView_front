@@ -69,7 +69,7 @@ function Historico({ collection }) {
 
   const Btn_view = (ticket) => (
     <MDButton
-      color="info"
+      color="primary"
       variant="contained"
       onClick={() => {
         setTicketFields(ticket.ticket);
@@ -170,10 +170,10 @@ function Historico({ collection }) {
                   mt={-3}
                   py={3}
                   px={2}
-                  variant="gradient"
-                  bgColor="info"
+                  //variant="gradient"
+                  bgColor="primary"
                   borderRadius="lg"
-                  coloredShadow="info"
+                  //coloredShadow="primary"
                 >
                   <MDTypography variant="h6" color="white">
                     Histórico de Tickets

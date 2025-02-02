@@ -79,7 +79,7 @@ const Resolutor = ({ data }) => {
         <Grid xs={12}>
           <Card>
             <MDBox
-              variant="gradient"
+              //variant="gradient"
               bgColor="primary"
               borderRadius="lg"
               coloredShadow="info"
