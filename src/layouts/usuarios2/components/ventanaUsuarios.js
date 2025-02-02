@@ -55,7 +55,7 @@ const VentanaUsuarios = (disable_input) => {
   const { data, isLoading } = useGetSelectRolQuery();
   React.useEffect(() => {
     userStore && userStore.Nombre === ""
-      ? setNombreBoton("Crear usuario")
+      ? setNombreBoton("Guardar usuario")
       : setNombreBoton("Editar usuario");
   }, []);
   React.useEffect(() => {
@@ -76,6 +76,7 @@ const VentanaUsuarios = (disable_input) => {
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
         resetUserStore();
+        closeWindowUsuarios();
       }
     } catch (error) {
       console.log(error);
@@ -88,8 +89,9 @@ const VentanaUsuarios = (disable_input) => {
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
       } else {
-        resetUserStore();
         openSuccessSB(result.data.desc, `Status: 200`);
+        resetUserStore();
+        closeWindowUsuarios();
       }
     } catch (error) {
       console.log(error);
@@ -131,7 +133,7 @@ const VentanaUsuarios = (disable_input) => {
               sx={{ color: "#7557C1" }}
               onClick={metodoEnvio ? crearUsuario : editarUsuario}
             >
-              {nombreBoton}
+              Guardar Usuario
             </Button>
           </Toolbar>
         </AppBar>

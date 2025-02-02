@@ -68,7 +68,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Dependencia:"
-                      value={ticket.Dependencia_cliente.Dependencia}
+                      value={ticket.Dependencia_cliente._id}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required

@@ -48,15 +48,7 @@ const steps = [
 const View = () => {
   const isWindowOpen = useDialogStore((state) => state.isWindowOpen);
   const closeWindow = useDialogStore((state) => state.closeWindow);
-  const ticketState = useTicketStore();
-  //const [createDocumento] = usePostDocumentoMutation();
-
-  React.useEffect(() => {
-    console.log("rendering component");
-    return () => {
-      console.log("component removed");
-    };
-  }, [isWindowOpen]);
+  const ticketStore = useTicketStore();
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -113,7 +105,7 @@ const View = () => {
       case 4:
         return (
           <Suspense fallback={<div>Loading...</div>}>
-            {ticketState.Historia_ticket != [] ? (
+            {ticketStore.Historia_ticket != [] ? (
               <LazyHistoriaTicket disable_input={true} />
             ) : (
               <NoData />
@@ -138,7 +130,7 @@ const View = () => {
         open={isWindowOpen}
         onClose={() => {
           handleReset();
-          ticketState.resetValues();
+          ticketStore.resetValues();
           closeWindow();
         }}
         TransitionComponent={Transition}
@@ -150,7 +142,7 @@ const View = () => {
               color="inherit"
               onClick={() => {
                 handleReset();
-                ticketState.resetValues();
+                ticketStore.resetValues();
                 closeWindow();
               }}
               aria-label="close"
@@ -178,21 +170,31 @@ const View = () => {
               );
             })}
           </Stepper>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center", // Centrar horizontalmente
+              pt: 2,
+            }}
+          >
             <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
               Atras
             </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
 
-            {activeStep !== steps.length && (
-              <Button
-                onClick={handleNext}
-                disabled={activeStep === steps.length - 1 ? true : false}
-              >
-                Siguiente
-              </Button>
-            )}
+            <Typography
+              variant="h3"
+              color="inherit"
+              sx={{ flexGrow: 1, textAlign: "center" }} // Centrar texto con flexGrow
+            >
+              {`ticket #${ticketStore.Id} - ${ticketStore.Estado.Estado}`}
+            </Typography>
+
+            <Button onClick={handleNext} disabled={activeStep === steps.length - 1}>
+              Siguiente
+            </Button>
           </Box>
+
           {activeStep === steps.length ? (
             <React.Fragment>
               <Typography sx={{ mt: 2, mb: 1 }}>No hay más por ver</Typography>

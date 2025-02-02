@@ -203,6 +203,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
+    { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
       field: "Creado_por",
       headerName: "Creado Por",
@@ -298,7 +299,6 @@ export default function DataTable({ tickets, collection }) {
         />
       ),
     },
-    { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
       field: "estatus",
       headerName: "Estatus",
@@ -363,6 +363,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
+    { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
       field: "Asignado_a",
       headerName: "Asignados a",
@@ -394,7 +395,6 @@ export default function DataTable({ tickets, collection }) {
         />
       ),
     },
-    { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
       field: "estatus",
       headerName: "Estatus",
@@ -430,6 +430,7 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
+    { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
       field: "Asignado_a",
       headerName: "Asignado a",
@@ -453,7 +454,6 @@ export default function DataTable({ tickets, collection }) {
         />
       ),
     },
-    { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
       field: "estatus",
       headerName: "Estatus",
