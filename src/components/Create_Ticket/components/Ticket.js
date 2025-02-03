@@ -241,26 +241,24 @@ const Ticket = ({ disable_input, data }) => {
                   </MDBox>
                 </Grid>
                 {/*Botón para subir archivos*/}
-                {!ticketState.NumeroRec_Oficio ? null : (
-                  <Grid xs={12}>
-                    <MDBox mb={2}>
-                      <Button
-                        component="label"
-                        variant="outlined"
-                        color="primary"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon color="primary" />}
-                        disabled={Files && setedFiles ? true : false}
-                      >
-                        <MDTypography color="primary">
-                          {Files && setedFiles ? Files.name : "Subir Archivos"}
-                        </MDTypography>
-                        <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-                      </Button>
-                    </MDBox>
-                  </Grid>
-                )}
-
+                <Grid xs={6}>
+                  <MDBox mb={2}>
+                    <Button
+                      component="label"
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      tabIndex={-1}
+                      startIcon={<CloudUploadIcon color="primary" />}
+                      disabled={Files && setedFiles ? true : false}
+                    >
+                      <MDTypography color="primary">
+                        {Files && setedFiles ? Files.name : "Subir Archivos"}
+                      </MDTypography>
+                      <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+                    </Button>
+                  </MDBox>
+                </Grid>
                 {Files && setedFiles ? (
                   <Grid item>
                     <MDBox mb={2}>
