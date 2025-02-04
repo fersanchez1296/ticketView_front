@@ -21,6 +21,7 @@ export interface CrearTicketProps {
   Correo_cliente: string;
   Dependencia_cliente: Object;
   Files?: File | null;
+  standby: boolean;
 }
 
 export interface CrearTicketMethods {
@@ -55,6 +56,7 @@ export const crearTicketInitialState: CrearTicketProps = {
   Direccion_general: {},
   Direccion_area: {},
   Files: null,
+  standby: false,
 };
 
 export interface isNuevoClienteProps {
