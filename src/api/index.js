@@ -32,6 +32,16 @@ export const apiSlice = createApi({
       },
       providesTags: ["Tickets"],
     }),
+    getTickets: builder.query({
+      query: ({ estado }) => {
+        const url = `tickets/estado/${estado}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
     //Obtener ticket
     postTicket: builder.mutation({
       query: (id) => {
@@ -379,4 +389,5 @@ export const {
   useEditarUsuarioMutation,
   useCrearUsuarioMutation,
   useGetSelectRolQuery,
+  useGetTicketsQuery,
 } = apiSlice;

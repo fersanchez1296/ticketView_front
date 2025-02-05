@@ -8,9 +8,6 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-//import DataTable from "examples/Tables/DataTable";
-// Data
-import abiertosTableData from "layouts/abiertos/data/abiertosTableData";
 //store
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //api
@@ -23,11 +20,13 @@ import PropTypes from "prop-types";
 import View from "components/TicketWindow/View";
 import Edit from "components/TicketWindow/Edit";
 import Cerrar from "components/TicketWindow/Cerrar";
-import Reabrir from "components/TicketWindow/Reabrir";
+// import Reabrir from "components/TicketWindow/Reabrir";
+import VentanaAcciones from "components/VentanaAcciones";
 import Reasignar from "components/TicketWindow/Reasignar";
 import Resolver from "components/TicketWindow/Resolver";
 import Aceptar from "components/TicketWindow/Aceptar";
 import Rechazar from "components/TicketWindow/Rechazar";
+import Reabrir from "components/TicketWindow/Reabrir";
 //Progress
 import Progress from "components/Progress";
 //snackbar
@@ -37,6 +36,7 @@ function TableData({ collection }) {
   const { data: tickets, refetch, isLoading, error } = useGetTicketsAbiertosQuery({ collection });
   const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
   const isWindowReabrirOpen = useDialogStore((state) => state.isWindowReabrirOpen);
+  const closeWindowReabrir = useDialogStore((state) => state.closeWindowReabrir);
   const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
   const isWindowCloseTicketOpen = useDialogStore((state) => state.isWindowCloseTicketOpen);
   const isWindowResolverOpen = useDialogStore((state) => state.isWindowResolverOpen);
@@ -60,7 +60,6 @@ function TableData({ collection }) {
                   mt={-3}
                   py={3}
                   px={2}
-                  //variant="gradient"
                   bgColor="primary"
                   borderRadius="lg"
                   coloredShadow="info"
@@ -70,14 +69,6 @@ function TableData({ collection }) {
                   </MDTypography>
                 </MDBox>
                 <MDBox pt={3}>
-                  {/* <DataTable
-                  table={{ columns, rows }}
-                  canSearch
-                  isSorted={true}
-                  entriesPerPage={true}
-                  showTotalEntries={true}
-                  noEndBorder
-                /> */}
                   <DataTable tickets={tickets} collection={collection} />
                 </MDBox>
               </Card>
@@ -86,16 +77,24 @@ function TableData({ collection }) {
         </MDBox>
         <Footer />
       </DashboardLayout>
-      <SuccessSB />
+      {/* <SuccessSB />
       <ErrorSB />
       <View />
-      {isWindowEditOpen ? <Edit /> : null}
-      {isWindowReabrirOpen ? <Reabrir /> : null}
-      {isWindowCloseTicketOpen ? <Cerrar /> : null}
-      {isWindowReasignarOpen ? <Reasignar /> : null}
-      {isWindowResolverOpen ? <Resolver /> : null}
-      {isWindowAceptarOpen ? <Aceptar /> : null}
-      {isWindowRechazarOpen ? <Rechazar /> : null}
+      {isWindowEditOpen && <Edit />}
+      {isWindowReabrirOpen && (
+        <VentanaAcciones
+          title={"Reabrir Ticket"}
+          isOpen={isWindowReabrirOpen}
+          onClose={closeWindowReabrir}
+        >
+          {<Reabrir />}
+        </VentanaAcciones>
+      )}
+      {isWindowCloseTicketOpen && <Cerrar />}
+      {isWindowReasignarOpen && <Reasignar />}
+      {isWindowResolverOpen && <Resolver />}
+      {isWindowAceptarOpen && <Aceptar />}
+      {isWindowRechazarOpen && <Rechazar />} */}
     </>
   );
 }

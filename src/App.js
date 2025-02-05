@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import { useState, useEffect, useMemo } from "react";
-
+import ModalManager from "components/ModalManager";
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
@@ -224,6 +224,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Route>
       </Routes>
+      <ModalManager />
     </ThemeProvider>
   );
 }

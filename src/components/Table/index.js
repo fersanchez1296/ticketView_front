@@ -205,6 +205,18 @@ export default function DataTable({ tickets, collection }) {
       : []),
     { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
+      field: "estatus",
+      headerName: "Estatus",
+      width: 130,
+      renderCell: (params) => <Badge content={params.row.Estado.Estado} />,
+    },
+    {
+      field: "prioridad",
+      headerName: "Prioridad",
+      width: 130,
+      renderCell: (params) => <Badge content={params.row.Prioridad.Descripcion} />,
+    },
+    {
       field: "Creado_por",
       headerName: "Creado Por",
       width: 250,
@@ -298,18 +310,6 @@ export default function DataTable({ tickets, collection }) {
           //dependencia={params.row.Dependencia.Dependencia}
         />
       ),
-    },
-    {
-      field: "estatus",
-      headerName: "Estatus",
-      width: 130,
-      renderCell: (params) => <Badge content={params.row.Estado.Estado} />,
-    },
-    {
-      field: "prioridad",
-      headerName: "Prioridad",
-      width: 130,
-      renderCell: (params) => <Badge content={params.row.Prioridad.Descripcion} />,
     },
     { field: "Tipo_incidencia", headerName: "Tipo", width: 150 },
     { field: "Fecha_hora_creacion", headerName: "Creado", width: 250 },
@@ -483,6 +483,7 @@ export default function DataTable({ tickets, collection }) {
     ...ticket,
     Tipo_incidencia: ticket.Tipo_incidencia ? ticket.Tipo_incidencia.Tipo_de_incidencia : "",
     Descripcion_cierre: ticket.Descripcion_cierre ? ticket.Descripcion_cierre : "Ticket en curso",
+    Reasignado_a: ticket.Reasignado_a ? ticket.Reasignado_a : "",
   }));
 
   const paginationModel = { page: 0, pageSize: 10 };
