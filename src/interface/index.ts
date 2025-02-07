@@ -177,6 +177,10 @@ export interface DialogState {
   isWindowReasignarOpen: boolean;
   openWindowReasignar: () => void;
   closeWindowReasignar: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de asignar ticket:
+  isWindowAsignarOpen: boolean;
+  openWindowAsignar: () => void;
+  closeWindowAsignar: () => void;
   //estas definiciones y metodos se usan para abrir la ventana de resolver ticket:
   isWindowResolverOpen: boolean;
   openWindowResolver: () => void;

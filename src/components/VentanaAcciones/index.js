@@ -25,28 +25,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Index = ({ children, title, isOpen, onClose, onSave, resetStore }) => {
-  const { data, isLoading } = useGetUsuariosQuery();
+const Index = ({ children, title, isOpen, onClose, onSave, resetStore, data }) => {
   const closeWindowReabrir = useDialogStore((state) => state.closeWindowReabrir);
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-  if (isLoading) return <p>Cargando...</p>;
 
-  const reasignarTicket = async () => {
-    try {
-      //const result = await putReasignar({ reasignarTicketStore, ticketId });
-      if (result.error) {
-        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-      } else {
-        openSuccessSB(result.data.desc, `Status: 200`);
-      }
-      setTimeout(() => {
-        //reasignarTicketStore.reasignarTicketResetValues();
-        //reasignarTicketStore.reasignarTicketResetValues();
-        closeWindowReabrir();
-      }, 2000);
-    } catch (error) {
-      openErrorSB("Ocurrio un error inesperado al reasignar el ticket.", `Status: 200`);
-    }
+  const handleSave = async () => {
+    const formData = new FormData();
+    // try {
+    //   formData.append("ticketData", JSON.stringify(resolverTicketStore));
+    //   if (resolverTicketStore.Files instanceof File) {
+    //     formData.append("file", resolverTicketStore.Files);
+    //   }
+    //   console.log(resolverTicketStore.Files);
+    //   const result = await putTicket({ formData, ticketId });
+    //   if (result.error) {
+    //     openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+    //     return result;
+    //   } else {
+    //     openSuccessSB(result.data.desc, `Status: 200`);
+    //     closeWindowResolver();
+    //     resolverTicketStore.resolverTicketResetValues();
+    //     return result;
+    //   }
+    // } catch (error) {
+    //   openErrorSB("Ocurrio un error al resolver el ticket.", `Status: ${result.error.status}`);
+    // }
   };
 
   return (
@@ -81,7 +84,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, resetStore }) => {
               color="primary"
               endIcon={<SaveIcon />}
               sx={{ color: "Black" }}
-              onClick={reasignarTicket}
+              onClick={handleSave}
               //disabled={reasignarTicketStore.Reasignado_a === "" ? true : false}
             >
               Guardar
@@ -133,6 +136,7 @@ Index.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   resetStore: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default React.memo(Index);

@@ -4,8 +4,8 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //desarrollo
-    baseUrl: "http://localhost:4000/api/v1/",
-    //baseUrl: `http://172.16.1.13:4000/api/v1/`,
+    //baseUrl: "http://localhost:4000/api/v1/",
+    baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
   tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion", "Clientes"],
@@ -96,6 +96,18 @@ export const apiSlice = createApi({
           url,
           method: "PUT",
           body: reasignarTicketStore,
+        };
+      },
+      invalidatesTags: ["Tickets"],
+    }),
+    putAsignar: builder.mutation({
+      query: ({ asignarTicketStore, ticketId }) => {
+        console.log(ticketId);
+        const url = `tickets/asignar/${ticketId}`;
+        return {
+          url,
+          method: "PUT",
+          body: asignarTicketStore,
         };
       },
       invalidatesTags: ["Tickets"],
@@ -390,4 +402,5 @@ export const {
   useCrearUsuarioMutation,
   useGetSelectRolQuery,
   useGetTicketsQuery,
+  usePutAsignarMutation,
 } = apiSlice;

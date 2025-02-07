@@ -11,6 +11,9 @@ import Reasignar from "components/TicketWindow/Reasignar";
 import Resolver from "components/TicketWindow/Resolver";
 import Aceptar from "components/TicketWindow/Aceptar";
 import Rechazar from "components/TicketWindow/Rechazar";
+import Asignar from "components/TicketWindow/Asignar";
+//reabrir store
+import { useReabrirTicketStore } from "components/TicketWindow/Reabrir/store/reabrirTicket.store.ts";
 
 const ModalManager = () => {
   const {
@@ -22,8 +25,11 @@ const ModalManager = () => {
     isWindowResolverOpen,
     isWindowAceptarOpen,
     isWindowRechazarOpen,
+    isWindowAsignarOpen,
   } = useDialogStore();
 
+  const reabrirTicketStore = useReabrirTicketStore();
+  //const [reabrir] = usePutReabrir();
   return (
     <>
       <SuccessSB />
@@ -37,7 +43,7 @@ const ModalManager = () => {
           title="Reabrir Ticket"
           isOpen={isWindowReabrirOpen}
           onClose={closeWindowReabrir}
-          //onSave={}
+          //onSave={reabrir({useTicketStore})}
           //resetStore={}
         >
           <Reabrir />
@@ -49,6 +55,7 @@ const ModalManager = () => {
       {isWindowResolverOpen && <Resolver />}
       {isWindowAceptarOpen && <Aceptar />}
       {isWindowRechazarOpen && <Rechazar />}
+      {isWindowAsignarOpen && <Asignar />}
     </>
   );
 };

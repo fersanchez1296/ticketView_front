@@ -89,6 +89,10 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowReasignarOpen: false,
   openWindowReasignar: () => set({ isWindowReasignarOpen: true }),
   closeWindowReasignar: () => set({ isWindowReasignarOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de asignar ticket:
+  isWindowAsignarOpen: false,
+  openWindowAsignar: () => set({ isWindowAsignarOpen: true }),
+  closeWindowAsignar: () => set({ isWindowAsignarOpen: false }),
   //estas definiciones y metodos se usan para abrir la ventana de resolver ticket:
   isWindowResolverOpen: false,
   openWindowResolver: () => set({ isWindowResolverOpen: true }),

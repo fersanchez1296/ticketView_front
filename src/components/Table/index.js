@@ -20,6 +20,7 @@ export default function DataTable({ tickets, collection }) {
   const openWindowEdit = useDialogStore((state) => state.openWindowEdit);
   const openWindowCloseTicket = useDialogStore((state) => state.openWindowCloseTicket);
   const openWindowReasignar = useDialogStore((state) => state.openWindowReasignar);
+  const openWindowAsignar = useDialogStore((state) => state.openWindowAsignar);
   const openWindowReabrir = useDialogStore((state) => state.openWindowReabrir);
   const openWindowResolver = useDialogStore((state) => state.openWindowResolver);
   const openWindowAceptar = useDialogStore((state) => state.openWindowAceptar);
@@ -87,6 +88,21 @@ export default function DataTable({ tickets, collection }) {
     </MDButton>
   );
 
+  const Btn_asignar = (ticket) => (
+    <MDButton
+      color={"warning"}
+      variant={"contained"}
+      onClick={() => {
+        setTicketFields(ticket.ticket);
+        openWindowAsignar();
+      }}
+    >
+      <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
+        {`Asignar`}
+      </MDTypography>
+    </MDButton>
+  );
+
   const Btn_resolver = (ticket) => (
     <MDButton
       disabled={collection === "Resueltos" ? true : false}
@@ -103,20 +119,20 @@ export default function DataTable({ tickets, collection }) {
     </MDButton>
   );
 
-  const Btn_edit = (ticket) => (
-    <MDButton
-      color={"success"}
-      variant={"contained"}
-      onClick={() => {
-        setTicketFields(ticket.ticket);
-        openWindowEdit();
-      }}
-    >
-      <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
-        {`Editar`}
-      </MDTypography>
-    </MDButton>
-  );
+  // const Btn_edit = (ticket) => (
+  //   <MDButton
+  //     color={"success"}
+  //     variant={"contained"}
+  //     onClick={() => {
+  //       setTicketFields(ticket.ticket);
+  //       openWindowEdit();
+  //     }}
+  //   >
+  //     <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
+  //       {`Editar`}
+  //     </MDTypography>
+  //   </MDButton>
+  // );
 
   const Btn_aceptarResolucion = (ticket) => (
     <MDButton
@@ -155,17 +171,17 @@ export default function DataTable({ tickets, collection }) {
       width: 140,
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
-    ...(collection !== "cerrados" && collection !== "resueltos"
-      ? [
-          {
-            field: "editar",
-            headerName: "Editar",
-            width: 140,
-            renderCell: (params) => <Btn_edit ticket={params.row} />,
-          },
-        ]
-      : []),
-    ...(collection !== "cerrados"
+    // ...(collection !== "cerrados" && collection !== "resueltos"
+    //   ? [
+    //       {
+    //         field: "editar",
+    //         headerName: "Editar",
+    //         width: 140,
+    //         renderCell: (params) => <Btn_edit ticket={params.row} />,
+    //       },
+    //     ]
+    //   : []),
+    ...(collection !== "cerrados" && collection !== "standby"
       ? [
           {
             field: "cerrar",
@@ -174,16 +190,19 @@ export default function DataTable({ tickets, collection }) {
             renderCell: (params) => <Btn_cerrar ticket={params.row} />,
           },
         ]
-      : [
-          {
-            field: "reabrir",
-            headerName: "Reabrir",
-            width: 140,
-            renderCell: (params) => <Btn_reabrir ticket={params.row} />,
-          },
-        ]),
-    //[]),
-    ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "pendientes"
+      : // : [
+        //     {
+        //       field: "reabrir",
+        //       headerName: "Reabrir",
+        //       width: 140,
+        //       renderCell: (params) => <Btn_reabrir ticket={params.row} />,
+        //     },
+        //   ]),
+        []),
+    ...(collection !== "cerrados" &&
+    collection !== "resueltos" &&
+    collection !== "pendientes" &&
+    collection !== "standby"
       ? [
           {
             field: "reasignar",
@@ -193,7 +212,17 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection !== "cerrados" && collection !== "resueltos"
+    // ...(collection === "standby"
+    //   ? [
+    //       {
+    //         field: "Asignar",
+    //         headerName: "Asignar",
+    //         width: 140,
+    //         renderCell: (params) => <Btn_asignar ticket={params.row} />,
+    //       },
+    //     ]
+    //   : []),
+    ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "standby"
       ? [
           {
             field: "resolver",
