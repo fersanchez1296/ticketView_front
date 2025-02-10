@@ -36,6 +36,9 @@ const Cerrar = () => {
   const descripcion_cierre_resolutor = useTicketStore((state) => state.Respuesta_cierre_reasignado);
   const ticketId = useTicketStore((state) => state._id);
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
+  React.useEffect(() => {
+    cerrarTicketStore.setCerrarTicketFields("Descripcion_cierre", descripcion_cierre_resolutor);
+  }, []);
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -99,10 +102,10 @@ const Cerrar = () => {
               Cerrar
             </Typography>
             <Button
-              variant="contained"
-              color="success"
+              variant="outlined"
+              color="primary"
               endIcon={<SaveIcon />}
-              sx={{ border: "1px solid green" }}
+              sx={{ color: "Black" }}
               onClick={cerrarTicket}
               disabled={cerrarTicketStore.Descripcion_cierre === "" ? true : false}
             >
@@ -150,19 +153,6 @@ const Cerrar = () => {
                       <MDBox mb={2}>
                         <TextField
                           id="outlined-multiline-static"
-                          label="Descripción de cierre del resolutor"
-                          multiline
-                          disabled
-                          value={descripcion_cierre_resolutor}
-                          rows={5.2}
-                          sx={{ width: "100%" }}
-                        />
-                      </MDBox>
-                    </Grid>
-                    <Grid xs={12}>
-                      <MDBox mb={2}>
-                        <TextField
-                          id="outlined-multiline-static"
                           label="Descripción de cierre"
                           multiline
                           value={cerrarTicketStore.Descripcion_cierre}
@@ -177,33 +167,31 @@ const Cerrar = () => {
                         />
                       </MDBox>
                     </Grid>
-                    {!cerrarTicketStore.Numero_Oficio ? null : (
-                      <Grid xs={12}>
-                        <MDBox mb={2}>
-                          <Button
-                            component="label"
-                            variant="contained"
-                            tabIndex={-1}
-                            startIcon={<CloudUploadIcon color="white" />}
-                            disabled={cerrarTicketStore.Files ? true : false}
-                            sx={{
-                              color: "white",
-                              backgroundColor: "#1976d2",
-                              "&:hover": {
-                                backgroundColor: "#1565c0",
-                              },
-                            }}
-                          >
-                            <MDTypography color="white">
-                              {cerrarTicketStore.Files
-                                ? cerrarTicketStore.Files.name
-                                : "Subir Archivos"}
-                            </MDTypography>
-                            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-                          </Button>
-                        </MDBox>
-                      </Grid>
-                    )}
+                    <Grid xs={12}>
+                      <MDBox mb={2}>
+                        <Button
+                          component="label"
+                          variant="contained"
+                          tabIndex={-1}
+                          startIcon={<CloudUploadIcon color="white" />}
+                          disabled={cerrarTicketStore.Files ? true : false}
+                          sx={{
+                            color: "white",
+                            backgroundColor: "#1976d2",
+                            "&:hover": {
+                              backgroundColor: "#1565c0",
+                            },
+                          }}
+                        >
+                          <MDTypography color="white">
+                            {cerrarTicketStore.Files
+                              ? cerrarTicketStore.Files.name
+                              : "Subir Archivos"}
+                          </MDTypography>
+                          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+                        </Button>
+                      </MDBox>
+                    </Grid>
                     {cerrarTicketStore.Files ? (
                       <Grid item>
                         <MDBox mb={2}>
