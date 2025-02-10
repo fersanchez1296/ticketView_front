@@ -4,8 +4,8 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //desarrollo
-    //baseUrl: "http://localhost:4000/api/v1/",
-    baseUrl: `http://172.16.1.13:4000/api/v1/`,
+    baseUrl: "http://localhost:4000/api/v1/",
+    //baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
   tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion", "Clientes"],
@@ -186,6 +186,7 @@ export const apiSlice = createApi({
         body: formData,
         formData: true,
       }),
+      providesTags: ["Tickets"],
     }),
     //Editar ticket
     editar: builder.mutation({

@@ -181,7 +181,10 @@ export default function DataTable({ tickets, collection }) {
     //       },
     //     ]
     //   : []),
-    ...(collection !== "cerrados" && collection !== "standby"
+    ...(collection !== "cerrados" &&
+    collection !== "standby" &&
+    collection !== "nuevos" &&
+    collection !== "abiertos"
       ? [
           {
             field: "cerrar",
@@ -199,19 +202,19 @@ export default function DataTable({ tickets, collection }) {
         //     },
         //   ]),
         []),
-    ...(collection !== "cerrados" &&
-    collection !== "resueltos" &&
-    collection !== "pendientes" &&
-    collection !== "standby"
-      ? [
-          {
-            field: "reasignar",
-            headerName: "Reasignar",
-            width: 140,
-            renderCell: (params) => <Btn_reasignar ticket={params.row} />,
-          },
-        ]
-      : []),
+    // ...(collection !== "cerrados" &&
+    // collection !== "resueltos" &&
+    // collection !== "pendientes" &&
+    // collection !== "standby"
+    //   ? [
+    //       {
+    //         field: "reasignar",
+    //         headerName: "Reasignar",
+    //         width: 140,
+    //         renderCell: (params) => <Btn_reasignar ticket={params.row} />,
+    //       },
+    //     ]
+    //   : []),
     ...(collection === "standby"
       ? [
           {
@@ -222,7 +225,11 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "standby"
+    ...(collection !== "cerrados" &&
+    collection !== "resueltos" &&
+    collection !== "standby" &&
+    collection !== "nuevos" &&
+    collection !== "abiertos"
       ? [
           {
             field: "resolver",
