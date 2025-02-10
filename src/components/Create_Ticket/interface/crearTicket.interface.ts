@@ -6,20 +6,13 @@ export interface CrearTicketProps {
   Categoria: Object;
   Servicio: Object;
   Subcategoria: Object;
-  Direccion_general?: Object;
-  Direccion_area?: Object | null;
   Descripcion: string;
   Prioridad: Object;
   Incidencia_grave: string;
   Fecha_limite_respuesta_SLA?: Date | String;
   NumeroRec_Oficio?: string;
   PendingReason?: string;
-  Nombre_cliente: string;
-  Telefono_cliente: string;
-  Extension_cliente: string;
-  Ubicacion_cliente: string;
-  Correo_cliente: string;
-  Dependencia_cliente: Object;
+  Cliente: string;
   Files?: File | null;
   standby: boolean;
 }
@@ -41,20 +34,13 @@ export const crearTicketInitialState: CrearTicketProps = {
   Categoria: {},
   Servicio: {},
   Subcategoria: {},
-  Nombre_cliente: "",
+  Cliente: "",
   Descripcion: "",
   Prioridad: {},
   Incidencia_grave: "",
   Fecha_limite_respuesta_SLA: "",
   NumeroRec_Oficio: "",
   PendingReason: "",
-  Telefono_cliente: "",
-  Extension_cliente: "",
-  Ubicacion_cliente: "",
-  Correo_cliente: "",
-  Dependencia_cliente: {},
-  Direccion_general: {},
-  Direccion_area: {},
   Files: null,
   standby: false,
 };

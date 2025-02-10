@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 
 const Cliente = ({ disable_input }) => {
   const ticket = useTicketStore();
-  console.log(ticket);
+  console.log(ticket.Cliente);
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12} mb={12}>
@@ -42,7 +42,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Nombre del cliente:"
-                      value={ticket.Nombre_cliente}
+                      value={ticket.Cliente.Nombre}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -55,7 +55,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Teléfono del cliente:"
-                      value={ticket.Telefono_cliente}
+                      value={ticket.Cliente.Telefono}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -68,7 +68,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Dependencia:"
-                      value={ticket.Dependencia_cliente._id}
+                      value={ticket.Cliente.Dependencia.Dependencia}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -81,7 +81,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Correo del cliente:"
-                      value={ticket.Correo_cliente}
+                      value={ticket.Cliente.Correo}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -94,7 +94,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Dirección General:"
-                      value={ticket.Direccion_general.Direccion_General}
+                      value={ticket.Cliente.Direccion_General.Direccion_General}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -107,7 +107,7 @@ const Cliente = ({ disable_input }) => {
                     <MDInput
                       type="text"
                       label="Dirección Área:"
-                      value={ticket.Direccion_area.direccion_area}
+                      value={ticket.Cliente.direccion_area.direccion_area}
                       //onChange={(e) => setEditor("editor", e.target.value)}
                       fullWidth
                       required
@@ -121,7 +121,7 @@ const Cliente = ({ disable_input }) => {
                       id="outlined-multiline-static"
                       label="Ubicación del cliente:"
                       multiline
-                      value={ticket.Ubicacion_cliente}
+                      value={ticket.Cliente.Ubicacion}
                       rows={10}
                       sx={{ width: "100%" }}
                       disabled={disable_input}

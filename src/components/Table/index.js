@@ -212,16 +212,16 @@ export default function DataTable({ tickets, collection }) {
           },
         ]
       : []),
-    // ...(collection === "standby"
-    //   ? [
-    //       {
-    //         field: "Asignar",
-    //         headerName: "Asignar",
-    //         width: 140,
-    //         renderCell: (params) => <Btn_asignar ticket={params.row} />,
-    //       },
-    //     ]
-    //   : []),
+    ...(collection === "standby"
+      ? [
+          {
+            field: "Asignar",
+            headerName: "Asignar",
+            width: 140,
+            renderCell: (params) => <Btn_asignar ticket={params.row} />,
+          },
+        ]
+      : []),
     ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "standby"
       ? [
           {
@@ -335,8 +335,8 @@ export default function DataTable({ tickets, collection }) {
       width: 250,
       renderCell: (params) => (
         <Cliente
-          nombre={params.row.Nombre_cliente}
-          //dependencia={params.row.Dependencia.Dependencia}
+          nombre={params.row.Cliente.Nombre}
+          dependencia={params.row.Cliente.Dependencia.Dependencia}
         />
       ),
     },
@@ -394,6 +394,18 @@ export default function DataTable({ tickets, collection }) {
       : []),
     { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
+      field: "estatus",
+      headerName: "Estatus",
+      width: 130,
+      renderCell: (params) => <Badge content={params.row.Estado.Estado} />,
+    },
+    {
+      field: "prioridad",
+      headerName: "Prioridad",
+      width: 130,
+      renderCell: (params) => <Badge content={params.row.Prioridad.Descripcion} />,
+    },
+    {
       field: "Asignado_a",
       headerName: "Asignados a",
       width: 250,
@@ -402,12 +414,12 @@ export default function DataTable({ tickets, collection }) {
           image={team2}
           nombre={
             params.row.Asignado_final_a
-              ? params.row.Asignado_final_a.Nombre
+              ? params.row.Asignado_a.Nombre
               : params.row.Asignado_a.Nombre
           }
           dependencia={
             params.row.Asignado_final_a
-              ? params.row.Asignado_final_a.Coordinacion
+              ? params.row.Asignado_a.Coordinacion
               : params.row.Asignado_a.Coordinacion
           }
         />
@@ -419,22 +431,10 @@ export default function DataTable({ tickets, collection }) {
       width: 250,
       renderCell: (params) => (
         <Cliente
-          nombre={params.row.Nombre_cliente}
-          //dependencia={params.row.Dependencia.Dependencia}
+          nombre={params.row.Cliente.Nombre}
+          dependencia={params.row.Cliente.Dependencia.Dependencia}
         />
       ),
-    },
-    {
-      field: "estatus",
-      headerName: "Estatus",
-      width: 130,
-      renderCell: (params) => <Badge content={params.row.Estado.Estado} />,
-    },
-    {
-      field: "prioridad",
-      headerName: "Prioridad",
-      width: 130,
-      renderCell: (params) => <Badge content={params.row.Prioridad.Descripcion} />,
     },
     { field: "Tipo_incidencia", headerName: "Tipo", width: 150 },
     { field: "Fecha_hora_creacion", headerName: "Creado", width: 250 },
@@ -462,13 +462,13 @@ export default function DataTable({ tickets, collection }) {
     { field: "Id", headerName: "ID", width: 90, align: "center" },
     {
       field: "Asignado_a",
-      headerName: "Asignado a",
+      headerName: "Reasignado a",
       width: 250,
       renderCell: (params) => (
         <Asignado
           image={team2}
-          nombre={params.row.Asignado_final_a.Nombre}
-          dependencia={params.row.Asignado_final_a.Coordinacion}
+          nombre={params.row.Reasignado_a.Nombre}
+          dependencia={params.row.Area_reasignado_a.Area}
         />
       ),
     },
@@ -478,8 +478,8 @@ export default function DataTable({ tickets, collection }) {
       width: 250,
       renderCell: (params) => (
         <Cliente
-          nombre={params.row.Nombre_cliente}
-          //dependencia={params.row.Dependencia.Dependencia}
+          nombre={params.row.Cliente.Nombre}
+          dependencia={params.row.Cliente.Dependencia.Dependencia}
         />
       ),
     },

@@ -4,8 +4,8 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     //desarrollo
-    //baseUrl: "http://localhost:4000/api/v1/",
-    baseUrl: `http://172.16.1.13:4000/api/v1/`,
+    baseUrl: "http://localhost:4000/api/v1/",
+    //baseUrl: `http://172.16.1.13:4000/api/v1/`,
     credentials: "include",
   }),
   tagTypes: ["Tickets", "Usuarios", "Dashboard", "Historico", "Coordinacion", "Clientes"],
@@ -24,7 +24,7 @@ export const apiSlice = createApi({
     //Tickets
     getTicketsAbiertos: builder.query({
       query: ({ collection }) => {
-        const url = `tickets/${collection}`;
+        const url = `tickets/estado/${collection.toUpperCase()}`;
         return {
           url,
           method: "GET",
@@ -81,6 +81,16 @@ export const apiSlice = createApi({
     getUsuarios: builder.query({
       query: () => {
         const url = `tickets/reasignar/areas`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios", "Tickets"],
+    }),
+    getUsuariosAsignar: builder.query({
+      query: () => {
+        const url = `tickets/asignar/areas`;
         return {
           url,
           method: "GET",
@@ -403,4 +413,5 @@ export const {
   useGetSelectRolQuery,
   useGetTicketsQuery,
   usePutAsignarMutation,
+  useGetUsuariosAsignarQuery,
 } = apiSlice;

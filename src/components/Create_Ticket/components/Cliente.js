@@ -105,7 +105,7 @@ const Cliente = ({ disable_input, data }) => {
         <Grid xs={12}>
           <Suspense fallback={<div>Loading...</div>}>
             {" "}
-            {!buscarCliente ? <LazyBuscarCliente data={data} /> : <LazyNuevoCliente />}
+            {!buscarCliente ? <LazyBuscarCliente /> : <LazyNuevoCliente />}
           </Suspense>
         </Grid>
         {/*Botón que envía los daots que se guardan en ticketSatate mediante un post */}

@@ -102,7 +102,7 @@ const routes = [
     rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <FileOpenIcon />,
     route: "/abiertos",
-    component: <DataTable collection={"en-curso"} />,
+    component: <DataTable collection={"abiertos"} />,
   },
   // {
   //   type: "collapse",
@@ -135,7 +135,7 @@ const routes = [
     type: "collapse",
     name: "Standby",
     key: "Standby",
-    rol: ["Root", "Administrador", "Moderador", "Usuario"],
+    rol: ["Root", "Administrador"],
     icon: <PendingActionsIcon />,
     route: "/Standby",
     component: <DataTable collection={"standby"} />,

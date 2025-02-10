@@ -32,14 +32,14 @@ import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useAsignarTicketStore } from "./store/asignarTicket.store.ts";
-import { useGetUsuariosQuery } from "api";
+import { useGetUsuariosAsignarQuery } from "api";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const Asignar = () => {
   const [putAsignar] = usePutAsignarMutation();
-  const { data, isLoading } = useGetUsuariosQuery();
+  const { data, isLoading } = useGetUsuariosAsignarQuery();
   const isWindowAsignarOpen = useDialogStore((state) => state.isWindowAsignarOpen);
   const closeWindowAsignar = useDialogStore((state) => state.closeWindowAsignar);
   const asignarTicketStore = useAsignarTicketStore();
