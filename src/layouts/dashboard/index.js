@@ -241,30 +241,32 @@ const Dashboard_component = ({ data }) => {
           </Grid>
         </MDBox> */}
       </MDBox>
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12} lg={12}>
-            <MDBox mb={1.5}>
-              <Typography variant={"h4"}>{`Historico de tickets:`}</Typography>
-            </MDBox>
-            <Divider />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="event_available"
-                title="Abiertos"
-                count={data.totalAbiertos}
-                // percentage={{
-                //   color: "success",
-                //   amount: "+55%",
-                //   label: "than lask week",
-                // }}
-              />
-            </MDBox>
-          </Grid>
-          {/* <Grid item xs={12} md={6} lg={4}>
+      {role != "Root" ? null : (
+        <>
+          <MDBox py={3}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12} lg={12}>
+                <MDBox mb={1.5}>
+                  <Typography variant={"h4"}>{`Historico de tickets:`}</Typography>
+                </MDBox>
+                <Divider />
+              </Grid>
+              <Grid item xs={12} md={6} lg={4}>
+                <MDBox mb={1.5}>
+                  <ComplexStatisticsCard
+                    color="primary"
+                    icon="event_available"
+                    title="Abiertos"
+                    count={data.totalAbiertos}
+                    // percentage={{
+                    //   color: "success",
+                    //   amount: "+55%",
+                    //   label: "than lask week",
+                    // }}
+                  />
+                </MDBox>
+              </Grid>
+              {/* <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="secondary"
@@ -279,68 +281,68 @@ const Dashboard_component = ({ data }) => {
               />
             </MDBox>
           </Grid> */}
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="event"
-                title="Nuevos"
-                count={data.totalNuevos}
-                // percentage={{
-                //   color: "success",
-                //   amount: "+1%",
-                //   label: "than yesterday",
-                // }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="pending_actions"
-                title="Pendientes"
-                count={data.totalPendientes}
-                // percentage={{
-                //   color: "success",
-                //   amount: "",
-                //   label: "Just updated",
-                // }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="secondary"
-                icon="visibility"
-                title={role != "Moderador" ? "Para Revision" : "En revision"}
-                count={data.totalRevision}
-                // percentage={{
-                //   color: "success",
-                //   amount: "",
-                //   label: "Just updated",
-                // }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="event_busy"
-                title="Cerrados"
-                count={data.totalCerrados}
-                // percentage={{
-                //   color: "success",
-                //   amount: "",
-                //   label: "Just updated",
-                // }}
-              />
-            </MDBox>
-          </Grid>
-        </Grid>
-        {/* <MDBox mt={4.5}>
+              <Grid item xs={12} md={6} lg={4}>
+                <MDBox mb={1.5}>
+                  <ComplexStatisticsCard
+                    color="primary"
+                    icon="event"
+                    title="Nuevos"
+                    count={data.totalNuevos}
+                    // percentage={{
+                    //   color: "success",
+                    //   amount: "+1%",
+                    //   label: "than yesterday",
+                    // }}
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6} lg={4}>
+                <MDBox mb={1.5}>
+                  <ComplexStatisticsCard
+                    color="primary"
+                    icon="pending_actions"
+                    title="Pendientes"
+                    count={data.totalPendientes}
+                    // percentage={{
+                    //   color: "success",
+                    //   amount: "",
+                    //   label: "Just updated",
+                    // }}
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6} lg={4}>
+                <MDBox mb={1.5}>
+                  <ComplexStatisticsCard
+                    color="secondary"
+                    icon="visibility"
+                    title={role != "Moderador" ? "Para Revision" : "En revision"}
+                    count={data.totalRevision}
+                    // percentage={{
+                    //   color: "success",
+                    //   amount: "",
+                    //   label: "Just updated",
+                    // }}
+                  />
+                </MDBox>
+              </Grid>
+              <Grid item xs={12} md={6} lg={4}>
+                <MDBox mb={1.5}>
+                  <ComplexStatisticsCard
+                    color="primary"
+                    icon="event_busy"
+                    title="Cerrados"
+                    count={data.totalCerrados}
+                    // percentage={{
+                    //   color: "success",
+                    //   amount: "",
+                    //   label: "Just updated",
+                    // }}
+                  />
+                </MDBox>
+              </Grid>
+            </Grid>
+            {/* <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
@@ -381,7 +383,7 @@ const Dashboard_component = ({ data }) => {
             </Grid>
           </Grid>
         </MDBox> */}
-        {/* <MDBox>
+            {/* <MDBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>
               <Projects />
@@ -391,7 +393,10 @@ const Dashboard_component = ({ data }) => {
             </Grid>
           </Grid>
         </MDBox> */}
-      </MDBox>
+          </MDBox>
+        </>
+      )}
+
       <Footer />
     </DashboardLayout>
   );
