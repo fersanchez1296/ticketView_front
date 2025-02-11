@@ -88,7 +88,7 @@ const Resolutor = ({ data }) => {
                         crearTicketStore.setCrearTicketFields("standby", !standby);
                       }}
                     />
-                    <Typography>Standby</Typography>
+                    <Typography>Asignar a Mesa</Typography>
                   </MDBox>
                 </Stack>
               </FormGroup>

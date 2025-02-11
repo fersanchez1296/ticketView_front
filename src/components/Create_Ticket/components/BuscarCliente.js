@@ -24,13 +24,15 @@ const BuscarCliente = () => {
   const [clienteExiste, setClienteExiste] = React.useState(false);
   const [nuevaDependencia, setNuevaDependencia] = React.useState(false);
   const [data, setData] = React.useState({});
+  const [correo, setCorreo] = React.useState();
 
-  const buscarCliente = async (correo) => {
+  const buscarCliente = async () => {
     try {
       const result = await getCliente({ Correo: correo });
       if (result.data) {
         setClienteExiste(true);
         setData(result.data);
+        setCorreo("");
         crearTicketStore.Cliente = result.data._id;
       } else {
         setClienteExiste(false);
@@ -71,8 +73,8 @@ const BuscarCliente = () => {
                       type="email" // Muestra validación de correo automáticamente
                       label="Correo:"
                       pattern=".+@example\.mx"
-                      value={crearTicketStore.Correo_cliente}
-                      onChange={(e) => crearTicketFields("Correo_cliente", e.target.value)}
+                      value={correo}
+                      onChange={(e) => setCorreo(e.target.value)}
                       fullWidth
                       required
                     />
@@ -87,7 +89,7 @@ const BuscarCliente = () => {
                       size="medium"
                       endIcon={<SearchIcon color="primary" />}
                       sx={{ color: "#7557c1" }}
-                      onClick={() => buscarCliente(crearTicketStore.Correo_cliente)}
+                      onClick={() => buscarCliente()}
                     >
                       Buscar Cliente
                     </Button>

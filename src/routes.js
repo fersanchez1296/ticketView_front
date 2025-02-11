@@ -133,7 +133,7 @@ const routes = [
   // },
   {
     type: "collapse",
-    name: "Standby",
+    name: "Mesa",
     key: "Standby",
     rol: ["Root", "Administrador"],
     icon: <PendingActionsIcon />,

@@ -228,7 +228,7 @@ export const apiSlice = createApi({
           method: "GET",
         };
       },
-      providesTags: ["Tickets"],
+      invalidatesTags: ["Tickets"],
     }),
     getAreasCoordinacion: builder.query({
       query: () => {

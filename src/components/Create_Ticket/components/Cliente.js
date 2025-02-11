@@ -55,7 +55,9 @@ const Cliente = ({ disable_input, data }) => {
         crearTicketStore.crearTicketResetValues();
         clientesStore.resetClientesStore();
         isNuevoClienteResetValues();
-        return result;
+        setTimeout(() => {
+          window.location.reload();
+        }, 3500);
       }
     } catch (error) {
       openErrorSB(
