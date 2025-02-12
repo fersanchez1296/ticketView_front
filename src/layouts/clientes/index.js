@@ -18,7 +18,7 @@ import team2 from "assets/images/team-2.jpg";
 //store
 import { useClientesStore, useDialogStore } from "zustand/index.ts";
 //api
-import { useGetAllClientesQuery } from "api/index";
+import { useClientesQuery } from "api/clientesApi";
 //Progress
 import Progress from "components/Progress";
 //snackbar
@@ -27,7 +27,6 @@ import ErrorSB from "components/Snackbar/error/index";
 //components
 import Asignado from "./components/Asignado";
 import VentanaClientes from "./components/ventanaClientes";
-import SwitchActive from "./components/switch";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 function Clientes() {
   const isWindowClientesOpen = useDialogStore((state) => state.isWindowClientesOpen);
@@ -36,7 +35,7 @@ function Clientes() {
   const setClientesFields = useClientesStore((state) => state.setClientesFields);
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
-  const { data, refetch, isLoading, error } = useGetAllClientesQuery();
+  const { data, refetch, isLoading, error } = useClientesQuery();
   if (isLoading) return <Progress />;
   const Btn_view = (client) => (
     <MDButton

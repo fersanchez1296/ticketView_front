@@ -9,10 +9,6 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
@@ -20,7 +16,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 //api hook
-import { usePutAceptarResolucionMutation } from "api";
+import { useAceptarResolucionMutation } from "api/ticketsApi";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 //snackbar store
@@ -32,7 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Aceptar = () => {
   const isWindowAceptarOpen = useDialogStore((state) => state.isWindowAceptarOpen);
   const closeWindowAceptar = useDialogStore((state) => state.closeWindowAceptar);
-  const [aceptar, { isLoading }] = usePutAceptarResolucionMutation();
+  const [aceptar, { isLoading }] = useAceptarResolucionMutation();
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const ticketStore = useTicketStore();
   const ticketId = useTicketStore((state) => state._id);

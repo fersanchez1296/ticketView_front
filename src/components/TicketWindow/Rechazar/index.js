@@ -17,9 +17,7 @@ import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 //api hook
-import { usePutRechazarResolucionMutation } from "api";
-//card components
-import RechazarCard from "./components/index";
+import { useRechazarResolucionMutation } from "api/ticketsApi";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 //snackbar store
@@ -34,7 +32,7 @@ const Rechazar = () => {
   const closeWindowRechazar = useDialogStore((state) => state.closeWindowRechazar);
   const [feedback, setFeedback] = React.useState("");
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-  const [rechazar, { isLoading }] = usePutRechazarResolucionMutation();
+  const [rechazar, { isLoading }] = useRechazarResolucionMutation();
   const ticketState = useTicketStore();
   const Nombre = useTicketStore((state) => state.Resuelto_por.Nombre);
   const ticketId = useTicketStore((state) => state._id);

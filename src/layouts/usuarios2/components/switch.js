@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import Switch from "@mui/material/Switch";
 import Progress from "components/Progress";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-import { useUpdateEstadoUsuariosMutation } from "api";
+import { useUpdateEstadoUsuarioMutation } from "api/usuariosApi";
 export default function SwitchActive({ isActive, userId }) {
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-  const [updateUsuario] = useUpdateEstadoUsuariosMutation();
+  const [updateUsuario] = useUpdateEstadoUsuarioMutation();
   const [checked, setIsChecked] = React.useState(isActive);
 
   const cambiarEstadoUsuario = async (newChecked) => {

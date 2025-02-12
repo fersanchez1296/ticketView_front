@@ -15,8 +15,6 @@ import FormControl from "@mui/material/FormControl";
 import { useTicketStore } from "zustand/index.ts";
 //proptypes
 import PropTypes from "prop-types";
-//json
-import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
   const ticketState = useTicketStore();

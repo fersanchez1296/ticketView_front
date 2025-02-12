@@ -3,7 +3,6 @@ import * as React from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -21,7 +20,7 @@ import Footer from "examples/Footer";
 //store
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //api
-import { useGetHistoricoQuery, useGetHistoricoAreaQuery } from "api/index";
+import { useHistoricoQuery, useGetHistoricoPorAreaQuery } from "api/historicoApi";
 //components
 import View from "components/TicketWindow/View";
 import Asignado from "./components/Asignado";
@@ -37,13 +36,13 @@ function Historico({ collection }) {
   const openWindow = useDialogStore((state) => state.openWindow);
   const setTicketFields = useTicketStore((state) => state.setTicketFetch);
   const [isFetching, setIsFetching] = React.useState(false);
-  const { data, refetch, isLoading, error } = useGetHistoricoQuery();
+  const { data, refetch, isLoading, error } = useHistoricoQuery();
   const {
     data: ticketsArea,
     isLoading: loadingTickets,
     isFetching: fetchingTickets,
     error: errorTickets,
-  } = useGetHistoricoAreaQuery(area, { skip: !area });
+  } = useGetHistoricoPorAreaQuery(area, { skip: !area });
   console.log(ticketsArea);
   const handleChange = (value) => setArea(value);
 

@@ -8,13 +8,12 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import SaveIcon from "@mui/icons-material/Save";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 //api hook
-import { useGetInfoSelectsQuery } from "api/index";
+import { useSelectsCrearTicketQuery } from "api/ticketsApi";
 
 //import { usePostDocumentoMutation } from "api/api.slice";
 //card components
@@ -33,7 +32,7 @@ const Edit = () => {
   const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
   const closeWindowEdit = useDialogStore((state) => state.closeWindowEdit);
   const ticketState = useTicketStore();
-  const { data, isLoading } = useGetInfoSelectsQuery();
+  const { data, isLoading } = useSelectsCrearTicketQuery();
   //const [createDocumento] = usePostDocumentoMutation();
 
   const [activeStep, setActiveStep] = React.useState(0);

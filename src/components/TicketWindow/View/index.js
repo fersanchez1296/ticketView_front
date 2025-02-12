@@ -15,11 +15,6 @@ import StepLabel from "@mui/material/StepLabel";
 //api hook
 //import { usePostDocumentoMutation } from "api/api.slice";
 //card components
-import Ticket from "../components/Ticket";
-import Resolutor from "../components/Resolutor";
-import Reasignado from "../components/Reasignado";
-import Cliente from "../components/Cliente";
-import HistoriaTicket from "../components/HistoriaTicket";
 const LazyArchivos = lazy(() => import("../components/Archivos"));
 const LazyHistoriaTicket = lazy(() => import("../components/HistoriaTicket"));
 const LazyCliente = lazy(() => import("../components/Cliente"));

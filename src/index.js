@@ -17,7 +17,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "App";
-import { apiSlice } from "api/index";
+import { apiSlice } from "api/apiSlice";
 import { ApiProvider } from "@reduxjs/toolkit/query/react";
 
 // Material Dashboard 2 React Context Provider

@@ -24,10 +24,10 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 //api hook
 import {
-  useGetSelectRolQuery,
+  useGetRolUsuarioQuery,
   useCrearUsuarioMutation,
-  useUpdateUsuarioMutation,
-} from "../../../api/index";
+  useUpdateUsuarioByIdMutation,
+} from "api/usuariosApi";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
@@ -49,10 +49,10 @@ const VentanaUsuarios = (disable_input) => {
   const setUserFields = useUserStore((state) => state.setUserFields);
   const Nombre_A = userStore.Nombre;
   const [postCrearUsuario] = useCrearUsuarioMutation();
-  const [putEditarUsuario] = useUpdateUsuarioMutation();
+  const [putEditarUsuario] = useUpdateUsuarioByIdMutation();
   const [nombreBoton, setNombreBoton] = React.useState("");
   const [metodoEnvio, setMetodoEnvio] = React.useState(false);
-  const { data, isLoading } = useGetSelectRolQuery();
+  const { data, isLoading } = useGetRolUsuarioQuery();
   React.useEffect(() => {
     userStore && userStore.Nombre === ""
       ? setNombreBoton("Guardar usuario")

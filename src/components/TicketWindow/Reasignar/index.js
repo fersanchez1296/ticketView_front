@@ -9,10 +9,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -23,7 +20,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Card from "@mui/material/Card";
 //api hook
-import { usePutReasignarMutation } from "api/index";
+import { useReasignarMutation } from "api/ticketsApi";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
@@ -35,7 +32,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Reasignar = () => {
-  const [putReasignar] = usePutReasignarMutation();
+  const [putReasignar] = useReasignarMutation();
   const { data, isLoading } = useGetUsuariosQuery();
   const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
   const closeWindowReasignar = useDialogStore((state) => state.closeWindowReasignar);

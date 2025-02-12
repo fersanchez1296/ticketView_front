@@ -4,8 +4,7 @@ import Slide from "@mui/material/Slide";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 //api hook
-import { usePutReasignarMutation } from "api/index";
-import { usePutReabrirMutation } from "api/index";
+import { useReabrirMutation } from "api/apiSlice";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -18,7 +17,7 @@ import Typography from "@mui/material/Typography";
 //store
 import { useDialogStore } from "zustand/index.ts";
 import { useReabrirTicketStore } from "./store/reabrirTicket.store.ts";
-import { useGetUsuariosQuery } from "api";
+import { useGetUsuariosParaReasignacionQuery } from "api/usuariosApi";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import { useTicketStore } from "zustand/index.ts";
@@ -28,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Reabrir = () => {
-  const { data, isLoading } = useGetUsuariosQuery();
+  const { data, isLoading } = useGetUsuariosParaReasignacionQuery();
   const ticketStore = useTicketStore();
   const reabrirTicketStore = useReabrirTicketStore();
   if (isLoading) return <p>Cargando...</p>;

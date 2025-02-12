@@ -21,7 +21,7 @@ import { styled } from "@mui/material/styles";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useCerrarTicketStore } from "./store/cerrarTicket.store.ts";
-import { useCerrarTicketMutation } from "api";
+import { useCerrarMutation } from "api/ticketsApi.js";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -29,7 +29,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Cerrar = () => {
-  const [closeTicket] = useCerrarTicketMutation();
+  const [closeTicket] = useCerrarMutation();
   const isWindowCloseTicketOpen = useDialogStore((state) => state.isWindowCloseTicketOpen);
   const closeWindowCloseTicket = useDialogStore((state) => state.closeWindowCloseTicket);
   const cerrarTicketStore = useCerrarTicketStore();

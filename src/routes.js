@@ -40,7 +40,6 @@ import Dashboard from "layouts/dashboard";
 import Create_Ticket from "components/Create_Ticket/index";
 import Tables from "layouts/tables";
 import DataTable from "layouts/abiertos/";
-import CrearTicket from "components/CreateTicket";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";

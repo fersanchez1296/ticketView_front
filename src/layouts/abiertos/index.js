@@ -12,6 +12,7 @@ import Footer from "examples/Footer";
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //api
 import { useGetTicketsAbiertosQuery } from "api/index";
+import { useTicketsQuery } from "api/ticketsApi";
 //mui table
 import DataTable from "components/Table/index";
 //propTypes
@@ -33,12 +34,13 @@ import Progress from "components/Progress";
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
 function TableData({ collection }) {
-  const { data: tickets, refetch, isLoading, error } = useGetTicketsAbiertosQuery({ collection });
+  const { data: tickets, refetch, isLoading, error } = useTicketsQuery({ collection });
   if (isLoading) return <Progress />;
   if (error) return <div>Error: Reload page</div>;
   const handleClickActualizar = () => {
     refetch();
   };
+  console.log(tickets);
   return (
     <>
       <DashboardLayout>

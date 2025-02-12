@@ -9,37 +9,32 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Card from "@mui/material/Card";
 //api hook
-import { usePutAsignarMutation } from "api/index";
+import { useAsignarMutation } from "api/ticketsApi";
+import { useGetUsuariosParaAsignacionQuery } from "api/usuariosApi.js";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useAsignarTicketStore } from "./store/asignarTicket.store.ts";
-import { useGetUsuariosAsignarQuery } from "api";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const Asignar = () => {
-  const [putAsignar] = usePutAsignarMutation();
-  const { data, isLoading } = useGetUsuariosAsignarQuery();
+  const [putAsignar] = useAsignarMutation();
+  const { data, isLoading } = useGetUsuariosParaAsignacionQuery();
   const isWindowAsignarOpen = useDialogStore((state) => state.isWindowAsignarOpen);
   const closeWindowAsignar = useDialogStore((state) => state.closeWindowAsignar);
   const asignarTicketStore = useAsignarTicketStore();

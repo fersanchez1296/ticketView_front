@@ -43,7 +43,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import bgImage from "assets/images/bg-profile.jpeg";
 
 //api
-import { useLoginMutation } from "api";
+import { useLoginMutation } from "api/authApi";
 
 //store
 import { useAuthStore } from "zustand/auth.store.ts";

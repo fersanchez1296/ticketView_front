@@ -12,12 +12,12 @@ import TextField from "@mui/material/TextField";
 //store
 import { useCrearTicketStore } from "../store/crearTicket.store.ts";
 //api hook
-import { useLazyGetClienteQuery } from "api/index";
+import { useLazyGetClienteByCorreoQuery } from "api/clientesApi.js";
 
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const BuscarCliente = () => {
-  const [getCliente] = useLazyGetClienteQuery();
+  const [getCliente] = useLazyGetClienteByCorreoQuery();
   const crearTicketStore = useCrearTicketStore();
   const crearTicketFields = useCrearTicketStore((state) => state.setCrearTicketFields);
   const { openSuccessSB, openErrorSB } = useSnackbarStore();

@@ -20,7 +20,7 @@ import abiertosTableData from "layouts/abiertos/data/abiertosTableData";
 //store
 import { useUserStore, useDialogStore } from "zustand/index.ts";
 //api
-import { useGetAllUsuariosQuery } from "api/index";
+import { useUsuariosQuery } from "api/usuariosApi";
 //mui table
 import DataTable from "components/Table/index";
 //propTypes
@@ -49,7 +49,7 @@ function Index() {
   const errorSb = useSnackbarStore((state) => state.errorSB);
   const openSuccessSb = useSnackbarStore((state) => state.openSuccessSB);
   const userStore = useUserStore();
-  const { data, refetch, isLoading, error } = useGetAllUsuariosQuery();
+  const { data, refetch, isLoading, error } = useUsuariosQuery();
   if (isLoading) return <Progress />;
   //   if (error) return <div>Error: Reload page</div>;
   //Esto permitira abrir la pantalla para crear el usuario y tambien otras acciones

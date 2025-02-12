@@ -27,9 +27,8 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
-import TextField from "@mui/material/TextField";
 //api hook
-import { usePostTicketMutation } from "api/index";
+import { useGetTicketByIdMutation } from "api/ticketsApi";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
@@ -71,7 +70,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const [ticketId, setTicketId] = React.useState("");
-  const [postTicket] = usePostTicketMutation();
+  const [postTicket] = useGetTicketByIdMutation();
   const ticketState = useTicketStore();
   const openWindow = useDialogStore((state) => state.openWindow);
   const isWindowViewOpen = useDialogStore((state) => state.isWindowOpen);
@@ -180,12 +179,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDBox pr={1} mt={1}>
                 <MDInput
                   type="number"
-                  label="Buscar Ticket:"
+                  label="Buscar Ticket por ID:"
                   value={ticketId}
                   onChange={(e) => setTicketId(e.target.value)}
                   fullWidth
-                  required
-                  //disabled={!disable_input}
                 />
               </MDBox>
               <MDBox color={light ? "white" : "inherit"}>

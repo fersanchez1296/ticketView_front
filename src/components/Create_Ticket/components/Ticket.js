@@ -21,8 +21,6 @@ import { styled } from "@mui/material/styles";
 import { useCrearTicketStore } from "../store/crearTicket.store.ts";
 //proptypes
 import PropTypes from "prop-types";
-//json
-import estados from "catalogs/estatus.json";
 
 const Ticket = ({ disable_input, data }) => {
   const setFiles = useCrearTicketStore((state) => state.crearTicketSetFiles);

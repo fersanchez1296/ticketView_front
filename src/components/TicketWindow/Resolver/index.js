@@ -12,14 +12,13 @@ import SaveIcon from "@mui/icons-material/Save";
 import Grid from "@mui/material/Unstable_Grid2";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
 //api hook
-import { usePutResolverMutation } from "api/index";
+import { useResolverMutation } from "api/ticketsApi.js";
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useResolverTicketStore } from "./store/resolverTicket.store.ts";
@@ -32,7 +31,7 @@ const steps = ["Resolver ticket"];
 
 const Resolver = () => {
   //Si da error el componente es porque en los tickets no existe la propiedad visto bueno
-  const [putTicket, { isLoading }] = usePutResolverMutation();
+  const [putTicket, { isLoading }] = useResolverMutation();
   const isWindowResolverOpen = useDialogStore((state) => state.isWindowResolverOpen);
   const closeWindowResolver = useDialogStore((state) => state.closeWindowResolver);
   const resolverTicketStore = useResolverTicketStore();

@@ -37,7 +37,7 @@ import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
 //api hook
-import { useDashboardQuery } from "api/index";
+import { useDashboardQuery } from "api/dashboardApi";
 import Progress from "components/Progress";
 //proptypes
 import PropTypes from "prop-types";

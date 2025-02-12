@@ -23,12 +23,15 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 //api hook
-import { usePostClienteMutation, useUpdateClienteMutation } from "api/index";
+import {
+  useCrearClienteMutation,
+  useUpdateClienteByIdMutation,
+  useSelectsClientesQuery,
+} from "api/clientesApi";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
 import { useDialogStore, useClientesStore } from "zustand/index.ts";
-import { useGetSelectDataClientesQuery } from "api";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -45,9 +48,9 @@ const VentanaClientes = () => {
   const [nuevaDArea, setNuevaDArea] = useState(false);
   const [nuevaDependencia, setNuevaDependencia] = useState(false);
   const clientesStore = useClientesStore();
-  const [postCliente] = usePostClienteMutation();
-  const [updateCliente] = useUpdateClienteMutation();
-  const { data, isLoading, isError } = useGetSelectDataClientesQuery();
+  const [postCliente] = useCrearClienteMutation();
+  const [updateCliente] = useUpdateClienteByIdMutation();
+  const { data, isLoading, isError } = useSelectsClientesQuery();
   if (isLoading) {
     return <div>Cargando...</div>;
   }

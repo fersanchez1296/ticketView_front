@@ -21,8 +21,6 @@ import SaveIcon from "@mui/material/IconButton";
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //proptypes
 import PropTypes from "prop-types";
-//json
-import estados from "catalogs/estatus.json";
 
 //Api hook
 import { useEditarMutation } from "api/index";

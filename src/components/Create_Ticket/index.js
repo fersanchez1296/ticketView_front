@@ -33,7 +33,7 @@ import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector
 //store
 import { useDialogStore } from "zustand/index.ts";
 import { useCrearTicketStore } from "./store/crearTicket.store.ts";
-import { useGetInfoSelectsQuery } from "api/index";
+import { useSelectsCrearTicketQuery } from "api/ticketsApi";
 //snackbar
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
@@ -43,7 +43,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const steps = ["Información del Ticket", "Moderador", "Cliente"];
 
 const Edit = () => {
-  const { data, isLoading } = useGetInfoSelectsQuery();
+  const { data, isLoading } = useSelectsCrearTicketQuery();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const resetValues = useCrearTicketStore((state) => state.crearTicketResetValues);

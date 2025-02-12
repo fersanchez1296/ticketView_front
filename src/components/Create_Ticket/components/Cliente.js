@@ -14,7 +14,7 @@ import { useCrearTicketStore, useIsNuevoClienteStore } from "../store/crearTicke
 //proptypes
 import PropTypes from "prop-types";
 //api hook
-import { useGuardarMutation, usePostClienteMutation } from "api/index";
+import { useCrearMutation } from "api/ticketsApi.js";
 const LazyNuevoCliente = React.lazy(() => import("./NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./BuscarCliente"));
 
@@ -26,7 +26,7 @@ const Cliente = ({ disable_input, data }) => {
   const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const archivo = useCrearTicketStore((state) => state.Files);
-  const [postGuardar] = useGuardarMutation();
+  const [postGuardar] = useCrearMutation();
   const [buscarCliente, setBuscarCliente] = React.useState(false);
   const setIsNuevoCliente = useIsNuevoClienteStore((state) => state.setIsNuevoCliente);
   const isNuevoClienteResetValues = useIsNuevoClienteStore(
