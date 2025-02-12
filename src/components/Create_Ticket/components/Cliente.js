@@ -1,4 +1,10 @@
-import React, { Suspense, lazy, startTransition } from "react";
+// Importaciones
+import React, { Suspense } from "react";
+const LazyNuevoCliente = React.lazy(() => import("./NuevoCliente"));
+const LazyBuscarCliente = React.lazy(() => import("./BuscarCliente"));
+import MDBox from "components/MDBox/index.js";
+/* -------------------------------------------------------------------------- */
+// Importaciones de librerías externas
 //mui library components
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/material/Icon";
@@ -7,33 +13,45 @@ import Grid from "@mui/material/Unstable_Grid2";
 import FormGroup from "@mui/material/FormGroup";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
-import MDBox from "components/MDBox/index.js";
-//store
+/* -------------------------------------------------------------------------- */
+// Importaciones de hooks de API (RTK Query, Axios, etc.)
+import { useCrearMutation } from "api/ticketsApi.js";
+/* -------------------------------------------------------------------------- */
+// Importaciones de Zustand u otro gestor de estado
 import { useClientesStore } from "zustand/index.ts";
 import { useCrearTicketStore, useIsNuevoClienteStore } from "../store/crearTicket.store.ts";
-//proptypes
-import PropTypes from "prop-types";
-//api hook
-import { useCrearMutation } from "api/ticketsApi.js";
-const LazyNuevoCliente = React.lazy(() => import("./NuevoCliente"));
-const LazyBuscarCliente = React.lazy(() => import("./BuscarCliente"));
-
-//snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-const Cliente = ({ disable_input, data }) => {
+/* -------------------------------------------------------------------------- */
+// Importaciones de utilidades, helpers o constantes
+/* -------------------------------------------------------------------------- */
+// Importaciones de componentes internos
+/* -------------------------------------------------------------------------- */
+const Cliente = () => {
+  // API Hooks (RTK Query, Axios, etc.)
+  const [postGuardar] = useCrearMutation();
+  /* -------------------------------------------------------------------------- */
+  // Estado global de Zustand
   const crearTicketStore = useCrearTicketStore();
   const clientesStore = useClientesStore();
   const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const archivo = useCrearTicketStore((state) => state.Files);
-  const [postGuardar] = useCrearMutation();
-  const [buscarCliente, setBuscarCliente] = React.useState(false);
   const setIsNuevoCliente = useIsNuevoClienteStore((state) => state.setIsNuevoCliente);
   const isNuevoClienteResetValues = useIsNuevoClienteStore(
     (state) => state.isNuevoClienteResetValues
   );
   const isNuevoCliente = useIsNuevoClienteStore((state) => state.isNuevoCliente);
-
+  /* -------------------------------------------------------------------------- */
+  // Estados locales con useState
+  const [buscarCliente, setBuscarCliente] = React.useState(false);
+  /* -------------------------------------------------------------------------- */
+  // Refs y useMemo / useCallback (si aplica)
+  /* -------------------------------------------------------------------------- */
+  // Efectos secundarios con useEffect
+  /* -------------------------------------------------------------------------- */
+  // Verificaciones de carga y errores (isLoading, isError)
+  /* -------------------------------------------------------------------------- */
+  // Funciones auxiliares
   const guardarTicket = async () => {
     const formData = new FormData();
     try {
@@ -66,7 +84,8 @@ const Cliente = ({ disable_input, data }) => {
       );
     }
   };
-
+  /* -------------------------------------------------------------------------- */
+  // Renderizado del componente (return)
   return (
     <>
       <Grid
@@ -115,10 +134,4 @@ const Cliente = ({ disable_input, data }) => {
     </>
   );
 };
-
-Cliente.propTypes = {
-  disable_input: PropTypes.bool,
-  data: PropTypes.array,
-};
-
 export default React.memo(Cliente);

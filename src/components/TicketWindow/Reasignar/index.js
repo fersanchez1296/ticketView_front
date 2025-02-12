@@ -1,5 +1,10 @@
+// Importaciones
 import React from "react";
-//mui library component
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+/* -------------------------------------------------------------------------- */
+// Importaciones de librerías externas
+//mui library components
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
@@ -15,35 +20,47 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import Card from "@mui/material/Card";
-//api hook
+/* -------------------------------------------------------------------------- */
+// Importaciones de hooks de API (RTK Query, Axios, etc.)
 import { useReasignarMutation } from "api/ticketsApi";
-//snackbar store
+import { useGetUsuariosParaReasignacionQuery } from "api/usuariosApi";
+/* -------------------------------------------------------------------------- */
+// Importaciones de Zustand u otro gestor de estado
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-//store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
 import { useReasignarTicketStore } from "./store/reasignarTicket.store.ts";
-import { useGetUsuariosQuery } from "api";
+/* -------------------------------------------------------------------------- */
+// Importaciones de utilidades, helpers o constantes
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
+/* -------------------------------------------------------------------------- */
+// Importaciones de componentes internos
+/* -------------------------------------------------------------------------- */
 const Reasignar = () => {
+  //API hooks
   const [putReasignar] = useReasignarMutation();
-  const { data, isLoading } = useGetUsuariosQuery();
-  const isWindowReasignarOpen = useDialogStore((state) => state.isWindowReasignarOpen);
-  const closeWindowReasignar = useDialogStore((state) => state.closeWindowReasignar);
+  const { data, isLoading } = useGetUsuariosParaReasignacionQuery();
+  /* -------------------------------------------------------------------------- */
+  //Estado global de Zustand
+  const { isWindowReasignarOpen, closeWindowReasignar } = useDialogStore();
   const reasignarTicketStore = useReasignarTicketStore();
   const ticketId = useTicketStore((state) => state._id);
   const vistoBueno = useReasignarTicketStore((state) => state.vistoBueno);
-  const [modificarTiempo, setModificarTiempo] = React.useState(false);
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-  const [value, setValue] = React.useState(null);
+  /* -------------------------------------------------------------------------- */
+  //Estados locales
+  const [modificarTiempo, setModificarTiempo] = React.useState(false);
+  //Refs y useMemo / useCallback
+  /* -------------------------------------------------------------------------- */
+  //Efectos secundarios con useEffect
+  /* -------------------------------------------------------------------------- */
+  //Verifaciones de carga (isLoading,isError)
   if (isLoading) return <p>Cargando...</p>;
-
+  /* -------------------------------------------------------------------------- */
+  //Funciones Auxiliares
+  /* -------------------------------------------------------------------------- */
   const reasignarTicket = async () => {
     try {
       const result = await putReasignar({ reasignarTicketStore, ticketId });
@@ -61,7 +78,8 @@ const Reasignar = () => {
       openErrorSB("Ocurrio un error inesperado al reasignar el ticket.", `Status: 200`);
     }
   };
-
+  /* -------------------------------------------------------------------------- */
+  //Renderizado del componente
   return (
     <React.Fragment>
       <Dialog

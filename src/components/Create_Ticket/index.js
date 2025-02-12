@@ -1,78 +1,81 @@
+// Importaciones
 import React from "react";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-
+import Ticket from "./components/Ticket";
+import Resolutor from "./components/Resolutor";
+import Cliente from "./components/Cliente";
+import SuccessSB from "components/Snackbar/success/index";
+import ErrorSB from "components/Snackbar/error/index";
+/* -------------------------------------------------------------------------- */
+// Importaciones de librerías externas
 //mui library component
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import SaveIcon from "@mui/icons-material/Save";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-//card components
-import Ticket from "./components/Ticket";
-import Resolutor from "./components/Resolutor";
-import Cliente from "./components/Cliente";
-import { styled } from "@mui/material/styles";
-import StepConnector, { stepConnectorClasses } from "@mui/material/StepConnector";
-
-//store
-import { useDialogStore } from "zustand/index.ts";
-import { useCrearTicketStore } from "./store/crearTicket.store.ts";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+/* -------------------------------------------------------------------------- */
+// Importaciones de hooks de API (RTK Query, Axios, etc.)
 import { useSelectsCrearTicketQuery } from "api/ticketsApi";
-//snackbar
-import SuccessSB from "components/Snackbar/success/index";
-import ErrorSB from "components/Snackbar/error/index";
+/* -------------------------------------------------------------------------- */
+// Importaciones de Zustand u otro gestor de estado
+import { useCrearTicketStore } from "./store/crearTicket.store.ts";
+/* -------------------------------------------------------------------------- */
+// Importaciones de utilidades, helpers o constantes
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const steps = ["Información del Ticket", "Moderador", "Cliente"];
-
+/* -------------------------------------------------------------------------- */
+// Importaciones de componentes internos
+/* -------------------------------------------------------------------------- */
 const Edit = () => {
+  // API Hooks (RTK Query, Axios, etc.)
   const { data, isLoading } = useSelectsCrearTicketQuery();
+  /* -------------------------------------------------------------------------- */
+  // Estado global de Zustand
+  const resetValues = useCrearTicketStore((state) => state.crearTicketResetValues);
+  /* -------------------------------------------------------------------------- */
+  // Estados locales con useState
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  const resetValues = useCrearTicketStore((state) => state.crearTicketResetValues);
+  /* -------------------------------------------------------------------------- */
+  // Refs y useMemo / useCallback (si aplica)
+  /* -------------------------------------------------------------------------- */
+  // Efectos secundarios con useEffect
   React.useEffect(() => {
     resetValues();
   }, []);
+  /* -------------------------------------------------------------------------- */
+  // Verificaciones de carga y errores (isLoading, isError)
+  if (isLoading) return <div>Loading...</div>;
+  /* -------------------------------------------------------------------------- */
+  // Funciones auxiliares
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
-
   const handleNext = () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
-
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
   const handleReset = () => {
     setActiveStep(0);
   };
-  if (isLoading) return <div>Loading...</div>;
   function getStepContent(step) {
     switch (step) {
       case 0:
@@ -85,6 +88,8 @@ const Edit = () => {
         return "Unknown step";
     }
   }
+  /* -------------------------------------------------------------------------- */
+  // Renderizado del componente (return)
   return (
     <React.Fragment>
       <DashboardLayout>

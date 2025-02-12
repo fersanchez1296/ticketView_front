@@ -1,32 +1,56 @@
+// Importaciones
 import React, { useState } from "react";
-//mui library component
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
+/* -------------------------------------------------------------------------- */
+// Importaciones de librerías externas
+//mui library component
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-//store
-import { useClientesStore } from "zustand/index.ts";
-import { useSelectsClientesQuery } from "api/clientesApi";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+/* -------------------------------------------------------------------------- */
+// Importaciones de hooks de API (RTK Query, Axios, etc.)
+import { useSelectsClientesQuery } from "api/clientesApi";
+/* -------------------------------------------------------------------------- */
+// Importaciones de Zustand u otro gestor de estado
+import { useClientesStore } from "zustand/index.ts";
+/* -------------------------------------------------------------------------- */
+// Importaciones de utilidades, helpers o constantes
+/* -------------------------------------------------------------------------- */
+// Importaciones de componentes internos
+/* -------------------------------------------------------------------------- */
 
 const NuevoCliente = () => {
+  // API Hooks (RTK Query, Axios, etc.)
+  const { data, isLoading } = useSelectsClientesQuery();
+  /* -------------------------------------------------------------------------- */
+  // Estado global de Zustand
+  const clientesStore = useClientesStore();
+  /* -------------------------------------------------------------------------- */
+  // Estados locales con useState
   const [nuevaDGeneral, setNuevaDGeneral] = useState(false);
   const [nuevaDArea, setNuevaDArea] = useState(false);
   const [nuevaDependencia, setNuevaDependencia] = useState(false);
-  const clientesStore = useClientesStore();
-  const { data, isLoading } = useSelectsClientesQuery();
+  /* -------------------------------------------------------------------------- */
+  // Refs y useMemo / useCallback (si aplica)
+  /* -------------------------------------------------------------------------- */
+  // Efectos secundarios con useEffect
+  /* -------------------------------------------------------------------------- */
+  // Verificaciones de carga y errores (isLoading, isError)
   if (isLoading) {
     return <div>Cargando...</div>;
   }
-
+  /* -------------------------------------------------------------------------- */
+  // Funciones auxiliares
+  /* -------------------------------------------------------------------------- */
+  // Renderizado del componente (return)
   return (
     <React.Fragment>
       <Grid

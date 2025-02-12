@@ -1,31 +1,47 @@
+// Importaciones
 import React from "react";
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
-//mui library components
+/* -------------------------------------------------------------------------- */
+// Importaciones de librerías externas
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import SearchIcon from "@mui/icons-material/Search";
 import Grid from "@mui/material/Unstable_Grid2";
 import TextField from "@mui/material/TextField";
-//store
-import { useCrearTicketStore } from "../store/crearTicket.store.ts";
-//api hook
+/* -------------------------------------------------------------------------- */
+// Importaciones de hooks de API (RTK Query, Axios, etc.)
 import { useLazyGetClienteByCorreoQuery } from "api/clientesApi.js";
-
-//snackbar store
+/* -------------------------------------------------------------------------- */
+// Importaciones de Zustand u otro gestor de estado
+import { useCrearTicketStore } from "../store/crearTicket.store.ts";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+/* -------------------------------------------------------------------------- */
+// Importaciones de utilidades, helpers o constantes
+/* -------------------------------------------------------------------------- */
+// Importaciones de componentes internos
+/* -------------------------------------------------------------------------- */
 const BuscarCliente = () => {
+  // API Hooks (RTK Query, Axios, etc.)
   const [getCliente] = useLazyGetClienteByCorreoQuery();
+  /* -------------------------------------------------------------------------- */
+  // Estado global de Zustand
   const crearTicketStore = useCrearTicketStore();
   const crearTicketFields = useCrearTicketStore((state) => state.setCrearTicketFields);
-  const { openSuccessSB, openErrorSB } = useSnackbarStore();
+  /* -------------------------------------------------------------------------- */
+  // Estados locales con useState
   const [clienteExiste, setClienteExiste] = React.useState(false);
-  const [nuevaDependencia, setNuevaDependencia] = React.useState(false);
   const [data, setData] = React.useState({});
   const [correo, setCorreo] = React.useState();
-
+  /* -------------------------------------------------------------------------- */
+  // Refs y useMemo / useCallback (si aplica)
+  /* -------------------------------------------------------------------------- */
+  // Efectos secundarios con useEffect
+  /* -------------------------------------------------------------------------- */
+  // Verificaciones de carga y errores (isLoading, isError)
+  /* -------------------------------------------------------------------------- */
+  // Funciones auxiliares
   const buscarCliente = async () => {
     try {
       const result = await getCliente({ Correo: correo });
@@ -43,7 +59,8 @@ const BuscarCliente = () => {
       setData({});
     }
   };
-
+  /* -------------------------------------------------------------------------- */
+  // Renderizado del componente (return)
   return (
     <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
       <Grid xs={12} mb={12}>

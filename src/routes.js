@@ -66,6 +66,8 @@ import Coordinacion from "layouts/coordinacion/index";
 //import Usuarios from "layouts/usuarios/index";
 import Usuarios from "layouts/usuarios2/index";
 import Clientes from "layouts/clientes/index";
+import { ticketsUsuario } from "layouts/ticketsUsuario";
+import TicketsUsuario from "layouts/ticketsUsuario";
 const routes = [
   {
     type: "collapse",
@@ -192,6 +194,15 @@ const routes = [
     icon: <HistoryIcon />,
     route: "/Historico_de_tickets",
     component: <Historico collection={"Pendientes"} />,
+  },
+  {
+    type: "collapse",
+    name: "Tickets por usuario",
+    key: "tickets_por_usuario",
+    rol: ["Root", "Administrador"],
+    icon: <HistoryIcon />,
+    route: "/tickets_por_usuario",
+    component: <TicketsUsuario />,
   },
   // {
   //   type: "collapse",

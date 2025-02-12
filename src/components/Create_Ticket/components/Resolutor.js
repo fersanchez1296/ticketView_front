@@ -1,23 +1,26 @@
+// Importaciones
 import React from "react";
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-//mui library components
+/* -------------------------------------------------------------------------- */
+// Importaciones de librerías externas
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import Button from "@mui/material/Button";
-import SaveIcon from "@mui/material/Icon";
 import Typography from "@mui/material/Typography";
 import FormGroup from "@mui/material/FormGroup";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
-//store
+/* -------------------------------------------------------------------------- */
+// Importaciones de hooks de API (RTK Query, Axios, etc.)
+/* -------------------------------------------------------------------------- */
+// Importaciones de Zustand u otro gestor de estado
 import { useCrearTicketStore } from "../store/crearTicket.store.ts";
-//proptypes
+/* -------------------------------------------------------------------------- */
+// Importaciones de utilidades, helpers o constantes
 import PropTypes from "prop-types";
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -34,16 +37,32 @@ function CustomTabPanel(props) {
     </div>
   );
 }
-
+/* -------------------------------------------------------------------------- */
+// Importaciones de componentes internos
+/* -------------------------------------------------------------------------- */
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
 const Resolutor = ({ data }) => {
+  // API Hooks (RTK Query, Axios, etc.)
+  /* -------------------------------------------------------------------------- */
+  // Estado global de Zustand
   const crearTicketStore = useCrearTicketStore();
   const standby = useCrearTicketStore((state) => state.standby);
-
+  /* -------------------------------------------------------------------------- */
+  // Estados locales con useState
+  /* -------------------------------------------------------------------------- */
+  // Refs y useMemo / useCallback (si aplica)
+  /* -------------------------------------------------------------------------- */
+  // Efectos secundarios con useEffect
+  /* -------------------------------------------------------------------------- */
+  // Verificaciones de carga y errores (isLoading, isError)
+  /* -------------------------------------------------------------------------- */
+  // Funciones auxiliares
+  /* -------------------------------------------------------------------------- */
+  // Renderizado del componente (return)
   return (
     <React.Fragment>
       <Grid container spacing={1} sx={{ mt: 5 }}>
