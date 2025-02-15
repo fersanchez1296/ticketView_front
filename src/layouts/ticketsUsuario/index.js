@@ -23,10 +23,11 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 /* -------------------------------------------------------------------------- */
 // Importaciones de hooks de API (RTK Query, Axios, etc.)
-import { useHistoricoQuery, useGetHistoricoPorAreaQuery } from "api/historicoApi";
+import { useTicketsResolutorQuery } from "api/ticketsApi";
+import { useGetUsuariosPorAreaModeradorQuery } from "api/usuariosApi";
 /* -------------------------------------------------------------------------- */
 // Importaciones de Zustand u otro gestor de estado
-//import { useTicketStore, useDialogStore } from "zustand/index.ts";
+import { useTicketStore, useDialogStore } from "zustand/index.ts";
 /* -------------------------------------------------------------------------- */
 // Importaciones de utilidades, helpers o constantes
 /* -------------------------------------------------------------------------- */
@@ -37,46 +38,46 @@ function TicketsUsuario() {
   //En este caso se hace primero la declracion de los estados locales
   //debido a que "useGetHistoricoPorAreaQuery" depende del valor local
   //para ejecutarse.
-  const [area, setArea] = React.useState("");
+  const [isFetching, setIsFetching] = React.useState(false);
+  const [resolutor, setResolutor] = React.useState("");
   /* -------------------------------------------------------------------------- */
   // API Hooks (RTK Query, Axios, etc.)
-  const { data, refetch, isLoading, error } = useHistoricoQuery();
+  const { data, refetch, isLoading, error } = useGetUsuariosPorAreaModeradorQuery();
   const {
-    data: ticketsArea,
-    isLoading: loadingTickets,
-    isFetching: fetchingTickets,
-    error: errorTickets,
-  } = useGetHistoricoPorAreaQuery(area, { skip: !area });
+    data: ticketsResolutor,
+    isLoading: loadingTicketsResolutor,
+    isFetching: fetchingTicketsResolutor,
+    error: errorTicketResolutor,
+  } = useTicketsResolutorQuery(resolutor, { skip: !resolutor });
   /* -------------------------------------------------------------------------- */
   // Estado global de Zustand
-  //const openWindow = useDialogStore((state) => state.openWindow);
-  //const setTicketFields = useTicketStore((state) => state.setTicketFetch);
+  const openWindow = useDialogStore((state) => state.openWindow);
+  const setTicketFields = useTicketStore((state) => state.setTicketFetch);
   /* -------------------------------------------------------------------------- */
   // Refs y useMemo / useCallback (si aplica)
   /* -------------------------------------------------------------------------- */
   // Efectos secundarios con useEffect
   React.useEffect(() => {
-    if (area) {
+    if (resolutor) {
       setIsFetching(true);
     }
-  }, [area]);
+  }, [resolutor]);
   React.useEffect(() => {
-    if (!loadingTickets && !fetchingTickets) {
+    if (!loadingTicketsResolutor && !fetchingTicketsResolutor) {
       setIsFetching(false);
     }
-  }, [loadingTickets, fetchingTickets]);
+  }, [loadingTicketsResolutor, fetchingTicketsResolutor]);
   /* -------------------------------------------------------------------------- */
   // Verificaciones de carga y errores (isLoading, isError)
-  const [isFetching, setIsFetching] = React.useState(false);
   if (isFetching) return <Progress />;
-  if (isLoading || loadingTickets) return <Progress />;
-  if (error || errorTickets) return <div>Error: Recargue la página.</div>;
+  if (isLoading || loadingTicketsResolutor) return <Progress />;
+  //if (isLoading) return <Progress />;
+  if (error || errorTicketResolutor) return <div>Error: Recargue la página.</div>;
   /* -------------------------------------------------------------------------- */
   // Funciones auxiliares
-  const handleChange = (value) => setArea(value);
-  const handleClickActualizar = () => refetch();
-  const areas = data?.areas || [];
-  let tickets = ticketsArea || data?.tickets || [];
+  const handleChange = (value) => setResolutor(value);
+  const resolutores = data;
+  let tickets = ticketsResolutor || data || [];
   const Btn_view = (ticket) => (
     <MDButton
       color="primary"
@@ -140,13 +141,14 @@ function TicketsUsuario() {
   ];
   const rows = tickets.map((ticket) => ({
     id: ticket.Id,
-    estatus: ticket.Estado.Estado,
-    Tipo_de_incidencia: ticket.Tipo_incidencia.Tipo_de_incidencia,
+    // estatus: ticket.Estado.Estado,
+    // Tipo_de_incidencia: ticket.Tipo_incidencia.Tipo_de_incidencia,
     ...ticket,
   }));
   const paginationModel = { page: 0, pageSize: 10 };
   /* -------------------------------------------------------------------------- */
   // Renderizado del componente (return)
+  console.log(ticketsResolutor);
   return (
     <>
       <DashboardLayout>
@@ -158,13 +160,13 @@ function TicketsUsuario() {
                 <InputLabel id="area-select-label">Selecciona el Usuario</InputLabel>
                 <Select
                   labelId="area-select-label"
-                  value={area}
+                  value={resolutor}
                   onChange={(e) => handleChange(e.target.value)}
                   sx={{ minHeight: "3rem" }}
                 >
-                  {areas.map((a) => (
-                    <MenuItem key={a._id} value={a._id}>
-                      {a.Area}
+                  {resolutores.map((r) => (
+                    <MenuItem key={r._id} value={r._id + 1}>
+                      {r.Nombre}
                     </MenuItem>
                   ))}
                 </Select>
@@ -180,9 +182,9 @@ function TicketsUsuario() {
                 <MDBox pt={3}>
                   <Paper sx={{ height: 550, width: "100%" }}>
                     <DataGrid
-                      rows={rows}
+                      //rows={rows}
                       columns={columnData}
-                      initialState={{ pagination: { paginationModel } }}
+                      //getRowId={}
                       pageSizeOptions={[5, 10, 15, 20, 25]}
                       sx={{ border: 0 }}
                     />

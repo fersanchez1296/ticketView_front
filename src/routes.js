@@ -199,7 +199,7 @@ const routes = [
     type: "collapse",
     name: "Tickets por usuario",
     key: "tickets_por_usuario",
-    rol: ["Root", "Administrador"],
+    rol: ["Moderador"],
     icon: <HistoryIcon />,
     route: "/tickets_por_usuario",
     component: <TicketsUsuario />,

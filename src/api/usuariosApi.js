@@ -71,6 +71,16 @@ export const usersApi = apiSlice.injectEndpoints({
       },
       providesTags: ["Usuarios", "Tickets"],
     }),
+    getUsuariosPorAreaModerador: builder.query({
+      query: () => {
+        const url = `users/usuarios_area`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Usuarios"],
+    }),
   }),
 });
 
@@ -82,4 +92,5 @@ export const {
   useGetRolUsuarioQuery,
   useGetUsuariosParaAsignacionQuery,
   useGetUsuariosParaReasignacionQuery,
+  useGetUsuariosPorAreaModeradorQuery,
 } = usersApi;

@@ -1,13 +1,13 @@
 export interface CrearTicketProps {
-  Tipo_incidencia: Object;
-  Estado: Object;
-  Area_asignado: Object | String;
-  Asignado_a: Object;
-  Categoria: Object;
-  Servicio: Object;
-  Subcategoria: Object;
+  Tipo_incidencia: string;
+  Estado: string;
+  Area_asignado: string | String;
+  Asignado_a: string;
+  Categoria: string;
+  Servicio: string;
+  Subcategoria: string;
   Descripcion: string;
-  Prioridad: Object;
+  Prioridad: string;
   Incidencia_grave: string;
   Fecha_limite_respuesta_SLA?: Date | String;
   NumeroRec_Oficio?: string;
@@ -27,16 +27,16 @@ export interface CrearTicketMethods {
 export type CrearTicketType = CrearTicketProps & CrearTicketMethods;
 
 export const crearTicketInitialState: CrearTicketProps = {
-  Tipo_incidencia: {},
-  Estado: {},
+  Tipo_incidencia: "",
+  Estado: "",
   Area_asignado: "",
   Asignado_a: "",
-  Categoria: {},
-  Servicio: {},
-  Subcategoria: {},
+  Categoria: "",
+  Servicio: "",
+  Subcategoria: "",
   Cliente: "",
   Descripcion: "",
-  Prioridad: {},
+  Prioridad: "",
   Incidencia_grave: "",
   Fecha_limite_respuesta_SLA: "",
   NumeroRec_Oficio: "",

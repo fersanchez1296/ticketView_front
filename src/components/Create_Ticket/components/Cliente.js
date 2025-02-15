@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 const LazyNuevoCliente = React.lazy(() => import("./NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./BuscarCliente"));
 import MDBox from "components/MDBox/index.js";
+import { crearTicketSchema } from "schemas/crearTicketSchema";
 /* -------------------------------------------------------------------------- */
 // Importaciones de librerías externas
 //mui library components

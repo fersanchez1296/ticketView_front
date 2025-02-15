@@ -23,6 +23,16 @@ export const ticketsApi = apiSlice.injectEndpoints({
       },
       providesTags: ["SelectsCrearTicket"],
     }),
+    ticketsResolutor: builder.query({
+      query: (userId) => {
+        const url = `tickets/resolutor/${userId}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      invalidatesTags: ["Tickets"],
+    }),
     //TODO este debe ser un GET
     getTicketById: builder.mutation({
       query: (id) => ({
@@ -153,4 +163,5 @@ export const {
   useEditarMutation,
   useSelectsCrearTicketQuery,
   useCerrarMutation,
+  useTicketsResolutorQuery,
 } = ticketsApi;
