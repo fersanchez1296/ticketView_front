@@ -44,14 +44,19 @@ export const ticketsApi = apiSlice.injectEndpoints({
     crear: builder.mutation({
       query: ({ data }) => {
         const formData = new FormData();
+        const ticketState = {};
         delete data.correocliente;
         if (data.isNuevoCliente) {
           formData.append("nuevoCliente", JSON.stringify(data.nuevocliente));
           delete data.nuevocliente;
         }
         const [prioridad, tiempo] = data.prioridad.split("|");
+        const [asignado_a, area_asignado] = data.moderador.split("|");
         data.prioridad = prioridad;
         data.tiempo = tiempo;
+        data.Asignado_a = asignado_a;
+        data.Area_asignado = area_asignado;
+        delete data.moderador;
         Object.entries(data).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {
             value.forEach((file) => {
@@ -62,13 +67,13 @@ export const ticketsApi = apiSlice.injectEndpoints({
               }
             });
           } else {
-            // Convertir valores booleanos a string para FormData
-            if (typeof value === "boolean") {
-              value = value.toString();
-            }
-            formData.append(key, value);
+            ticketState[key] = value;
           }
         });
+        formData.append("ticketState", JSON.stringify(ticketState));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
         return {
           url: "/tickets/crear/ticket",
           method: "POST",

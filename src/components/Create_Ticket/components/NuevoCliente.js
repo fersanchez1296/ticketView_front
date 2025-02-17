@@ -60,28 +60,28 @@ const NuevoCliente = ({ form, formState }) => {
           <TextField
             type="text"
             label="Nombre:"
-            {...form.register("nuevocliente.nombre", {
+            {...form.register("nuevocliente.Nombre", {
               required: "Es necesario el nombre del cliente",
             })}
-            error={!!formState.errors.nuevocliente?.nombre}
-            helperText={formState.errors.nuevocliente?.nombre?.message}
+            error={!!formState.errors.nuevocliente?.Nombre}
+            helperText={formState.errors.nuevocliente?.Nombre?.message}
             //defaultValue={clientesStore.Nombre} // Usa defaultValue en lugar de value
             //onChange={(e) => clientesStore.setClientesFields("Nombre", e.target.value)}
             fullWidth
           />
         </Grid>
         {/*Introducido por teclado Correo*/}
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
             type="email" // Muestra validación de correo automáticamente
             label="Correo:"
             pattern=".+@example\.mx"
             //value={clientesStore.Correo}
-            {...form.register("nuevocliente.correo", {
+            {...form.register("nuevocliente.Correo", {
               required: "Es necesario el correo del cliente",
             })}
-            error={!!formState.errors.nuevocliente?.correo}
-            helperText={formState.errors.nuevocliente?.correo?.message}
+            error={!!formState.errors.nuevocliente?.Correo}
+            helperText={formState.errors.nuevocliente?.Correo?.message}
             onChange={(e) => clientesStore.setClientesFields("Correo", e.target.value)}
             fullWidth
           />
@@ -92,16 +92,19 @@ const NuevoCliente = ({ form, formState }) => {
             type="tel" // Tipo tel para mostrar un teclado numérico en móviles
             label="Teléfono:"
             //value={clientesStore.Telefono}
-            onChange={(e) => {
-              // Permite solo números y un límite de longitud
-              const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
-              clientesStore.setClientesFields("Telefono", input);
-            }}
-            {...form.register("nuevocliente.telefono", {
+            {...form.register("nuevocliente.Telefono", {
               required: "Es necesario el teléfono del cliente",
+              maxLength: {
+                value: 10,
+                message: "El teléfono solo puede contener un máximo de 10 números.",
+              },
+              pattern: {
+                value: /^[0-9]+$/,
+                message: "El teléfono solo puede contener números",
+              },
             })}
-            error={!!formState.errors.nuevocliente?.telefono}
-            helperText={formState.errors.nuevocliente?.telefono?.message}
+            error={!!formState.errors.nuevocliente?.Telefono}
+            helperText={formState.errors.nuevocliente?.Telefono?.message}
             inputProps={{
               maxLength: 10, // Limita el número de caracteres a 10 (ejemplo para teléfonos locales)
             }}
@@ -113,15 +116,20 @@ const NuevoCliente = ({ form, formState }) => {
           <TextField
             type="tel" // Tipo tel para mostrar un teclado numérico en móviles
             label="Extensión:"
-            value={clientesStore.Extension}
-            onChange={(e) => {
-              // Permite solo números y un límite de longitud
-              const input = e.target.value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
-              clientesStore.setClientesFields("Extension", input);
-            }}
-            {...form.register("nuevocliente.extesion")}
+            {...form.register("nuevocliente.Extension", {
+              maxLength: {
+                value: 6,
+                message: "La extensión solo puede contener un máximo de 6 números.",
+              },
+              pattern: {
+                value: /^[0-9]+$/,
+                message: "La extensión solo puede contener números",
+              },
+            })}
+            error={!!formState.errors.nuevocliente?.Extension}
+            helperText={formState.errors.nuevocliente?.Extension?.message}
             inputProps={{
-              maxLength: 10, // Limita el número de caracteres a 10 (ejemplo para teléfonos locales)
+              maxLength: 6,
             }}
             fullWidth
           />
@@ -130,24 +138,17 @@ const NuevoCliente = ({ form, formState }) => {
         <Grid item xs={6}>
           {!nuevaDependencia ? (
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Seleccione la Dependencia</InputLabel>
+              <InputLabel id="dependencia">Seleccione la Dependencia</InputLabel>
               <Select
-                sx={{ minHeight: "3rem" }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="dependencia"
+                id="dependencia"
                 defaultValue={""}
-                {...form.register("nuevocliente.dependencia", {
+                {...form.register("nuevocliente.Dependencia", {
                   required: "Es necesario seleccionar la dependencia del cliente",
                 })}
-                error={!!formState.errors.nuevocliente?.dependencia}
-                helperText={formState.errors.nuevocliente?.dependencia?.message}
-                value={
-                  typeof clientesStore.Dependencia === "string"
-                    ? clientesStore.Dependencia
-                    : clientesStore.Dependencia._id
-                }
+                error={!!formState.errors.nuevocliente?.Dependencia}
+                helperText={formState.errors.nuevocliente?.Dependencia?.message}
                 label="Dependencia"
-                onChange={(e) => clientesStore.setClientesFields("Dependencia", e.target.value)}
               >
                 <MenuItem value={""} key={"empty"}>
                   {""}
@@ -160,8 +161,8 @@ const NuevoCliente = ({ form, formState }) => {
                   );
                 })}
               </Select>
-              {formState.errors.nuevocliente?.dependencia && (
-                <FormHelperText>{formState.errors.nuevocliente.dependencia.message}</FormHelperText>
+              {formState.errors.nuevocliente?.Dependencia && (
+                <FormHelperText>{formState.errors.nuevocliente.Dependencia.message}</FormHelperText>
               )}
             </FormControl>
           ) : (
@@ -192,25 +193,16 @@ const NuevoCliente = ({ form, formState }) => {
         <Grid item xs={6}>
           {!nuevaDGeneral ? (
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Seleccione la Dirección general</InputLabel>
+              <InputLabel id="direccion_general">Seleccione la Dirección general</InputLabel>
               <Select
-                sx={{ minHeight: "3rem" }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="direccion_general"
+                id="direccion_general"
                 defaultValue={""}
-                {...form.register("nuevocliente.direccionGeneral", {
+                {...form.register("nuevocliente.Direccion_General", {
                   required: "Es necesario seleccionar la dirección general del cliente",
                 })}
-                error={!!formState.errors.nuevocliente?.direccionGeneral}
-                value={
-                  typeof clientesStore.Direccion_General === "string"
-                    ? clientesStore.Direccion_General
-                    : clientesStore.Direccion_General._id
-                }
-                label="Estatus"
-                onChange={(e) =>
-                  clientesStore.setClientesFields("Direccion_General", e.target.value)
-                }
+                error={!!formState.errors.nuevocliente?.Direccion_General}
+                label="Seleccione la Dirección general"
               >
                 <MenuItem value={""} key={"empty"}>
                   {""}
@@ -223,9 +215,9 @@ const NuevoCliente = ({ form, formState }) => {
                   );
                 })}
               </Select>
-              {formState.errors.nuevocliente?.direccionGeneral && (
+              {formState.errors.nuevocliente?.Direccion_General && (
                 <FormHelperText>
-                  {formState.errors.nuevocliente?.direccionGeneral.message}
+                  {formState.errors.nuevocliente?.Direccion_General.message}
                 </FormHelperText>
               )}
             </FormControl>
@@ -254,26 +246,19 @@ const NuevoCliente = ({ form, formState }) => {
           />
         </Grid>
         {/*Seleccion Dirección area*/}
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           {!nuevaDArea ? (
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Seleccione la dirección de area</InputLabel>
+              <InputLabel id="direccion_area">Seleccione la dirección de area</InputLabel>
               <Select
-                sx={{ minHeight: "3rem" }}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="direccion_area"
+                id="direccion_area"
                 defaultValue={""}
-                {...form.register("nuevocliente.direccionArea", {
+                {...form.register("nuevocliente.direccion_area", {
                   required: "Es necesario seleccionar la dirección de área del cliente",
                 })}
-                error={!!formState.errors.nuevocliente?.direccionArea}
-                value={
-                  typeof clientesStore.direccion_area === "string"
-                    ? clientesStore.direccion_area
-                    : clientesStore.direccion_area._id
-                }
-                label="Estatus"
-                onChange={(e) => clientesStore.setClientesFields("direccion_area", e.target.value)}
+                error={!!formState.errors.nuevocliente?.direccion_area}
+                label="Seleccione la dirección de area"
               >
                 <MenuItem value={""} key={""}>
                   {""}
@@ -286,9 +271,9 @@ const NuevoCliente = ({ form, formState }) => {
                   );
                 })}
               </Select>
-              {formState.errors.nuevocliente?.direccionArea && (
+              {formState.errors.nuevocliente?.direccion_area && (
                 <FormHelperText>
-                  {formState.errors.nuevocliente.direccionArea.message}
+                  {formState.errors.nuevocliente.direccion_area.message}
                 </FormHelperText>
               )}
             </FormControl>
@@ -315,16 +300,14 @@ const NuevoCliente = ({ form, formState }) => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="outlined-multiline-static"
+            id="Ubicacion"
             label="Ubicacion del cliente:"
             multiline
-            // value={clientesStore.Ubicacion}
-            {...form.register("nuevocliente.ubicacion", {
+            {...form.register("nuevocliente.Ubicacion", {
               required: "Es necesario ingresar la ubicación del cliente",
             })}
-            error={!!formState.errors.nuevocliente?.ubicacion}
-            helperText={formState.errors.nuevocliente?.ubicacion?.message}
-            onChange={(e) => clientesStore.setClientesFields("Ubicacion", e.target.value)}
+            error={!!formState.errors.nuevocliente?.Ubicacion}
+            helperText={formState.errors.nuevocliente?.Ubicacion?.message}
             rows={5}
             sx={{ width: "100%" }}
           />

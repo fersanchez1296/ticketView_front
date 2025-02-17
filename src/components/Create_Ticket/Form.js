@@ -15,12 +15,13 @@ import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/material/Icon";
+import SaveIcon from "@mui/icons-material/Save";
 import { styled } from "@mui/material/styles";
 import { List, ListItem, IconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import MDBox from "components/MDBox";
 import { useCrearMutation } from "api/ticketsApi.js";
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -48,7 +49,9 @@ export default function Form({ data }) {
   const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
-  const { register, handleSubmit, formState, setValue, watch } = form;
+  const { register, handleSubmit, formState, setValue, watch, reset } = form;
+  const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
+  const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const { errors } = formState;
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -72,7 +75,20 @@ export default function Form({ data }) {
     setValue("Files", newFiles);
   };
   const onSubmit = async (data) => {
-    const result = await guardar({ data });
+    try {
+      const result = await guardar({ data });
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+        return result;
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3500);
+      }
+    } catch (error) {
+      openErrorSB("Ocurrió un error inesperado al crear el ticket.", `Status: 500`);
+    }
   };
   const standby = watch("standby");
   const isNuevoCliente = watch("isNuevoCliente");
@@ -102,10 +118,10 @@ export default function Form({ data }) {
               id="tipo_incidencia"
               label="Tipo de incidencia"
               defaultValue=""
-              {...register("incidencia", {
+              {...register("Tipo_incidencia", {
                 required: "Es necesario seleccionar el tipo de incidencia",
               })}
-              error={!!errors.incidencia}
+              error={!!errors.Tipo_incidencia}
             >
               <MenuItem value={""} key={"empty"}>
                 {""}
@@ -116,7 +132,9 @@ export default function Form({ data }) {
                 </MenuItem>
               ))}
             </Select>
-            {errors.incidencia && <FormHelperText>{errors.incidencia.message}</FormHelperText>}
+            {errors.Tipo_incidencia && (
+              <FormHelperText>{errors.Tipo_incidencia.message}</FormHelperText>
+            )}
           </FormControl>
         </Grid>
         {/* Prioridad */}
@@ -162,11 +180,10 @@ export default function Form({ data }) {
               //value={ticketState.Servicio}
               label="Servicio"
               defaultValue=""
-              {...register("servicio", {
+              {...register("Servicio", {
                 required: "Es necesario seleccionar el servicio",
               })}
-              error={!!errors.servicio}
-              //onChange={(e) => setCrearTicketFields("Servicio", e.target.value)}
+              error={!!errors.Servicio}
             >
               <MenuItem value={""} key={"empty"}>
                 {""}
@@ -179,7 +196,7 @@ export default function Form({ data }) {
                 );
               })}
             </Select>
-            {errors.servicio && <FormHelperText>{errors.servicio.message}</FormHelperText>}
+            {errors.Servicio && <FormHelperText>{errors.Servicio.message}</FormHelperText>}
           </FormControl>
         </Grid>
         {/* Categoria */}
@@ -190,10 +207,10 @@ export default function Form({ data }) {
               labelId="categoria"
               id="categoria"
               defaultValue=""
-              {...register("categoria", {
+              {...register("Categoria", {
                 required: "Es necesario seleccionar la categoría",
               })}
-              error={!!errors.categoria}
+              error={!!errors.Categoria}
               //value={ticketState.Categoria}
               label="Categoría"
               //onChange={(e) => setCrearTicketFields("Categoria", e.target.value)}
@@ -209,7 +226,7 @@ export default function Form({ data }) {
                 );
               })}
             </Select>
-            {errors.categoria && <FormHelperText>{errors.categoria.message}</FormHelperText>}
+            {errors.Categoria && <FormHelperText>{errors.Categoria.message}</FormHelperText>}
           </FormControl>
         </Grid>
         {/* Subcategoria */}
@@ -223,11 +240,10 @@ export default function Form({ data }) {
               //value={ticketState.Subcategoria}
               label="Subcategoría"
               defaultValue=""
-              {...register("subcategoria", {
+              {...register("Subcategoria", {
                 required: "Es necesario seleccionar la subcategoría",
               })}
-              error={!!errors.subcategoria}
-              //onChange={(e) => setCrearTicketFields("Subcategoria", e.target.value)}
+              error={!!errors.Subcategoria}
             >
               <MenuItem value={""} key={"empty"}>
                 {""}
@@ -240,7 +256,7 @@ export default function Form({ data }) {
                 );
               })}
             </Select>
-            {errors.subcategoria && <FormHelperText>{errors.subcategoria.message}</FormHelperText>}
+            {errors.Subcategoria && <FormHelperText>{errors.Subcategoria.message}</FormHelperText>}
           </FormControl>
         </Grid>
         {/* Oficio */}
@@ -249,8 +265,7 @@ export default function Form({ data }) {
             type="text"
             label="Oficio de recepción:"
             variant="outlined"
-            //value={ticketState.NumeroRec_Oficio}
-            //onChange={(e) => setCrearTicketFields("NumeroRec_Oficio", e.target.value)}
+            {...register("NumeroRec_Oficio")}
             fullWidth
           />
         </Grid>
@@ -260,14 +275,12 @@ export default function Form({ data }) {
             fullWidth
             id="descripcion"
             label="Descripción del ticket"
-            {...register("descripcion", {
+            {...register("Descripcion", {
               required: "Es necesario ingresar la descripción del ticket",
             })}
-            error={!!errors.subcategoria}
-            helperText={errors.descripcion?.message}
+            error={!!errors.Descripcion}
+            helperText={errors.Descripcion?.message}
             multiline
-            //value={ticketState.Descripcion}
-            //onChange={(e) => setCrearTicketFields("Descripcion", e.target.value)}
             rows={6}
             placeholder="Ingresa la descripción del ticket"
           />
@@ -324,11 +337,6 @@ export default function Form({ data }) {
                     required: "Es necesario seleccionar un moderador.",
                   })}
                   error={!!errors.moderador}
-                  onChange={(e) => {
-                    const [asignado_a, area_id] = e.target.value.split("|");
-                    //crearTicketStore.setCrearTicketFields("Asignado_a", asignado_a);
-                    //crearTicketStore.setCrearTicketFields("Area_asignado", area_id);
-                  }}
                 >
                   <option aria-label="None" value="" />
                   {data.areasResolutores.map((area) => {
@@ -443,10 +451,26 @@ export default function Form({ data }) {
             </List>
           </Grid>
         )}
+
+        <Grid item xs={12}>
+          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
+            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+              Guardar Ticket
+            </Typography>
+          </MDBox>
+        </Grid>
         {/* Botón de guardar */}
         <Grid item xs={12}>
-          <Button variant="contained" type="submit">
-            Guardar Ticket
+          <Button
+            type="submit"
+            variant="outlined"
+            color="primary"
+            size="large"
+            fullWidth
+            tabIndex={-1}
+            startIcon={<SaveIcon color="primary" />}
+          >
+            <Typography color="primary">{"Guardar Ticket"}</Typography>
           </Button>
         </Grid>
       </Grid>

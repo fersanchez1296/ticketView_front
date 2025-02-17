@@ -49,7 +49,7 @@ const BuscarCliente = ({ form, formState }) => {
       if (result.data) {
         setClienteExiste(true);
         setData(result.data);
-        form.setValue("cliente", result.data._id);
+        form.setValue("Cliente", result.data._id);
       } else {
         setClienteExiste(false);
         setData({});
