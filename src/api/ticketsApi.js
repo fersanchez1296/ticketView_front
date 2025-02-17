@@ -42,12 +42,40 @@ export const ticketsApi = apiSlice.injectEndpoints({
       providesTags: ["Ticket"],
     }),
     crear: builder.mutation({
-      query: (formData) => ({
-        url: "/tickets/crear/ticket",
-        method: "POST",
-        body: formData,
-        formData: true,
-      }),
+      query: ({ data }) => {
+        const formData = new FormData();
+        delete data.correocliente;
+        if (data.isNuevoCliente) {
+          formData.append("nuevoCliente", JSON.stringify(data.nuevocliente));
+          delete data.nuevocliente;
+        }
+        const [prioridad, tiempo] = data.prioridad.split("|");
+        data.prioridad = prioridad;
+        data.tiempo = tiempo;
+        Object.entries(data).forEach(([key, value]) => {
+          if (key === "Files" && Array.isArray(value)) {
+            value.forEach((file) => {
+              if (file instanceof File) {
+                formData.append("files", file);
+              } else {
+                console.error(`El archivo no es válido:`, file);
+              }
+            });
+          } else {
+            // Convertir valores booleanos a string para FormData
+            if (typeof value === "boolean") {
+              value = value.toString();
+            }
+            formData.append(key, value);
+          }
+        });
+        return {
+          url: "/tickets/crear/ticket",
+          method: "POST",
+          body: formData,
+          formData: true,
+        };
+      },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     editar: builder.mutation({

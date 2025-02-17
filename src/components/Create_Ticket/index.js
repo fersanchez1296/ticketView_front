@@ -9,6 +9,7 @@ import Resolutor from "./components/Resolutor";
 import Cliente from "./components/Cliente";
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
+import Form from "./Form";
 /* -------------------------------------------------------------------------- */
 // Importaciones de librerías externas
 //mui library component
@@ -93,13 +94,16 @@ const Edit = () => {
   return (
     <React.Fragment>
       <DashboardLayout>
+        <Form data={data} />
+      </DashboardLayout>
+
+      {/* <DashboardLayout>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
           <Grid container spacing={6}>
             <Grid item xs={12}>
               <Card>
                 <MDBox pt={3}>
-                  {/*Caja que contiene las etiquetas*/}
                   <Box sx={{ width: "100%" }}>
                     <Stepper activeStep={activeStep} alternativeLabel bgColor="primary">
                       {steps.map((label, index) => {
@@ -154,7 +158,7 @@ const Edit = () => {
           </Grid>
         </MDBox>
         <Footer />
-      </DashboardLayout>
+      </DashboardLayout> */}
       <SuccessSB />
       <ErrorSB />
     </React.Fragment>
