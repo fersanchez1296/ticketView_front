@@ -46,6 +46,7 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 export default function Form({ data }) {
+  console.log(data);
   const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
