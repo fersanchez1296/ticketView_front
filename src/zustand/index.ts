@@ -117,4 +117,7 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowClientesOpen: false,
   openWindowClientes: () => set({ isWindowClientesOpen: true }),
   closeWindowClientes: () => set({ isWindowClientesOpen: false }),
+  isWindowNotaOpen: false,
+  openWindowNota: () => set({ isWindowNotaOpen: true }),
+  closeWindowNota: () => set({ isWindowNotaOpen: false }),
 }));

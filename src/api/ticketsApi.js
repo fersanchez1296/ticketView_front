@@ -52,7 +52,7 @@ export const ticketsApi = apiSlice.injectEndpoints({
         }
         const [prioridad, tiempo] = data.prioridad.split("|");
         const [asignado_a, area_asignado] = data.moderador.split("|");
-        data.prioridad = prioridad;
+        data.Prioridad = prioridad;
         data.tiempo = tiempo;
         data.Asignado_a = asignado_a;
         data.Area_asignado = area_asignado;
@@ -71,6 +71,34 @@ export const ticketsApi = apiSlice.injectEndpoints({
           }
         });
         formData.append("ticketState", JSON.stringify(ticketState));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
+        return {
+          url: "/tickets/crear/ticket",
+          method: "POST",
+          body: formData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
+    }),
+    nota: builder.mutation({
+      query: ({ data }) => {
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+          if (key === "Files" && Array.isArray(value)) {
+            value.forEach((file) => {
+              if (file instanceof File) {
+                formData.append("files", file);
+              } else {
+                console.error(`El archivo no es válido:`, file);
+              }
+            });
+          } else {
+            formData.append(key, value);
+          }
+        });
         for (let pair of formData.entries()) {
           console.log(`${pair[0]}: ${pair[1]}`);
         }
@@ -197,4 +225,5 @@ export const {
   useSelectsCrearTicketQuery,
   useCerrarMutation,
   useTicketsResolutorQuery,
+  useNotaMutation,
 } = ticketsApi;

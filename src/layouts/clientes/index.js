@@ -1,9 +1,11 @@
 // @mui material components
+import React from "react";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Card from "@mui/material/Card";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -29,14 +31,35 @@ import Asignado from "./components/Asignado";
 import VentanaClientes from "./components/ventanaClientes";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 function Clientes() {
+  // API Hooks (RTK Query, Axios, etc.)
+  const { data, refetch, isLoading, error } = useClientesQuery();
+  const navigate = useNavigate();
+  /* -------------------------------------------------------------------------- */
+  // Estado global de Zustand
   const isWindowClientesOpen = useDialogStore((state) => state.isWindowClientesOpen);
   const openWindowClientes = useDialogStore((state) => state.openWindowClientes);
   const setClientesStore = useClientesStore((state) => state.setClientesFetch);
   const setClientesFields = useClientesStore((state) => state.setClientesFields);
   const successSb = useSnackbarStore((state) => state.successSB);
   const errorSb = useSnackbarStore((state) => state.errorSB);
-  const { data, refetch, isLoading, error } = useClientesQuery();
+  /* -------------------------------------------------------------------------- */
+  // Estados locales con useState
+  /* -------------------------------------------------------------------------- */
+  // Refs y useMemo / useCallback (si aplica)
+  /* -------------------------------------------------------------------------- */
+  // Efectos secundarios con useEffect
+  React.useEffect(() => {
+    if (data === undefined) {
+      navigate("/login");
+    }
+  }, [data]);
+  /* -------------------------------------------------------------------------- */
+  // Verificaciones de carga y errores (isLoading, isError)
   if (isLoading) return <Progress />;
+  /* -------------------------------------------------------------------------- */
+  // Funciones auxiliares
+  /* -------------------------------------------------------------------------- */
+  // Renderizado del componente (return)
   const Btn_view = (client) => (
     <MDButton
       color={"primary"}
@@ -52,6 +75,7 @@ function Clientes() {
       </MDTypography>
     </MDButton>
   );
+
   let columns: GridColDef[] = [
     {
       field: "Editar",

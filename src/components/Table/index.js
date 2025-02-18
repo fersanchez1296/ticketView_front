@@ -25,6 +25,7 @@ export default function DataTable({ tickets, collection }) {
   const openWindowResolver = useDialogStore((state) => state.openWindowResolver);
   const openWindowAceptar = useDialogStore((state) => state.openWindowAceptar);
   const openWindowRechazar = useDialogStore((state) => state.openWindowRechazar);
+  const openWindowNota = useDialogStore((state) => state.openWindowNota);
   const setTicketFields = useTicketStore((state) => state.setTicketFetch);
   const rol = useAuthStore((state) => state.role);
 
@@ -39,6 +40,21 @@ export default function DataTable({ tickets, collection }) {
     >
       <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
         {`Visualizar`}
+      </MDTypography>
+    </MDButton>
+  );
+
+  const Btn_nota = (ticket) => (
+    <MDButton
+      color={"secondary"}
+      variant={"contained"}
+      onClick={() => {
+        setTicketFields(ticket.ticket);
+        openWindowNota();
+      }}
+    >
+      <MDTypography component="a" href="#" variant="caption" color="light" fontWeight="medium">
+        {`Agregar nota`}
       </MDTypography>
     </MDButton>
   );
@@ -171,6 +187,13 @@ export default function DataTable({ tickets, collection }) {
       width: 140,
       renderCell: (params) => <Btn_view ticket={params.row} />,
     },
+
+    {
+      field: "Nota",
+      headerName: "Nota",
+      width: 140,
+      renderCell: (params) => <Btn_nota ticket={params.row} />,
+    },
     // ...(collection !== "cerrados" && collection !== "resueltos"
     //   ? [
     //       {
@@ -253,65 +276,12 @@ export default function DataTable({ tickets, collection }) {
       renderCell: (params) => <Badge content={params.row.Prioridad.Descripcion} />,
     },
     {
-      field: "Creado_por",
-      headerName: "Creado Por",
-      width: 250,
-      renderCell: (params) => (
-        <Asignado
-          image={team2}
-          nombre={params.row.Creado_por.Nombre}
-          dependencia={params.row.Creado_por.Coordinacion}
-        />
-      ),
+      field: "Fecha_limite_resolucion_SLA",
+      headerName: "Fecha límite de resolución",
+      width: 300,
+      aling: "center",
     },
-    {
-      field: "Asignado_a",
-      headerName: "Asignado a",
-      width: 250,
-      renderCell: (params) => (
-        <Asignado
-          image={team2}
-          nombre={params.row.Asignado_a.Nombre}
-          dependencia={params.row.Asignado_a.Coordinacion}
-        />
-      ),
-    },
-    {
-      field: "Reasignado_a",
-      headerName: "Reasignado a",
-      width: 250,
-      renderCell: (params) => (
-        <Asignado
-          image={team2}
-          nombre={params.row.Reasignado_a.Nombre}
-          dependencia={params.row.Reasignado_a.Coordinacion}
-        />
-      ),
-    },
-    ...(collection !== "Pendientes"
-      ? [
-          {
-            field: "Resuelto_por",
-            headerName: "Resuelto por",
-            width: 250,
-            renderCell: (params) => (
-              <Asignado
-                image={team2}
-                nombre={
-                  params.row.Resuelto_por && params.row.Resuelto_por.Nombre
-                    ? params.row.Resuelto_por.Nombre
-                    : params.row.Resuelto_por
-                }
-                dependencia={
-                  params.row.Resuelto_por && params.row.Resuelto_por.Coordinacion
-                    ? params.row.Resuelto_por.Coordinacion
-                    : ""
-                }
-              />
-            ),
-          },
-        ]
-      : []),
+    { field: "Tipo_incidencia", headerName: "Tipo", width: 150 },
     ...(collection === "Cerrados" || collection === "Reabiertos"
       ? [
           {
@@ -347,9 +317,6 @@ export default function DataTable({ tickets, collection }) {
         />
       ),
     },
-    { field: "Tipo_incidencia", headerName: "Tipo", width: 150 },
-    { field: "Fecha_hora_creacion", headerName: "Creado", width: 250 },
-    { field: "Fecha_hora_cierre", headerName: "Finalizado", width: 250 },
   ];
 
   const ModColumns = [

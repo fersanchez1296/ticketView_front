@@ -205,4 +205,8 @@ export interface DialogState {
   isWindowClientesOpen: boolean;
   openWindowClientes: () => void;
   closeWindowClientes: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de notas:
+  isWindowNotaOpen: boolean;
+  openWindowNota: () => void;
+  closeWindowNota: () => void;
 }

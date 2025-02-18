@@ -12,6 +12,7 @@ import Resolver from "components/TicketWindow/Resolver";
 import Aceptar from "components/TicketWindow/Aceptar";
 import Rechazar from "components/TicketWindow/Rechazar";
 import Asignar from "components/TicketWindow/Asignar";
+import Nota from "components/TicketWindow/Nota";
 //reabrir store
 import { useReabrirTicketStore } from "components/TicketWindow/Reabrir/store/reabrirTicket.store.ts";
 
@@ -26,6 +27,7 @@ const ModalManager = () => {
     isWindowAceptarOpen,
     isWindowRechazarOpen,
     isWindowAsignarOpen,
+    isWindowNotaOpen,
   } = useDialogStore();
 
   const reabrirTicketStore = useReabrirTicketStore();
@@ -56,6 +58,7 @@ const ModalManager = () => {
       {isWindowAceptarOpen && <Aceptar />}
       {isWindowRechazarOpen && <Rechazar />}
       {isWindowAsignarOpen && <Asignar />}
+      {isWindowNotaOpen && <Nota />}
     </>
   );
 };
