@@ -1,6 +1,7 @@
 import React from "react";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 //mui library components
@@ -34,13 +35,13 @@ const Archivos = () => {
                           <Grid item key={file._id}>
                             <MDBox mb={1}>
                               <a href={file.url} target="_blank" rel="noreferrer">
-                                <Button
-                                  variant="contained"
-                                  color="error"
+                                <MDButton
+                                  variant={"contained"}
+                                  color={"primary"}
                                   startIcon={<VisibilityIcon />}
                                 >
                                   <MDTypography color="gray">Ver archivo.</MDTypography>
-                                </Button>
+                                </MDButton>
                               </a>
                             </MDBox>
                           </Grid>

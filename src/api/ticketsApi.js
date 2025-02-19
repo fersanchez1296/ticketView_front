@@ -84,7 +84,7 @@ export const ticketsApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     nota: builder.mutation({
-      query: ({ data }) => {
+      query: ({ data, ticketId }) => {
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {
@@ -103,8 +103,8 @@ export const ticketsApi = apiSlice.injectEndpoints({
           console.log(`${pair[0]}: ${pair[1]}`);
         }
         return {
-          url: "/tickets/crear/ticket",
-          method: "POST",
+          url: `/tickets/nota/${ticketId}`,
+          method: "PUT",
           body: formData,
           formData: true,
         };

@@ -87,15 +87,15 @@ const Nota = () => {
   };
   const onSubmit = async (data) => {
     try {
-      const result = await guardar({ data });
+      const result = await guardar({ data, ticketId });
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
         return result;
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
         setTimeout(() => {
-          window.location.reload();
-        }, 3500);
+          closeWindowNota();
+        }, 2000);
       }
     } catch (error) {
       openErrorSB("Ocurrió un error inesperado al crear el ticket.", `Status: 500`);

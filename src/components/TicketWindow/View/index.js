@@ -130,7 +130,7 @@ const View = () => {
         }}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "relative" }}>
+        <AppBar sx={{ position: "sticky" }} color="primary">
           <Toolbar>
             <IconButton
               edge="start"
@@ -144,7 +144,7 @@ const View = () => {
             >
               <CloseIcon />
             </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div" color={"White"}>
               Cerrar
             </Typography>
           </Toolbar>

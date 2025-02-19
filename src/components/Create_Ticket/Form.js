@@ -34,7 +34,6 @@ function CustomTabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
@@ -46,7 +45,6 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 export default function Form({ data }) {
-  console.log(data);
   const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
@@ -93,6 +91,25 @@ export default function Form({ data }) {
   };
   const standby = watch("standby");
   const isNuevoCliente = watch("isNuevoCliente");
+  const formFields = React.useMemo(
+    () => [
+      {
+        name: "Tipo_incidencia",
+        label: "Tipo de incidencia",
+        options: data.tiposTickets,
+        key: "Tipo_de_incidencia",
+      },
+      { name: "Servicio", label: "Servicio", options: data.servicios, key: "Servicio" },
+      { name: "Categoria", label: "Categoría", options: data.categorias, key: "Categoria" },
+      {
+        name: "Subcategoria",
+        label: "Subcategoría",
+        options: data.subcategoria,
+        key: "Subcategoria",
+      },
+    ],
+    [data]
+  );
   return (
     <Box
       component="form"
@@ -109,34 +126,6 @@ export default function Form({ data }) {
             </Typography>
           </MDBox>
           <Divider />
-        </Grid>
-        {/* Tipo de incidencia */}
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="tipo_incidencia">Tipo de incidencia</InputLabel>
-            <Select
-              labelId="tipo_incidencia"
-              id="tipo_incidencia"
-              label="Tipo de incidencia"
-              defaultValue=""
-              {...register("Tipo_incidencia", {
-                required: "Es necesario seleccionar el tipo de incidencia",
-              })}
-              error={!!errors.Tipo_incidencia}
-            >
-              <MenuItem value={""} key={"empty"}>
-                {""}
-              </MenuItem>
-              {data.tiposTickets.map((est) => (
-                <MenuItem value={est._id} key={est._id}>
-                  {est.Tipo_de_incidencia}
-                </MenuItem>
-              ))}
-            </Select>
-            {errors.Tipo_incidencia && (
-              <FormHelperText>{errors.Tipo_incidencia.message}</FormHelperText>
-            )}
-          </FormControl>
         </Grid>
         {/* Prioridad */}
         <Grid item xs={6}>
@@ -171,95 +160,26 @@ export default function Form({ data }) {
             {errors.prioridad && <FormHelperText>{errors.prioridad.message}</FormHelperText>}
           </FormControl>
         </Grid>
-        {/* Servicio */}
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="servicio">Servicio</InputLabel>
-            <Select
-              labelId="servicio"
-              id="servicio"
-              //value={ticketState.Servicio}
-              label="Servicio"
-              defaultValue=""
-              {...register("Servicio", {
-                required: "Es necesario seleccionar el servicio",
-              })}
-              error={!!errors.Servicio}
-            >
-              <MenuItem value={""} key={"empty"}>
-                {""}
-              </MenuItem>
-              {data.servicios.map((est) => {
-                return (
-                  <MenuItem value={est._id} key={est._id}>
-                    {est.Servicio}
+        {formFields.map(({ name, label, options, key }) => (
+          <Grid item xs={6} key={name}>
+            <FormControl fullWidth error={!!errors[name]}>
+              <InputLabel>{label}</InputLabel>
+              <Select
+                defaultValue=""
+                label={label}
+                {...register(name, { required: `Es necesario seleccionar ${label.toLowerCase()}` })}
+              >
+                <MenuItem value="">Seleccionar</MenuItem>
+                {options.map((option) => (
+                  <MenuItem key={option._id} value={option._id}>
+                    {option[key]}
                   </MenuItem>
-                );
-              })}
-            </Select>
-            {errors.Servicio && <FormHelperText>{errors.Servicio.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        {/* Categoria */}
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="categoria">Categoría</InputLabel>
-            <Select
-              labelId="categoria"
-              id="categoria"
-              defaultValue=""
-              {...register("Categoria", {
-                required: "Es necesario seleccionar la categoría",
-              })}
-              error={!!errors.Categoria}
-              //value={ticketState.Categoria}
-              label="Categoría"
-              //onChange={(e) => setCrearTicketFields("Categoria", e.target.value)}
-            >
-              <MenuItem value={""} key={"empty"}>
-                {""}
-              </MenuItem>
-              {data.categorias.map((est) => {
-                return (
-                  <MenuItem value={est._id} key={est._id}>
-                    {est.Categoria}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-            {errors.Categoria && <FormHelperText>{errors.Categoria.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        {/* Subcategoria */}
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="subcategoria">Subcategoría</InputLabel>
-            <Select
-              sx={{ minHeight: "3rem" }}
-              labelId="subcategoria"
-              id="subcategoria"
-              //value={ticketState.Subcategoria}
-              label="Subcategoría"
-              defaultValue=""
-              {...register("Subcategoria", {
-                required: "Es necesario seleccionar la subcategoría",
-              })}
-              error={!!errors.Subcategoria}
-            >
-              <MenuItem value={""} key={"empty"}>
-                {""}
-              </MenuItem>
-              {data.subcategoria.map((est) => {
-                return (
-                  <MenuItem value={est._id} key={est._id}>
-                    {est.Subcategoria}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-            {errors.Subcategoria && <FormHelperText>{errors.Subcategoria.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
+                ))}
+              </Select>
+              {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+            </FormControl>
+          </Grid>
+        ))}
         {/* Oficio */}
         <Grid item xs={6}>
           <TextField
@@ -452,7 +372,6 @@ export default function Form({ data }) {
             </List>
           </Grid>
         )}
-
         <Grid item xs={12}>
           <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
             <Typography variant="h4" fontWeight="light" color="White" mt={1}>
