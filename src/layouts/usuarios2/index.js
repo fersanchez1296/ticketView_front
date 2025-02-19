@@ -13,29 +13,16 @@ import MDButton from "components/MDButton";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-// Images
-import team2 from "assets/images/team-2.jpg";
-// Data
-import abiertosTableData from "layouts/abiertos/data/abiertosTableData";
 //store
 import { useUserStore, useDialogStore } from "zustand/index.ts";
 //api
 import { useUsuariosQuery } from "api/usuariosApi";
-//mui table
-import DataTable from "components/Table/index";
-//propTypes
-import PropTypes from "prop-types";
-//view component
-import View from "components/TicketWindow/View";
 //Progress
 import Progress from "components/Progress";
 //snackbar
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
 //components
-import Asignado from "./components/Asignado";
-import Cliente from "./components/Cliente";
-import Badge from "./components/Badge";
 import VentanaUsuario from "./components/ventanaUsuarios";
 import SwitchActive from "./components/switch";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
@@ -91,9 +78,6 @@ function Index() {
       field: "Nombre",
       headerName: "Nombre",
       width: 250,
-      renderCell: (params) => (
-        <Asignado image={team2} nombre={params.row.Nombre} dependencia={params.row.Coordinacion} />
-      ),
     },
     { field: "usernameUsuario", headerName: "Username", width: 140 },
     { field: "correoUsuario", headerName: "Correo", width: 140 },

@@ -35,61 +35,7 @@ const Reasignado = ({ disable_input }) => {
           </MDBox>
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
-              <Grid container spacing={3}>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Reasignado a:"
-                      value={ticket.Reasignado_a.Nombre}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Equipo Asignado:"
-                      value={ticket.Area_reasignado_a.Area}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={4}>
-                  <MDBox mb={2}>
-                    <MDInput
-                      type="text"
-                      label="Fecha límite de resolución:"
-                      value={ticket.Fecha_limite_respuesta_SLA}
-                      //onChange={(e) => setEditor("editor", e.target.value)}
-                      fullWidth
-                      required
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-                <Grid xs={12}>
-                  <MDBox mb={2} sx={{ width: "100%" }}>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Descripción a mandar a Escritorio"
-                      multiline
-                      value={ticket.Respuesta_cierre_reasignado}
-                      rows={10}
-                      defaultValue="Sin información"
-                      sx={{ width: "100%" }}
-                      disabled={disable_input}
-                    />
-                  </MDBox>
-                </Grid>
-              </Grid>
+              <Grid container spacing={3}></Grid>
             </MDBox>
           </MDBox>
         </Card>
