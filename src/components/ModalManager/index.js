@@ -14,10 +14,11 @@ import Rechazar from "components/TicketWindow/Rechazar";
 import Asignar from "components/TicketWindow/Asignar";
 import Nota from "components/TicketWindow/Nota";
 //reabrir store
-import { useReabrirTicketStore } from "components/TicketWindow/Reabrir/store/reabrirTicket.store.ts";
+import { useReabrirMutation } from "api/ticketsApi";
 
 const ModalManager = () => {
   const {
+    isWindowOpen,
     isWindowEditOpen,
     isWindowReabrirOpen,
     closeWindowReabrir,
@@ -30,13 +31,12 @@ const ModalManager = () => {
     isWindowNotaOpen,
   } = useDialogStore();
 
-  const reabrirTicketStore = useReabrirTicketStore();
-  //const [reabrir] = usePutReabrir();
+  const [reabrir] = useReabrirMutation();
   return (
     <>
       <SuccessSB />
       <ErrorSB />
-      <View />
+      {isWindowOpen && <View />}
 
       {isWindowEditOpen && <Edit />}
 
@@ -45,8 +45,7 @@ const ModalManager = () => {
           title="Reabrir Ticket"
           isOpen={isWindowReabrirOpen}
           onClose={closeWindowReabrir}
-          //onSave={reabrir({useTicketStore})}
-          //resetStore={}
+          onSave={reabrir}
         >
           <Reabrir />
         </VentanaAcciones>

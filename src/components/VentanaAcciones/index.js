@@ -18,38 +18,30 @@ import PropTypes from "prop-types";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //store
-import { useDialogStore } from "zustand/index.ts";
+import { useTicketStore } from "zustand/index.ts";
+import { useForm } from "react-hook-form";
 // import { useReasignarTicketStore } from "./store/reasignarTicket.store.ts";
 import { useGetUsuariosQuery } from "api";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Index = ({ children, title, isOpen, onClose, onSave, resetStore, data }) => {
-  const closeWindowReabrir = useDialogStore((state) => state.closeWindowReabrir);
+const Index = ({ children, title, isOpen, onClose, onSave }) => {
+  const ticketStore = useTicketStore();
+  const form = useForm({ defaultValues: ticketStore });
+  const { register, handleSubmit, formState, setValue, watch, reset } = form;
+  const { errors } = formState;
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
 
-  const handleSave = async () => {
-    const formData = new FormData();
-    // try {
-    //   formData.append("ticketData", JSON.stringify(resolverTicketStore));
-    //   if (resolverTicketStore.Files instanceof File) {
-    //     formData.append("file", resolverTicketStore.Files);
-    //   }
-    //   console.log(resolverTicketStore.Files);
-    //   const result = await putTicket({ formData, ticketId });
-    //   if (result.error) {
-    //     openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-    //     return result;
-    //   } else {
-    //     openSuccessSB(result.data.desc, `Status: 200`);
-    //     closeWindowResolver();
-    //     resolverTicketStore.resolverTicketResetValues();
-    //     return result;
-    //   }
-    // } catch (error) {
-    //   openErrorSB("Ocurrio un error al resolver el ticket.", `Status: ${result.error.status}`);
-    // }
+  const handleSave = async (data) => {
+    try {
+      await onSave(data.Id);
+      console.log("Datos enviados:", data.Id);
+      reset();
+      onClose();
+    } catch (error) {
+      console.error("Error al guardar:", error);
+    }
   };
 
   return (
@@ -84,8 +76,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, resetStore, data }) =
               color="primary"
               endIcon={<SaveIcon />}
               sx={{ color: "Black" }}
-              onClick={handleSave}
-              //disabled={reasignarTicketStore.Reasignado_a === "" ? true : false}
+              onClick={handleSubmit(handleSave)}
             >
               Guardar
             </Button>
@@ -119,7 +110,9 @@ const Index = ({ children, title, isOpen, onClose, onSave, resetStore, data }) =
                     flexDirection: "row",
                   }}
                 >
-                  {children}
+                  <form onSubmit={handleSubmit(handleSave)}>
+                    {React.cloneElement(children, { form, formState })}
+                  </form>
                 </Grid>
               </MDBox>
             </Card>

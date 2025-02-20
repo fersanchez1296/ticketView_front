@@ -39,7 +39,7 @@ Coded by www.creative-tim.com
 import Dashboard from "layouts/dashboard";
 import Create_Ticket from "components/Create_Ticket/index";
 import Tables from "layouts/tables";
-import DataTable from "layouts/abiertos/";
+import DataTable from "layouts/tickets/";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";

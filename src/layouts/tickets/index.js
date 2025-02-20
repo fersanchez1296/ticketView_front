@@ -15,10 +15,18 @@ import DataTable from "../../components/DataTable/index";
 import PropTypes from "prop-types";
 //Progress
 import Progress from "components/Progress";
+import TicketsData from "./data/ticketsData";
+import { useAuthStore } from "zustand/auth.store.ts";
+import { useDialogStore, useTicketStore } from "zustand/index.ts";
 function TableData({ collection }) {
   const { data: tickets, refetch, isLoading, error } = useTicketsQuery({ collection });
+  const setTicketFields = useTicketStore((state) => state.setTicketFetch);
+  const rol = useAuthStore((state) => state.role);
+  const dialogStore = useDialogStore();
   if (isLoading) return <Progress />;
   if (error) return <div>Error: Reload page</div>;
+
+  const { columns, rows } = TicketsData(tickets, collection, setTicketFields, rol, dialogStore);
   return (
     <>
       <DashboardLayout>
@@ -33,7 +41,7 @@ function TableData({ collection }) {
                   </MDTypography>
                 </MDBox>
                 <MDBox pt={3}>
-                  <DataTable tickets={tickets} collection={collection} />
+                  <DataTable rows={rows} columns={columns} />
                 </MDBox>
               </Card>
             </Grid>
