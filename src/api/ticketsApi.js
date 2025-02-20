@@ -33,6 +33,15 @@ export const ticketsApi = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Tickets"],
     }),
+    reabrirFields: builder.query({
+      query: () => {
+        const url = `tickets/reabrir/fields`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+    }),
     //TODO este debe ser un GET
     getTicketById: builder.mutation({
       query: (id) => ({
@@ -155,18 +164,28 @@ export const ticketsApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     reabrir: builder.mutation({
-      query: ({ _id, Descripcion_reabrir, Descripcion_cierre, Descripcion, Asignado_a }) => {
-        const url = `reabrir`;
+      query: ({ data }) => {
+        const formData = new FormData();
+        if (typeof data.Asignado_a === "object") {
+          const aux = data.Asignado_a._id;
+          data.Asignado_a = aux;
+        } else {
+          console.log("entra al else");
+          const aux = data.asignado_a;
+          const [Asignado_a, Area_asignado] = aux.split("|");
+          data.Asignado_a = Asignado_a;
+          data.Area_asignado = Area_asignado;
+        }
+        console.log(data);
+        formData.append("ticketState", data);
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
         return {
-          url,
-          method: "PUT",
-          body: {
-            _id,
-            Descripcion_reabrir,
-            Descripcion_cierre,
-            Descripcion,
-            Asignado_a,
-          },
+          url: "/reabrir",
+          method: "POST",
+          body: formData,
+          formData: true,
         };
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
@@ -226,4 +245,5 @@ export const {
   useCerrarMutation,
   useTicketsResolutorQuery,
   useNotaMutation,
+  useReabrirFieldsQuery,
 } = ticketsApi;

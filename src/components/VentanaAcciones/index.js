@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -28,17 +28,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Index = ({ children, title, isOpen, onClose, onSave }) => {
   const ticketStore = useTicketStore();
-  const form = useForm({ defaultValues: ticketStore });
+  const form = useForm({
+    defaultValues: {
+      Asignado_a: { Nombre: ticketStore.Asignado_a.Nombre, _id: ticketStore.Asignado_a._id },
+      Prioridad: ticketStore.Prioridad.Descripcion,
+      Descripcion: ticketStore.Descripcion,
+    },
+  });
   const { register, handleSubmit, formState, setValue, watch, reset } = form;
   const { errors } = formState;
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
 
   const handleSave = async (data) => {
     try {
-      await onSave(data.Id);
-      console.log("Datos enviados:", data.Id);
+      await onSave({ data });
       reset();
-      onClose();
+      // onClose();
     } catch (error) {
       console.error("Error al guardar:", error);
     }
@@ -82,42 +87,18 @@ const Index = ({ children, title, isOpen, onClose, onSave }) => {
             </Button>
           </Toolbar>
         </AppBar>
-        <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
-          <Grid xs={12}>
-            <Card>
-              <MDBox
-                variant="gradient"
-                bgColor="primary"
-                borderRadius="lg"
-                coloredShadow="info"
-                mx={2}
-                mt={-3}
-                p={2}
-                mb={1}
-                textAlign="center"
-              >
-                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  {title}
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={4} pb={3} px={3}>
-                <Grid
-                  container
-                  spacing={1}
-                  sx={{
-                    mt: 5,
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <form onSubmit={handleSubmit(handleSave)}>
-                    {React.cloneElement(children, { form, formState })}
-                  </form>
-                </Grid>
-              </MDBox>
-            </Card>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <MDBox bgColor="primary" borderRadius="lg" mx={2} p={2} mb={3} textAlign="left">
+              <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                {title}
+              </MDTypography>
+            </MDBox>
           </Grid>
         </Grid>
+        <form onSubmit={handleSubmit(handleSave)}>
+          {React.Children.map(children, (child) => React.cloneElement(child, { form, formState }))}
+        </form>
       </Dialog>
     </React.Fragment>
   );
@@ -129,7 +110,6 @@ Index.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   resetStore: PropTypes.func.isRequired,
-  data: PropTypes.array.isRequired,
 };
 
 export default React.memo(Index);
