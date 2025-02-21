@@ -68,7 +68,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                 <WindowButton
                   key={params.row._id}
                   ticket={params.row}
-                  color="warning"
+                  color="primary"
                   store={setTicketFields}
                   openWindow={dialogStore.openWindowReasignar}
                   label="Reasignar"
@@ -156,6 +156,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       ...(collection !== "cerrados" &&
       collection !== "standby" &&
       collection !== "nuevos" &&
+      collection !== "reabiertos" &&
       collection !== "abiertos"
         ? [
             {
@@ -194,7 +195,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
-      ...(collection === "standby"
+      ...(collection === "cerrados"
         ? [
             {
               field: "Reabrir",
@@ -217,6 +218,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       collection !== "resueltos" &&
       collection !== "standby" &&
       collection !== "nuevos" &&
+      collection !== "reabiertos" &&
       collection !== "abiertos"
         ? [
             {

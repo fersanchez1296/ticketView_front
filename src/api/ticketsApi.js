@@ -80,8 +80,8 @@ export const ticketsApi = apiSlice.injectEndpoints({
           }
         });
         formData.append("ticketState", JSON.stringify(ticketState));
-        for (let pair of formData.entries()) {
-          console.log(`${pair[0]}: ${pair[1]}`);
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
         }
         return {
           url: "/tickets/crear/ticket",
@@ -166,24 +166,54 @@ export const ticketsApi = apiSlice.injectEndpoints({
     reabrir: builder.mutation({
       query: ({ data }) => {
         const formData = new FormData();
-        if (typeof data.Asignado_a === "object") {
-          const aux = data.Asignado_a._id;
-          data.Asignado_a = aux;
+        const ticketId = data._id;
+        const ticketData = {};
+        const AuxData = {
+          Asignado_a: data.Asignado_a,
+          asignado_a: data.asignado_a ?? "",
+          Prioridad: data.Prioridad,
+          prioridad: data.prioridad ?? "",
+          Descripcion: data.Descripcion,
+          Files: data.Files,
+        };
+        if (typeof AuxData.Asignado_a === "object") {
+          delete AuxData.Asignado_a;
+          delete AuxData.Prioridad;
+          delete AuxData.asignado_a;
+          delete AuxData.prioridad;
         } else {
-          console.log("entra al else");
-          const aux = data.asignado_a;
+          AuxData.Prioridad = "";
+          const aux = AuxData.asignado_a;
+          const auxPrioridad = AuxData.prioridad;
           const [Asignado_a, Area_asignado] = aux.split("|");
-          data.Asignado_a = Asignado_a;
-          data.Area_asignado = Area_asignado;
+          const [Prioridad, tiempo] = auxPrioridad.split("|");
+          AuxData.Asignado_a = Asignado_a;
+          AuxData.Area_asignado = Area_asignado;
+          AuxData.Prioridad = Prioridad;
+          AuxData.tiempo = tiempo;
+          delete AuxData.asignado_a;
+          delete AuxData.prioridad;
         }
-        console.log(data);
-        formData.append("ticketState", data);
+        Object.entries(AuxData).forEach(([key, value]) => {
+          if (key === "Files" && Array.isArray(value)) {
+            value.forEach((file) => {
+              if (file instanceof File) {
+                formData.append("files", file);
+              } else {
+                console.error(`El archivo no es válido:`, file);
+              }
+            });
+          } else {
+            ticketData[key] = value;
+          }
+        });
+        formData.append("ticketData", JSON.stringify(ticketData));
         for (let pair of formData.entries()) {
           console.log(`${pair[0]}: ${pair[1]}`);
         }
         return {
-          url: "/reabrir",
-          method: "POST",
+          url: `tickets/reabrir/${ticketId}`,
+          method: "PUT",
           body: formData,
           formData: true,
         };

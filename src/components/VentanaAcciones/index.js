@@ -30,15 +30,12 @@ const Index = ({ children, title, isOpen, onClose, onSave }) => {
   const ticketStore = useTicketStore();
   const form = useForm({
     defaultValues: {
-      Asignado_a: { Nombre: ticketStore.Asignado_a.Nombre, _id: ticketStore.Asignado_a._id },
-      Prioridad: ticketStore.Prioridad.Descripcion,
-      Descripcion: ticketStore.Descripcion,
+      ...ticketStore,
     },
   });
   const { register, handleSubmit, formState, setValue, watch, reset } = form;
   const { errors } = formState;
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
-
   const handleSave = async (data) => {
     try {
       await onSave({ data });
@@ -48,7 +45,6 @@ const Index = ({ children, title, isOpen, onClose, onSave }) => {
       console.error("Error al guardar:", error);
     }
   };
-
   return (
     <React.Fragment>
       <Dialog
@@ -60,27 +56,28 @@ const Index = ({ children, title, isOpen, onClose, onSave }) => {
         }}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
+        <AppBar sx={{ position: "sticky", marginBottom: "10px" }} color="secondary">
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <IconButton
               edge="start"
               color="inherit"
               onClick={() => {
-                //resetStore();
                 onClose();
               }}
               aria-label="close"
             >
               <CloseIcon />
+              <Typography sx={{ ml: 2 }} variant="h4" component="div" color={"White"}>
+                Cerrar
+              </Typography>
             </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Cerrar
+            <Typography sx={{ ml: 2 }} variant="h4" component="div" color={"White"}>
+              {`Ticket #${ticketStore.Id}`}
             </Typography>
             <Button
-              variant="outlined"
-              color="primary"
+              variant="contained"
               endIcon={<SaveIcon />}
-              sx={{ color: "Black" }}
+              sx={{ backgroundColor: "#7557C1", color: "White" }}
               onClick={handleSubmit(handleSave)}
             >
               Guardar

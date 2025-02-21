@@ -12,12 +12,39 @@ import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { List, ListItem, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { styled } from "@mui/material/styles";
 import { useReabrirFieldsQuery } from "api/ticketsApi";
 import Progress from "components/Progress";
 const Reabrir = ({ form, formState }) => {
   const [reabrirNuevaInfo, setReabrirNuevaInfo] = React.useState(false);
   const { data, isLoading } = useReabrirFieldsQuery(undefined, { skip: !reabrirNuevaInfo });
+  const [selectedFiles, setSelectedFiles] = React.useState([]);
   if (isLoading) return <Progress />;
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedFiles(files);
+    form.setValue("Files", files);
+  };
+  const removeFile = (index) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newFiles);
+    form.setValue("Files", newFiles);
+  };
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
   return (
     <Grid container spacing={2} m={1}>
       <Grid item xs={12}>
@@ -47,7 +74,7 @@ const Reabrir = ({ form, formState }) => {
               fullWidth
               id="prioridad"
               label="Prioridad"
-              {...form.register("Prioridad")}
+              {...form.register("Prioridad.Descripcion")}
               disabled
             />
           </Grid>
@@ -109,8 +136,9 @@ const Reabrir = ({ form, formState }) => {
                 {...form.register("asignado_a", {
                   required: "Es necesario seleccionar un moderador.",
                 })}
-                error={!!formState.errors.Asignado_a}
+                error={!!formState.errors.asignado_a}
                 disabled={!reabrirNuevaInfo ?? true}
+                onChange={form.setValue("Asignado_a", "")}
               >
                 <option aria-label="None" value="" />
                 {data.moderadores.map((area) => {
@@ -129,16 +157,15 @@ const Reabrir = ({ form, formState }) => {
                   }
                 })}
               </Select>
-              {formState.errors.Asignado_a && (
+              {formState.errors.asignado_a && (
                 <FormHelperText>
-                  {<span>{formState.errors.Asignado_a?.message}</span>}
+                  {<span>{formState.errors.asignado_a?.message}</span>}
                 </FormHelperText>
               )}
             </FormControl>
           </Grid>
         </>
       )}
-
       <Grid item xs={12}>
         <TextField
           fullWidth
@@ -151,6 +178,31 @@ const Reabrir = ({ form, formState }) => {
           rows={6}
           placeholder="Ingresa la descripción del ticket"
         />
+      </Grid>
+      {/* Botón de archivos */}
+      <Grid xs={6}>
+        <Button
+          component="label"
+          variant="outlined"
+          color="primary"
+          size="small"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon color="primary" />}
+          disabled={selectedFiles.length > 0 ? true : false}
+        >
+          <Typography color="primary">
+            {selectedFiles.length > 0
+              ? `${selectedFiles.length} archivo(s) seleccionado(s)`
+              : "Subir Archivos"}
+          </Typography>
+          <VisuallyHiddenInput
+            {...form.register("Files")}
+            type="file"
+            multiple
+            onChange={handleFileChange}
+          />
+        </Button>
+        <br />
         <Typography variant="caption">
           *Los campos de prioridad y moderador están desactivados a menos que deslice el switch
           hacia la derecha.
@@ -159,7 +211,26 @@ const Reabrir = ({ form, formState }) => {
         <Typography variant="caption">
           *Puedes editar la descripción del ticket sin modificar la prioridad y el moderador.
         </Typography>
+        <br />
+        <Typography variant={"caption"} color="Black">
+          *Selecciona a la vez todos los archivos que necesitas subir.
+        </Typography>
       </Grid>
+      {/* Botones de eliminar archivos */}
+      {selectedFiles.length > 0 && (
+        <Grid item xs={12}>
+          <List>
+            {selectedFiles.map((file, index) => (
+              <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography>{file.name}</Typography>
+                <IconButton color="error" onClick={() => removeFile(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+      )}
     </Grid>
   );
 };

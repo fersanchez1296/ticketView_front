@@ -25,7 +25,6 @@ function TableData({ collection }) {
   const dialogStore = useDialogStore();
   if (isLoading) return <Progress />;
   if (error) return <div>Error: Reload page</div>;
-
   const { columns, rows } = TicketsData(tickets, collection, setTicketFields, rol, dialogStore);
   return (
     <>
