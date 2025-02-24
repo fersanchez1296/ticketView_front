@@ -132,7 +132,10 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
         : []),
     ],
     Usuario: [
-      ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "revision"
+      ...(collection !== "cerrados" &&
+      collection !== "resueltos" &&
+      collection !== "revision" &&
+      collection !== "pendientes"
         ? [
             {
               field: "resolver",
@@ -151,13 +154,52 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
+      ...(collection === "pendientes"
+        ? [
+            {
+              field: "pendiente",
+              headerName: "Pendiente",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowPendientes}
+                  label="Pendiente"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection === "abiertos"
+        ? [
+            {
+              field: "Pendiente",
+              headerName: "Marcar Pendiente",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowPendientes}
+                  label="Pendiente"
+                />
+              ),
+            },
+          ]
+        : []),
     ],
     Root: [
       ...(collection !== "cerrados" &&
       collection !== "standby" &&
       collection !== "nuevos" &&
       collection !== "reabiertos" &&
-      collection !== "abiertos"
+      collection !== "abiertos" &&
+      collection !== "pendientes"
         ? [
             {
               field: "cerrar",
@@ -219,7 +261,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       collection !== "standby" &&
       collection !== "nuevos" &&
       collection !== "reabiertos" &&
-      collection !== "abiertos"
+      collection !== "abiertos" &&
+      collection !== "pendientes"
         ? [
             {
               field: "resolver",
@@ -233,6 +276,44 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   store={setTicketFields}
                   openWindow={dialogStore.openWindowResolver}
                   label="Resolver"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection === "pendientes"
+        ? [
+            {
+              field: "regresar",
+              headerName: "Regresar",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowRegresar}
+                  label="Regresar"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection === "standby"
+        ? [
+            {
+              field: "Editar",
+              headerName: "Editar",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowEdit}
+                  label="Editar"
                 />
               ),
             },

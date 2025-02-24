@@ -1,150 +1,278 @@
 import React from "react";
 //mui library component
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-//api hook
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Unstable_Grid2";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import { List, ListItem } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import FormHelperText from "@mui/material/FormHelperText";
+import PropTypes from "prop-types";
 import { useSelectsCrearTicketQuery } from "api/ticketsApi";
-
-//import { usePostDocumentoMutation } from "api/api.slice";
-//card components
-import Ticket from "../Edit/components/Ticket";
-import Cliente from "../Edit/components/Cliente";
-
-//store
-import { useDialogStore, useTicketStore } from "zustand/index.ts";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-const steps = ["Información del Ticket", "Cliente"];
-
-const Edit = () => {
-  const isWindowEditOpen = useDialogStore((state) => state.isWindowEditOpen);
-  const closeWindowEdit = useDialogStore((state) => state.closeWindowEdit);
-  const ticketState = useTicketStore();
+//snackbar store
+const EditarTicket = ({ form, formState }) => {
+  /* -------------------------------------------------------------------------- */
+  // Definición de constantes (rutas, configuraciones)
+  /* -------------------------------------------------------------------------- */
+  // API Hooks (RTK Query, Axios, etc.)
   const { data, isLoading } = useSelectsCrearTicketQuery();
-  //const [createDocumento] = usePostDocumentoMutation();
-
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-  if (isLoading) return <div>Loading...</div>;
-  function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return <Ticket disable_input={true} data={data} />;
-      case 1:
-        return <Cliente disable_input={true} data={data} />;
-      default:
-        return "Unknown step";
-    }
+  /* -------------------------------------------------------------------------- */
+  // Estado global de Zustand
+  /* -------------------------------------------------------------------------- */
+  // Estados locales con useState
+  const [selectedFiles, setSelectedFiles] = React.useState([]);
+  /* -------------------------------------------------------------------------- */
+  // Hooks de React Hook Form (useForm, useFieldArray, etc.)
+  /* -------------------------------------------------------------------------- */
+  // React Router DOM (useNavigate, useParams, useLocation)
+  /* -------------------------------------------------------------------------- */
+  // Refs y useMemo / useCallback (si aplica)
+  /* -------------------------------------------------------------------------- */
+  // Efectos secundarios con useEffect
+  /* -------------------------------------------------------------------------- */
+  // Verificaciones de carga y errores (isLoading, isError)
+  if (isLoading) {
+    return <div> Cargando... </div>;
   }
-
+  /* -------------------------------------------------------------------------- */
+  // Funciones auxiliares
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedFiles(files);
+    form.setValue("Files", files);
+  };
+  const removeFile = (index) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newFiles);
+    form.setValue("Files", newFiles);
+  };
+  /* -------------------------------------------------------------------------- */
+  // Renderizado del componente (return)
   return (
-    <React.Fragment>
-      <Dialog
-        fullScreen
-        open={isWindowEditOpen}
-        onClose={() => {
-          handleReset();
-          ticketState.resetValues();
-          closeWindowEdit();
-        }}
-        TransitionComponent={Transition}
-      >
-        <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={() => {
-                handleReset();
-                ticketState.resetValues();
-                closeWindowEdit();
-              }}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Cerrar
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Box sx={{ width: "100%" }}>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
+    <Grid container spacing={1} m={1}>
+      {/*Muestra quien creo el ticket */}
+      <Grid item xs={4}>
+        <TextField
+          type="text"
+          label="Creado por:"
+          {...form.register("Creado_por.Nombre")}
+          fullWidth
+          disabled
+        />
+      </Grid>
+      {/*Muestra el ID del ticket */}
+      <Grid item xs={4}>
+        <TextField
+          type="text"
+          label="ID:"
+          {...form.register("Id")}
+          error={!!formState.errors.Nota}
+          helperText={formState.errors.Nota?.message}
+          disabled
+          fullWidth
+        />
+      </Grid>
+      {/*Seleccion tipo de Estado*/}
+      <Grid item xs={4}>
+        <TextField
+          type="text"
+          label="Estado:"
+          {...form.register("Estado.Estado")}
+          disabled
+          fullWidth
+          required
+        />
+      </Grid>
+      {/*Seleccion tipo de ticket tipo de incidencia*/}
+      <Grid item xs={4}>
+        <FormControl fullWidth error={!!formState.errorsTipo_incidencia?._id}>
+          <InputLabel id="demo-simple-select-label">Tipo de ticket</InputLabel>
+          <Select
+            sx={{ minHeight: "3rem" }}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Estatus"
+            defaultValue={form.getValues("Tipo_incidencia._id") || ""}
+            {...form.register("Tipo_incidencia._id", {
+              required: "El tipo de incidencia es requerida",
+            })}
+          >
+            {data.tiposTickets.map((est) => {
               return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
+                <MenuItem value={est._id} key={est._id}>
+                  {est.Tipo_de_incidencia}
+                </MenuItem>
               );
             })}
-          </Stepper>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
-              Atras
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-
-            {activeStep !== steps.length && (
-              <Button
-                onClick={handleNext}
-                disabled={activeStep === steps.length - 1 ? true : false}
-              >
-                Siguiente
-              </Button>
-            )}
-          </Box>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>No hay más por ver</Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
+          </Select>
+          {formState.errors.Tipo_incidencia?._id && (
+            <FormHelperText>{formState.errors.Tipo_incidencia._id.message}</FormHelperText>
           )}
-        </Box>
-      </Dialog>
-    </React.Fragment>
+        </FormControl>
+      </Grid>
+      {/*Introducido por teclado NumeroRec_Oficio*/}
+      <Grid item xs={4}>
+        <TextField
+          type="text"
+          label="Oficio de recepción:"
+          {...form.register("NumeroRec_Oficio")}
+          fullWidth
+          required
+        />
+      </Grid>
+      {/*Seleccion tipo de Servicio*/}
+      <Grid item xs={4}>
+        <FormControl fullWidth error={!!formState.Servicio?._id}>
+          <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Servicio"
+            defaultValue={form.getValues("Servicio._id") || ""}
+            {...form.register("Servicio._id", { required: "El servicio es requerido" })}
+          >
+            {data.servicios.map((est) => {
+              return (
+                <MenuItem value={est._id} key={est._id}>
+                  {est.Servicio}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          {formState.errors.Servicio?._id && (
+            <FormHelperText>{formState.errors.Servicio._id.message}</FormHelperText>
+          )}
+        </FormControl>
+      </Grid>
+      {/*Seleccion categoria del ticket*/}
+      <Grid item xs={4}>
+        <FormControl fullWidth error={!!formState.Categoria?._id}>
+          <InputLabel id="demo-simple-select-label">Categoría</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Categoría"
+            defaultValue={form.getValues("Categoria._id") || ""}
+            {...form.register("Categoria._id", { required: "El Categoria es requerido" })}
+          >
+            {data.categorias.map((est) => {
+              return (
+                <MenuItem value={est._id} key={est._id}>
+                  {est.Categoria}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          {formState.errors.Categoria?._id && (
+            <FormHelperText>{formState.errors.Categoria._id.message}</FormHelperText>
+          )}
+        </FormControl>
+      </Grid>
+      {/*Seleccion tipo de subcategoria*/}
+      <Grid item xs={4}>
+        <FormControl fullWidth error={!!formState.Subcategoria?._id}>
+          <InputLabel id="demo-simple-select-label">Subcategoría</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Subcategoría"
+            defaultValue={form.getValues("Subcategoria._id") || ""}
+            {...form.register("Subcategoria._id", { required: "El Subcategoria es requerida" })}
+          >
+            {data.subcategoria.map((est) => {
+              return (
+                <MenuItem value={est._id} key={est._id}>
+                  {est.Subcategoria}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          {formState.errors.Categoria?._id && (
+            <FormHelperText>{formState.errors.Categoria._id.message}</FormHelperText>
+          )}
+        </FormControl>
+      </Grid>
+      {/*Introducido por teclado Descripción del ticket*/}
+      <Grid item xs={12}>
+        <TextField
+          id="outlined-multiline-static"
+          label="Descripción del ticket"
+          multiline
+          rows={5.2}
+          {...form.register("Descripcion", {
+            required: "Es necesario ingresar la descripción del ticket",
+          })}
+          error={!!formState.errors.Descripcion}
+          helperText={formState.errors.Descripcion?.message}
+          sx={{ width: "100%" }}
+        />
+      </Grid>
+      <Grid xs={6}>
+        <Typography color="Black">
+          *Selecciona a la vez todos los archivos que necesitas subir (max-10).
+        </Typography>
+        <Button
+          component="label"
+          variant="outlined"
+          color="primary"
+          size="small"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon color="primary" />}
+          disabled={selectedFiles.length > 0 ? true : false}
+        >
+          <Typography color="primary">
+            {selectedFiles.length > 0
+              ? `${selectedFiles.length} archivo(s) seleccionado(s)`
+              : "Subir Archivos"}
+          </Typography>
+          <VisuallyHiddenInput
+            {...form.register("Files")}
+            type="file"
+            multiple
+            onChange={handleFileChange}
+          />
+        </Button>
+      </Grid>
+      {/* Botones de eliminar archivos */}
+      {selectedFiles.length > 0 && (
+        <Grid item xs={12}>
+          <List>
+            {selectedFiles.map((file, index) => (
+              <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography>{file.name}</Typography>
+                <IconButton color="error" onClick={() => removeFile(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+      )}
+    </Grid>
   );
 };
 
-export default React.memo(Edit);
+EditarTicket.propTypes = {
+  form: PropTypes.object,
+  formState: PropTypes.object,
+};
+
+export default React.memo(EditarTicket);

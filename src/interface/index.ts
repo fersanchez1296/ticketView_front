@@ -217,4 +217,12 @@ export interface DialogState {
   isWindowNotaOpen: boolean;
   openWindowNota: () => void;
   closeWindowNota: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de pendientes:
+  isWindowPendientesOpen: boolean;
+  openWindowPendientes: () => void;
+  closeWindowPendientes: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de rechazar resolucion ticket:
+  isWindowRegresarOpen: boolean;
+  openWindowRegresar: () => void;
+  closeWindowRegresar: () => void;
 }

@@ -125,15 +125,44 @@ export const ticketsApi = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
+    //Editar ticket
     editar: builder.mutation({
-      query: ({ ticketState }) => ({
-        url: "/tickets/editar",
-        method: "PUT",
-        body: {
-          ticketState,
-        },
-      }),
-      invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketId = data._id;
+        const ticketData = {
+          Tipo_incidencia: data.Tipo_incidencia._id,
+          NumeroRec_Oficio: data.NumeroRec_Oficio,
+          Servicio: data.Servicio._id,
+          Categoria: data.Categoria._id,
+          Subcategoria: data.Subcategoria._id,
+          Descripcion: data.Descripcion,
+        };
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
+        return {
+          url: `/tickets/editar/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["Tickets"],
     }),
     resolver: builder.mutation({
       query: ({ data }) => {
@@ -367,6 +396,73 @@ export const ticketsApi = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
+    //Pendiente
+    putPendiente: builder.mutation({
+      query: ({ data, ticketId }) => {
+        const url = `tickets/pendiente/${ticketId}`;
+        return {
+          url,
+          method: "PUT",
+          body: data,
+        };
+      },
+      invalidatesTags: ["Tickets"],
+    }),
+    putRegresarTicket: builder.mutation({
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketData = {
+          Descripcion_respuesta_cliente: data.Descripcion_respuesta_cliente,
+        };
+        const ticketId = data._id;
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
+        return {
+          url: `/tickets/regresar/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["Tickets"],
+    }),
+    getCorreos: builder.query({
+      query: ({ ticketId }) => {
+        const url = `tickets/correos/${ticketId}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Tickets"],
+    }),
+    //Editar cliente en el ticket
+    //obtener clientes
+    getClientes: builder.query({
+      query: () => {
+        const url = `tickets/clientes/dependencias`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Clientes", "Tickets"],
+    }),
   }),
 });
 
@@ -386,4 +482,8 @@ export const {
   useTicketsResolutorQuery,
   useNotaMutation,
   useReabrirFieldsQuery,
+  usePutPendienteMutation,
+  usePutRegresarTicketMutation,
+  useGetCorreosQuery,
+  useGetClientesQuery,
 } = ticketsApi;

@@ -128,4 +128,12 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowNotaOpen: false,
   openWindowNota: () => set({ isWindowNotaOpen: true }),
   closeWindowNota: () => set({ isWindowNotaOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de pendientes:
+  isWindowPendientesOpen: false,
+  openWindowPendientes: () => set({ isWindowPendientesOpen: true }),
+  closeWindowPendientes: () => set({ isWindowPendientesOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de regresar el ticket al usuario:
+  isWindowRegresarOpen: false,
+  openWindowRegresar: () => set({ isWindowRegresarOpen: true }),
+  closeWindowRegresar: () => set({ isWindowRegresarOpen: false }),
 }));

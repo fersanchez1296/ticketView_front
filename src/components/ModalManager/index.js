@@ -17,6 +17,8 @@ import VerUsuarios from "components/TicketWindow/Usuarios/Ver";
 import EditarUsuario from "components/TicketWindow/Usuarios/Editar";
 import CrearUsuario from "components/TicketWindow/Usuarios/Crear";
 import { useUserStore, useTicketStore } from "zustand/index.ts";
+import Pendientes from "components/TicketWindow/Pendientes";
+import Regresar from "components/TicketWindow/Regresar";
 //reabrir store
 import {
   useReabrirMutation,
@@ -26,6 +28,8 @@ import {
   useRechazarResolucionMutation,
   useNotaMutation,
   useAsignarMutation,
+  useEditarMutation,
+  usePutRegresarTicketMutation,
 } from "api/ticketsApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
@@ -55,6 +59,11 @@ const ModalManager = () => {
     closeWindowEditarUsuario,
     isWindowCrearUsuarioOpen,
     closeWindowCrearUsuario,
+    isWindowPendientesOpen,
+    closeWindowPendientes,
+    isWindowRegresarOpen,
+    closeWindowEdit,
+    closeWindowRegresar,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -62,8 +71,10 @@ const ModalManager = () => {
   const [reabrir] = useReabrirMutation();
   const [resolver] = useResolverMutation();
   const [cerrar] = useCerrarMutation();
+  const [editar] = useEditarMutation();
   const [aceptar] = useAceptarResolucionMutation();
   const [rechazar] = useRechazarResolucionMutation();
+  const [regresar] = usePutRegresarTicketMutation();
   const [nota] = useNotaMutation();
   const [asignar] = useAsignarMutation();
   const [editarUsuario] = useUpdateUsuarioByIdMutation();
@@ -181,8 +192,40 @@ const ModalManager = () => {
           <CrearUsuario />
         </VentanaAcciones>
       )}
+      {isWindowEditOpen && (
+        <VentanaAcciones
+          title="Editar Ticket"
+          isOpen={isWindowEditOpen}
+          onClose={closeWindowEdit}
+          onSave={editar}
+          store={ticketStore}
+        >
+          <Edit />
+        </VentanaAcciones>
+      )}
+      {isWindowPendientesOpen && (
+        <VentanaAcciones
+          title="Marcar ticket como pendiente"
+          isOpen={isWindowPendientesOpen}
+          onClose={closeWindowPendientes}
+          //onSave={pendiente}
+          store={ticketStore}
+        >
+          <Pendientes />
+        </VentanaAcciones>
+      )}
+      {isWindowRegresarOpen && (
+        <VentanaAcciones
+          title="Regresar ticket"
+          isOpen={isWindowRegresarOpen}
+          onClose={closeWindowRegresar}
+          onSave={regresar}
+          store={ticketStore}
+        >
+          <Regresar />
+        </VentanaAcciones>
+      )}
       {isWindowOpen && <View />}
-      {isWindowEditOpen && <Edit />}
       <SuccessSB />
       <ErrorSB />
     </>
