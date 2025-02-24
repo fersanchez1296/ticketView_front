@@ -21,7 +21,7 @@ import { useReabrirFieldsQuery } from "api/ticketsApi";
 import Progress from "components/Progress";
 const Reabrir = ({ form, formState }) => {
   const [reabrirNuevaInfo, setReabrirNuevaInfo] = React.useState(false);
-  const { data, isLoading } = useReabrirFieldsQuery(undefined, { skip: !reabrirNuevaInfo });
+  const { data, isLoading } = useReabrirFieldsQuery();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   if (isLoading) return <Progress />;
   const handleFileChange = (event) => {
@@ -47,25 +47,40 @@ const Reabrir = ({ form, formState }) => {
   });
   return (
     <Grid container spacing={2} m={1}>
-      <Grid item xs={12}>
-        <FormGroup>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ alignItems: "center", justifyContent: "space-between" }}
+      <Grid item xs={6}>
+        <FormControl fullWidth>
+          <InputLabel id="moderador">Moderador</InputLabel>
+          <Select
+            native
+            id="moderador"
+            label="Moderador"
+            {...form.register("asignado_a", {
+              required: "Es necesario seleccionar un moderador.",
+            })}
+            error={!!formState.errors.asignado_a}
+            onChange={form.setValue("Asignado_a", "")}
           >
-            <Box sx={{ display: "flex" }}>
-              <Typography>Reabrir con información existente</Typography>
-              <Switch
-                checked={reabrirNuevaInfo}
-                onChange={(e) => {
-                  setReabrirNuevaInfo(!reabrirNuevaInfo);
-                }}
-              />
-              <Typography>Reabrir con nueva información</Typography>
-            </Box>
-          </Stack>
-        </FormGroup>
+            <option aria-label="None" value="" />
+            {data.moderadores.map((area) => {
+              if (area) {
+                return (
+                  <optgroup label={area.area.area} key={area.area._id}>
+                    {area.resolutores.map((t, index) => (
+                      <option value={`${t._id}|${area.area._id}`} key={index}>
+                        {t.Nombre}
+                      </option>
+                    ))}
+                  </optgroup>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </Select>
+          {formState.errors.asignado_a && (
+            <FormHelperText>{<span>{formState.errors.asignado_a?.message}</span>}</FormHelperText>
+          )}
+        </FormControl>
       </Grid>
       {!reabrirNuevaInfo && (
         <>
@@ -75,15 +90,6 @@ const Reabrir = ({ form, formState }) => {
               id="Fecha de resolución"
               label="Fecha de resolución"
               {...form.register("Fecha_limite_resolucion_SLA")}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="Moderador"
-              label="Moderador"
-              {...form.register("Asignado_a.Nombre")}
               disabled
             />
           </Grid>
@@ -126,58 +132,26 @@ const Reabrir = ({ form, formState }) => {
               )}
             </FormControl>
           </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel id="moderador">Moderador</InputLabel>
-              <Select
-                native
-                id="moderador"
-                label="Moderador"
-                {...form.register("asignado_a", {
-                  required: "Es necesario seleccionar un moderador.",
-                })}
-                error={!!formState.errors.asignado_a}
-                disabled={!reabrirNuevaInfo ?? true}
-                onChange={form.setValue("Asignado_a", "")}
-              >
-                <option aria-label="None" value="" />
-                {data.moderadores.map((area) => {
-                  if (area) {
-                    return (
-                      <optgroup label={area.area.area} key={area.area._id}>
-                        {area.resolutores.map((t, index) => (
-                          <option value={`${t._id}|${area.area._id}`} key={index}>
-                            {t.Nombre}
-                          </option>
-                        ))}
-                      </optgroup>
-                    );
-                  } else {
-                    return null;
-                  }
-                })}
-              </Select>
-              {formState.errors.asignado_a && (
-                <FormHelperText>
-                  {<span>{formState.errors.asignado_a?.message}</span>}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
         </>
       )}
       <Grid item xs={12}>
-        <TextField
-          fullWidth
-          id="descripcion"
-          label="Descripción del ticket"
-          {...form.register("Descripcion", { required: "La descripción es requerida" })}
-          error={!!formState.errors?.Descripcion}
-          helperText={formState.errors?.Descripcion?.message}
-          multiline
-          rows={6}
-          placeholder="Ingresa la descripción del ticket"
-        />
+        <FormGroup>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Box sx={{ display: "flex" }}>
+              <Switch
+                checked={reabrirNuevaInfo}
+                onChange={(e) => {
+                  setReabrirNuevaInfo(!reabrirNuevaInfo);
+                }}
+              />
+              <Typography>Modificar tiempo de resolución</Typography>
+            </Box>
+          </Stack>
+        </FormGroup>
       </Grid>
       {/* Botón de archivos */}
       <Grid xs={6}>
@@ -202,15 +176,6 @@ const Reabrir = ({ form, formState }) => {
             onChange={handleFileChange}
           />
         </Button>
-        <br />
-        <Typography variant="caption">
-          *Los campos de prioridad y moderador están desactivados a menos que deslice el switch
-          hacia la derecha.
-        </Typography>
-        <br />
-        <Typography variant="caption">
-          *Puedes editar la descripción del ticket sin modificar la prioridad y el moderador.
-        </Typography>
         <br />
         <Typography variant={"caption"} color="Black">
           *Selecciona a la vez todos los archivos que necesitas subir.

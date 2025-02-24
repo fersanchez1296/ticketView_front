@@ -13,19 +13,36 @@ export const usersApi = apiSlice.injectEndpoints({
       providesTags: ["Usuarios"],
     }),
     updateUsuarioById: builder.mutation({
-      query: ({ userStore, id }) => ({
-        url: `users/editar/${id}`,
-        method: "PUT",
-        body: userStore,
-      }),
+      query: ({ data }) => {
+        const userId = data._id;
+        const auxData = {
+          Nombre: data.Nombre,
+          Correo: data.Correo,
+          Area: data.Area[0]._id,
+          Rol: data.Rol._id,
+        };
+        return {
+          url: `users/editar/${userId}`,
+          method: "PUT",
+          body: auxData,
+        };
+      },
       invalidatesTags: ["Usuarios"],
     }),
     crearUsuario: builder.mutation({
-      query: (userStore) => ({
-        url: "users/crear",
-        method: "POST",
-        body: userStore,
-      }),
+      query: ({ data }) => {
+        const auxData = {
+          Nombre: data.NombreUsuario,
+          Correo: data.CorreoUsuario,
+          Area: data.areaUsuario,
+          Rol: data.rolUsuario,
+        };
+        return {
+          url: `users/crear`,
+          method: "POST",
+          body: auxData,
+        };
+      },
       invalidatesTags: ["Usuarios"],
     }),
     updateEstadoUsuario: builder.mutation({

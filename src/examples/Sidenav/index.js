@@ -14,7 +14,6 @@ Coded by www.creative-tim.com
 */
 
 import { useEffect } from "react";
-
 // react-router-dom components
 import { useLocation, NavLink, Navigate, useNavigate } from "react-router-dom";
 
@@ -48,7 +47,8 @@ import {
 } from "context";
 
 //api
-import { useLogoutMutation } from "api/index";
+import { useLogoutMutation } from "api/authApi";
+import { useExcelMutation } from "api/dashboardApi";
 
 //store
 import { useAuthStore } from "zustand/auth.store.ts";
@@ -57,7 +57,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
   const setRole = useAuthStore((state) => state.setRole);
+  const { role } = useAuthStore();
   const [logout] = useLogoutMutation();
+  const [downloadExcel] = useExcelMutation();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
@@ -92,6 +94,21 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
+
+  const handleDownload = async () => {
+    try {
+      const response = await downloadExcel().unwrap(); // Obtiene la respuesta en formato Blob
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "tickets.xlsx"); // Nombre del archivo
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error al descargar el Excel:", error);
+    }
+  };
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route }) => {
@@ -214,6 +231,20 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           Log out
         </MDButton>
       </MDBox>
+      {role === "Root" && (
+        <MDBox p={2} mt="auto">
+          <MDButton
+            component="a"
+            onClick={handleDownload}
+            target="_self"
+            rel="noreferrer"
+            color="success"
+            fullWidth
+          >
+            Descargar Excel
+          </MDButton>
+        </MDBox>
+      )}
     </SidenavRoot>
   );
 }

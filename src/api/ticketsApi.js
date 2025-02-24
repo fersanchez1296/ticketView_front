@@ -93,21 +93,26 @@ export const ticketsApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     nota: builder.mutation({
-      query: ({ data, ticketId }) => {
+      query: ({ data }) => {
         const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-          if (key === "Files" && Array.isArray(value)) {
-            value.forEach((file) => {
-              if (file instanceof File) {
-                formData.append("files", file);
-              } else {
-                console.error(`El archivo no es válido:`, file);
-              }
-            });
-          } else {
-            formData.append(key, value);
-          }
-        });
+        const ticketData = {
+          Nota: data.Nota,
+        };
+        const ticketId = data._id;
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
         for (let pair of formData.entries()) {
           console.log(`${pair[0]}: ${pair[1]}`);
         }
@@ -131,22 +136,85 @@ export const ticketsApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     resolver: builder.mutation({
-      query: ({ formData, ticketId }) => ({
-        url: `tickets/resolver/${ticketId}`,
-        method: "PUT",
-        body: formData,
-        formData: true,
-      }),
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketId = data._id;
+        const ticketData = {
+          _id: ticketId,
+          Respuesta_cierre_reasignado: data.Respuesta_cierre_reasignado,
+          vistoBueno: data.vistoBueno,
+        };
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+        }
+        return {
+          url: `/tickets/resolver/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
+      },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     asignar: builder.mutation({
-      query: ({ asignarTicketStore, ticketId }) => {
-        console.log(ticketId);
-        const url = `tickets/asignar/${ticketId}`;
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketId = data._id;
+        const ticketData = {};
+        const AuxData = {
+          Asignado_a: data.Asignado_a,
+          asignado_a: data.asignado_a ?? "",
+          Prioridad: data.Prioridad,
+          Files: data.Files,
+        };
+        delete AuxData.Prioridad;
+        const aux = AuxData.asignado_a;
+        const [Asignado_a, Area_asignado] = aux.split("|");
+        AuxData.Asignado_a = Asignado_a;
+        AuxData.Area_asignado = Area_asignado;
+        delete AuxData.asignado_a;
+        if (data.prioridad) {
+          const aux = data.prioridad;
+          const [Prioridad, tiempo] = aux.split("|");
+          AuxData.Prioridad = Prioridad;
+          AuxData.tiempo = tiempo;
+        }
+        Object.entries(AuxData).forEach(([key, value]) => {
+          if (key === "Files" && Array.isArray(value)) {
+            value.forEach((file) => {
+              if (file instanceof File) {
+                formData.append("files", file);
+              } else {
+                console.error(`El archivo no es válido:`, file);
+              }
+            });
+          } else {
+            ticketData[key] = value;
+          }
+        });
+        formData.append("ticketData", JSON.stringify(ticketData));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
         return {
-          url,
+          url: `tickets/asignar/${ticketId}`,
           method: "PUT",
-          body: asignarTicketStore,
+          body: formData,
+          formData: true,
         };
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
@@ -221,10 +289,33 @@ export const ticketsApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     cerrar: builder.mutation({
-      query: ({ ticketId, formData }) => {
-        const url = `tickets/cerrar/${ticketId}`;
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketId = data._id;
+        const ticketData = {
+          _id: ticketId,
+          Numero_Oficio: data.Numero_Oficio,
+          Descripcion_cierre: data.Respuesta_cierre_reasignado,
+        };
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+        }
         return {
-          url,
+          url: `/tickets/cerrar/${ticketId}`,
           method: "PUT",
           body: formData,
           formData: true,
@@ -233,24 +324,43 @@ export const ticketsApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     rechazarResolucion: builder.mutation({
-      query: ({ ticketId, feedback, Nombre }) => {
-        const url = `tickets/resolver/rechazar/${ticketId}`;
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketId = data._id;
+        const Nombre = data.Resuelto_por.Nombre;
+        const ticketData = {
+          feedback: data.feedback,
+          Nombre,
+        };
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
         return {
-          url,
+          url: `/tickets/resolver/rechazar/${ticketId}`,
           method: "PUT",
-          body: {
-            feedback,
-            Nombre,
-          },
+          body: formData,
+          formData: true,
         };
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
     aceptarResolucion: builder.mutation({
-      query: ({ ticketId, Nombre }) => {
-        const url = `tickets/resolver/aceptar/${ticketId}`;
+      query: ({ data }) => {
+        const ticketId = data._id;
+        const Nombre = data.Resuelto_por.Nombre;
         return {
-          url,
+          url: `/tickets/resolver/aceptar/${ticketId}`,
           method: "PUT",
           body: { Nombre },
         };

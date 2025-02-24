@@ -13,36 +13,38 @@ import Grid from "@mui/material/Unstable_Grid2";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import Card from "@mui/material/Card";
 import PropTypes from "prop-types";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-//store
-import { useTicketStore } from "zustand/index.ts";
 import { useForm } from "react-hook-form";
-// import { useReasignarTicketStore } from "./store/reasignarTicket.store.ts";
-import { useGetUsuariosQuery } from "api";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Index = ({ children, title, isOpen, onClose, onSave }) => {
-  const ticketStore = useTicketStore();
+const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
   const form = useForm({
     defaultValues: {
-      ...ticketStore,
+      ...store,
+      Files: [],
     },
   });
-  const { register, handleSubmit, formState, setValue, watch, reset } = form;
-  const { errors } = formState;
+  const { handleSubmit, formState, reset } = form;
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const handleSave = async (data) => {
     try {
-      await onSave({ data });
-      reset();
-      // onClose();
+      const result = await onSave({ data });
+      if (!result) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+        reset();
+        setTimeout(() => {
+          onClose();
+        }, 2500);
+      }
     } catch (error) {
-      console.error("Error al guardar:", error);
+      console.log(error);
+      openErrorSB("Ocurrión un error al procesar el ticket", `Status: 500`);
     }
   };
   return (
@@ -51,7 +53,7 @@ const Index = ({ children, title, isOpen, onClose, onSave }) => {
         fullScreen
         open={isOpen}
         onClose={() => {
-          //resetStore();
+          // store.resetValues();
           onClose();
         }}
         TransitionComponent={Transition}
@@ -72,16 +74,19 @@ const Index = ({ children, title, isOpen, onClose, onSave }) => {
               </Typography>
             </IconButton>
             <Typography sx={{ ml: 2 }} variant="h4" component="div" color={"White"}>
-              {`Ticket #${ticketStore.Id}`}
+              {store.Creado_por ? `Ticket #${store.Id}` : `${store.Nombre}`}
             </Typography>
-            <Button
-              variant="contained"
-              endIcon={<SaveIcon />}
-              sx={{ backgroundColor: "#7557C1", color: "White" }}
-              onClick={handleSubmit(handleSave)}
-            >
-              Guardar
-            </Button>
+            {onSave ? (
+              <Button
+                variant="contained"
+                size="large"
+                endIcon={<SaveIcon />}
+                sx={{ backgroundColor: "#7557C1", color: "White" }}
+                onClick={handleSubmit(handleSave)}
+              >
+                Guardar
+              </Button>
+            ) : null}
           </Toolbar>
         </AppBar>
         <Grid container spacing={2}>
@@ -105,8 +110,8 @@ Index.propTypes = {
   title: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
-  resetStore: PropTypes.func.isRequired,
+  onSave: PropTypes.func,
+  store: PropTypes.object.isRequired,
 };
 
 export default React.memo(Index);

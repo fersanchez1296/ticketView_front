@@ -53,10 +53,6 @@ const Asignar = () => {
     whiteSpace: "nowrap",
     width: 1,
   });
-  // const handleFileChange = (event) => {
-  //   const archivos = Array.from(event.target.files);
-  //   asignarTicketStore.asignarTicketSetFiles(archivos);
-  // };
   const reasignarTicket = async () => {
     //const formData = new FormData();
     try {
@@ -260,47 +256,6 @@ const Asignar = () => {
                       </FormControl>
                     </Grid>
                   ) : null}
-                  {/* <Grid xs={12}>
-                    <MDBox mb={2}>
-                      <Button
-                        component="label"
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon color="white" />}
-                        disabled={asignarTicketStore.Files ? true : false}
-                        sx={{
-                          color: "white",
-                          backgroundColor: "#1976d2",
-                          "&:hover": {
-                            backgroundColor: "#1565c0",
-                          },
-                        }}
-                      >
-                        <MDTypography color="white">
-                          {asignarTicketStore.Files
-                            ? asignarTicketStore.Files.name
-                            : "Subir Archivos"}
-                        </MDTypography>
-                        <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-                      </Button>
-                    </MDBox>
-                  </Grid> */}
-                  {/* {asignarTicketStore.Files ? (
-                    <Grid item>
-                      <MDBox mb={2}>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          startIcon={<DeleteIcon />}
-                          onClick={() => {
-                            asignarTicketStore.asignarTicketSetFiles(null);
-                          }}
-                        >
-                          <MDTypography color="black">Eliminar Archivo</MDTypography>
-                        </Button>
-                      </MDBox>
-                    </Grid>
-                  ) : null} */}
                 </Grid>
               </MDBox>
             </Card>

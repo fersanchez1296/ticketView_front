@@ -201,6 +201,14 @@ export interface DialogState {
   isWindowUsuariosOpen: boolean;
   openWindowUsuarios: () => void;
   closeWindowUsuarios: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de crear usuarios:
+  isWindowCrearUsuarioOpen: boolean;
+  openWindowCrearUsuario: () => void;
+  closeWindowCrearUsuario: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de editar usuarios:
+  isWindowEditarUsuarioOpen: boolean;
+  openWindowEditarUsuario: () => void;
+  closeWindowEditarUsuario: () => void;
   //estas definiciones y metodos se usan para abrir la ventana de clientes:
   isWindowClientesOpen: boolean;
   openWindowClientes: () => void;

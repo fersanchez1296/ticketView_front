@@ -44,7 +44,7 @@ export const useUserStore = create<UserType>((set) => ({
       ...state,
       ...fields,
     })),
-  resetUserValues: () =>
+  resetValues: () =>
     set((state) => ({
       ...userInitialState,
       setField: state.setField,
@@ -113,6 +113,14 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowUsuariosOpen: false,
   openWindowUsuarios: () => set({ isWindowUsuariosOpen: true }),
   closeWindowUsuarios: () => set({ isWindowUsuariosOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de crear usuarios:
+  isWindowCrearUsuarioOpen: false,
+  openWindowCrearUsuario: () => set({ isWindowCrearUsuarioOpen: true }),
+  closeWindowCrearUsuario: () => set({ isWindowCrearUsuarioOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de editar usuarios:
+  isWindowEditarUsuarioOpen: false,
+  openWindowEditarUsuario: () => set({ isWindowEditarUsuarioOpen: true }),
+  closeWindowEditarUsuario: () => set({ isWindowEditarUsuarioOpen: false }),
   //estas definiciones y metodos se usan para abrir la ventana de clientes:
   isWindowClientesOpen: false,
   openWindowClientes: () => set({ isWindowClientesOpen: true }),

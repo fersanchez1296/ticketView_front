@@ -81,7 +81,7 @@ const Dashboard_component = ({ data }) => {
               </NavLink>
             </MDBox>
           </Grid>
-          {/* <Grid item xs={12} md={6} lg={4}>
+          <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <NavLink to={"/reabiertos"}>
                 <ComplexStatisticsCard
@@ -97,7 +97,7 @@ const Dashboard_component = ({ data }) => {
                 />
               </NavLink>
             </MDBox>
-          </Grid> */}
+          </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <NavLink to={"/nuevos"}>
@@ -266,21 +266,21 @@ const Dashboard_component = ({ data }) => {
                   />
                 </MDBox>
               </Grid>
-              {/* <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="secondary"
-                icon="event_repeat"
-                title="Reabiertos"
-                count={data.totalReabiertos}
-                // percentage={{
-                //   color: "success",
-                //   amount: "+3%",
-                //   label: "than last month",
-                // }}
-              />
-            </MDBox>
-          </Grid> */}
+              <Grid item xs={12} md={6} lg={4}>
+                <MDBox mb={1.5}>
+                  <ComplexStatisticsCard
+                    color="secondary"
+                    icon="event_repeat"
+                    title="Reabiertos"
+                    count={data.totalReabiertos}
+                    // percentage={{
+                    //   color: "success",
+                    //   amount: "+3%",
+                    //   label: "than last month",
+                    // }}
+                  />
+                </MDBox>
+              </Grid>
               <Grid item xs={12} md={6} lg={4}>
                 <MDBox mb={1.5}>
                   <ComplexStatisticsCard

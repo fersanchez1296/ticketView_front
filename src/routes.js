@@ -159,15 +159,6 @@ const routes = [
     route: "/cerrados",
     component: <DataTable collection={"cerrados"} />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Usuarios",
-  //   key: "usuarios",
-  //   rol: ["Root"],
-  //   icon: <GroupIcon />,
-  //   route: "/usuarios",
-  //   component: <Usuarios />,
-  // },
   {
     type: "collapse",
     name: "Usuarios",
@@ -217,6 +208,7 @@ const routes = [
   //   type: "collapse",
   //   name: "Billing",
   //   key: "billing",
+  //   rol: ["Root", "Administrador", "Moderador", "Usuario"],
   //   icon: <Icon fontSize="small">receipt_long</Icon>,
   //   route: "/billing",
   //   component: <Billing />,

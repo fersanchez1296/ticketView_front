@@ -4,6 +4,7 @@ import Switch from "@mui/material/Switch";
 import Progress from "components/Progress";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import { useUpdateEstadoUsuarioMutation } from "api/usuariosApi";
+import { Typography } from "@mui/material";
 export default function SwitchActive({ isActive, userId }) {
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const [updateUsuario] = useUpdateEstadoUsuarioMutation();
@@ -27,7 +28,9 @@ export default function SwitchActive({ isActive, userId }) {
   };
   return (
     <>
+      <Typography variant="caption">Inactivo</Typography>
       <Switch sx={{ m: 1 }} checked={checked} color="warning" onChange={handleChange} />
+      <Typography variant="caption">Activo</Typography>
     </>
   );
 }

@@ -12,7 +12,14 @@ export const historicoApi = apiSlice.injectEndpoints({
       },
       providesTags: ["Dashboard"],
     }),
+    excel: builder.mutation({
+      query: () => ({
+        url: `tickets/export/excel`,
+        method: "GET",
+        responseHandler: async (response) => response.blob(), // Recibe el archivo como Blob
+      }),
+    }),
   }),
 });
 
-export const { useDashboardQuery } = historicoApi;
+export const { useDashboardQuery, useExcelMutation } = historicoApi;

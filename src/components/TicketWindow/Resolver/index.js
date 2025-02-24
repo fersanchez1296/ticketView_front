@@ -1,50 +1,26 @@
 import React from "react";
 //mui library component
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
-import SaveIcon from "@mui/icons-material/Save";
 import Grid from "@mui/material/Unstable_Grid2";
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
+import PropTypes from "prop-types";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { List, ListItem, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
-//api hook
-import { useResolverMutation } from "api/ticketsApi.js";
-//store
-import { useDialogStore, useTicketStore } from "zustand/index.ts";
-import { useResolverTicketStore } from "./store/resolverTicket.store.ts";
-//snackbar store
-import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-const steps = ["Resolver ticket"];
-
-const Resolver = () => {
-  //Si da error el componente es porque en los tickets no existe la propiedad visto bueno
-  const [putTicket, { isLoading }] = useResolverMutation();
-  const isWindowResolverOpen = useDialogStore((state) => state.isWindowResolverOpen);
-  const closeWindowResolver = useDialogStore((state) => state.closeWindowResolver);
-  const resolverTicketStore = useResolverTicketStore();
-  const ticketId = useTicketStore((state) => state._id);
-  const area_reasignado = useTicketStore((state) => state.Area_asignado._id);
-  const vistoBueno = useTicketStore((state) => state.vistoBueno);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-  const { openSuccessSB, openErrorSB } = useSnackbarStore();
-  React.useEffect(() => {
-    resolverTicketStore.setResolverTicketFields("vistoBueno", vistoBueno);
-    resolverTicketStore.setResolverTicketFields("Area_reasignado_a", area_reasignado);
-  }, []);
+const Resolver = ({ form, formState }) => {
+  const [selectedFiles, setSelectedFiles] = React.useState([]);
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedFiles(files);
+    form.setValue("Files", files);
+  };
+  const removeFile = (index) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newFiles);
+    form.setValue("Files", newFiles);
+  };
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -56,156 +32,73 @@ const Resolver = () => {
     whiteSpace: "nowrap",
     width: 1,
   });
-  const handleFileChange = (event) => {
-    const archivos = Array.from(event.target.files);
-    resolverTicketStore.resolverTicketSetFiles(archivos[0]);
-  };
-
-  const resolverTicket = async () => {
-    const formData = new FormData();
-    try {
-      formData.append("ticketData", JSON.stringify(resolverTicketStore));
-      if (resolverTicketStore.Files instanceof File) {
-        formData.append("file", resolverTicketStore.Files);
-      }
-      console.log(resolverTicketStore.Files);
-      const result = await putTicket({ formData, ticketId });
-      if (result.error) {
-        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-        return result;
-      } else {
-        openSuccessSB(result.data.desc, `Status: 200`);
-        closeWindowResolver();
-        resolverTicketStore.resolverTicketResetValues();
-        return result;
-      }
-    } catch (error) {
-      openErrorSB("Ocurrio un error al resolver el ticket.", `Status: ${result.error.status}`);
-    }
-  };
-
   return (
-    <React.Fragment>
-      <Dialog
-        fullScreen
-        open={isWindowResolverOpen}
-        onClose={() => {
-          resolverTicketStore.resolverTicketResetValues();
-          closeWindowResolver();
-        }}
-        TransitionComponent={Transition}
-      >
-        <AppBar sx={{ position: "relative" }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={() => {
-                resolverTicketStore.resolverTicketResetValues();
-                closeWindowResolver();
-              }}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Cerrar
-            </Typography>
-            <Button
-              variant="outlined"
-              color="primary"
-              endIcon={<SaveIcon />}
-              sx={{ color: "Black" }}
-              onClick={resolverTicket}
-              disabled={resolverTicketStore.Respuesta_cierre_reasignado === "" ? true : false}
-            >
-              Resolver Ticket
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <Grid container spacing={1} sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
-          <Grid xs={6} mb={12}>
-            <Card>
-              <MDBox
-                variant="gradient"
-                bgColor="primary"
-                borderRadius="lg"
-                coloredShadow="info"
-                mx={2}
-                mt={-3}
-                p={2}
-                mb={1}
-                textAlign="center"
-              >
-                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  Resolver Ticket
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={4} pb={3} px={3}>
-                <MDBox component="form" role="form">
-                  <Grid container spacing={3}>
-                    <Grid xs={12}>
-                      <MDBox mb={2} sx={{ width: "100%" }}>
-                        <TextField
-                          id="outlined-multiline-static"
-                          label="Descripción de resolución:"
-                          multiline
-                          value={resolverTicketStore.Respuesta_cierre_reasignado}
-                          rows={10}
-                          sx={{ width: "100%" }}
-                          onChange={(e) =>
-                            resolverTicketStore.setResolverTicketFields(
-                              "Respuesta_cierre_reasignado",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </MDBox>
-                    </Grid>
-                    <Grid xs={12}>
-                      <MDBox mb={2}>
-                        <Button
-                          component="label"
-                          variant="outlined"
-                          color="primary"
-                          tabIndex={-1}
-                          startIcon={<CloudUploadIcon color="primary" />}
-                          disabled={resolverTicketStore.Files ? true : false}
-                        >
-                          <MDTypography color="primary">
-                            {resolverTicketStore.Files
-                              ? resolverTicketStore.Files.name
-                              : "Subir Archivos"}
-                          </MDTypography>
-                          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-                        </Button>
-                      </MDBox>
-                    </Grid>
-                    {resolverTicketStore.Files ? (
-                      <Grid item>
-                        <MDBox mb={2}>
-                          <Button
-                            variant="outlined"
-                            color="secondary"
-                            startIcon={<DeleteIcon color="secondary" />}
-                            onClick={() => {
-                              resolverTicketStore.resolverTicketSetFiles(null);
-                            }}
-                          >
-                            <MDTypography color="black">Eliminar Archivo</MDTypography>
-                          </Button>
-                        </MDBox>
-                      </Grid>
-                    ) : null}
-                  </Grid>
-                </MDBox>
-              </MDBox>
-            </Card>
-          </Grid>
+    <Grid container spacing={2} m={1}>
+      <Grid item xs={12}>
+        <TextField
+          fullWidth
+          id="Descripción resolución"
+          label="Descripción resolución"
+          {...form.register("Respuesta_cierre_reasignado", {
+            required: "La descripción es requerida",
+          })}
+          error={!!formState.errors?.Respuesta_cierre_reasignado}
+          helperText={formState.errors?.Respuesta_cierre_reasignado?.message}
+          multiline
+          rows={6}
+          placeholder="Ingresa la descripción de resolución del ticket"
+        />
+      </Grid>
+      {/* Botón de archivos */}
+      <Grid xs={6}>
+        <Button
+          component="label"
+          variant="outlined"
+          color="primary"
+          size="small"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon color="primary" />}
+          disabled={selectedFiles.length > 0 ? true : false}
+        >
+          <Typography color="primary">
+            {selectedFiles.length > 0
+              ? `${selectedFiles.length} archivo(s) seleccionado(s)`
+              : "Subir Archivos"}
+          </Typography>
+          <VisuallyHiddenInput
+            {...form.register("Files")}
+            type="file"
+            multiple
+            onChange={handleFileChange}
+          />
+        </Button>
+        <br />
+        <Typography variant={"caption"} color="Black">
+          *Selecciona a la vez todos los archivos que necesitas subir.
+        </Typography>
+      </Grid>
+      {/* Botones de eliminar archivos */}
+      {selectedFiles.length > 0 && (
+        <Grid item xs={12}>
+          <List>
+            {selectedFiles.map((file, index) => (
+              <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography>{file.name}</Typography>
+                <IconButton color="error" onClick={() => removeFile(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
+            ))}
+          </List>
         </Grid>
-      </Dialog>
-    </React.Fragment>
+      )}
+    </Grid>
   );
+};
+
+Resolver.propTypes = {
+  form: PropTypes.object,
+  formState: PropTypes.object,
 };
 
 export default React.memo(Resolver);
