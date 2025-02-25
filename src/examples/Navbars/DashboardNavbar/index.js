@@ -32,7 +32,7 @@ import { useGetTicketByIdMutation } from "api/ticketsApi";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
-
+import { TextField } from "@mui/material";
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
@@ -148,7 +148,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
       return colorValue;
     },
   });
-  const buscarTicket = async () => {
+  const buscarTicket = async (e) => {
+    e.preventDefault();
     try {
       const result = await postTicket(ticketId);
       console.log(result);
@@ -158,8 +159,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
         openSuccessSB(result.data.desc, `Status: 200`);
         setTicketFromFetch(result.data[0]);
         openWindow();
+        setTicketId("");
       }
     } catch (error) {
+      openErrorSB("Verifica tu busqueda", `Status: ${result.error.status}`);
       console.log(error);
     }
   };
@@ -175,35 +178,44 @@ function DashboardNavbar({ absolute, light, isMini }) {
             <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
           </MDBox>
           {isMini ? null : (
-            <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-              <MDBox pr={1} mt={1}>
-                <MDInput
-                  type="number"
-                  label="Buscar Ticket por ID:"
-                  value={ticketId}
-                  onChange={(e) => setTicketId(e.target.value)}
-                  fullWidth
-                />
-              </MDBox>
-              <MDBox color={light ? "white" : "inherit"}>
-                <IconButton
-                  size="small"
-                  disableRipple
-                  color="inherit"
-                  sx={navbarMobileMenu}
-                  onClick={handleMiniSidenav}
-                >
-                  <Icon sx={iconsStyle} fontSize="medium">
-                    {miniSidenav ? "menu_open" : "menu"}
-                  </Icon>
+            <MDBox
+              sx={(theme) => navbarRow(theme, { isMini })}
+              component="form"
+              role="form"
+              onSubmit={buscarTicket}
+            >
+              <TextField
+                type="number"
+                label="Buscar Ticket por ID:"
+                value={ticketId}
+                onChange={(e) => setTicketId(e.target.value)}
+                sx={{ marginRight: "5px" }}
+                fullWidth
+              />
+
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarMobileMenu}
+                onClick={handleMiniSidenav}
+              >
+                <Icon sx={iconsStyle} fontSize="medium">
+                  {miniSidenav ? "menu_open" : "menu"}
+                </Icon>
+              </IconButton>
+              {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
+              <MDButton
+                variant={"contained"}
+                onClick={buscarTicket}
+                color={"primary"}
+                type={"submit"}
+                disabled={!ticketId ? true : false}
+              >
+                <IconButton size="small" disableRipple color="inherit" sx={navbarIconButton}>
+                  <Icon sx={{ iconsStyle, color: "white" }}>searchIcon</Icon>
                 </IconButton>
-                {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
-                <MDButton onClick={() => buscarTicket()} color={"primary"}>
-                  <IconButton size="small" disableRipple color="inherit" sx={navbarIconButton}>
-                    <Icon sx={{ iconsStyle, color: "white" }}>searchIcon</Icon>
-                  </IconButton>
-                </MDButton>
-              </MDBox>
+              </MDButton>
             </MDBox>
           )}
         </Toolbar>

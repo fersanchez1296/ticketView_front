@@ -213,6 +213,14 @@ export interface DialogState {
   isWindowClientesOpen: boolean;
   openWindowClientes: () => void;
   closeWindowClientes: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de crear usuarios:
+  isWindowCrearClienteOpen: boolean;
+  openWindowCrearCliente: () => void;
+  closeWindowCrearCliente: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de editar usuarios:
+  isWindowEditarClienteOpen: boolean;
+  openWindowEditarCliente: () => void;
+  closeWindowEditarCliente: () => void;
   //estas definiciones y metodos se usan para abrir la ventana de notas:
   isWindowNotaOpen: boolean;
   openWindowNota: () => void;

@@ -117,6 +117,45 @@ export default function Form({ data }) {
       onSubmit={handleSubmit(onSubmit)}
       //autoComplete="on"
     >
+      {/* Separador cliente */}
+      <Grid item xs={12}>
+        <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
+          <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+            Cliente
+          </Typography>
+        </MDBox>
+      </Grid>
+      <Grid item xs={12}>
+        <Box pt={4} pb={3}>
+          <FormGroup>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ alignItems: "center", justifyContent: "space-between" }}
+            >
+              <Box sx={{ display: "flex" }}>
+                <Typography>Buscar Cliente</Typography>
+                <Switch
+                  checked={isNuevoCliente}
+                  onChange={(e) => {
+                    const newValue = e.target.checked;
+                    setValue("isNuevoCliente", newValue);
+                  }}
+                />
+                <Typography>Nuevo Cliente</Typography>
+              </Box>
+            </Stack>
+          </FormGroup>
+          <Suspense fallback={<div>Loading...</div>}>
+            {" "}
+            {!isNuevoCliente ? (
+              <LazyBuscarCliente form={form} formState={formState} />
+            ) : (
+              <LazyNuevoCliente form={form} formState={formState} />
+            )}
+          </Suspense>
+        </Box>
+      </Grid>
       <Grid container spacing={1}>
         {/* divisor de ticket */}
         <Grid item xs={12}>
@@ -206,6 +245,56 @@ export default function Form({ data }) {
             placeholder="Ingresa la descripción del ticket"
           />
         </Grid>
+        {/* Separador de archivos */}
+        <Grid item xs={12}>
+          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
+            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+              Archivos
+            </Typography>
+          </MDBox>
+        </Grid>
+        {/* Botón de archivos */}
+        <Grid xs={6}>
+          <Typography color="Black">
+            *Selecciona a la vez todos los archivos que necesitas subir.
+          </Typography>
+          <Button
+            component="label"
+            variant="outlined"
+            color="primary"
+            size="small"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon color="primary" />}
+            disabled={selectedFiles.length > 0 ? true : false}
+          >
+            <Typography color="primary">
+              {selectedFiles.length > 0
+                ? `${selectedFiles.length} archivo(s) seleccionado(s)`
+                : "Subir Archivos"}
+            </Typography>
+            <VisuallyHiddenInput
+              {...register("Files")}
+              type="file"
+              multiple
+              onChange={handleFileChange}
+            />
+          </Button>
+        </Grid>
+        {/* Botones de eliminar archivos */}
+        {selectedFiles.length > 0 && (
+          <Grid item xs={12}>
+            <List>
+              {selectedFiles.map((file, index) => (
+                <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography>{file.name}</Typography>
+                  <IconButton color="error" onClick={() => removeFile(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
+        )}
         {/* Separador moderador */}
         <Grid item xs={12}>
           <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
@@ -283,95 +372,6 @@ export default function Form({ data }) {
             )}
           </Box>
         </Grid>
-        {/* Separador cliente */}
-        <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-              Cliente
-            </Typography>
-          </MDBox>
-        </Grid>
-        <Grid item xs={12}>
-          <Box pt={4} pb={3}>
-            <FormGroup>
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{ alignItems: "center", justifyContent: "space-between" }}
-              >
-                <Box sx={{ display: "flex" }}>
-                  <Typography>Buscar Cliente</Typography>
-                  <Switch
-                    checked={isNuevoCliente}
-                    onChange={(e) => {
-                      const newValue = e.target.checked;
-                      setValue("isNuevoCliente", newValue);
-                    }}
-                  />
-                  <Typography>Nuevo Cliente</Typography>
-                </Box>
-              </Stack>
-            </FormGroup>
-            <Suspense fallback={<div>Loading...</div>}>
-              {" "}
-              {!isNuevoCliente ? (
-                <LazyBuscarCliente form={form} formState={formState} />
-              ) : (
-                <LazyNuevoCliente form={form} formState={formState} />
-              )}
-            </Suspense>
-          </Box>
-        </Grid>
-        {/* Separador de archivos */}
-        <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-              Archivos
-            </Typography>
-          </MDBox>
-        </Grid>
-        {/* Botón de archivos */}
-        <Grid xs={6}>
-          <Typography color="Black">
-            *Selecciona a la vez todos los archivos que necesitas subir.
-          </Typography>
-          <Button
-            component="label"
-            variant="outlined"
-            color="primary"
-            size="small"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon color="primary" />}
-            disabled={selectedFiles.length > 0 ? true : false}
-          >
-            <Typography color="primary">
-              {selectedFiles.length > 0
-                ? `${selectedFiles.length} archivo(s) seleccionado(s)`
-                : "Subir Archivos"}
-            </Typography>
-            <VisuallyHiddenInput
-              {...register("Files")}
-              type="file"
-              multiple
-              onChange={handleFileChange}
-            />
-          </Button>
-        </Grid>
-        {/* Botones de eliminar archivos */}
-        {selectedFiles.length > 0 && (
-          <Grid item xs={12}>
-            <List>
-              {selectedFiles.map((file, index) => (
-                <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography>{file.name}</Typography>
-                  <IconButton color="error" onClick={() => removeFile(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItem>
-              ))}
-            </List>
-          </Grid>
-        )}
         <Grid item xs={12}>
           <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
             <Typography variant="h4" fontWeight="light" color="White" mt={1}>

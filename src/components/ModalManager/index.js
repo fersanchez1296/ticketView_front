@@ -16,7 +16,10 @@ import Nota from "components/TicketWindow/Nota";
 import VerUsuarios from "components/TicketWindow/Usuarios/Ver";
 import EditarUsuario from "components/TicketWindow/Usuarios/Editar";
 import CrearUsuario from "components/TicketWindow/Usuarios/Crear";
-import { useUserStore, useTicketStore } from "zustand/index.ts";
+import VerCliente from "components/TicketWindow/Clientes/Ver";
+import EditarCliente from "components/TicketWindow/Clientes/Editar";
+import CrearCliente from "components/TicketWindow/Clientes/Crear";
+import { useUserStore, useTicketStore, useClientesStore } from "zustand/index.ts";
 import Pendientes from "components/TicketWindow/Pendientes";
 import Regresar from "components/TicketWindow/Regresar";
 //reabrir store
@@ -64,9 +67,16 @@ const ModalManager = () => {
     isWindowRegresarOpen,
     closeWindowEdit,
     closeWindowRegresar,
+    isWindowClientesOpen,
+    closeWindowClientes,
+    isWindowEditarClienteOpen,
+    closeWindowEditarCliente,
+    isWindowCrearClienteOpen,
+    closeWindowCrearCliente,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
+  const clientStore = useClientesStore();
 
   const [reabrir] = useReabrirMutation();
   const [resolver] = useResolverMutation();
@@ -190,6 +200,36 @@ const ModalManager = () => {
           store={usuariosStore}
         >
           <CrearUsuario />
+        </VentanaAcciones>
+      )}
+      {isWindowClientesOpen && (
+        <VentanaAcciones
+          title="Cliente"
+          isOpen={isWindowClientesOpen}
+          onClose={closeWindowClientes}
+          store={clientStore}
+        >
+          <VerCliente />
+        </VentanaAcciones>
+      )}
+      {isWindowEditarClienteOpen && (
+        <VentanaAcciones
+          title="Editar Cliente"
+          isOpen={isWindowEditarClienteOpen}
+          onClose={closeWindowEditarCliente}
+          store={clientStore}
+        >
+          <EditarCliente />
+        </VentanaAcciones>
+      )}
+      {isWindowCrearClienteOpen && (
+        <VentanaAcciones
+          title="Registrar Cliente"
+          isOpen={isWindowCrearClienteOpen}
+          onClose={closeWindowCrearCliente}
+          store={clientStore}
+        >
+          <CrearCliente />
         </VentanaAcciones>
       )}
       {isWindowEditOpen && (

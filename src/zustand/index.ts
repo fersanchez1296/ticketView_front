@@ -121,6 +121,14 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowEditarUsuarioOpen: false,
   openWindowEditarUsuario: () => set({ isWindowEditarUsuarioOpen: true }),
   closeWindowEditarUsuario: () => set({ isWindowEditarUsuarioOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de crear usuarios:
+  isWindowCrearClienteOpen: false,
+  openWindowCrearCliente: () => set({ isWindowCrearClienteOpen: true }),
+  closeWindowCrearCliente: () => set({ isWindowCrearClienteOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de editar usuarios:
+  isWindowEditarClienteOpen: false,
+  openWindowEditarCliete: () => set({ isWindowEditarClienteOpen: true }),
+  closeWindowEditarCliente: () => set({ isWindowEditarClienteOpen: false }),
   //estas definiciones y metodos se usan para abrir la ventana de clientes:
   isWindowClientesOpen: false,
   openWindowClientes: () => set({ isWindowClientesOpen: true }),
