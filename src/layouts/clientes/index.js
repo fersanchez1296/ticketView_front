@@ -48,11 +48,6 @@ function Clientes() {
   // Refs y useMemo / useCallback (si aplica)
   /* -------------------------------------------------------------------------- */
   // Efectos secundarios con useEffect
-  React.useEffect(() => {
-    if (data === undefined) {
-      navigate("/login");
-    }
-  }, [data]);
   /* -------------------------------------------------------------------------- */
   // Verificaciones de carga y errores (isLoading, isError)
   if (isLoading) return <Progress />;
