@@ -44,7 +44,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
       }
     } catch (error) {
       console.log(error);
-      openErrorSB("Ocurrión un error al procesar el ticket", `Status: 500`);
+      openErrorSB("Ocurrión un error al procesar la información", `Status: 500`);
     }
   };
   return (

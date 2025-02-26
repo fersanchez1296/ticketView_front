@@ -75,7 +75,6 @@ const NuevoCliente = ({ form, formState }) => {
             })}
             error={!!formState.errors.Correo}
             helperText={formState.errors.Correo?.message}
-            onChange={(e) => clientesStore.setClientesFields("Correo", e.target.value)}
             fullWidth
           />
         </Grid>
@@ -168,7 +167,6 @@ const NuevoCliente = ({ form, formState }) => {
               })}
               error={!!formState.errors.nuevaDependencia}
               helperText={formState.errors.nuevaDependencia?.message}
-              onChange={(e) => clientesStore.setClientesFields("nuevaDependencia", e.target.value)}
               fullWidth
             />
           )}
@@ -217,7 +215,7 @@ const NuevoCliente = ({ form, formState }) => {
               type="text"
               label="Ingrese la nueva Direccion General"
               //value={clientesStore.nuevaDGeneral}
-              onChange={(e) => clientesStore.setClientesFields("nuevaDGeneral", e.target.value)}
+
               {...form.register("nuevaDGeneral", {
                 required: "Es necesario ingresar la dirección general del cliente",
               })}
@@ -276,7 +274,6 @@ const NuevoCliente = ({ form, formState }) => {
               })}
               error={!!formState.errors.nuevaDArea}
               helperText={formState.errors.nuevaDArea?.message}
-              onChange={(e) => clientesStore.setClientesFields("nuevaDArea", e.target.value)}
               fullWidth
             />
           )}

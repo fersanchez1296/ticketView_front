@@ -33,20 +33,48 @@ export const clientsApi = apiSlice.injectEndpoints({
       providesTags: ["Cliente"],
     }),
     crearCliente: builder.mutation({
-      query: ({ body }) => ({
-        url: "clients/",
-        method: "POST",
-        body,
-      }),
+      query: ({ data }) => {
+        const auxData = {
+          Nombre: data.nombre,
+          Correo: data.correo,
+          Telefono: data.telefono,
+          Extension: data.extension,
+          Ubicacion: data.ubicacion,
+          Dependencia: data.dependencia,
+          nuevaDependencia: data.nuevaDependencia ?? undefined,
+          Direccion_General: data.direccion_general,
+          nuevaDGeneral: data.nuevaDGeneral ?? undefined,
+          direccion_area: data.direccion_area,
+          nuevaDArea: data.nuevaDArea ?? undefined,
+        };
+        return {
+          url: `clients/`,
+          method: "POST",
+          body: auxData,
+        };
+      },
       invalidatesTags: ["Clientes", "Cliente", "SelectsCliente"],
     }),
     updateClienteById: builder.mutation({
-      query: ({ body, clientId }) => {
-        const url = `clients/${clientId}`;
+      query: ({ data }) => {
+        const clientId = data._id;
+        const auxData = {
+          Nombre: data.Nombre,
+          Correo: data.Correo,
+          Telefono: data.Telefono,
+          Extension: data.Extension,
+          Ubicacion: data.Ubicacion,
+          Dependencia: data.Dependencia._id,
+          nuevaDependencia: data.nuevaDependencia ?? undefined,
+          Direccion_General: data.Direccion_General._id,
+          nuevaDGeneral: data.nuevaDGeneral ?? undefined,
+          direccion_area: data.direccion_area._id,
+          nuevaDArea: data.nuevaDArea ?? undefined,
+        };
         return {
-          url,
+          url: `clients/${clientId}`,
           method: "PUT",
-          body,
+          body: auxData,
         };
       },
       invalidatesTags: ["Clientes", "Cliente", "SelectsCliente"],

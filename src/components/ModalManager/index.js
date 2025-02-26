@@ -36,7 +36,7 @@ import {
 } from "api/ticketsApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
-
+import { useCrearClienteMutation, useUpdateClienteByIdMutation } from "api/clientesApi";
 const ModalManager = () => {
   const {
     isWindowOpen,
@@ -89,6 +89,8 @@ const ModalManager = () => {
   const [asignar] = useAsignarMutation();
   const [editarUsuario] = useUpdateUsuarioByIdMutation();
   const [crearUsuario] = useCrearUsuarioMutation();
+  const [crearCliente] = useCrearClienteMutation();
+  const [editarCliente] = useUpdateClienteByIdMutation();
   return (
     <>
       {isWindowReabrirOpen && (
@@ -217,6 +219,7 @@ const ModalManager = () => {
           title="Editar Cliente"
           isOpen={isWindowEditarClienteOpen}
           onClose={closeWindowEditarCliente}
+          onSave={editarCliente}
           store={clientStore}
         >
           <EditarCliente />
@@ -227,6 +230,7 @@ const ModalManager = () => {
           title="Registrar Cliente"
           isOpen={isWindowCrearClienteOpen}
           onClose={closeWindowCrearCliente}
+          onSave={crearCliente}
           store={clientStore}
         >
           <CrearCliente />
