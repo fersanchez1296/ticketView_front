@@ -24,10 +24,8 @@ export const useTicketStore = create<TicketType>((set) => ({
       ...fields,
     })),
   resetValues: () =>
-    set((state) => ({
+    set(() => ({
       ...ticketInitialState,
-      setField: state.setField,
-      resetValues: state.resetValues,
     })),
   setFiles: (newFile) => set({ Files: newFile }),
 }));
@@ -45,10 +43,8 @@ export const useUserStore = create<UserType>((set) => ({
       ...fields,
     })),
   resetValues: () =>
-    set((state) => ({
+    set(() => ({
       ...userInitialState,
-      setField: state.setField,
-      resetValues: state.resetValues,
     })),
 }));
 
@@ -64,11 +60,9 @@ export const useClientesStore = create<ClientType>((set) => ({
       ...state,
       ...fields,
     })),
-  resetClientesStore: () =>
-    set((state) => ({
+  resetValues: () =>
+    set(() => ({
       ...clientInitialState,
-      setField: state.setField,
-      resetValues: state.resetValues,
     })),
 }));
 

@@ -104,7 +104,7 @@ export interface UserProps {
 export interface UserMethods {
   setUserFields: (field: string, value: string | number) => void;
   setUserFetch: (fields: Partial<UserProps>) => void;
-  resetUserValues: () => void;
+  resetValues: () => void;
 }
 
 export type UserType = UserProps & UserMethods;
@@ -139,7 +139,7 @@ export interface ClientProps {
 export interface ClientMethods {
   setClientesFields: (field: string, value: string | number) => void;
   setClientesFetch: (fields: Partial<ClientProps>) => void;
-  resetClientesStore: () => void;
+  resetValues: () => void;
 }
 
 export type ClientType = ClientProps & ClientMethods;

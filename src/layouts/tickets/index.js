@@ -23,7 +23,7 @@ function TableData({ collection }) {
   const setTicketFields = useTicketStore((state) => state.setTicketFetch);
   const rol = useAuthStore((state) => state.role);
   const dialogStore = useDialogStore();
-  if (isLoading) return <Progress />;
+  if (isLoading) return <Progress open={true} />;
   if (error) return <div>Error: Reload page</div>;
   const { columns, rows } = TicketsData(tickets, collection, setTicketFields, rol, dialogStore);
   return (

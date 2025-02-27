@@ -27,6 +27,8 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SearchIcon from "@mui/icons-material/Search";
 //api hook
 import { useGetTicketByIdMutation } from "api/ticketsApi";
 // Material Dashboard 2 React components
@@ -56,6 +58,7 @@ import {
 
 //store
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
+import { useAuthStore } from "zustand/auth.store.ts";
 import MDButton from "components/MDButton";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
@@ -64,6 +67,7 @@ import View from "components/TicketWindow/View/index";
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
 function DashboardNavbar({ absolute, light, isMini }) {
+  const [loading, setLoading] = React.useState(false);
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
@@ -72,6 +76,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [ticketId, setTicketId] = React.useState("");
   const [postTicket] = useGetTicketByIdMutation();
   const ticketState = useTicketStore();
+  const { role } = useAuthStore();
   const openWindow = useDialogStore((state) => state.openWindow);
   const isWindowViewOpen = useDialogStore((state) => state.isWindowOpen);
   const setTicketFromFetch = useTicketStore((state) => state.setTicketFetch);
@@ -149,10 +154,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
     },
   });
   const buscarTicket = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const result = await postTicket(ticketId);
-      console.log(result);
       if (result.error) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
       } else {
@@ -163,7 +168,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
       }
     } catch (error) {
       openErrorSB("Verifica tu busqueda", `Status: ${result.error.status}`);
-      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -177,47 +183,52 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
             <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
           </MDBox>
-          {isMini ? null : (
-            <MDBox
-              sx={(theme) => navbarRow(theme, { isMini })}
-              component="form"
-              role="form"
-              onSubmit={buscarTicket}
-            >
-              <TextField
-                type="number"
-                label="Buscar Ticket por ID:"
-                value={ticketId}
-                onChange={(e) => setTicketId(e.target.value)}
-                sx={{ marginRight: "5px" }}
-                fullWidth
-              />
+          {role != "Usuario" ? (
+            <>
+              {isMini ? null : (
+                <MDBox
+                  sx={(theme) => navbarRow(theme, { isMini })}
+                  component="form"
+                  role="form"
+                  onSubmit={buscarTicket}
+                >
+                  <TextField
+                    type="number"
+                    label="Buscar Ticket por ID:"
+                    value={ticketId}
+                    onChange={(e) => setTicketId(e.target.value)}
+                    sx={{ marginRight: "5px" }}
+                    fullWidth
+                  />
 
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
-              {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
-              <MDButton
-                variant={"contained"}
-                onClick={buscarTicket}
-                color={"primary"}
-                type={"submit"}
-                disabled={!ticketId ? true : false}
-              >
-                <IconButton size="small" disableRipple color="inherit" sx={navbarIconButton}>
-                  <Icon sx={{ iconsStyle, color: "white" }}>searchIcon</Icon>
-                </IconButton>
-              </MDButton>
-            </MDBox>
-          )}
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarMobileMenu}
+                    onClick={handleMiniSidenav}
+                  >
+                    <Icon sx={iconsStyle} fontSize="medium">
+                      {miniSidenav ? "menu_open" : "menu"}
+                    </Icon>
+                  </IconButton>
+                  {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
+                  <LoadingButton
+                    variant={"contained"}
+                    onClick={buscarTicket}
+                    endIcon={<SearchIcon />}
+                    sx={{ backgroundColor: "#7557C1", color: "White" }}
+                    type={"submit"}
+                    loading={loading}
+                    loadingIndicator="Buscando…"
+                    disabled={!ticketId ? true : false}
+                  >
+                    <span>Buscar</span>
+                  </LoadingButton>
+                </MDBox>
+              )}
+            </>
+          ) : null}
         </Toolbar>
       </AppBar>
       {isWindowViewOpen ? <View /> : null}

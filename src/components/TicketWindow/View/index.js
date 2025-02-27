@@ -18,6 +18,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MDButton from "components/MDButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import Progress from "components/Progress";
 const LazyFields = React.lazy(() => import("components/FormFields/Fields"));
 //store
 import { useDialogStore, useTicketStore } from "zustand/index.ts";
@@ -29,7 +30,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const View = () => {
   const { isWindowOpen, closeWindow } = useDialogStore();
   const ticketStore = useTicketStore();
-  console.log(ticketStore);
   const formFields = React.useMemo(
     () => [
       {
@@ -333,7 +333,7 @@ const View = () => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Progress open={true} />}>
           <Box m={1}>
             <Grid container spacing={1}>
               {/* divisor de Cliente */}

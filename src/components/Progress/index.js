@@ -7,10 +7,11 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDBox from "components/MDBox";
 import Grid from "@mui/material/Grid";
 import Backdrop from "@mui/material/Backdrop";
-export default function Progress() {
+import PropTypes from "prop-types";
+export default function Progress({ open }) {
   return (
     <React.Fragment>
-      <DashboardLayout>
+      {/* <DashboardLayout>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
           <Grid container spacing={1}>
@@ -25,7 +26,14 @@ export default function Progress() {
             </Grid>
           </Grid>
         </MDBox>
-      </DashboardLayout>
+      </DashboardLayout> */}
+      <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </React.Fragment>
   );
 }
+
+Progress.propTypes = {
+  open: PropTypes.bool,
+};

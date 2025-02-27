@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
 import Grid from "@mui/material/Unstable_Grid2";
+import LoadingButton from "@mui/lab/LoadingButton";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -57,7 +58,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
         fullScreen
         open={isOpen}
         onClose={() => {
-          // store.resetValues();
+          store.resetValues();
           onClose();
         }}
         TransitionComponent={Transition}
@@ -68,6 +69,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
               edge="start"
               color="inherit"
               onClick={() => {
+                store.resetValues();
                 onClose();
               }}
               aria-label="close"
@@ -81,16 +83,17 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
               {store.Creado_por ? `Ticket #${store.Id}` : `${store.Nombre}`}
             </Typography>
             {onSave ? (
-              <Button
+              <LoadingButton
                 variant="contained"
                 size="large"
                 endIcon={<SaveIcon />}
                 sx={{ backgroundColor: "#7557C1", color: "White" }}
                 onClick={handleSubmit(handleSave)}
-                loading={true}
+                loading={loading}
+                loadingIndicator="Guardando…"
               >
-                Guardar
-              </Button>
+                <span>Guardar</span>
+              </LoadingButton>
             ) : null}
           </Toolbar>
         </AppBar>

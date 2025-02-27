@@ -6,17 +6,16 @@ import MDInput from "components/MDInput";
 /* -------------------------------------------------------------------------- */
 // Importaciones de librerías externas
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import SearchIcon from "@mui/icons-material/Search";
 import Grid from "@mui/material/Unstable_Grid2";
 import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
 /* -------------------------------------------------------------------------- */
 // Importaciones de hooks de API (RTK Query, Axios, etc.)
 import { useLazyGetClienteByCorreoQuery } from "api/clientesApi.js";
 /* -------------------------------------------------------------------------- */
 // Importaciones de Zustand u otro gestor de estado
 import { useCrearTicketStore } from "../store/crearTicket.store.ts";
-import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 /* -------------------------------------------------------------------------- */
 // Importaciones de utilidades, helpers o constantes
 import PropTypes from "prop-types";
@@ -32,6 +31,7 @@ const BuscarCliente = ({ form, formState }) => {
   const crearTicketFields = useCrearTicketStore((state) => state.setCrearTicketFields);
   /* -------------------------------------------------------------------------- */
   // Estados locales con useState
+  const [loading, setLoading] = React.useState(false);
   const [clienteExiste, setClienteExiste] = React.useState(false);
   const [data, setData] = React.useState({});
   const [correo, setCorreo] = React.useState();
@@ -44,6 +44,7 @@ const BuscarCliente = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
   // Funciones auxiliares
   const buscarCliente = async () => {
+    setLoading(true);
     try {
       const result = await getCliente({ Correo: correo });
       if (result.data) {
@@ -57,6 +58,8 @@ const BuscarCliente = ({ form, formState }) => {
     } catch (error) {
       setClienteExiste(false);
       setData({});
+    } finally {
+      setLoading(false);
     }
   };
   /* -------------------------------------------------------------------------- */
@@ -80,16 +83,18 @@ const BuscarCliente = ({ form, formState }) => {
       </Grid>
       {/*Boton para buscar al cliente*/}
       <Grid item xs={6}>
-        <Button
+        <LoadingButton
           variant="outlined"
           color="primary"
           size="medium"
           endIcon={<SearchIcon color="primary" />}
           sx={{ color: "#7557c1" }}
+          loading={loading}
+          loadingIndicator="Buscando..."
           onClick={() => buscarCliente()}
         >
           Buscar Cliente
-        </Button>
+        </LoadingButton>
       </Grid>
       {clienteExiste && Object.keys(data).length > 0 ? (
         <>

@@ -47,10 +47,16 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       renderCell: (params) => <Badge content={params.row.Prioridad?.Descripcion} />,
     },
     {
+      field: "Fecha_hora_creacion",
+      headerName: "Fecha de creación",
+      width: 300,
+      align: "left",
+    },
+    {
       field: "Fecha_limite_resolucion_SLA",
       headerName: "Fecha límite de resolución",
       width: 300,
-      align: "center",
+      align: "left",
     },
     { field: "TBIncidencia", headerName: "Tipo", width: 150 },
     { field: "TBCliente", headerName: "Cliente", width: 500, align: "left" },

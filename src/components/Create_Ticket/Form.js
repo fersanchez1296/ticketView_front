@@ -22,6 +22,7 @@ import PropTypes from "prop-types";
 import MDBox from "components/MDBox";
 import { useCrearMutation } from "api/ticketsApi.js";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+import LoadingButton from "@mui/lab/LoadingButton";
 const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -45,6 +46,7 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 export default function Form({ data }) {
+  const [loading, setLoading] = React.useState(false);
   const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
@@ -74,6 +76,7 @@ export default function Form({ data }) {
     setValue("Files", newFiles);
   };
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const result = await guardar({ data });
       if (result.error) {
@@ -87,6 +90,8 @@ export default function Form({ data }) {
       }
     } catch (error) {
       openErrorSB("Ocurrió un error inesperado al crear el ticket.", `Status: 500`);
+    } finally {
+      setLoading(false);
     }
   };
   const standby = watch("standby");
@@ -394,7 +399,7 @@ export default function Form({ data }) {
         </Grid>
         {/* Botón de guardar */}
         <Grid item xs={12}>
-          <Button
+          <LoadingButton
             type="submit"
             variant="outlined"
             color="primary"
@@ -402,9 +407,13 @@ export default function Form({ data }) {
             fullWidth
             tabIndex={-1}
             startIcon={<SaveIcon color="primary" />}
+            loading={loading}
+            loadingIndicator="Guardando ticket…"
           >
-            <Typography color="primary">{"Guardar Ticket"}</Typography>
-          </Button>
+            <span>
+              <Typography color="primary">{"Guardar Ticket"}</Typography>
+            </span>
+          </LoadingButton>
         </Grid>
       </Grid>
     </Box>

@@ -48,8 +48,8 @@ function TicketsUsuario() {
       setIsFetching(false);
     }
   }, [loadingTicketsResolutor, fetchingTicketsResolutor]);
-  if (isFetching) return <Progress />;
-  if (isLoading || loadingTicketsResolutor) return <Progress />;
+  if (isFetching) return <Progress open={true} />;
+  if (isLoading || loadingTicketsResolutor) return <Progress open={true} />;
   if (error || errorTicketResolutor) return <div>Error: Recargue la página.</div>;
 
   const resolutores = data || [];

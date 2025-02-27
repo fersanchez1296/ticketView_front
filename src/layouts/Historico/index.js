@@ -49,8 +49,8 @@ function Historico({ collection }) {
       setArea("");
     }
   }, [loadingTickets, fetchingTickets]);
-  if (isFetching) return <Progress />;
-  if (isLoading || loadingTickets) return <Progress />;
+  if (isFetching) return <Progress open={true} />;
+  if (isLoading || loadingTickets) return <Progress open={true} />;
   if (error || errorTickets) return <div>Error: Recargue la página.</div>;
 
   const areas = data?.areas || [];
