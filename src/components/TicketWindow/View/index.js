@@ -329,6 +329,17 @@ const View = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <Box m={1}>
             <Grid container spacing={1}>
+              {/* divisor de Cliente */}
+              <Grid item xs={12}>
+                <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
+                  <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+                    Cliente
+                  </Typography>
+                </MDBox>
+                <Divider />
+              </Grid>
+
+              <LazyFields fields={clienteFields} />
               {/* divisor de ticket */}
               <Grid item xs={12}>
                 <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
@@ -364,18 +375,6 @@ const View = () => {
               </Grid>
 
               <LazyFields fields={resolutorFields} />
-
-              {/* divisor de Cliente */}
-              <Grid item xs={12}>
-                <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
-                  <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-                    Cliente
-                  </Typography>
-                </MDBox>
-                <Divider />
-              </Grid>
-
-              <LazyFields fields={clienteFields} />
 
               {/* divisor de Archivos */}
               <Grid item xs={12}>

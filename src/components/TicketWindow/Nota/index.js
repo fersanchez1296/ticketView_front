@@ -3,8 +3,6 @@ import React from "react";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";

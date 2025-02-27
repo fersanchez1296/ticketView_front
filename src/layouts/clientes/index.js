@@ -30,30 +30,30 @@ function Index() {
     <>
       <DashboardLayout>
         <DashboardNavbar />
-        <MDBox pt={2} pb={2}>
-          <Grid container spacing={1}>
-            <Grid item xs={2}>
-              {" "}
-              <MDButton
-                color={"primary"}
-                variant={"contained"}
-                onClick={dialogStore.openWindowCrearCliente}
-              >
-                <Typography component="a" variant="caption" color="White" fontWeight="medium">
-                  Registrar Cliente
-                </Typography>
-              </MDButton>
-            </Grid>
-            <Grid item xs={2}>
-              <MDButton color={"secondary"} variant={"contained"} onClick={() => refetch()}>
-                <Typography component="a" variant="caption" color="White" fontWeight="medium">
-                  Actualizar
-                </Typography>
-              </MDButton>
-            </Grid>
+
+        <Grid container spacing={1}>
+          <Grid item xs={2}>
+            {" "}
+            <MDButton
+              color={"primary"}
+              variant={"contained"}
+              onClick={dialogStore.openWindowCrearCliente}
+            >
+              <Typography component="a" variant="caption" color="White" fontWeight="medium">
+                Registrar Cliente
+              </Typography>
+            </MDButton>
           </Grid>
-        </MDBox>
-        <MDBox pt={6} pb={1}>
+          <Grid item xs={2}>
+            <MDButton color={"secondary"} variant={"contained"} onClick={() => refetch()}>
+              <Typography component="a" variant="caption" color="White" fontWeight="medium">
+                Actualizar
+              </Typography>
+            </MDButton>
+          </Grid>
+        </Grid>
+
+        <MDBox pt={6} pb={5}>
           <Grid container>
             <Grid item xs={12}>
               <Card>

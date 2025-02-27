@@ -17,7 +17,6 @@ import FormHelperText from "@mui/material/FormHelperText";
 import { useSelectsClientesQuery } from "api/clientesApi";
 /* -------------------------------------------------------------------------- */
 // Importaciones de Zustand u otro gestor de estado
-import { useClientesStore } from "zustand/index.ts";
 /* -------------------------------------------------------------------------- */
 // Importaciones de utilidades, helpers o constantes
 import PropTypes from "prop-types";
@@ -29,7 +28,6 @@ const NuevoCliente = ({ form, formState }) => {
   const { data, isLoading } = useSelectsClientesQuery();
   /* -------------------------------------------------------------------------- */
   // Estado global de Zustand
-  const clientesStore = useClientesStore();
   /* -------------------------------------------------------------------------- */
   // Estados locales con useState
   const [nuevaDGeneral, setNuevaDGeneral] = useState(false);
@@ -49,8 +47,8 @@ const NuevoCliente = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
   // Renderizado del componente (return)
   return (
-    <React.Fragment>
-      <Grid container spacing={1} m={1}>
+    <>
+      <Grid container spacing={1} p={1}>
         {/*Introducido por teclado Nombre del cliente*/}
         <Grid item xs={12}>
           <TextField
@@ -299,8 +297,7 @@ const NuevoCliente = ({ form, formState }) => {
           />
         </Grid>
       </Grid>
-      {/* </Dialog> */}
-    </React.Fragment>
+    </>
   );
 };
 

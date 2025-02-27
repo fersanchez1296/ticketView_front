@@ -31,6 +31,7 @@ export const ticketsApi = apiSlice.injectEndpoints({
           method: "GET",
         };
       },
+      keepUnusedDataFor: 0,
       invalidatesTags: ["Tickets"],
     }),
     reabrirFields: builder.query({
@@ -398,12 +399,16 @@ export const ticketsApi = apiSlice.injectEndpoints({
     }),
     //Pendiente
     putPendiente: builder.mutation({
-      query: ({ data, ticketId }) => {
-        const url = `tickets/pendiente/${ticketId}`;
+      query: ({ data }) => {
+        const ticketId = data._id;
+        const auxData = {
+          Id: data.Id,
+          cuerpo: data.cuerpo,
+        };
         return {
-          url,
+          url: `tickets/pendiente/${ticketId}`,
           method: "PUT",
-          body: data,
+          body: auxData,
         };
       },
       invalidatesTags: ["Tickets"],

@@ -110,6 +110,21 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     }
   };
 
+  const handleDownloadManual = async () => {
+    try {
+      const response = await downloadExcel().unwrap(); // Obtiene la respuesta en formato Blob
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "tickets.xlsx"); // Nombre del archivo
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error al descargar el Excel:", error);
+    }
+  };
+
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route }) => {
     let returnValue;
@@ -210,6 +225,18 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             </MDTypography>
           </MDBox>
         </MDBox>
+      </MDBox>
+      <MDBox p={2}>
+        <MDButton
+          component="a"
+          onClick={handleDownloadManual}
+          target="_self"
+          rel="noreferrer"
+          color="primary"
+          fullWidth
+        >
+          Manual de usuario
+        </MDButton>
       </MDBox>
       <Divider
         light={

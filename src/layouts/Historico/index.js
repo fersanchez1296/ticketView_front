@@ -7,11 +7,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-// Material Dashboard 2 React components
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Paper from "@mui/material/Paper";
 import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import { Typography } from "@mui/material";
 import MDButton from "components/MDButton";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -21,19 +18,14 @@ import Footer from "examples/Footer";
 import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //api
 import { useHistoricoQuery, useGetHistoricoPorAreaQuery } from "api/historicoApi";
-//components
-import View from "components/TicketWindow/View";
-import Asignado from "./components/Asignado";
-import Cliente from "./components/Cliente";
-import Badge from "./components/Badge";
 import Progress from "components/Progress";
-import debounce from "lodash.debounce";
 //propTypes
 import PropTypes from "prop-types";
-
+import DataTable from "components/DataTable";
+import HistoricaData from "./data/historicoData";
 function Historico({ collection }) {
   const [area, setArea] = React.useState("");
-  const openWindow = useDialogStore((state) => state.openWindow);
+  const dialogStore = useDialogStore();
   const setTicketFields = useTicketStore((state) => state.setTicketFetch);
   const [isFetching, setIsFetching] = React.useState(false);
   const { data, refetch, isLoading, error } = useHistoricoQuery();
@@ -43,7 +35,6 @@ function Historico({ collection }) {
     isFetching: fetchingTickets,
     error: errorTickets,
   } = useGetHistoricoPorAreaQuery(area, { skip: !area });
-  console.log(ticketsArea);
   const handleChange = (value) => setArea(value);
 
   React.useEffect(() => {
@@ -55,6 +46,7 @@ function Historico({ collection }) {
   React.useEffect(() => {
     if (!loadingTickets && !fetchingTickets) {
       setIsFetching(false);
+      setArea("");
     }
   }, [loadingTickets, fetchingTickets]);
   if (isFetching) return <Progress />;
@@ -63,90 +55,16 @@ function Historico({ collection }) {
 
   const areas = data?.areas || [];
   let tickets = ticketsArea || data?.tickets || [];
-
-  const handleClickActualizar = () => refetch();
-
-  const Btn_view = (ticket) => (
-    <MDButton
-      color="primary"
-      variant="contained"
-      onClick={() => {
-        setTicketFields(ticket.ticket);
-        openWindow();
-      }}
-    >
-      <MDTypography component="a" href="#" variant="caption" color="white" fontWeight="medium">
-        Visualizar
-      </MDTypography>
-    </MDButton>
-  );
-
-  const columnData = [
-    {
-      field: "visualizar",
-      headerName: "Visualizar",
-      width: 140,
-      renderCell: (params) => <Btn_view ticket={params.row} />,
-    },
-    {
-      field: "Asignado_a",
-      headerName: "Asignado a:",
-      width: 250,
-      renderCell: (params) => (
-        <Asignado
-          image={"team2"} // Cambia si deseas imágenes dinámicas
-          nombre={params.row.Asignado_final_a?.Nombre || "Sin asignar"}
-          dependencia={params.row.Asignado_final_a?.Coordinacion || "Sin dependencia"}
-        />
-      ),
-    },
-    {
-      field: "Cliente",
-      headerName: "Cliente",
-      width: 250,
-      renderCell: (params) => (
-        <Cliente
-          nombre={params.row.Nombre_cliente || "Sin cliente"}
-          dependencia={params.row.Secretaria?.Secretaria || "Sin secretaria"}
-        />
-      ),
-    },
-    { field: "Id", headerName: "ID", width: 90, align: "center" },
-    {
-      field: "estatus",
-      headerName: "Estatus",
-      width: 130,
-      renderCell: (params) => <Badge content={params.row.Estado?.Estado || "Sin estado"} />,
-    },
-    {
-      field: "prioridad",
-      headerName: "Prioridad",
-      width: 130,
-      renderCell: (params) => (
-        <Badge content={params.row.Prioridad?.Descripcion || "Sin prioridad"} />
-      ),
-    },
-    { field: "Tipo_de_incidencia", headerName: "Tipo", width: 150 },
-    { field: "Fecha_hora_creacion", headerName: "Creado", width: 250 },
-    { field: "Fecha_hora_cierre", headerName: "Finalizado", width: 250 },
-  ];
-
-  const rows = tickets.map((ticket) => ({
-    id: ticket.Id,
-    estatus: ticket.Estado.Estado,
-    Tipo_de_incidencia: ticket.Tipo_incidencia.Tipo_de_incidencia,
-    ...ticket,
-  }));
-
-  const paginationModel = { page: 0, pageSize: 10 };
+  const { columns, rows } = HistoricaData(tickets, setTicketFields, dialogStore);
+  console.log(tickets);
   return (
     <>
       <DashboardLayout>
         <DashboardNavbar />
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
+        <MDBox pt={2} pb={2}>
+          <Grid container spacing={1}>
             <Grid item xs={6}>
-              <FormControl fullWidth>
+              <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
                 <InputLabel id="area-select-label">Selecciona el Área</InputLabel>
                 <Select
                   labelId="area-select-label"
@@ -161,33 +79,25 @@ function Historico({ collection }) {
                   ))}
                 </Select>
               </FormControl>
+              <MDButton color={"secondary"} variant={"contained"} onClick={() => refetch()}>
+                <Typography component="a" variant="caption" color="White" fontWeight="medium">
+                  Actualizar ventana
+                </Typography>
+              </MDButton>
             </Grid>
+          </Grid>
+        </MDBox>
+        <MDBox pt={6} pb={1}>
+          <Grid container>
             <Grid item xs={12}>
               <Card>
-                <MDBox
-                  mx={2}
-                  mt={-3}
-                  py={3}
-                  px={2}
-                  //variant="gradient"
-                  bgColor="primary"
-                  borderRadius="lg"
-                  //coloredShadow="primary"
-                >
-                  <MDTypography variant="h6" color="white">
-                    Histórico de Tickets
-                  </MDTypography>
+                <MDBox mx={2} mt={-3} py={3} px={2} bgColor="primary" borderRadius="lg">
+                  <Typography variant="h3" color="White">
+                    Tickets
+                  </Typography>
                 </MDBox>
                 <MDBox pt={3}>
-                  <Paper sx={{ height: 550, width: "100%" }}>
-                    <DataGrid
-                      rows={rows}
-                      columns={columnData}
-                      initialState={{ pagination: { paginationModel } }}
-                      pageSizeOptions={[5, 10, 15, 20, 25]}
-                      sx={{ border: 0 }}
-                    />
-                  </Paper>
+                  <DataTable rows={rows} columns={columns} />
                 </MDBox>
               </Card>
             </Grid>
@@ -195,7 +105,6 @@ function Historico({ collection }) {
         </MDBox>
         <Footer />
       </DashboardLayout>
-      <View />
     </>
   );
 }

@@ -48,13 +48,24 @@ const Ver = ({ form, formState }) => {
           disabled
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <TextField
           fullWidth
           id="Direccion_area"
           label="Dirección de Área"
           {...form.register("TBDArea")}
           disabled
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          id="Ubicacion"
+          label="Ubicacion del cliente:"
+          multiline
+          {...form.register("Ubicacion")}
+          disabled
+          rows={5}
+          fullWidth
         />
       </Grid>
     </Grid>

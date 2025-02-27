@@ -93,6 +93,12 @@ export default function Form({ data }) {
   const isNuevoCliente = watch("isNuevoCliente");
   const formFields = React.useMemo(
     () => [
+      // {
+      //   name: "Area",
+      //   label: "Área",
+      //   options: data.tiposTickets,
+      //   key: "Area",
+      // },
       {
         name: "Tipo_incidencia",
         label: "Tipo de incidencia",
@@ -107,9 +113,16 @@ export default function Form({ data }) {
         options: data.subcategoria,
         key: "Subcategoria",
       },
+      {
+        name: "Medio",
+        label: "Medio contacto",
+        options: data.medios,
+        key: "Medio",
+      },
     ],
     [data]
   );
+  console.log(data);
   return (
     <Box
       component="form"
@@ -117,46 +130,46 @@ export default function Form({ data }) {
       onSubmit={handleSubmit(onSubmit)}
       //autoComplete="on"
     >
-      {/* Separador cliente */}
-      <Grid item xs={12}>
-        <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-          <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-            Cliente
-          </Typography>
-        </MDBox>
-      </Grid>
-      <Grid item xs={12}>
-        <Box pt={4} pb={3}>
-          <FormGroup>
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ alignItems: "center", justifyContent: "space-between" }}
-            >
-              <Box sx={{ display: "flex" }}>
-                <Typography>Buscar Cliente</Typography>
-                <Switch
-                  checked={isNuevoCliente}
-                  onChange={(e) => {
-                    const newValue = e.target.checked;
-                    setValue("isNuevoCliente", newValue);
-                  }}
-                />
-                <Typography>Nuevo Cliente</Typography>
-              </Box>
-            </Stack>
-          </FormGroup>
-          <Suspense fallback={<div>Loading...</div>}>
-            {" "}
-            {!isNuevoCliente ? (
-              <LazyBuscarCliente form={form} formState={formState} />
-            ) : (
-              <LazyNuevoCliente form={form} formState={formState} />
-            )}
-          </Suspense>
-        </Box>
-      </Grid>
       <Grid container spacing={1}>
+        {/* Separador cliente */}
+        <Grid item xs={12}>
+          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
+            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+              Cliente
+            </Typography>
+          </MDBox>
+        </Grid>
+        <Grid item xs={12}>
+          <Box pt={4} pb={3}>
+            <FormGroup>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: "center", justifyContent: "space-between" }}
+              >
+                <Box sx={{ display: "flex" }}>
+                  <Typography>Buscar Cliente</Typography>
+                  <Switch
+                    checked={isNuevoCliente}
+                    onChange={(e) => {
+                      const newValue = e.target.checked;
+                      setValue("isNuevoCliente", newValue);
+                    }}
+                  />
+                  <Typography>Nuevo Cliente</Typography>
+                </Box>
+              </Stack>
+            </FormGroup>
+            <Suspense fallback={<div>Loading...</div>}>
+              {" "}
+              {!isNuevoCliente ? (
+                <LazyBuscarCliente form={form} formState={formState} />
+              ) : (
+                <LazyNuevoCliente form={form} formState={formState} />
+              )}
+            </Suspense>
+          </Box>
+        </Grid>
         {/* divisor de ticket */}
         <Grid item xs={12}>
           <MDBox bgColor="primary" borderRadius="lg" mt={-3} p={2} mb={1} textAlign="left">

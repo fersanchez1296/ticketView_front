@@ -33,6 +33,7 @@ import {
   useAsignarMutation,
   useEditarMutation,
   usePutRegresarTicketMutation,
+  usePutPendienteMutation,
 } from "api/ticketsApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
@@ -91,6 +92,7 @@ const ModalManager = () => {
   const [crearUsuario] = useCrearUsuarioMutation();
   const [crearCliente] = useCrearClienteMutation();
   const [editarCliente] = useUpdateClienteByIdMutation();
+  const [pendiente] = usePutPendienteMutation();
   return (
     <>
       {isWindowReabrirOpen && (
@@ -252,7 +254,7 @@ const ModalManager = () => {
           title="Marcar ticket como pendiente"
           isOpen={isWindowPendientesOpen}
           onClose={closeWindowPendientes}
-          //onSave={pendiente}
+          onSave={pendiente}
           store={ticketStore}
         >
           <Pendientes />

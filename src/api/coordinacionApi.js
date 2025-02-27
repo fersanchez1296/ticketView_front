@@ -5,7 +5,7 @@ export const coordinacionApi = apiSlice.injectEndpoints({
     //TODO este no creo que sea util debido a que actualmente las coordinaciones no tienen areas
     resolutoresPorAreaModerador: builder.query({
       query: () => {
-        const url = `tickets/coordinacion`;
+        const url = `tickets/areas`;
         return {
           url,
           method: "GET",
@@ -16,7 +16,7 @@ export const coordinacionApi = apiSlice.injectEndpoints({
     }),
     getTicketsResolutor: builder.query({
       query: ({ userId }) => {
-        const url = `tickets/historico/${userId}`;
+        const url = `tickets/resolutor/${userId}`;
         return {
           url,
           method: "GET",

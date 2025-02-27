@@ -10,8 +10,6 @@ export const historicoApi = apiSlice.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags: ["Historico"],
-      //invalidatesTags: ["TicketsArea"],
     }),
     //TODO este esta mal, corregir
     getHistoricoPorArea: builder.query({
@@ -22,7 +20,7 @@ export const historicoApi = apiSlice.injectEndpoints({
           method: "GET",
         };
       },
-      invalidatesTags: ["Tickets"],
+      keepUnusedDataFor: 0,
     }),
   }),
 });
