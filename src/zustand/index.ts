@@ -138,4 +138,8 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowRegresarOpen: false,
   openWindowRegresar: () => set({ isWindowRegresarOpen: true }),
   closeWindowRegresar: () => set({ isWindowRegresarOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de regresar el ticket al usuario:
+  isWindowContactoOpen: false,
+  openWindowContacto: () => set({ isWindowContactoOpen: true }),
+  closeWindowContacto: () => set({ isWindowContactoOpen: false }),
 }));

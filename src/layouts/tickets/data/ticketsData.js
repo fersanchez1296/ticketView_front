@@ -186,7 +186,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       collection !== "nuevos" &&
       collection !== "reabiertos" &&
       collection !== "abiertos" &&
-      collection !== "pendientes"
+      collection !== "pendientes" &&
+      collection !== "revision"
         ? [
             {
               field: "cerrar",
@@ -249,7 +250,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       collection !== "nuevos" &&
       collection !== "reabiertos" &&
       collection !== "abiertos" &&
-      collection !== "pendientes"
+      collection !== "pendientes" &&
+      collection !== "revision"
         ? [
             {
               field: "resolver",
@@ -306,6 +308,21 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
+      {
+        field: "Contacto",
+        headerName: "Contacto",
+        width: 140,
+        renderCell: (params) => (
+          <WindowButton
+            key={params.row._id}
+            ticket={params.row}
+            color="primary"
+            store={setTicketFields}
+            openWindow={dialogStore.openWindowContacto}
+            label="Contacto"
+          />
+        ),
+      },
     ],
   };
 

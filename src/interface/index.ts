@@ -235,4 +235,8 @@ export interface DialogState {
   isWindowRegresarOpen: boolean;
   openWindowRegresar: () => void;
   closeWindowRegresar: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de contacto:
+  isWindowContactoOpen: boolean;
+  openWindowContacto: () => void;
+  closeWindowContacto: () => void;
 }

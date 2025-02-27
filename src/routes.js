@@ -145,7 +145,7 @@ const routes = [
     type: "collapse",
     name: "Revisión",
     key: "revision",
-    rol: ["Moderador", "Usuario"],
+    rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <RemoveRedEyeIcon />,
     route: "/revision",
     component: <DataTable collection={"revision"} />,

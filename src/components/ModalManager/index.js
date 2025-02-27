@@ -22,6 +22,7 @@ import CrearCliente from "components/TicketWindow/Clientes/Crear";
 import { useUserStore, useTicketStore, useClientesStore } from "zustand/index.ts";
 import Pendientes from "components/TicketWindow/Pendientes";
 import Regresar from "components/TicketWindow/Regresar";
+import Contacto from "components/TicketWindow/Contacto";
 //reabrir store
 import {
   useReabrirMutation,
@@ -74,6 +75,8 @@ const ModalManager = () => {
     closeWindowEditarCliente,
     isWindowCrearClienteOpen,
     closeWindowCrearCliente,
+    isWindowContactoOpen,
+    closeWindowContacto,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -269,6 +272,17 @@ const ModalManager = () => {
           store={ticketStore}
         >
           <Regresar />
+        </VentanaAcciones>
+      )}
+      {isWindowContactoOpen && (
+        <VentanaAcciones
+          title="Contactar Cliente"
+          isOpen={isWindowContactoOpen}
+          onClose={closeWindowContacto}
+          onSave={regresar}
+          store={ticketStore}
+        >
+          <Contacto />
         </VentanaAcciones>
       )}
       {isWindowOpen && <View />}
