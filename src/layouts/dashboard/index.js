@@ -49,6 +49,56 @@ import { useNavigate } from "react-router-dom";
 const Dashboard_component = ({ data }) => {
   const { role, Nombre } = useAuthStore();
   const { sales, tasks } = reportsLineChartData;
+  const comunDashboard = [
+    {
+      color: "primary",
+      icon: "event_available",
+      count: data.abiertos,
+      nav: "abiertos",
+      title: "Abiertos",
+      key: "Abiertos",
+    },
+    {
+      color: "secondary",
+      icon: "event_repeat",
+      count: data.reabiertos,
+      nav: "reabiertos",
+      title: "Reabiertos",
+      key: "Reabiertos",
+    },
+    {
+      color: "primary",
+      icon: "event",
+      count: data.nuevos,
+      nav: "nuevos",
+      title: "Nuevos",
+      key: "Nuevos",
+    },
+    {
+      color: "primary",
+      icon: "pending_actions",
+      count: data.pendientes,
+      nav: "pendientes",
+      title: "Pendientes",
+      key: "Pendientes",
+    },
+    {
+      color: "secondary",
+      icon: "visibility",
+      count: data.revision,
+      nav: "revision",
+      title: role == "Moderador" ? "Para Revision" : "En revision",
+      key: "Revision",
+    },
+    {
+      color: "primary",
+      icon: "event_busy",
+      count: data.cerrados,
+      nav: "cerrados",
+      title: "Cerrados",
+      key: "cerrados",
+    },
+  ];
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -63,15 +113,15 @@ const Dashboard_component = ({ data }) => {
             </MDBox>
             <Divider />
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <NavLink to={"/abiertos"}>
+          {comunDashboard.map((d) => (
+            <Grid item xs={12} md={6} lg={4} key={d.key}>
+              <NavLink to={`/${d.nav}`}>
                 <ComplexStatisticsCard
-                  color="primary"
-                  icon="event_available"
-                  title="Abiertos"
-                  count={data.abiertos}
-                  onClick={() => navigate("/abiertos")}
+                  color={d.color}
+                  icon={d.icon}
+                  title={d.title}
+                  count={d.count}
+                  //onClick={() => navigate("/abiertos")}
                   // percentage={{
                   //   color: "success",
                   //   amount: "+55%",
@@ -79,76 +129,10 @@ const Dashboard_component = ({ data }) => {
                   // }}
                 />
               </NavLink>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <NavLink to={"/reabiertos"}>
-                <ComplexStatisticsCard
-                  color="secondary"
-                  icon="event_repeat"
-                  title="Reabiertos"
-                  count={data.reabiertos}
-                  // percentage={{
-                  //   color: "success",
-                  //   amount: "+3%",
-                  //   label: "than last month",
-                  // }}
-                />
-              </NavLink>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <NavLink to={"/nuevos"}>
-                <ComplexStatisticsCard
-                  color="primary"
-                  icon="event"
-                  title="Nuevos"
-                  count={data.nuevos}
-                  // percentage={{
-                  //   color: "success",
-                  //   amount: "+1%",
-                  //   label: "than yesterday",
-                  // }}
-                />
-              </NavLink>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <NavLink to={"/pendientes"}>
-                <ComplexStatisticsCard
-                  color="primary"
-                  icon="pending_actions"
-                  title="Pendientes"
-                  count={data.pendientes}
-                  // percentage={{
-                  //   color: "success",
-                  //   amount: "",
-                  //   label: "Just updated",
-                  // }}
-                />
-              </NavLink>
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <MDBox mb={1.5}>
-              <NavLink to={"/revision"}>
-                <ComplexStatisticsCard
-                  color="secondary"
-                  icon="visibility"
-                  title={role == "Moderador" ? "Para Revision" : "En revision"}
-                  count={data.revision}
-                  // percentage={{
-                  //   color: "success",
-                  //   amount: "",
-                  //   label: "Just updated",
-                  // }}
-                />
-              </NavLink>
-            </MDBox>
-          </Grid>
+            </Grid>
+          ))}
+
+          {/* <Grid item xs={12} md={6} lg={4}>
           <Grid item xs={12} md={6} lg={4}>
             <MDBox mb={1.5}>
               <NavLink to={"/cerrados"}>
@@ -165,81 +149,8 @@ const Dashboard_component = ({ data }) => {
                 />
               </NavLink>
             </MDBox>
-          </Grid>
+          </Grid> */}
         </Grid>
-        {/* <MDBox mt={4.5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={12}>
-              <MDBox mb={3}>
-                <ReportsBarChart
-                  color="info"
-                  title="Tickets por area"
-                  // description="Last Campaign Performance"
-                  // date="campaign sent 2 days ago"
-                  chart={reportsBarChartData}
-                  glosary={[
-                    "1-ADMINISTRATIVO",
-                    "2-AUDITORÍA DE TI",
-                    "3-DC-BASE DE DATOS",
-                    "4-DC-CCTV/CDA",
-                    "5-DC-INFRAESTRUCTURA",
-                    "6-DC-TELEFONÍA",
-                    "7-DESARROLLO",
-                    "8-DIRECCIÓN",
-                    "9-EGRESOS",
-                    "10-ESCRITORIO AYUDA",
-                    "11-INGRESOS",
-                    "12-NÓMINA",
-                    "13-PLANEACION TECNOLOGICA",
-                    "14-PLANEACION Y PROYECTOS",
-                    "15-ST GESTIÓN DE ACCESOS",
-                    "16-ST GESTIÓN DE ACTIVOS",
-                    "17-ST SOPORTE TI",
-                    "18-WEB DESARROLLO",
-                    "19-PROYECTOS ESPECIALES",
-                    "20-DC-REDES Y TELECOMUNICACIONES",
-                  ]}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={12}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="success"
-                  title="daily sales"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
-                  date="updated 4 min ago"
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
-                />
-              </MDBox>
-            </Grid>
-          </Grid>
-        </MDBox> */}
-        {/* <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={8}>
-              <Projects />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid>
-        </MDBox> */}
       </MDBox>
       {role != "Root" ? null : (
         <>

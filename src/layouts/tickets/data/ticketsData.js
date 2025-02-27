@@ -160,26 +160,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
-      ...(collection === "pendientes"
-        ? [
-            {
-              field: "pendiente",
-              headerName: "Pendiente",
-              width: 140,
-              renderCell: (params) => (
-                <WindowButton
-                  key={params.row._id}
-                  ticket={params.row}
-                  color="secondary"
-                  store={setTicketFields}
-                  openWindow={dialogStore.openWindowPendientes}
-                  label="Pendiente"
-                />
-              ),
-            },
-          ]
-        : []),
-      ...(collection === "abiertos"
+      ...(collection === "abiertos" || collection === "reabiertos"
         ? [
             {
               field: "Pendiente",
