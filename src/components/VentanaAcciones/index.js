@@ -28,9 +28,11 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
       Files: [],
     },
   });
+  const [loading, setLoading] = React.useState(false);
   const { handleSubmit, formState, reset } = form;
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const handleSave = async (data) => {
+    setLoading(true);
     try {
       const result = await onSave({ data });
       if (!result) {
@@ -45,6 +47,8 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
     } catch (error) {
       console.log(error);
       openErrorSB("Ocurrión un error al procesar la información", `Status: 500`);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -83,6 +87,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
                 endIcon={<SaveIcon />}
                 sx={{ backgroundColor: "#7557C1", color: "White" }}
                 onClick={handleSubmit(handleSave)}
+                loading={true}
               >
                 Guardar
               </Button>

@@ -69,7 +69,7 @@ const EditarTicket = ({ form, formState }) => {
   return (
     <Grid container spacing={1} m={1}>
       {/*Muestra quien creo el ticket */}
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <TextField
           type="text"
           label="Creado por:"
@@ -79,7 +79,7 @@ const EditarTicket = ({ form, formState }) => {
         />
       </Grid>
       {/*Muestra el ID del ticket */}
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <TextField
           type="text"
           label="ID:"
@@ -91,7 +91,7 @@ const EditarTicket = ({ form, formState }) => {
         />
       </Grid>
       {/*Seleccion tipo de Estado*/}
-      <Grid item xs={4}>
+      <Grid item xs={3}>
         <TextField
           type="text"
           label="Estado:"
@@ -101,9 +101,57 @@ const EditarTicket = ({ form, formState }) => {
           required
         />
       </Grid>
+      {/*Fecha limite de resolucion*/}
+      <Grid item xs={3}>
+        <TextField
+          type="text"
+          label="Estado:"
+          {...form.register("Fecha_limite_resolucion_SLA")}
+          disabled
+          fullWidth
+          required
+        />
+      </Grid>
+      {/*Introducido por teclado NumeroRec_Oficio*/}
+      <Grid item xs={4}>
+        <TextField
+          type="text"
+          label="Oficio de recepción:"
+          {...form.register("NumeroRec_Oficio")}
+          fullWidth
+          required
+        />
+      </Grid>
       {/*Seleccion tipo de ticket tipo de incidencia*/}
       <Grid item xs={4}>
-        <FormControl fullWidth error={!!formState.errorsTipo_incidencia?._id}>
+        <FormControl fullWidth error={!!formState.errors.Medio?._id}>
+          <InputLabel id="demo-simple-select-label">Medio de contacto</InputLabel>
+          <Select
+            sx={{ minHeight: "3rem" }}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Medio de contacto"
+            defaultValue={form.getValues("Medio._id") || ""}
+            {...form.register("Medio._id", {
+              required: "El medio de contacto es requerido",
+            })}
+          >
+            {data.medios.map((est) => {
+              return (
+                <MenuItem value={est._id} key={est._id}>
+                  {est.Medio}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          {formState.errors.Tipo_incidencia?._id && (
+            <FormHelperText>{formState.errors.Tipo_incidencia._id.message}</FormHelperText>
+          )}
+        </FormControl>
+      </Grid>
+      {/*Seleccion tipo de ticket tipo de incidencia*/}
+      <Grid item xs={4}>
+        <FormControl fullWidth error={!!formState.errors.Tipo_incidencia?._id}>
           <InputLabel id="demo-simple-select-label">Tipo de ticket</InputLabel>
           <Select
             sx={{ minHeight: "3rem" }}
@@ -127,16 +175,6 @@ const EditarTicket = ({ form, formState }) => {
             <FormHelperText>{formState.errors.Tipo_incidencia._id.message}</FormHelperText>
           )}
         </FormControl>
-      </Grid>
-      {/*Introducido por teclado NumeroRec_Oficio*/}
-      <Grid item xs={4}>
-        <TextField
-          type="text"
-          label="Oficio de recepción:"
-          {...form.register("NumeroRec_Oficio")}
-          fullWidth
-          required
-        />
       </Grid>
       {/*Seleccion tipo de Servicio*/}
       <Grid item xs={4}>

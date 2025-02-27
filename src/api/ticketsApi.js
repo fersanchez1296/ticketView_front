@@ -138,6 +138,7 @@ export const ticketsApi = apiSlice.injectEndpoints({
           Categoria: data.Categoria._id,
           Subcategoria: data.Subcategoria._id,
           Descripcion: data.Descripcion,
+          Medio: data.Medio._id,
         };
         if (data.Files) {
           Object.entries(data).forEach(([key, value]) => {

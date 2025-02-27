@@ -29,7 +29,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const View = () => {
   const { isWindowOpen, closeWindow } = useDialogStore();
   const ticketStore = useTicketStore();
-
+  console.log(ticketStore);
   const formFields = React.useMemo(
     () => [
       {
@@ -43,7 +43,14 @@ const View = () => {
         name: "Prioridad",
         label: "Prioridad",
         options: ticketStore.Prioridad?.Descripcion,
-        gridSize: 3,
+        gridSize: 1,
+        multiline: { state: false },
+      },
+      {
+        name: "Medio",
+        label: "Medio Contacto",
+        options: ticketStore.Medio?.Medio,
+        gridSize: 2,
         multiline: { state: false },
       },
       {

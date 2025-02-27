@@ -36,6 +36,7 @@ export interface TicketProps {
   Extension_cliente: string;
   Ubicacion_cliente: string;
   Correo_cliente: string;
+  Medio: string;
   Dependencia_cliente: Object;
   Files?: File | Array<any>;
 }
@@ -86,6 +87,7 @@ export const ticketInitialState: TicketProps = {
   Extension_cliente: "",
   Ubicacion_cliente: "",
   Correo_cliente: "",
+  Medio: "",
   Dependencia_cliente: {},
   Files: [],
 };
