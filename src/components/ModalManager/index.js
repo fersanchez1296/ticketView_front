@@ -274,7 +274,7 @@ const ModalManager = () => {
           <Regresar />
         </VentanaAcciones>
       )}
-      {isWindowContactoOpen && (
+      {/* {isWindowContactoOpen && (
         <VentanaAcciones
           title="Contactar Cliente"
           isOpen={isWindowContactoOpen}
@@ -284,7 +284,7 @@ const ModalManager = () => {
         >
           <Contacto />
         </VentanaAcciones>
-      )}
+      )} */}
       {isWindowOpen && <View />}
       <SuccessSB />
       <ErrorSB />

@@ -56,7 +56,7 @@ const Contacto = ({ form, formState }) => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <InfoIcon color="secondary" />
           <Typography variant="overline" pl={1}>
-            Puedes modificar el asunto del correo si lo necesitas.
+            Puedes modificar el asunto del correo si lo necesitas.``
           </Typography>
         </Box>
       </Grid>
