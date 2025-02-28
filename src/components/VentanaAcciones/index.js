@@ -34,8 +34,9 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
   const handleSave = async (data) => {
     setLoading(true);
+    let result;
     try {
-      const result = await onSave({ data });
+      result = await onSave({ data });
       if (!result) {
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
       } else {
@@ -46,8 +47,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
         }, 2500);
       }
     } catch (error) {
-      console.log(error);
-      openErrorSB("Ocurrión un error al procesar la información", `Status: 500`);
+      openErrorSB(result.error.data.desc, `Status: 500`);
     } finally {
       setLoading(false);
     }

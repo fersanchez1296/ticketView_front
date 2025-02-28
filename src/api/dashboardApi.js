@@ -19,7 +19,14 @@ export const historicoApi = apiSlice.injectEndpoints({
         responseHandler: async (response) => response.blob(), // Recibe el archivo como Blob
       }),
     }),
+    manual: builder.mutation({
+      query: () => ({
+        url: `files/manual`,
+        method: "GET",
+        responseHandler: async (response) => response.blob(), // Recibe el archivo como Blob
+      }),
+    }),
   }),
 });
 
-export const { useDashboardQuery, useExcelMutation } = historicoApi;
+export const { useDashboardQuery, useExcelMutation, useManualMutation } = historicoApi;

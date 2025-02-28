@@ -48,7 +48,7 @@ import {
 
 //api
 import { useLogoutMutation } from "api/authApi";
-import { useExcelMutation } from "api/dashboardApi";
+import { useExcelMutation, useManualMutation } from "api/dashboardApi";
 
 //store
 import { useAuthStore } from "zustand/auth.store.ts";
@@ -112,16 +112,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   const handleDownloadManual = async () => {
     try {
-      const response = await downloadExcel().unwrap(); // Obtiene la respuesta en formato Blob
+      const response = await useManualMutation().unwrap(); // Obtiene la respuesta en formato Blob
       const url = window.URL.createObjectURL(new Blob([response]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "tickets.xlsx"); // Nombre del archivo
+      link.setAttribute("download", "manual-chermina.pdf"); // Nombre del archivo
       document.body.appendChild(link);
       link.click();
       link.remove();
     } catch (error) {
-      console.error("Error al descargar el Excel:", error);
+      console.error("Error al descargar el manual:", error);
     }
   };
 
@@ -227,16 +227,22 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </MDBox>
       </MDBox>
       <MDBox p={2}>
-        <MDButton
-          component="a"
-          onClick={handleDownloadManual}
-          target="_self"
+        <a
+          href={"http://localhost:4400/files/uploads/manual-chermina.pdf"}
+          target="_blank"
           rel="noreferrer"
-          color="primary"
-          fullWidth
         >
-          Manual de usuario
-        </MDButton>
+          <MDButton
+            component="a"
+            //onClick={handleDownloadManual}
+            //target="_self"
+            //rel="noreferrer"
+            color="primary"
+            fullWidth
+          >
+            Manual de usuario
+          </MDButton>
+        </a>
       </MDBox>
       <Divider
         light={
