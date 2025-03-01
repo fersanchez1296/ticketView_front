@@ -105,6 +105,7 @@ const ModalManager = () => {
           onClose={closeWindowReabrir}
           onSave={reabrir}
           store={ticketStore}
+          helpKey={"reabrirTicket"}
         >
           <Reabrir />
         </VentanaAcciones>
@@ -116,6 +117,7 @@ const ModalManager = () => {
           onClose={closeWindowResolver}
           onSave={resolver}
           store={ticketStore}
+          helpKey={"resolverTicket"}
         >
           <Resolver />
         </VentanaAcciones>
@@ -127,6 +129,7 @@ const ModalManager = () => {
           onClose={closeWindowAceptar}
           onSave={aceptar}
           store={ticketStore}
+          helpKey={"aceptarSolucion"}
         >
           <Aceptar />
         </VentanaAcciones>
@@ -138,6 +141,7 @@ const ModalManager = () => {
           onClose={closeWindowRechazar}
           onSave={rechazar}
           store={ticketStore}
+          helpKey={"rechazarSolucion"}
         >
           <Rechazar />
         </VentanaAcciones>
@@ -149,6 +153,7 @@ const ModalManager = () => {
           onClose={closeWindowCloseTicket}
           onSave={cerrar}
           store={ticketStore}
+          helpKey={"cerrarTicket"}
         >
           <Cerrar />
         </VentanaAcciones>
@@ -160,6 +165,7 @@ const ModalManager = () => {
           onClose={closeWindowNota}
           onSave={nota}
           store={ticketStore}
+          helpKey={"notas"}
         >
           <Nota />
         </VentanaAcciones>
@@ -171,6 +177,7 @@ const ModalManager = () => {
           onClose={closeWindowAsignar}
           onSave={asignar}
           store={ticketStore}
+          helpKey={"asignarTicket"}
         >
           <Asignar />
         </VentanaAcciones>
@@ -181,8 +188,8 @@ const ModalManager = () => {
           title="Usuario"
           isOpen={isWindowUsuariosOpen}
           onClose={closeWindowUsuarios}
-          // onSave={asignar}
           store={usuariosStore}
+          helpKey={"verUsuario"}
         >
           <VerUsuarios />
         </VentanaAcciones>
@@ -194,6 +201,7 @@ const ModalManager = () => {
           onClose={closeWindowEditarUsuario}
           onSave={editarUsuario}
           store={usuariosStore}
+          helpKey={"editarUsuario"}
         >
           <EditarUsuario />
         </VentanaAcciones>
@@ -205,6 +213,7 @@ const ModalManager = () => {
           onClose={closeWindowCrearUsuario}
           onSave={crearUsuario}
           store={usuariosStore}
+          helpKey={"crearUsuario"}
         >
           <CrearUsuario />
         </VentanaAcciones>
@@ -215,6 +224,7 @@ const ModalManager = () => {
           isOpen={isWindowClientesOpen}
           onClose={closeWindowClientes}
           store={clientStore}
+          helpKey={"verCliente"}
         >
           <VerCliente />
         </VentanaAcciones>
@@ -226,6 +236,7 @@ const ModalManager = () => {
           onClose={closeWindowEditarCliente}
           onSave={editarCliente}
           store={clientStore}
+          helpKey={"editarCliente"}
         >
           <EditarCliente />
         </VentanaAcciones>
@@ -237,6 +248,7 @@ const ModalManager = () => {
           onClose={closeWindowCrearCliente}
           onSave={crearCliente}
           store={clientStore}
+          helpKey={"registrarCliente"}
         >
           <CrearCliente />
         </VentanaAcciones>
@@ -248,6 +260,7 @@ const ModalManager = () => {
           onClose={closeWindowEdit}
           onSave={editar}
           store={ticketStore}
+          helpKey={"editarTicket"}
         >
           <Edit />
         </VentanaAcciones>
@@ -259,6 +272,7 @@ const ModalManager = () => {
           onClose={closeWindowPendientes}
           onSave={pendiente}
           store={ticketStore}
+          helpKey={"ticketPendiente"}
         >
           <Pendientes />
         </VentanaAcciones>
@@ -270,21 +284,23 @@ const ModalManager = () => {
           onClose={closeWindowRegresar}
           onSave={regresar}
           store={ticketStore}
+          helpKey={"regresarTiket"}
         >
           <Regresar />
         </VentanaAcciones>
       )}
-      {/* {isWindowContactoOpen && (
+      {isWindowContactoOpen && (
         <VentanaAcciones
           title="Contactar Cliente"
           isOpen={isWindowContactoOpen}
           onClose={closeWindowContacto}
           onSave={regresar}
           store={ticketStore}
+          helpKey={"contactoCliente"}
         >
           <Contacto />
         </VentanaAcciones>
-      )} */}
+      )}
       {isWindowOpen && <View />}
       <SuccessSB />
       <ErrorSB />

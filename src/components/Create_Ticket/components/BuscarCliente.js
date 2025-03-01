@@ -19,6 +19,7 @@ import { useCrearTicketStore } from "../store/crearTicket.store.ts";
 /* -------------------------------------------------------------------------- */
 // Importaciones de utilidades, helpers o constantes
 import PropTypes from "prop-types";
+import { Typography } from "@mui/material";
 /* -------------------------------------------------------------------------- */
 // Importaciones de componentes internos
 /* -------------------------------------------------------------------------- */
@@ -27,7 +28,6 @@ const BuscarCliente = ({ form, formState }) => {
   const [getCliente] = useLazyGetClienteByCorreoQuery();
   /* -------------------------------------------------------------------------- */
   // Estado global de Zustand
-  const crearTicketStore = useCrearTicketStore();
   const crearTicketFields = useCrearTicketStore((state) => state.setCrearTicketFields);
   /* -------------------------------------------------------------------------- */
   // Estados locales con useState
@@ -185,9 +185,9 @@ const BuscarCliente = ({ form, formState }) => {
         </>
       ) : null}
       {!clienteExiste ? (
-        <div>Ingresa un correo válido para el cliente.</div>
+        <Typography variant="overline">Ingresa un correo válido para el cliente</Typography>
       ) : !clienteExiste && Object.keys(data).length === 0 ? (
-        <div>El cliente no existe</div>
+        <Typography variant="overline">El cliente no existe</Typography>
       ) : null}
     </Grid>
   );

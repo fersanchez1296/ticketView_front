@@ -8,8 +8,7 @@ import { useTicketStore } from "zustand/index.ts";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
-import HelpIcon from "@mui/icons-material/Help";
-import IconButton from "@mui/material/IconButton";
+
 const Contacto = ({ form, formState }) => {
   const ticketId = useTicketStore((state) => state._id);
   const { data, isLoading, isError } = useGetCorreosQuery({ ticketId });
@@ -56,15 +55,9 @@ const Contacto = ({ form, formState }) => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <InfoIcon color="secondary" />
           <Typography variant="overline" pl={1}>
-            Puedes modificar el asunto del correo si lo necesitas.``
+            Puedes modificar el asunto del correo si lo necesitas.
           </Typography>
         </Box>
-      </Grid>
-      <Grid item xs={12}>
-        <IconButton aria-label="delete">
-          <HelpIcon color="primary" />
-          <Typography variant="overline">Ayuda</Typography>
-        </IconButton>
       </Grid>
     </Grid>
   );

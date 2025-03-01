@@ -142,4 +142,8 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowContactoOpen: false,
   openWindowContacto: () => set({ isWindowContactoOpen: true }),
   closeWindowContacto: () => set({ isWindowContactoOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de ayuda:
+  isHelpWindowOpen: false,
+  openWindowHelp: () => set({ isHelpWindowOpen: true }),
+  closeWindowHelp: () => set({ isHelpWindowOpen: false }),
 }));

@@ -308,21 +308,21 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
-      // {
-      //   field: "Contacto",
-      //   headerName: "Contacto",
-      //   width: 140,
-      //   renderCell: (params) => (
-      //     <WindowButton
-      //       key={params.row._id}
-      //       ticket={params.row}
-      //       color="primary"
-      //       store={setTicketFields}
-      //       openWindow={dialogStore.openWindowContacto}
-      //       label="Contacto"
-      //     />
-      //   ),
-      // },
+      {
+        field: "Contacto",
+        headerName: "Contacto",
+        width: 140,
+        renderCell: (params) => (
+          <WindowButton
+            key={params.row._id}
+            ticket={params.row}
+            color="primary"
+            store={setTicketFields}
+            openWindow={dialogStore.openWindowContacto}
+            label="Contacto"
+          />
+        ),
+      },
     ],
   };
 

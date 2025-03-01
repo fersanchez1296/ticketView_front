@@ -11,24 +11,28 @@ import Slide from "@mui/material/Slide";
 import SaveIcon from "@mui/icons-material/Save";
 import Grid from "@mui/material/Unstable_Grid2";
 import LoadingButton from "@mui/lab/LoadingButton";
+import HelpButton from "components/HelpButton/HelpButton";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import PropTypes from "prop-types";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+import { useDialogStore } from "zustand/index.ts";
 import { useForm } from "react-hook-form";
+import Help from "components/TicketWindow/Help";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
+const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => {
   const form = useForm({
     defaultValues: {
       ...store,
       Files: [],
     },
   });
+  const { isHelpWindowOpen, openWindowHelp } = useDialogStore();
   const [loading, setLoading] = React.useState(false);
   const { handleSubmit, formState, reset } = form;
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
@@ -79,7 +83,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
                 Cerrar
               </Typography>
             </IconButton>
-            <Typography sx={{ ml: 2 }} variant="h4" component="div" color={"White"}>
+            <Typography variant="h4" component="div" color={"White"}>
               {store.Creado_por ? `Ticket #${store.Id}` : `${store.Nombre}`}
             </Typography>
             {onSave ? (
@@ -97,7 +101,10 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
             ) : null}
           </Toolbar>
         </AppBar>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <HelpButton openWindow={openWindowHelp} />
+          </Grid>
           <Grid item xs={12}>
             <MDBox bgColor="primary" borderRadius="lg" mx={2} p={2} mb={3} textAlign="left">
               <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
@@ -109,6 +116,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store }) => {
         <form onSubmit={handleSubmit(handleSave)}>
           {React.Children.map(children, (child) => React.cloneElement(child, { form, formState }))}
         </form>
+        {isHelpWindowOpen ? <Help helpKey={helpKey} /> : null}
       </Dialog>
     </React.Fragment>
   );
@@ -119,6 +127,7 @@ Index.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func,
+  helpKey: PropTypes.string,
   store: PropTypes.object.isRequired,
 };
 

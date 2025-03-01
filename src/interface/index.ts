@@ -239,4 +239,8 @@ export interface DialogState {
   isWindowContactoOpen: boolean;
   openWindowContacto: () => void;
   closeWindowContacto: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de ayuda:
+  isHelpWindowOpen: boolean;
+  openWindowHelp: () => void;
+  closeWindowHelp: () => void;
 }
