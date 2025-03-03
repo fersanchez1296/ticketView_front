@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 //snackbar store
 const Nota = ({ form, formState }) => {
+  console.log(form);
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   /* -------------------------------------------------------------------------- */

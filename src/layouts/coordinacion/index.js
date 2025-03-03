@@ -23,7 +23,6 @@ import { useTicketStore, useDialogStore } from "zustand/index.ts";
 //api
 import { useGetAreasCoordinacionQuery, useGetHistoricoAreaQuery } from "api/index";
 //components
-import View from "components/TicketWindow/View";
 import Asignado from "./components/Asignado";
 import Cliente from "./components/Cliente";
 import Badge from "./components/Badge";
@@ -200,7 +199,6 @@ function Coordinacion({ collection }) {
         </MDBox>
         <Footer />
       </DashboardLayout>
-      <View />
     </>
   );
 }

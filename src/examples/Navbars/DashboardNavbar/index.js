@@ -62,7 +62,6 @@ import { useAuthStore } from "zustand/auth.store.ts";
 import MDButton from "components/MDButton";
 //snackbar store
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
-import View from "components/TicketWindow/View/index";
 //snackbar
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
@@ -75,10 +74,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
   const [ticketId, setTicketId] = React.useState("");
   const [postTicket] = useGetTicketByIdMutation();
-  const ticketState = useTicketStore();
   const { role } = useAuthStore();
   const openWindow = useDialogStore((state) => state.openWindow);
-  const isWindowViewOpen = useDialogStore((state) => state.isWindowOpen);
   const setTicketFromFetch = useTicketStore((state) => state.setTicketFetch);
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
@@ -231,9 +228,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
           ) : null}
         </Toolbar>
       </AppBar>
-      {isWindowViewOpen ? <View /> : null}
-      <SuccessSB />
-      <ErrorSB />
     </>
   );
 }

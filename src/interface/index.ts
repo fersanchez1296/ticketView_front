@@ -13,8 +13,6 @@ export interface TicketProps {
   Categoria: Object;
   Servicio: Object;
   Subcategoria: Object;
-  Direccion_general?: Object;
-  Direccion_area?: Object | null;
   Descripcion: string;
   Prioridad: Object;
   Incidencia_grave: string;
@@ -27,17 +25,12 @@ export interface TicketProps {
   Fecha_hora_cierre?: Date | String;
   NumeroRec_Oficio?: string;
   Numero_Oficio?: string;
-  PendingReason?: string;
   Reasignado_a?: Object;
   Area_reasignado_a?: Object;
   Descripcion_resolucion: string;
-  Nombre_cliente: string;
-  Telefono_cliente: string;
-  Extension_cliente: string;
-  Ubicacion_cliente: string;
-  Correo_cliente: string;
   Medio: string;
-  Dependencia_cliente: Object;
+  Cliente: String;
+  Historia_ticket: Array<any>;
   Files?: File | Array<any>;
 }
 
@@ -64,9 +57,6 @@ export const ticketInitialState: TicketProps = {
   Categoria: {},
   Servicio: {},
   Subcategoria: {},
-  Nombre_cliente: "",
-  Direccion_general: {},
-  Direccion_area: {},
   Descripcion: "",
   Prioridad: {},
   Incidencia_grave: "",
@@ -79,16 +69,12 @@ export const ticketInitialState: TicketProps = {
   Fecha_hora_cierre: "",
   NumeroRec_Oficio: "",
   Numero_Oficio: "",
-  PendingReason: "",
   Reasignado_a: "",
   Area_reasignado_a: "",
   Descripcion_resolucion: "",
-  Telefono_cliente: "",
-  Extension_cliente: "",
-  Ubicacion_cliente: "",
-  Correo_cliente: "",
   Medio: "",
-  Dependencia_cliente: {},
+  Cliente: "",
+  Historia_ticket: [],
   Files: [],
 };
 

@@ -24,7 +24,7 @@ function Index() {
   const setUserFields = useUserStore((state) => state.setUserFetch);
   const { data: users, refetch, isLoading, error } = useUsuariosQuery();
   const dialogStore = useDialogStore();
-  if (isLoading) return <Progress />;
+  if (isLoading) return <Progress open={true} />;
   const { columns, rows } = UsuariosData(users, setUserFields, dialogStore);
   return (
     <>

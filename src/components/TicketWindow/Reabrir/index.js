@@ -23,7 +23,7 @@ const Reabrir = ({ form, formState }) => {
   const [reabrirNuevaInfo, setReabrirNuevaInfo] = React.useState(false);
   const { data, isLoading } = useReabrirFieldsQuery(undefined, { skip: !reabrirNuevaInfo });
   const [selectedFiles, setSelectedFiles] = React.useState([]);
-  if (isLoading) return <Progress />;
+  if (isLoading) return <Progress open={true} />;
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     setSelectedFiles(files);

@@ -102,16 +102,20 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
           </Toolbar>
         </AppBar>
         <Grid container spacing={1}>
-          <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <HelpButton openWindow={openWindowHelp} />
-          </Grid>
-          <Grid item xs={12}>
-            <MDBox bgColor="primary" borderRadius="lg" mx={2} p={2} mb={3} textAlign="left">
-              <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                {title}
-              </MDTypography>
-            </MDBox>
-          </Grid>
+          {helpKey && (
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <HelpButton openWindow={openWindowHelp} />
+            </Grid>
+          )}
+          {title && (
+            <Grid item xs={12}>
+              <MDBox bgColor="primary" borderRadius="lg" mx={2} p={2} mb={3} textAlign="left">
+                <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                  {title}
+                </MDTypography>
+              </MDBox>
+            </Grid>
+          )}
         </Grid>
         <form onSubmit={handleSubmit(handleSave)}>
           {React.Children.map(children, (child) => React.cloneElement(child, { form, formState }))}
@@ -123,7 +127,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
 };
 Index.propTypes = {
   children: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func,

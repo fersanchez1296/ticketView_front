@@ -24,7 +24,7 @@ function Index() {
   const setClientesFields = useClientesStore((state) => state.setClientesFetch);
   const { data: users, refetch, isLoading } = useClientesQuery();
   const dialogStore = useDialogStore();
-  if (isLoading) return <Progress />;
+  if (isLoading) return <Progress open={true} />;
   const { columns, rows } = ClientesData(users, setClientesFields, dialogStore);
   return (
     <>

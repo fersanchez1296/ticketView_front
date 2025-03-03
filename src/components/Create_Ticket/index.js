@@ -13,6 +13,7 @@ import { useSelectsCrearTicketQuery } from "api/ticketsApi";
 /* -------------------------------------------------------------------------- */
 // Importaciones de Zustand u otro gestor de estado
 import { useCrearTicketStore } from "./store/crearTicket.store.ts";
+import Progress from "components/Progress";
 /* -------------------------------------------------------------------------- */
 // Importaciones de utilidades, helpers o constantes
 /* -------------------------------------------------------------------------- */
@@ -35,7 +36,7 @@ const Edit = () => {
   }, []);
   /* -------------------------------------------------------------------------- */
   // Verificaciones de carga y errores (isLoading, isError)
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Progress open={true} />;
   /* -------------------------------------------------------------------------- */
   // Funciones auxiliares
   /* -------------------------------------------------------------------------- */
@@ -45,8 +46,6 @@ const Edit = () => {
       <DashboardLayout>
         <Form data={data} />
       </DashboardLayout>
-      <SuccessSB />
-      <ErrorSB />
     </React.Fragment>
   );
 };

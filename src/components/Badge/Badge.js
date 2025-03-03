@@ -5,18 +5,18 @@ import MDBadge from "components/MDBadge";
 import PropTypes from "prop-types";
 
 const badgeColors = {
-  "EN CURSO": "success",
+  ABIERTOS: "success",
   Normal: "success",
-  RESUELTO: "success",
-  REABIERTO: "success",
-  NUEVO: "info",
+  RESUELTOS: "success",
+  REABIERTOS: "success",
+  NUEVOS: "info",
   Bajo: "info",
-  CERRADO: "error",
+  CERRADOS: "error",
   Alto: "error",
   CRITICO: "error",
   Medio: "warning",
-  PENDIENTE: "warning",
-  "Sin asignar": "dark",
+  PENDIENTES: "warning",
+  REVISION: "warning",
 };
 
 const Badge = ({ content }) => (
@@ -25,7 +25,7 @@ const Badge = ({ content }) => (
       badgeContent={content !== "" ? content : "Sin Asignar"}
       color={content !== "" ? badgeColors[content] || "secondary" : badgeColors["Sin asignar"]}
       variant="gradient"
-      size="sm"
+      size="lg"
     />
   </MDBox>
 );

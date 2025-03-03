@@ -10,7 +10,8 @@ const helps = [
     },
     notas: {
       titulo: "Notas",
-      descripcion: "Esta es la ayuda para el componente de notas.",
+      descripcion:
+        'En esta ventana podrás agregar notas de diario al historico del ticket ademas de poder agregar archivos si es que lo requieres. La descripción de la nota es requerida pero los archivos son opcionales. Para guardar la nota basta con presionar el botón  "Guardar" en la partte superior izquierda. Para cerrar la ventana presionar el botón de "cerrar" en la parte superior izquierda.',
     },
     regresarTiket: {
       titulo: "Notas",

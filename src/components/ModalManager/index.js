@@ -42,7 +42,6 @@ import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuar
 import { useCrearClienteMutation, useUpdateClienteByIdMutation } from "api/clientesApi";
 const ModalManager = () => {
   const {
-    isWindowOpen,
     isWindowEditOpen,
     isWindowReabrirOpen,
     closeWindowReabrir,
@@ -78,6 +77,8 @@ const ModalManager = () => {
     closeWindowCrearCliente,
     isWindowContactoOpen,
     closeWindowContacto,
+    isWindowOpen,
+    closeWindow,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -303,7 +304,11 @@ const ModalManager = () => {
           <Contacto />
         </VentanaAcciones>
       )}
-      {isWindowOpen && <View />}
+      {isWindowOpen && (
+        <VentanaAcciones isOpen={isWindowOpen} onClose={closeWindow} store={ticketStore}>
+          <View />
+        </VentanaAcciones>
+      )}
       <SuccessSB />
       <ErrorSB />
     </>
