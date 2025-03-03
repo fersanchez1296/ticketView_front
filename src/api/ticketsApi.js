@@ -457,7 +457,6 @@ export const ticketsApi = apiSlice.injectEndpoints({
       },
       providesTags: ["Tickets"],
     }),
-    //Editar cliente en el ticket
     //obtener clientes
     getClientes: builder.query({
       query: () => {
@@ -468,6 +467,21 @@ export const ticketsApi = apiSlice.injectEndpoints({
         };
       },
       providesTags: ["Clientes", "Tickets"],
+    }),
+    contactoCliente: builder.mutation({
+      query: ({ data }) => {
+        const ticketId = data._id;
+        const auxData = {
+          Id: data.Id,
+          cuerpo: data.cuerpo,
+        };
+        return {
+          url: `tickets/contactoCliente/${ticketId}`,
+          method: "PUT",
+          body: auxData,
+        };
+      },
+      invalidatesTags: ["Tickets"],
     }),
   }),
 });
@@ -492,4 +506,5 @@ export const {
   usePutRegresarTicketMutation,
   useGetCorreosQuery,
   useGetClientesQuery,
+  useContactoClienteMutation,
 } = ticketsApi;

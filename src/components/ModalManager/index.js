@@ -35,6 +35,7 @@ import {
   useEditarMutation,
   usePutRegresarTicketMutation,
   usePutPendienteMutation,
+  useContactoClienteMutation,
 } from "api/ticketsApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
@@ -96,6 +97,7 @@ const ModalManager = () => {
   const [crearCliente] = useCrearClienteMutation();
   const [editarCliente] = useUpdateClienteByIdMutation();
   const [pendiente] = usePutPendienteMutation();
+  const [ticketContactoCliente] = useContactoClienteMutation();
   return (
     <>
       {isWindowReabrirOpen && (
@@ -294,7 +296,7 @@ const ModalManager = () => {
           title="Contactar Cliente"
           isOpen={isWindowContactoOpen}
           onClose={closeWindowContacto}
-          onSave={regresar}
+          onSave={ticketContactoCliente}
           store={ticketStore}
           helpKey={"contactoCliente"}
         >

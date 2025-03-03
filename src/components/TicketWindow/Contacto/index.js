@@ -34,6 +34,7 @@ const Contacto = ({ form, formState }) => {
           id="asunto"
           label="Asunto:"
           value={`Seguimiento al numero de ticket #${form.getValues("Id")}`}
+          disabled
         />
       </Grid>
       <Grid item xs={12}>
@@ -51,14 +52,14 @@ const Contacto = ({ form, formState }) => {
           rows={10}
         />
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <InfoIcon color="secondary" />
           <Typography variant="overline" pl={1}>
             Puedes modificar el asunto del correo si lo necesitas.
           </Typography>
         </Box>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
