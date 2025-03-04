@@ -13,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
+import { Typography } from "@mui/material";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -74,11 +75,11 @@ function Basic() {
           mx={2}
           mt={-3}
           p={2}
-          mb={1}
-          textAlign="center"
+          textAlign={"center"}
         >
-          <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Chermina
+          <MDTypography variant="h4" fontWeight="medium" color="white">
+            <span style={{ marginRight: "0.1rem" }}>Chermina</span>
+            <span style={{ fontWeight: "lighter", fontSize: "0.7rem" }}>Beta</span>
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
