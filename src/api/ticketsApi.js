@@ -65,7 +65,6 @@ export const ticketsApi = apiSlice.injectEndpoints({
         data.Prioridad = prioridad;
         data.tiempo = tiempo;
         data.Asignado_a = asignado_a;
-        data.Area_asignado = area_asignado;
         delete data.moderador;
         Object.entries(data).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {
@@ -216,7 +215,6 @@ export const ticketsApi = apiSlice.injectEndpoints({
         const aux = AuxData.asignado_a;
         const [Asignado_a, Area_asignado] = aux.split("|");
         AuxData.Asignado_a = Asignado_a;
-        AuxData.Area_asignado = Area_asignado;
         delete AuxData.asignado_a;
         if (data.prioridad) {
           const aux = data.prioridad;

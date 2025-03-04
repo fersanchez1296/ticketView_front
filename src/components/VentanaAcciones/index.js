@@ -102,11 +102,11 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
           </Toolbar>
         </AppBar>
         <Grid container spacing={1}>
-          {helpKey && (
+          {/* {helpKey && (
             <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
               <HelpButton openWindow={openWindowHelp} />
             </Grid>
-          )}
+          )} */}
           {title && (
             <Grid item xs={12}>
               <MDBox bgColor="primary" borderRadius="lg" mx={2} p={2} mb={3} textAlign="left">

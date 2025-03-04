@@ -98,12 +98,12 @@ export default function Form({ data }) {
   const isNuevoCliente = watch("isNuevoCliente");
   const formFields = React.useMemo(
     () => [
-      // {
-      //   name: "Area",
-      //   label: "Área",
-      //   options: data.tiposTickets,
-      //   key: "Area",
-      // },
+      {
+        name: "Area",
+        label: "Área",
+        options: data.areas,
+        key: "Area",
+      },
       {
         name: "Tipo_incidencia",
         label: "Tipo de incidencia",
@@ -127,7 +127,6 @@ export default function Form({ data }) {
     ],
     [data]
   );
-  console.log(data);
   return (
     <Box
       component="form"

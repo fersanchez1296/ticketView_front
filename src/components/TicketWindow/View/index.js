@@ -19,6 +19,7 @@ const View = ({ form, formState }) => {
   // Definición de constantes (rutas, configuraciones)
   const historia = form.getValues("Historia_ticket");
   const files = form.getValues("Files");
+  console.log(form.getValues("Medio"));
   /* -------------------------------------------------------------------------- */
   // API Hooks (RTK Query, Axios, etc.)
   /* -------------------------------------------------------------------------- */
@@ -143,7 +144,7 @@ const View = ({ form, formState }) => {
         name: "Resuelto_Por",
         label: "Resuelto Por",
         gridSize: 12,
-        options: form.getValues("Resuelto_Por.Nombre") ?? "",
+        options: form.getValues("Resuelto_por.Nombre") ?? "",
         multiline: { state: false },
       },
       {
@@ -177,14 +178,14 @@ const View = ({ form, formState }) => {
         name: "Moderador",
         label: "Moderador",
         gridSize: 6,
-        options: form.getValues("Asignado_a.Nombre") ?? "",
+        options: form.getValues("Asignado_a[0].Nombre") ?? "",
         multiline: { state: false },
       },
       {
         name: "Area_asignado",
         label: "Área moderador",
         gridSize: 6,
-        options: form.getValues("Area_asignado.Area") ?? "",
+        options: form.getValues("Asignado_a[0].Area[0].Area") ?? "",
         multiline: { state: false },
       },
     ],
@@ -197,14 +198,14 @@ const View = ({ form, formState }) => {
         name: "Resolutor",
         label: "Resolutor",
         gridSize: 6,
-        options: form.getValues("Reasignado_a.Nombre") ?? "",
+        options: form.getValues("Reasignado_a[0].Nombre") ?? "",
         multiline: { state: false },
       },
       {
         name: "Area_resolutor",
         label: "Área resolutor",
         gridSize: 6,
-        options: form.getValues("Area_resignado_a.Area") ?? "",
+        options: form.getValues("Reasignado_a[0].Area[0].Area") ?? "",
         multiline: { state: false },
       },
       {

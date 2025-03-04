@@ -247,7 +247,149 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       ...(collection !== "cerrados" &&
       collection !== "resueltos" &&
       collection !== "standby" &&
+      collection !== "reabiertos" &&
+      collection !== "abiertos" &&
+      collection !== "pendientes" &&
+      collection !== "revision"
+        ? [
+            {
+              field: "resolver",
+              headerName: "Resolver",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowResolver}
+                  label="Resolver"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection === "pendientes"
+        ? [
+            {
+              field: "regresar",
+              headerName: "Regresar",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowRegresar}
+                  label="Regresar"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection === "standby"
+        ? [
+            {
+              field: "Editar",
+              headerName: "Editar",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowEdit}
+                  label="Editar"
+                />
+              ),
+            },
+          ]
+        : []),
+      {
+        field: "Contacto",
+        headerName: "Contacto",
+        width: 140,
+        renderCell: (params) => (
+          <WindowButton
+            key={params.row._id}
+            ticket={params.row}
+            color="primary"
+            store={setTicketFields}
+            openWindow={dialogStore.openWindowContacto}
+            label="Contacto"
+          />
+        ),
+      },
+    ],
+    Administrador: [
+      ...(collection !== "cerrados" &&
+      collection !== "standby" &&
       collection !== "nuevos" &&
+      collection !== "reabiertos" &&
+      collection !== "abiertos" &&
+      collection !== "pendientes" &&
+      collection !== "revision"
+        ? [
+            {
+              field: "cerrar",
+              headerName: "Cerrar",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="primary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowCloseTicket}
+                  label="Cerrar"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection === "standby"
+        ? [
+            {
+              field: "Asignar",
+              headerName: "Asignar",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowAsignar}
+                  label="Asignar"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection === "cerrados"
+        ? [
+            {
+              field: "Reabrir",
+              headerName: "Reabrir",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowReabrir}
+                  label="Reabrir"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection !== "cerrados" &&
+      collection !== "resueltos" &&
+      collection !== "standby" &&
       collection !== "reabiertos" &&
       collection !== "abiertos" &&
       collection !== "pendientes" &&
