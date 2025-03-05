@@ -98,7 +98,7 @@ const ModalManager = () => {
   const [crearCliente] = useCrearClienteMutation();
   const [editarCliente] = useUpdateClienteByIdMutation();
   const [pendiente] = usePutPendienteMutation();
-  const [ticketContactoCliente] = useContactoClienteMutation();
+  const [contactoCliente] = useContactoClienteMutation();
   return (
     <>
       {isWindowReabrirOpen && (
@@ -297,7 +297,7 @@ const ModalManager = () => {
           title="Contactar Cliente"
           isOpen={isWindowContactoOpen}
           onClose={closeWindowContacto}
-          onSave={ticketContactoCliente}
+          onSave={contactoCliente}
           store={ticketStore}
           helpKey={"contactoCliente"}
         >

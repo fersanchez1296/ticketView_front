@@ -470,7 +470,6 @@ export const ticketsApi = apiSlice.injectEndpoints({
       query: ({ data }) => {
         const ticketId = data._id;
         const auxData = {
-          Id: data.Id,
           cuerpo: data.cuerpo,
         };
         return {

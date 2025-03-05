@@ -228,7 +228,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       </MDBox>
       <MDBox p={2}>
         <a
-          href={"http://localhost:4400/files/uploads/manual-chermina.pdf"}
+          href={"http://17.16.1.13:4400/files/uploads/manual-chermina.pdf"}
           target="_blank"
           rel="noreferrer"
         >
