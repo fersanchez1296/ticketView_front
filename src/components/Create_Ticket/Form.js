@@ -47,6 +47,9 @@ CustomTabPanel.propTypes = {
 };
 export default function Form({ data }) {
   const [loading, setLoading] = React.useState(false);
+  const [area, setArea] = React.useState("");
+  const [servicio, setServicio] = React.useState("");
+  const [categoria, setCategoria] = React.useState("");
   const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
@@ -99,24 +102,10 @@ export default function Form({ data }) {
   const formFields = React.useMemo(
     () => [
       {
-        name: "Area",
-        label: "Área",
-        options: data.areas,
-        key: "Area",
-      },
-      {
         name: "Tipo_incidencia",
         label: "Tipo de incidencia",
         options: data.tiposTickets,
         key: "Tipo_de_incidencia",
-      },
-      { name: "Servicio", label: "Servicio", options: data.servicios, key: "Servicio" },
-      { name: "Categoria", label: "Categoría", options: data.categorias, key: "Categoria" },
-      {
-        name: "Subcategoria",
-        label: "Subcategoría",
-        options: data.subcategoria,
-        key: "Subcategoria",
       },
       {
         name: "Medio",
@@ -236,6 +225,106 @@ export default function Form({ data }) {
             </FormControl>
           </Grid>
         ))}
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona el area</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona el area"}
+              {...register("Area", { required: `Es necesario seleccionar el área` })}
+              onChange={(e) => setArea(e.target.value)}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.areas.map((option) => (
+                <MenuItem key={option._id} value={option._id}>
+                  {option.Area}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona el servicio</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona el servicio"}
+              {...register("Servicio", { required: `Es necesario seleccionar el servicio` })}
+              onChange={(e) => setServicio(e.target.value)}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.servicios
+                .filter((s) => s.Area.includes(area)) // Filtra los elementos por el área
+                .map(
+                  (
+                    option // Luego, mapea los resultados para renderizarlos
+                  ) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option.Servicio}
+                    </MenuItem>
+                  )
+                )}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona la Categoría</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona la Categoría"}
+              {...register("Categoria", { required: `Es necesario seleccionar la categoria` })}
+              onChange={(e) => setCategoria(e.target.value)}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.categorias
+                .filter((s) => s.Servicio.includes(servicio)) // Filtra los elementos por el área
+                .map(
+                  (
+                    option // Luego, mapea los resultados para renderizarlos
+                  ) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option.Categoria}
+                    </MenuItem>
+                  )
+                )}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona la Subcategoría</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona la Subcategorpía"}
+              {...register("Subcategoria", {
+                required: `Es necesario seleccionar la subcategoria`,
+              })}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.subcategoria
+                .filter(
+                  (s) =>
+                    s.Area.includes(area) &&
+                    s.Servicio.includes(servicio) &&
+                    s.Categoria.includes(categoria)
+                ) // Filtra los elementos por el área
+                .map(
+                  (
+                    option // Luego, mapea los resultados para renderizarlos
+                  ) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option.Subcategoria}
+                    </MenuItem>
+                  )
+                )}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
         {/* Oficio */}
         <Grid item xs={6}>
           <TextField
