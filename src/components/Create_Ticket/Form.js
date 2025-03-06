@@ -280,7 +280,7 @@ export default function Form({ data }) {
             >
               <MenuItem value="">Seleccionar</MenuItem>
               {data.categorias
-                .filter((s) => s.Servicio.includes(servicio)) // Filtra los elementos por el área
+                .filter((s) => s.Area.includes(area) && s.Servicio.includes(servicio)) // Filtra los elementos por el área
                 .map(
                   (
                     option // Luego, mapea los resultados para renderizarlos
