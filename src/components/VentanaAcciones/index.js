@@ -29,6 +29,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
   const form = useForm({
     defaultValues: {
       ...store,
+      files: store.Files,
       Files: [],
     },
   });

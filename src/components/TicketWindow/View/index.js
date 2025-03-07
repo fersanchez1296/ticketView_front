@@ -18,7 +18,7 @@ const View = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   const historia = form.getValues("Historia_ticket");
-  const files = form.getValues("Files");
+  const files = form.getValues("files");
   console.log(form.getValues("Medio"));
   /* -------------------------------------------------------------------------- */
   // API Hooks (RTK Query, Axios, etc.)
