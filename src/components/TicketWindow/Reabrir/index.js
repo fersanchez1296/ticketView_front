@@ -83,7 +83,7 @@ const Reabrir = ({ form, formState }) => {
               fullWidth
               id="Moderador"
               label="Moderador"
-              {...form.register("Asignado_a.Nombre")}
+              {...form.register("Asignado_a[0].Nombre")}
               disabled
             />
           </Grid>
