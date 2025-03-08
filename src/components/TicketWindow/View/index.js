@@ -375,7 +375,6 @@ const View = ({ form, formState }) => {
         </MDBox>
         <Divider />
       </Grid>
-
       {historia?.map((mensaje) => (
         <Accordion
           key={mensaje._id}
@@ -392,6 +391,7 @@ const View = ({ form, formState }) => {
           >
             <MDBox sx={{ display: "flex", flexDirection: "column" }}>
               <Typography variant="body1">{`${mensaje.Nombre.Nombre}`}</Typography>
+              <Typography variant="body2">{`${mensaje.Titulo}`}</Typography>
               <Typography variant="overline">{mensaje.Fecha}</Typography>
             </MDBox>
           </AccordionSummary>

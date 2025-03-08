@@ -56,6 +56,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
       setLoading(false);
     }
   };
+  console.log(store);
   return (
     <React.Fragment>
       <Dialog
