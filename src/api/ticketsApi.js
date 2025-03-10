@@ -270,7 +270,7 @@ export const ticketsApi = apiSlice.injectEndpoints({
           asignado_a: data.asignado_a ?? "",
           Prioridad: data.Prioridad,
           prioridad: data.prioridad ?? "",
-          Descripcion: data.Descripcion,
+          descripcionReabierto: data.Descripcion,
           Files: data.Files,
         };
         if (typeof AuxData.Asignado_a === "object") {

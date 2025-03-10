@@ -29,6 +29,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
   const form = useForm({
     defaultValues: {
       ...store,
+      files: store.Files,
       Files: [],
     },
   });
@@ -56,6 +57,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
       setLoading(false);
     }
   };
+  console.log(store);
   return (
     <React.Fragment>
       <Dialog

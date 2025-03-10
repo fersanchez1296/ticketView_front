@@ -17,6 +17,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import Chip from "@mui/material/Chip";
 import { List, ListItem, IconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import MDBox from "components/MDBox";
@@ -26,6 +28,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
+import MDButton from "components/MDButton";
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -47,10 +50,13 @@ CustomTabPanel.propTypes = {
 };
 export default function Form({ data }) {
   const [loading, setLoading] = React.useState(false);
+  // const [chipData, setChipData] = React.useState([]);
+  // const [newTag, setNewTag] = React.useState("");
   const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const { register, handleSubmit, formState, setValue, watch, reset } = form;
+  // const tags = watch("tags", []);
   const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const { errors } = formState;
@@ -94,6 +100,19 @@ export default function Form({ data }) {
       setLoading(false);
     }
   };
+  // const handleAddChip = (label) => {
+  //   const newChip = { key: chipData.length, label }; // Nuevo chip
+  //   setValue(newChip);
+  //   setChipData([...chipData, newChip]); // Agregarlo sin mutar el estado
+  // };
+  // const handleAddNewChip = () => {
+  //   if (newTag.trim() === "") return; // Evitar agregar tags vacías
+  //   setChipData((prevChips) => [...prevChips, { key: prevChips.length, label: newTag }]);
+  //   setNewTag(""); // Limpiar el input después de agregar la tag
+  // };
+  // const handleDelete = (chipToDelete) => () => {
+  //   setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+  // };
   const standby = watch("standby");
   const isNuevoCliente = watch("isNuevoCliente");
   const formFields = React.useMemo(
@@ -127,6 +146,11 @@ export default function Form({ data }) {
     ],
     [data]
   );
+
+  const ListItem = styled("li")(({ theme }) => ({
+    margin: theme.spacing(0.5),
+  }));
+
   return (
     <Box
       component="form"
@@ -227,7 +251,11 @@ export default function Form({ data }) {
               >
                 <MenuItem value="">Seleccionar</MenuItem>
                 {options.map((option) => (
-                  <MenuItem key={option._id} value={option._id}>
+                  <MenuItem
+                    key={option._id}
+                    value={option._id}
+                    //onClick={() => handleAddChip(option[key])}
+                  >
                     {option[key]}
                   </MenuItem>
                 ))}
@@ -389,6 +417,52 @@ export default function Form({ data }) {
             )}
           </Box>
         </Grid>
+        {/* tags */}
+        {/* <Grid item xs={12}>
+          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
+            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+              Tags
+            </Typography>
+          </MDBox>
+        </Grid>
+        <Grid item xs={12}>
+          <input type="hidden" {...register("tags")} />
+          <Paper
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              listStyle: "none",
+              p: 0.5,
+              m: 0,
+            }}
+            component="ul"
+          >
+            {chipData.map((data) => {
+              return (
+                <ListItem key={data.key}>
+                  <Chip
+                    label={data.label}
+                    onDelete={data.label === "React" ? undefined : handleDelete(data)}
+                  />
+                </ListItem>
+              );
+            })}
+          </Paper>
+          <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
+            <TextField
+              label="Nueva Tag"
+              variant="outlined"
+              value={newTag}
+              onChange={(e) => setNewTag(e.target.value)}
+            />
+            <MDButton variant="outlined" color="primary" onClick={handleAddNewChip}>
+              Agregar Tag
+            </MDButton>
+          </Box>
+        </Grid> */}
+
+        {/* separador boton guardar */}
         <Grid item xs={12}>
           <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
             <Typography variant="h4" fontWeight="light" color="White" mt={1}>

@@ -18,8 +18,8 @@ const View = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   const historia = form.getValues("Historia_ticket");
-  const files = form.getValues("Files");
-  console.log(form.getValues("Medio"));
+  const files = form.getValues("files");
+  const getReabierto = form.getValues("Reabierto");
   /* -------------------------------------------------------------------------- */
   // API Hooks (RTK Query, Axios, etc.)
   /* -------------------------------------------------------------------------- */
@@ -143,22 +143,29 @@ const View = ({ form, formState }) => {
       {
         name: "Resuelto_Por",
         label: "Resuelto Por",
-        gridSize: 12,
+        gridSize: 6,
         options: form.getValues("Resuelto_por.Nombre") ?? "",
+        multiline: { state: false },
+      },
+      {
+        name: "Fecha_resolcución",
+        label: "Fecha y hora de resolución",
+        gridSize: 6,
+        options: form.getValues("Fecha_hora_resolucion") ?? "",
         multiline: { state: false },
       },
       {
         name: "Cerrado_Por",
         label: "Cerrado Por",
         gridSize: 6,
-        options: form.getValues("Cerrado_Por.Nombre") ?? "",
+        options: form.getValues("Cerrado_por.Nombre") ?? "",
         multiline: { state: false },
       },
       {
         name: "Fecha_y_hora_de_Cierre",
         label: "Fecha de cierre",
         gridSize: 6,
-        options: form.getValues("Fecha_y_hora_de_Cierre") ?? "",
+        options: form.getValues("Fecha_hora_cierre") ?? "",
         multiline: { state: false },
       },
       {
@@ -280,6 +287,7 @@ const View = ({ form, formState }) => {
     ],
     []
   );
+
   /* -------------------------------------------------------------------------- */
   // Efectos secundarios con useEffect
   React.useEffect(() => {
@@ -302,6 +310,27 @@ const View = ({ form, formState }) => {
     { title: "Moderador", fields: moderadorFields },
     { title: "Resolutor", fields: resolutorFields },
   ];
+
+  if (getReabierto && getReabierto.length > 0) {
+    const reabierto = getReabierto[getReabierto.length - 1];
+    const reabiertoFields = [
+      {
+        name: "Descripcion_reabierto",
+        label: "Descripción de reapertura",
+        gridSize: 6,
+        options: reabierto.Descripcion ?? "",
+        multiline: { state: true },
+      },
+      {
+        name: "Fecha_reapertura",
+        label: "Fecha de reapertura",
+        gridSize: 6,
+        options: reabierto.Fecha ?? "",
+        multiline: { state: false },
+      },
+    ];
+    sections.splice(1, 0, { title: "Ticket Reabierto", fields: reabiertoFields });
+  }
   /* -------------------------------------------------------------------------- */
   // Renderizado del componente (return)
   return (
@@ -375,7 +404,6 @@ const View = ({ form, formState }) => {
         </MDBox>
         <Divider />
       </Grid>
-
       {historia?.map((mensaje) => (
         <Accordion
           key={mensaje._id}
@@ -392,6 +420,7 @@ const View = ({ form, formState }) => {
           >
             <MDBox sx={{ display: "flex", flexDirection: "column" }}>
               <Typography variant="body1">{`${mensaje.Nombre.Nombre}`}</Typography>
+              <Typography variant="body2">{`${mensaje.Titulo}`}</Typography>
               <Typography variant="overline">{mensaje.Fecha}</Typography>
             </MDBox>
           </AccordionSummary>
