@@ -83,12 +83,12 @@ export const ticketsApi = apiSlice.injectEndpoints({
         for (let [key, value] of formData.entries()) {
           console.log(`${key}: ${value}`);
         }
-        // return {
-        //   url: "/tickets/crear/ticket",
-        //   method: "POST",
-        //   body: formData,
-        //   formData: true,
-        // };
+        return {
+          url: "/tickets/crear/ticket",
+          method: "POST",
+          body: formData,
+          formData: true,
+        };
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
