@@ -1,6 +1,5 @@
 import WindowButton from "components/WindowButton/WindowButton";
 import Badge from "components/Badge/Badge";
-
 const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
   const columns = [
     {
@@ -59,7 +58,6 @@ const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
     { field: "TBIncidencia", headerName: "Tipo", width: 150 },
     { field: "TBCliente", headerName: "Cliente", width: 500, align: "left" },
   ];
-
   const rows = ticketsArea.map((ticket) => ({
     ...ticket,
     TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",

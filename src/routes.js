@@ -118,7 +118,7 @@ const routes = [
     type: "collapse",
     name: "Resueltos",
     key: "resueltos",
-    rol: ["Root", "Administrador", "Moderador"],
+    rol: ["Root", "Administrador", "Moderador", "Usuario"],
     icon: <DoneIcon />,
     route: "/resueltos",
     component: <DataTable collection={"resueltos"} />,
