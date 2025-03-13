@@ -17,8 +17,6 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-import Chip from "@mui/material/Chip";
 import { List, ListItem, IconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import MDBox from "components/MDBox";
@@ -28,7 +26,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
-import MDButton from "components/MDButton";
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -50,13 +47,14 @@ CustomTabPanel.propTypes = {
 };
 export default function Form({ data }) {
   const [loading, setLoading] = React.useState(false);
-  // const [chipData, setChipData] = React.useState([]);
-  // const [newTag, setNewTag] = React.useState("");
+  const [Tipo_incidencia, setTipo_incidencia] = React.useState("");
+  const [area, setArea] = React.useState("");
+  const [servicio, setServicio] = React.useState("");
+  const [categoria, setCategoria] = React.useState("");
   const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const { register, handleSubmit, formState, setValue, watch, reset } = form;
-  // const tags = watch("tags", []);
   const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const { errors } = formState;
@@ -100,43 +98,10 @@ export default function Form({ data }) {
       setLoading(false);
     }
   };
-  // const handleAddChip = (label) => {
-  //   const newChip = { key: chipData.length, label }; // Nuevo chip
-  //   setValue(newChip);
-  //   setChipData([...chipData, newChip]); // Agregarlo sin mutar el estado
-  // };
-  // const handleAddNewChip = () => {
-  //   if (newTag.trim() === "") return; // Evitar agregar tags vacías
-  //   setChipData((prevChips) => [...prevChips, { key: prevChips.length, label: newTag }]);
-  //   setNewTag(""); // Limpiar el input después de agregar la tag
-  // };
-  // const handleDelete = (chipToDelete) => () => {
-  //   setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-  // };
   const standby = watch("standby");
   const isNuevoCliente = watch("isNuevoCliente");
   const formFields = React.useMemo(
     () => [
-      {
-        name: "Area",
-        label: "Área",
-        options: data.areas,
-        key: "Area",
-      },
-      {
-        name: "Tipo_incidencia",
-        label: "Tipo de incidencia",
-        options: data.tiposTickets,
-        key: "Tipo_de_incidencia",
-      },
-      { name: "Servicio", label: "Servicio", options: data.servicios, key: "Servicio" },
-      { name: "Categoria", label: "Categoría", options: data.categorias, key: "Categoria" },
-      {
-        name: "Subcategoria",
-        label: "Subcategoría",
-        options: data.subcategoria,
-        key: "Subcategoria",
-      },
       {
         name: "Medio",
         label: "Medio contacto",
@@ -146,11 +111,6 @@ export default function Form({ data }) {
     ],
     [data]
   );
-
-  const ListItem = styled("li")(({ theme }) => ({
-    margin: theme.spacing(0.5),
-  }));
-
   return (
     <Box
       component="form"
@@ -250,20 +210,151 @@ export default function Form({ data }) {
                 {...register(name, { required: `Es necesario seleccionar ${label.toLowerCase()}` })}
               >
                 <MenuItem value="">Seleccionar</MenuItem>
-                {options.map((option) => (
-                  <MenuItem
-                    key={option._id}
-                    value={option._id}
-                    //onClick={() => handleAddChip(option[key])}
-                  >
+                {/* {options.map((option) => (
+                  <MenuItem key={option._id} value={option._id}>
                     {option[key]}
                   </MenuItem>
-                ))}
+                ))} */}
               </Select>
               {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
             </FormControl>
           </Grid>
         ))}
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona el tipo de Ticket</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona el area"}
+              {...register("Tipo_incidencia", {
+                required: `Es necesario seleccionar el Tipo de ticket`,
+              })}
+              onChange={(e) => setTipo_incidencia(e.target.value)}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.tiposTickets.map((option) => (
+                <MenuItem key={option._id} value={option._id}>
+                  {option.Tipo_de_incidencia}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona el area</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona el area"}
+              {...register("Area", { required: `Es necesario seleccionar el área` })}
+              onChange={(e) => setArea(e.target.value)}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.areas
+                .filter((s) => s.Tipo_de_incidencia.includes(Tipo_incidencia)) // Filtra los elementos por el tipo de incidencia
+                .map(
+                  (
+                    option // Luego, mapea los resultados para renderizarlos
+                  ) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option.Area}
+                    </MenuItem>
+                  )
+                )}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona el servicio</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona el servicio"}
+              {...register("Servicio", { required: `Es necesario seleccionar el servicio` })}
+              onChange={(e) => setServicio(e.target.value)}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.servicios
+                .filter(
+                  (s) => s.Tipo_de_incidencia.includes(Tipo_incidencia) && s.Area.includes(area)
+                ) // Filtra los elementos por el área
+                .map(
+                  (
+                    option // Luego, mapea los resultados para renderizarlos
+                  ) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option.Servicio}
+                    </MenuItem>
+                  )
+                )}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona la Categoría</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona la Categoría"}
+              {...register("Categoria", { required: `Es necesario seleccionar la categoria` })}
+              onChange={(e) => setCategoria(e.target.value)}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.categorias
+                .filter(
+                  (s) =>
+                    s.Tipo_de_incidencia.includes(Tipo_incidencia) &&
+                    s.Area.includes(area) &&
+                    s.Servicio.includes(servicio)
+                ) // Filtra los elementos por el área
+                .map(
+                  (
+                    option // Luego, mapea los resultados para renderizarlos
+                  ) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option.Categoria}
+                    </MenuItem>
+                  )
+                )}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel>Selecciona la Subcategoría</InputLabel>
+            <Select
+              defaultValue=""
+              label={"Selecciona la Subcategorpía"}
+              {...register("Subcategoria", {
+                required: `Es necesario seleccionar la subcategoria`,
+              })}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              {data.subcategoria
+                .filter(
+                  (s) =>
+                    s.Tipo_de_incidencia.includes(Tipo_incidencia) &&
+                    s.Area.includes(area) &&
+                    s.Servicio.includes(servicio) &&
+                    s.Categoria.includes(categoria)
+                ) // Filtra los elementos por el área
+                .map(
+                  (
+                    option // Luego, mapea los resultados para renderizarlos
+                  ) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option.Subcategoria}
+                    </MenuItem>
+                  )
+                )}
+            </Select>
+            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+          </FormControl>
+        </Grid>
         {/* Oficio */}
         <Grid item xs={6}>
           <TextField
@@ -417,52 +508,6 @@ export default function Form({ data }) {
             )}
           </Box>
         </Grid>
-        {/* tags */}
-        {/* <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-              Tags
-            </Typography>
-          </MDBox>
-        </Grid>
-        <Grid item xs={12}>
-          <input type="hidden" {...register("tags")} />
-          <Paper
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              listStyle: "none",
-              p: 0.5,
-              m: 0,
-            }}
-            component="ul"
-          >
-            {chipData.map((data) => {
-              return (
-                <ListItem key={data.key}>
-                  <Chip
-                    label={data.label}
-                    onDelete={data.label === "React" ? undefined : handleDelete(data)}
-                  />
-                </ListItem>
-              );
-            })}
-          </Paper>
-          <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
-            <TextField
-              label="Nueva Tag"
-              variant="outlined"
-              value={newTag}
-              onChange={(e) => setNewTag(e.target.value)}
-            />
-            <MDButton variant="outlined" color="primary" onClick={handleAddNewChip}>
-              Agregar Tag
-            </MDButton>
-          </Box>
-        </Grid> */}
-
-        {/* separador boton guardar */}
         <Grid item xs={12}>
           <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
             <Typography variant="h4" fontWeight="light" color="White" mt={1}>
