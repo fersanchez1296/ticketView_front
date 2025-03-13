@@ -23,7 +23,10 @@ import Progress from "components/Progress";
 import PropTypes from "prop-types";
 import DataTable from "components/DataTable";
 import HistoricaData from "./data/historicoData";
-function Historico({ collection }) {
+import { useAuthStore } from "zustand/auth.store.ts";
+import WindowButton from "components/WindowButton/WindowButton";
+function Historico() {
+  const { role } = useAuthStore();
   const [area, setArea] = React.useState("");
   const dialogStore = useDialogStore();
   const setTicketFields = useTicketStore((state) => state.setTicketFetch);
@@ -55,8 +58,26 @@ function Historico({ collection }) {
 
   const areas = data?.areas || [];
   let tickets = ticketsArea || data?.tickets || [];
+  const btn_reasignar = {
+    field: "reasignar",
+    headerName: "Reasignar",
+    width: 140,
+    renderCell: (params) => (
+      <WindowButton
+        key={params.row._id}
+        ticket={params.row}
+        color="primary"
+        store={setTicketFields}
+        openWindow={dialogStore.openWindowReasignar}
+        label="Reasignar"
+      />
+    ),
+  };
   const { columns, rows } = HistoricaData(tickets, setTicketFields, dialogStore);
-  console.log(tickets);
+
+  if (role === "Moderador") {
+    columns.splice(2, 0, btn_reasignar);
+  }
   return (
     <>
       <DashboardLayout>
@@ -108,9 +129,5 @@ function Historico({ collection }) {
     </>
   );
 }
-
-Historico.propTypes = {
-  collection: PropTypes.string.isRequired,
-};
 
 export default Historico;

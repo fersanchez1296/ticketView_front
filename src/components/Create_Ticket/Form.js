@@ -210,11 +210,11 @@ export default function Form({ data }) {
                 {...register(name, { required: `Es necesario seleccionar ${label.toLowerCase()}` })}
               >
                 <MenuItem value="">Seleccionar</MenuItem>
-                {/* {options.map((option) => (
+                {options.map((option) => (
                   <MenuItem key={option._id} value={option._id}>
                     {option[key]}
                   </MenuItem>
-                ))} */}
+                ))}
               </Select>
               {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
             </FormControl>
@@ -225,10 +225,11 @@ export default function Form({ data }) {
             <InputLabel>Selecciona el tipo de Ticket</InputLabel>
             <Select
               defaultValue=""
-              label={"Selecciona el area"}
+              label={"Selecciona el tipo de Ticket"}
               {...register("Tipo_incidencia", {
                 required: `Es necesario seleccionar el Tipo de ticket`,
               })}
+              error={!!errors.Tipo_incidencia}
               onChange={(e) => setTipo_incidencia(e.target.value)}
             >
               <MenuItem value="">Seleccionar</MenuItem>
@@ -238,7 +239,9 @@ export default function Form({ data }) {
                 </MenuItem>
               ))}
             </Select>
-            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+            {errors.Tipo_incidencia && (
+              <FormHelperText>{errors.Tipo_incidencia.message}</FormHelperText>
+            )}
           </FormControl>
         </Grid>
         <Grid item xs={6}>
@@ -248,6 +251,7 @@ export default function Form({ data }) {
               defaultValue=""
               label={"Selecciona el area"}
               {...register("Area", { required: `Es necesario seleccionar el área` })}
+              error={!!errors.Area}
               onChange={(e) => setArea(e.target.value)}
             >
               <MenuItem value="">Seleccionar</MenuItem>
@@ -263,7 +267,7 @@ export default function Form({ data }) {
                   )
                 )}
             </Select>
-            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+            {errors.Area && <FormHelperText>{errors.Area.message}</FormHelperText>}
           </FormControl>
         </Grid>
         <Grid item xs={6}>
@@ -273,6 +277,7 @@ export default function Form({ data }) {
               defaultValue=""
               label={"Selecciona el servicio"}
               {...register("Servicio", { required: `Es necesario seleccionar el servicio` })}
+              error={!!errors.Servicio}
               onChange={(e) => setServicio(e.target.value)}
             >
               <MenuItem value="">Seleccionar</MenuItem>
@@ -290,7 +295,7 @@ export default function Form({ data }) {
                   )
                 )}
             </Select>
-            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+            {errors.Servicio && <FormHelperText>{errors.Servicio.message}</FormHelperText>}
           </FormControl>
         </Grid>
         <Grid item xs={6}>
@@ -300,6 +305,7 @@ export default function Form({ data }) {
               defaultValue=""
               label={"Selecciona la Categoría"}
               {...register("Categoria", { required: `Es necesario seleccionar la categoria` })}
+              error={!!errors.Categoria}
               onChange={(e) => setCategoria(e.target.value)}
             >
               <MenuItem value="">Seleccionar</MenuItem>
@@ -320,7 +326,7 @@ export default function Form({ data }) {
                   )
                 )}
             </Select>
-            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+            {errors.Categoria && <FormHelperText>{errors.Categoria.message}</FormHelperText>}
           </FormControl>
         </Grid>
         <Grid item xs={6}>
@@ -332,6 +338,7 @@ export default function Form({ data }) {
               {...register("Subcategoria", {
                 required: `Es necesario seleccionar la subcategoria`,
               })}
+              error={!!errors.Subcategoria}
             >
               <MenuItem value="">Seleccionar</MenuItem>
               {data.subcategoria
@@ -352,7 +359,7 @@ export default function Form({ data }) {
                   )
                 )}
             </Select>
-            {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+            {errors.Subcategoria && <FormHelperText>{errors.Subcategoria.message}</FormHelperText>}
           </FormControl>
         </Grid>
         {/* Oficio */}
