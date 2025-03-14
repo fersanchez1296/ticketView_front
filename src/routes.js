@@ -39,6 +39,7 @@ Coded by www.creative-tim.com
 import Dashboard from "layouts/dashboard";
 import Create_Ticket from "components/Create_Ticket/index";
 import Tables from "layouts/tables";
+import TableDatatareas from "layouts/tareas/";
 import DataTable from "layouts/tickets/";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
@@ -86,6 +87,15 @@ const routes = [
     icon: <FiberNewIcon />,
     route: "/crear_ticket",
     component: <Create_Ticket />,
+  },
+  {
+    type: "collapse",
+    name: "Tareas nuevas",
+    key: "nuevas",
+    rol: ["Usuario"],
+    icon: <FiberNewIcon />,
+    route: "/Tareas_nuevas",
+    component: <TableDatatareas collection={"nuevos"} />,
   },
   {
     type: "collapse",
