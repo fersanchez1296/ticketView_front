@@ -61,10 +61,8 @@ export const ticketsApi = apiSlice.injectEndpoints({
           delete data.nuevocliente;
         }
         const [prioridad, tiempo] = data.prioridad.split("|");
-        const [asignado_a, area_asignado] = data.moderador.split("|");
         data.Prioridad = prioridad;
         data.tiempo = tiempo;
-        data.Asignado_a = asignado_a;
         delete data.moderador;
         Object.entries(data).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {

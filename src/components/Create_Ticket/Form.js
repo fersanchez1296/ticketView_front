@@ -51,7 +51,7 @@ export default function Form({ data }) {
   const [area, setArea] = React.useState("");
   const [servicio, setServicio] = React.useState("");
   const [categoria, setCategoria] = React.useState("");
-  const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
+  const form = useForm({ defaultValues: { Files: [], isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const { register, handleSubmit, formState, setValue, watch, reset } = form;
@@ -98,7 +98,7 @@ export default function Form({ data }) {
       setLoading(false);
     }
   };
-  const standby = watch("standby");
+  const hasResolutor = watch("hasResolutor");
   const isNuevoCliente = watch("isNuevoCliente");
   const formFields = React.useMemo(
     () => [
@@ -467,18 +467,18 @@ export default function Form({ data }) {
                 <Box sx={{ display: "flex" }}>
                   <Typography>Asignar a moderador</Typography>
                   <Switch
-                    {...register("standby")}
-                    checked={standby}
+                    {...register("hasResolutor")}
+                    checked={hasResolutor}
                     onChange={(e) => {
                       const newValue = e.target.checked;
-                      setValue("standby", newValue); // Asegura que el valor es booleano
+                      setValue("hasResolutor", newValue); // Asegura que el valor es booleano
                     }}
                   />
-                  <Typography>Asignar a Mesa</Typography>
+                  <Typography>Asignar a resolutor</Typography>
                 </Box>
               </Stack>
             </FormGroup>
-            {!standby && (
+            {!hasResolutor ? (
               <FormControl fullWidth>
                 <InputLabel id="moderador">Moderador</InputLabel>
                 <Select
@@ -486,10 +486,10 @@ export default function Form({ data }) {
                   id="moderador"
                   label="Moderador"
                   defaultValue={""}
-                  {...register("moderador", {
+                  {...register("Asignado_a", {
                     required: "Es necesario seleccionar un moderador.",
                   })}
-                  error={!!errors.moderador}
+                  error={!!errors.Asignado_a}
                 >
                   <option aria-label="None" value="" />
                   {data.areasResolutores.map((area) => {
@@ -497,7 +497,7 @@ export default function Form({ data }) {
                       return (
                         <optgroup label={area.area.area} key={area.area._id}>
                           {area.resolutores.map((t, index) => (
-                            <option value={`${t._id}|${area.area._id}`} key={index}>
+                            <option value={`${t._id}`} key={index}>
                               {t.Nombre}
                             </option>
                           ))}
@@ -508,8 +508,42 @@ export default function Form({ data }) {
                     }
                   })}
                 </Select>
-                {errors.moderador && (
-                  <FormHelperText>{<span>{errors.moderador.message}</span>}</FormHelperText>
+                {errors.Asignado_a && (
+                  <FormHelperText>{<span>{errors.Asignado_a.message}</span>}</FormHelperText>
+                )}
+              </FormControl>
+            ) : (
+              <FormControl fullWidth>
+                <InputLabel id="resolutor">Resolutor</InputLabel>
+                <Select
+                  native
+                  id="resolutor"
+                  label="resolutor"
+                  defaultValue={""}
+                  {...register("Asignado_a", {
+                    required: "Es necesario seleccionar un resolutor.",
+                  })}
+                  error={!!errors.resolutor}
+                >
+                  <option aria-label="None" value="" />
+                  {data.resolutores.map((area) => {
+                    if (area) {
+                      return (
+                        <optgroup label={area.area.area} key={area.area._id}>
+                          {area.resolutores.map((t, index) => (
+                            <option value={`${t._id}`} key={index}>
+                              {t.Nombre}
+                            </option>
+                          ))}
+                        </optgroup>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </Select>
+                {errors.Asignado_a && (
+                  <FormHelperText>{<span>{errors.Asignado_a.message}</span>}</FormHelperText>
                 )}
               </FormControl>
             )}
