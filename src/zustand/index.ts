@@ -10,6 +10,9 @@ import {
   ClientType,
   clientInitialState,
   ClientProps,
+  TareaType,
+  tareaInitialState,
+  TareasProps,
 } from "interface/index.ts";
 export const useTicketStore = create<TicketType>((set) => ({
   ...ticketInitialState,
@@ -26,6 +29,25 @@ export const useTicketStore = create<TicketType>((set) => ({
   resetValues: () =>
     set(() => ({
       ...ticketInitialState,
+    })),
+  setFiles: (newFile) => set({ Files: newFile }),
+}));
+
+export const useTareaStore = create<TareaType>((set) => ({
+  ...tareaInitialState,
+  setTareaFields: (field: string, value: string) =>
+    set((state) => ({
+      ...state,
+      [field]: value,
+    })),
+  setTareaFetch: (fields: Partial<TareasProps>) =>
+    set((state) => ({
+      ...state,
+      ...fields,
+    })),
+  resetValues: () =>
+    set(() => ({
+      ...tareaInitialState,
     })),
   setFiles: (newFile) => set({ Files: newFile }),
 }));
@@ -71,6 +93,10 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowOpen: false,
   openWindow: () => set({ isWindowOpen: true }),
   closeWindow: () => set({ isWindowOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de visualización de tareas:
+  isWindowViewTareasOpen: false,
+  openWindowViewTareas: () => set({ isWindowViewTareasOpen: true }),
+  closeWindowViewTareas: () => set({ isWindowViewTareasOpen: false }),
   //estas definiciones y metodos se usan para abrir la ventana de edición:
   isWindowEditOpen: false,
   openWindowEdit: () => set({ isWindowEditOpen: true }),

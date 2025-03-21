@@ -8,24 +8,24 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import { useTicketsQuery } from "api/ticketsApi";
+import { useTareasQuery } from "api/tareasApi";
 //mui table
 import DataTable from "../../components/DataTable/index";
 //propTypes
 import PropTypes from "prop-types";
 //Progress
 import Progress from "components/Progress";
-import TicketsData from "./data/tareasData";
+import TareasData from "./data/tareasData";
 import { useAuthStore } from "zustand/auth.store.ts";
-import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useDialogStore, useTareaStore } from "zustand/index.ts";
 function TableDatatareas({ collection }) {
-  const { data: tickets, refetch, isLoading, error } = useTicketsQuery({ collection });
-  const setTicketFields = useTicketStore((state) => state.setTicketFetch);
+  const { data: tareas, refetch, isLoading, error } = useTareasQuery({ collection });
+  const setTareaFields = useTareaStore((state) => state.setTareaFetch);
   const rol = useAuthStore((state) => state.role);
   const dialogStore = useDialogStore();
   if (isLoading) return <Progress open={true} />;
   if (error) return <div>Error: Reload page</div>;
-  const { columns, rows } = TicketsData(tickets, collection, setTicketFields, rol, dialogStore);
+  const { columns, rows } = TareasData(tareas, collection, setTareaFields, rol, dialogStore);
   return (
     <>
       <DashboardLayout>

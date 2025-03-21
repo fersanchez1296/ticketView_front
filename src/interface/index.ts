@@ -78,6 +78,50 @@ export const ticketInitialState: TicketProps = {
   Files: [],
 };
 
+// Propiedades y métodos del componente de las tareas abiertos/nuevas
+export interface TareasProps {
+  _id: string;
+  Id: number | string;
+  Estado: Object;
+  Area: Object;
+  Creado_por: Object;
+  Descripcion: string;
+  Asignado_a: Object;
+  Reasignado_a?: Object;
+  Files?: File | Array<any>;
+  IdTicket: Object;
+  Fecha_hora_creacion: Date | String;
+  Fecha_hora_ultima_modificacion: Date | String;
+  Fecha_hora_resolucion?: Date | String;
+  Historia_ticket: Array<any>;
+}
+
+export interface TareasMethods {
+  setTareasFields: (field: string, value: string | number) => void;
+  setTareasFetch: (fields: Partial<TareasProps>) => void;
+  resetValues: () => void;
+  setFiles: (newFile: File | null) => void;
+}
+
+export type TareaType = TareasProps & TareasMethods;
+
+export const tareaInitialState: TareasProps = {
+  _id: "",
+  Id: "",
+  Estado: {},
+  Area: {},
+  Creado_por: {},
+  Descripcion: "",
+  Asignado_a: {},
+  Reasignado_a: {},
+  Files: [],
+  IdTicket: {},
+  Fecha_hora_creacion: "",
+  Fecha_hora_ultima_modificacion: "",
+  Fecha_hora_resolucion: "",
+  Historia_ticket: [],
+};
+
 export interface UserProps {
   _id: string;
   Nombre: string;

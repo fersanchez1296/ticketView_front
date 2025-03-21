@@ -21,11 +21,13 @@ import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import { useDialogStore } from "zustand/index.ts";
 import { useForm } from "react-hook-form";
 import Help from "components/TicketWindow/Help";
+import { Store } from "@mui/icons-material";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => {
+  console.log(store);
   const form = useForm({
     defaultValues: {
       ...store,
@@ -57,7 +59,6 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
       setLoading(false);
     }
   };
-  console.log(store);
   return (
     <React.Fragment>
       <Dialog
@@ -86,7 +87,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
               </Typography>
             </IconButton>
             <Typography variant="h4" component="div" color={"White"}>
-              {store.Creado_por ? `Ticket #${store.Id}` : `${store.Nombre}`}
+              {store.Creado_por ? `#${store.Id}` : `${store.Nombre}`}
             </Typography>
             {onSave ? (
               <LoadingButton

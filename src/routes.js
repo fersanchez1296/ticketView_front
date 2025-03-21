@@ -91,7 +91,7 @@ const routes = [
   {
     type: "collapse",
     name: "Tareas nuevas",
-    key: "nuevas",
+    key: "Tareas_nuevas",
     rol: ["Usuario"],
     icon: <FiberNewIcon />,
     route: "/Tareas_nuevas",

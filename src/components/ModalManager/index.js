@@ -3,6 +3,7 @@ import { useDialogStore } from "zustand/index.ts";
 import SuccessSB from "components/Snackbar/success/index";
 import ErrorSB from "components/Snackbar/error/index";
 import View from "components/TicketWindow/View";
+import Viewtareas from "components/TicketWindow/View_Tareas"; // No se esta utilizando aún
 import Edit from "components/TicketWindow/Edit";
 import VentanaAcciones from "components/VentanaAcciones";
 import Reabrir from "components/TicketWindow/Reabrir";
@@ -19,7 +20,7 @@ import CrearUsuario from "components/TicketWindow/Usuarios/Crear";
 import VerCliente from "components/TicketWindow/Clientes/Ver";
 import EditarCliente from "components/TicketWindow/Clientes/Editar";
 import CrearCliente from "components/TicketWindow/Clientes/Crear";
-import { useUserStore, useTicketStore, useClientesStore } from "zustand/index.ts";
+import { useUserStore, useTicketStore, useClientesStore, useTareaStore } from "zustand/index.ts";
 import Pendientes from "components/TicketWindow/Pendientes";
 import Regresar from "components/TicketWindow/Regresar";
 import Contacto from "components/TicketWindow/Contacto";
@@ -79,10 +80,13 @@ const ModalManager = () => {
     closeWindowContacto,
     isWindowOpen,
     closeWindow,
+    isWindowViewTareasOpen,
+    closeWindowViewTareas,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
   const clientStore = useClientesStore();
+  const tareaStore = useTareaStore();
 
   const [reabrir] = useReabrirMutation();
   const [resolver] = useResolverMutation();
@@ -307,6 +311,15 @@ const ModalManager = () => {
       {isWindowOpen && (
         <VentanaAcciones isOpen={isWindowOpen} onClose={closeWindow} store={ticketStore}>
           <View />
+        </VentanaAcciones>
+      )}
+      {isWindowViewTareasOpen && (
+        <VentanaAcciones
+          isOpen={isWindowViewTareasOpen}
+          onClose={closeWindowViewTareas}
+          store={tareaStore}
+        >
+          <Viewtareas />
         </VentanaAcciones>
       )}
       <SuccessSB />

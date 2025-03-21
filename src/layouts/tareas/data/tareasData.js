@@ -1,7 +1,7 @@
 import WindowButton from "components/WindowButton/WindowButton";
 import Badge from "components/Badge/Badge";
 
-const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => {
+const TareasData = (tareas, collection, setTareaFields, rol, dialogStore) => {
   const baseColumns = [
     {
       field: "visualizar",
@@ -12,8 +12,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
           key={params.row._id}
           ticket={params.row}
           color="primary"
-          store={setTicketFields}
-          openWindow={dialogStore.openWindow}
+          store={setTareaFields}
+          openWindow={dialogStore.openWindowViewTareas}
           label="Visualizar"
         />
       ),
@@ -27,7 +27,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
           key={params.row._id}
           ticket={params.row}
           color="secondary"
-          store={setTicketFields}
+          store={setTareaFields}
           openWindow={dialogStore.openWindowNota}
           label="Nota"
         />
@@ -75,7 +75,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="primary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowReasignar}
                   label="Reasignar"
                 />
@@ -94,7 +94,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowResolver}
                   label="Resolver"
                 />
@@ -113,7 +113,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="success"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowAceptar}
                   label="Aceptar"
                 />
@@ -128,7 +128,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="error"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowRechazar}
                   label="Rechazar"
                 />
@@ -152,7 +152,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowResolver}
                   label="Resolver"
                 />
@@ -171,7 +171,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowPendientes}
                   label="Pendiente"
                 />
@@ -198,8 +198,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="primary"
-                  store={setTicketFields}
-                  openWindow={dialogStore.openWindowCloseTicket}
+                  store={setTareaFields}
+                  openWindow={dialogStore.openWindowClosetarea}
                   label="Cerrar"
                 />
               ),
@@ -217,7 +217,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowAsignar}
                   label="Asignar"
                 />
@@ -236,7 +236,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowReabrir}
                   label="Reabrir"
                 />
@@ -261,7 +261,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowResolver}
                   label="Resolver"
                 />
@@ -280,7 +280,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowRegresar}
                   label="Regresar"
                 />
@@ -299,7 +299,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowEdit}
                   label="Editar"
                 />
@@ -316,7 +316,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             key={params.row._id}
             ticket={params.row}
             color="primary"
-            store={setTicketFields}
+            store={setTareaFields}
             openWindow={dialogStore.openWindowContacto}
             label="Contacto"
           />
@@ -341,8 +341,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="primary"
-                  store={setTicketFields}
-                  openWindow={dialogStore.openWindowCloseTicket}
+                  store={setTareaFields}
+                  openWindow={dialogStore.openWindowClosetarea}
                   label="Cerrar"
                 />
               ),
@@ -360,7 +360,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowAsignar}
                   label="Asignar"
                 />
@@ -379,7 +379,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowReabrir}
                   label="Reabrir"
                 />
@@ -404,7 +404,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowResolver}
                   label="Resolver"
                 />
@@ -423,7 +423,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowRegresar}
                   label="Regresar"
                 />
@@ -442,7 +442,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   key={params.row._id}
                   ticket={params.row}
                   color="secondary"
-                  store={setTicketFields}
+                  store={setTareaFields}
                   openWindow={dialogStore.openWindowEdit}
                   label="Editar"
                 />
@@ -459,7 +459,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             key={params.row._id}
             ticket={params.row}
             color="primary"
-            store={setTicketFields}
+            store={setTareaFields}
             openWindow={dialogStore.openWindowContacto}
             label="Contacto"
           />
@@ -472,13 +472,11 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
 
   const columns = [...baseColumns.slice(0, 2), ...selectedExtraColumns, ...baseColumns.slice(2)];
 
-  const rows = tickets.map((ticket) => ({
-    ...ticket,
-    TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",
-    TBCliente: ticket.Cliente?.Nombre ?? "",
+  const rows = tareas.map((tarea) => ({
+    ...tarea,
   }));
 
   return { columns, rows };
 };
 
-export default TicketsData;
+export default TareasData;
