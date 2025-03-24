@@ -47,6 +47,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
         reset();
+        store.resetValues();
         setTimeout(() => {
           onClose();
         }, 2500);

@@ -23,6 +23,7 @@ import { useUserStore, useTicketStore, useClientesStore } from "zustand/index.ts
 import Pendientes from "components/TicketWindow/Pendientes";
 import Regresar from "components/TicketWindow/Regresar";
 import Contacto from "components/TicketWindow/Contacto";
+import Mesa from "components/TicketWindow/Mesa/index";
 //reabrir store
 import {
   useReabrirMutation,
@@ -36,6 +37,7 @@ import {
   usePutRegresarTicketMutation,
   usePutPendienteMutation,
   useContactoClienteMutation,
+  useRetornoMesaMutation,
 } from "api/ticketsApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
@@ -79,6 +81,8 @@ const ModalManager = () => {
     closeWindowContacto,
     isWindowOpen,
     closeWindow,
+    isMesaServicioOpen,
+    closeWindowMesaServicio,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -99,6 +103,7 @@ const ModalManager = () => {
   const [editarCliente] = useUpdateClienteByIdMutation();
   const [pendiente] = usePutPendienteMutation();
   const [contactoCliente] = useContactoClienteMutation();
+  const [retornoMesa] = useRetornoMesaMutation();
   return (
     <>
       {isWindowReabrirOpen && (
@@ -307,6 +312,17 @@ const ModalManager = () => {
       {isWindowOpen && (
         <VentanaAcciones isOpen={isWindowOpen} onClose={closeWindow} store={ticketStore}>
           <View />
+        </VentanaAcciones>
+      )}
+      {isMesaServicioOpen && (
+        <VentanaAcciones
+          title="Regresar a mesa de servicio"
+          isOpen={isMesaServicioOpen}
+          onClose={closeWindowMesaServicio}
+          onSave={retornoMesa}
+          store={ticketStore}
+        >
+          <Mesa />
         </VentanaAcciones>
       )}
       <SuccessSB />
