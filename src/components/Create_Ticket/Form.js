@@ -23,6 +23,8 @@ import MDBox from "components/MDBox";
 import { useCrearMutation } from "api/ticketsApi.js";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { addHours, format } from "date-fns";
+import { es } from "date-fns/locale";
 const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -51,6 +53,8 @@ export default function Form({ data }) {
   const [area, setArea] = React.useState("");
   const [servicio, setServicio] = React.useState("");
   const [categoria, setCategoria] = React.useState("");
+  const [subcategoria, setSubcategoria] = React.useState("");
+  const [tiempo, setTiempo] = React.useState(0);
   const form = useForm({ defaultValues: { Files: [], isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
@@ -93,6 +97,7 @@ export default function Form({ data }) {
         }, 3500);
       }
     } catch (error) {
+      console.log(error);
       openErrorSB("Ocurrió un error inesperado al crear el ticket.", `Status: 500`);
     } finally {
       setLoading(false);
@@ -111,6 +116,35 @@ export default function Form({ data }) {
     ],
     [data]
   );
+
+  const handleSubcategoriaChange = (e) => {
+    const selectedSubcategoria = e.target.value;
+
+    const prioridad = data.prioridades.find(
+      (s) =>
+        s.Tipo_de_incidencia.includes(Tipo_incidencia) &&
+        s.Area.includes(area) &&
+        s.Servicio.includes(servicio) &&
+        s.Categoria.includes(categoria) &&
+        s.Subcategoria.includes(selectedSubcategoria)
+    );
+
+    if (prioridad) {
+      const tiempoRespuesta = parseInt(prioridad.Tiempo_respuesta, 10); // Asegurar que sea número
+
+      // Calcular nueva fecha sumando el tiempo de respuesta (asumiendo que es en días)
+      const fechaResolucion = addHours(new Date(), tiempoRespuesta);
+
+      // Formatear la fecha en un formato legible
+      const fechaFormateada = format(fechaResolucion, "d 'de' MMMM 'de' yyyy, h:mm a", {
+        locale: es,
+      });
+
+      // Actualizar estados
+      setValue("prioridad", `${prioridad._id}|${prioridad.Tiempo_respuesta}`);
+      setTiempo(fechaFormateada);
+    }
+  };
   return (
     <Box
       component="form"
@@ -168,7 +202,7 @@ export default function Form({ data }) {
           <Divider />
         </Grid>
         {/* Prioridad */}
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel id="prioridad">Prioridad</InputLabel>
             <Select
@@ -199,7 +233,7 @@ export default function Form({ data }) {
             </Select>
             {errors.prioridad && <FormHelperText>{errors.prioridad.message}</FormHelperText>}
           </FormControl>
-        </Grid>
+        </Grid> */}
         {formFields.map(({ name, label, options, key }) => (
           <Grid item xs={6} key={name}>
             <FormControl fullWidth error={!!errors[name]}>
@@ -339,6 +373,8 @@ export default function Form({ data }) {
                 required: `Es necesario seleccionar la subcategoria`,
               })}
               error={!!errors.Subcategoria}
+              // onChange={(e) => setSubcategoria(e.target.value)}
+              onChange={handleSubcategoriaChange}
             >
               <MenuItem value="">Seleccionar</MenuItem>
               {data.subcategoria
@@ -361,6 +397,9 @@ export default function Form({ data }) {
             </Select>
             {errors.Subcategoria && <FormHelperText>{errors.Subcategoria.message}</FormHelperText>}
           </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <TextField value={tiempo} fullWidth disabled label="Fecha de resolución" />
         </Grid>
         {/* Oficio */}
         <Grid item xs={6}>
