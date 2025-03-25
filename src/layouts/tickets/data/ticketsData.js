@@ -265,7 +265,6 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
         : []),
       ...(collection !== "cerrados" &&
       collection !== "resueltos" &&
-      collection !== "standby" &&
       collection !== "reabiertos" &&
       collection !== "abiertos" &&
       collection !== "pendientes" &&
