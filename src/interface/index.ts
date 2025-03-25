@@ -273,4 +273,8 @@ export interface DialogState {
   isHelpWindowOpen: boolean;
   openWindowHelp: () => void;
   closeWindowHelp: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de crear tareas:
+  isWindowCreartareaOpen: boolean;
+  openWindowCreartarea: () => void;
+  closeWindowCreartarea: () => void;
 }

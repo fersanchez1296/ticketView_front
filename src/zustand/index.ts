@@ -172,4 +172,8 @@ export const useDialogStore = create<DialogState>((set) => ({
   isHelpWindowOpen: false,
   openWindowHelp: () => set({ isHelpWindowOpen: true }),
   closeWindowHelp: () => set({ isHelpWindowOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de crear tareas:
+  isWindowCreartareaOpen: false,
+  openWindowCreartarea: () => set({ isWindowCreartareaOpen: true }),
+  closeWindowCreartarea: () => set({ isWindowCreartareaOpen: false }),
 }));

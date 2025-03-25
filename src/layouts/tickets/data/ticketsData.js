@@ -164,8 +164,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
         ? [
             {
               field: "Pendiente",
-              headerName: "Marcar Pendiente",
-              width: 140,
+              headerName: "Pedir Información",
+              width: 150,
               renderCell: (params) => (
                 <WindowButton
                   key={params.row._id}
@@ -173,7 +173,26 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   color="secondary"
                   store={setTicketFields}
                   openWindow={dialogStore.openWindowPendientes}
-                  label="Pendiente"
+                  label="Contacto"
+                />
+              ),
+            },
+          ]
+        : []),
+      ...(collection !== "cerrados" && collection !== "resueltos" && collection !== "revision"
+        ? [
+            {
+              field: "creartarea",
+              headerName: "Crear Tarea",
+              width: 140,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="secondary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowCreartarea}
+                  label="Tarea"
                 />
               ),
             },

@@ -20,6 +20,7 @@ import CrearUsuario from "components/TicketWindow/Usuarios/Crear";
 import VerCliente from "components/TicketWindow/Clientes/Ver";
 import EditarCliente from "components/TicketWindow/Clientes/Editar";
 import CrearCliente from "components/TicketWindow/Clientes/Crear";
+import Creartarea from "components/TicketWindow/Crear_Tarea/crearTarea";
 import { useUserStore, useTicketStore, useClientesStore, useTareaStore } from "zustand/index.ts";
 import Pendientes from "components/TicketWindow/Pendientes";
 import Regresar from "components/TicketWindow/Regresar";
@@ -38,6 +39,8 @@ import {
   usePutPendienteMutation,
   useContactoClienteMutation,
 } from "api/ticketsApi";
+
+import { useCrearTareaMutation } from "api/tareasApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
 import { useCrearClienteMutation, useUpdateClienteByIdMutation } from "api/clientesApi";
@@ -82,6 +85,8 @@ const ModalManager = () => {
     closeWindow,
     isWindowViewTareasOpen,
     closeWindowViewTareas,
+    isWindowCreartareaOpen,
+    closeWindowCreartarea,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -103,6 +108,7 @@ const ModalManager = () => {
   const [editarCliente] = useUpdateClienteByIdMutation();
   const [pendiente] = usePutPendienteMutation();
   const [contactoCliente] = useContactoClienteMutation();
+  const [crearTarea] = useCrearTareaMutation();
   return (
     <>
       {isWindowReabrirOpen && (
@@ -320,6 +326,18 @@ const ModalManager = () => {
           store={tareaStore}
         >
           <Viewtareas />
+        </VentanaAcciones>
+      )}
+      {isWindowCreartareaOpen && (
+        <VentanaAcciones
+          title="Crear tarea"
+          isOpen={isWindowCreartareaOpen}
+          onClose={closeWindowCreartarea}
+          onSave={crearTarea}
+          store={ticketStore}
+          helpKey={"crearTarea"}
+        >
+          <Creartarea />
         </VentanaAcciones>
       )}
       <SuccessSB />

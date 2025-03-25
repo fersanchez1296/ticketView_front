@@ -27,7 +27,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => {
-  console.log(store);
   const form = useForm({
     defaultValues: {
       ...store,
