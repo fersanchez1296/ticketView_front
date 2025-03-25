@@ -11,8 +11,7 @@ import { List, ListItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 //snackbar store
-const Nota = ({ form, formState }) => {
-  console.log(form);
+const Mesa = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   /* -------------------------------------------------------------------------- */
@@ -47,11 +46,8 @@ const Nota = ({ form, formState }) => {
   });
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    setSelectedFiles((prevFiles) => {
-      const updatedFiles = [...prevFiles, ...files];
-      form.setValue("Files", updatedFiles);
-      return updatedFiles;
-    });
+    setSelectedFiles(files);
+    form.setValue("Files", files);
   };
   const removeFile = (index) => {
     const newFiles = selectedFiles.filter((_, i) => i !== index);
@@ -64,19 +60,22 @@ const Nota = ({ form, formState }) => {
     <Grid container spacing={1} m={1}>
       <Grid item xs={12}>
         <TextField
-          id="notas"
-          label="Notas de diario"
+          id="regresar_mesa"
+          label="Descripción de retorno"
           multiline
-          {...form.register("Nota", {
-            required: "Es necesario ingresar el texto de la nota",
+          {...form.register("descripcion_retorno", {
+            required: "Es necesario ingresar la descripción",
           })}
-          error={!!formState.errors.Nota}
-          helperText={formState.errors.Nota?.message}
+          error={!!formState.errors.descripcion_retorno}
+          helperText={formState.errors.descripcion_retorno?.message}
           rows={5.2}
           fullWidth
         />
       </Grid>
       <Grid xs={6}>
+        <Typography color="Black">
+          *Selecciona a la vez todos los archivos que necesitas subir (max-10).
+        </Typography>
         <Button
           component="label"
           variant="outlined"
@@ -84,7 +83,7 @@ const Nota = ({ form, formState }) => {
           size="small"
           tabIndex={-1}
           startIcon={<CloudUploadIcon color="primary" />}
-          // Removemos la deshabilitación para permitir agregar más archivos
+          disabled={selectedFiles.length > 0 ? true : false}
         >
           <Typography color="primary">
             {selectedFiles.length > 0
@@ -98,10 +97,6 @@ const Nota = ({ form, formState }) => {
             onChange={handleFileChange}
           />
         </Button>
-        <br />
-        <Typography variant={"caption"} color="Black">
-          *Selecciona los archivos que necesitas subir.
-        </Typography>
       </Grid>
       {/* Botones de eliminar archivos */}
       {selectedFiles.length > 0 && (
@@ -122,9 +117,9 @@ const Nota = ({ form, formState }) => {
   );
 };
 
-Nota.propTypes = {
+Mesa.propTypes = {
   form: PropTypes.object,
   formState: PropTypes.object,
 };
 
-export default React.memo(Nota);
+export default React.memo(Mesa);

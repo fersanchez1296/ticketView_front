@@ -23,6 +23,8 @@ import MDBox from "components/MDBox";
 import { useCrearMutation } from "api/ticketsApi.js";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { addHours, format } from "date-fns";
+import { es } from "date-fns/locale";
 const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -51,7 +53,9 @@ export default function Form({ data }) {
   const [area, setArea] = React.useState("");
   const [servicio, setServicio] = React.useState("");
   const [categoria, setCategoria] = React.useState("");
-  const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
+  const [subcategoria, setSubcategoria] = React.useState("");
+  const [tiempo, setTiempo] = React.useState(0);
+  const form = useForm({ defaultValues: { Files: [], isNuevoCliente: false } });
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const { register, handleSubmit, formState, setValue, watch, reset } = form;
@@ -93,12 +97,13 @@ export default function Form({ data }) {
         }, 3500);
       }
     } catch (error) {
+      console.log(error);
       openErrorSB("Ocurrió un error inesperado al crear el ticket.", `Status: 500`);
     } finally {
       setLoading(false);
     }
   };
-  const standby = watch("standby");
+  const hasResolutor = watch("hasResolutor");
   const isNuevoCliente = watch("isNuevoCliente");
   const formFields = React.useMemo(
     () => [
@@ -111,6 +116,35 @@ export default function Form({ data }) {
     ],
     [data]
   );
+
+  const handleSubcategoriaChange = (e) => {
+    const selectedSubcategoria = e.target.value;
+
+    const prioridad = data.prioridades.find(
+      (s) =>
+        s.Tipo_de_incidencia.includes(Tipo_incidencia) &&
+        s.Area.includes(area) &&
+        s.Servicio.includes(servicio) &&
+        s.Categoria.includes(categoria) &&
+        s.Subcategoria.includes(selectedSubcategoria)
+    );
+
+    if (prioridad) {
+      const tiempoRespuesta = parseInt(prioridad.Tiempo_respuesta, 10); // Asegurar que sea número
+
+      // Calcular nueva fecha sumando el tiempo de respuesta (asumiendo que es en días)
+      const fechaResolucion = addHours(new Date(), tiempoRespuesta);
+
+      // Formatear la fecha en un formato legible
+      const fechaFormateada = format(fechaResolucion, "d 'de' MMMM 'de' yyyy, h:mm a", {
+        locale: es,
+      });
+
+      // Actualizar estados
+      setValue("prioridad", `${prioridad._id}|${prioridad.Tiempo_respuesta}`);
+      setTiempo(fechaFormateada);
+    }
+  };
   return (
     <Box
       component="form"
@@ -168,7 +202,7 @@ export default function Form({ data }) {
           <Divider />
         </Grid>
         {/* Prioridad */}
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel id="prioridad">Prioridad</InputLabel>
             <Select
@@ -199,7 +233,7 @@ export default function Form({ data }) {
             </Select>
             {errors.prioridad && <FormHelperText>{errors.prioridad.message}</FormHelperText>}
           </FormControl>
-        </Grid>
+        </Grid> */}
         {formFields.map(({ name, label, options, key }) => (
           <Grid item xs={6} key={name}>
             <FormControl fullWidth error={!!errors[name]}>
@@ -339,6 +373,8 @@ export default function Form({ data }) {
                 required: `Es necesario seleccionar la subcategoria`,
               })}
               error={!!errors.Subcategoria}
+              // onChange={(e) => setSubcategoria(e.target.value)}
+              onChange={handleSubcategoriaChange}
             >
               <MenuItem value="">Seleccionar</MenuItem>
               {data.subcategoria
@@ -361,6 +397,9 @@ export default function Form({ data }) {
             </Select>
             {errors.Subcategoria && <FormHelperText>{errors.Subcategoria.message}</FormHelperText>}
           </FormControl>
+        </Grid>
+        <Grid item xs={6}>
+          <TextField value={tiempo} fullWidth disabled label="Fecha de resolución" />
         </Grid>
         {/* Oficio */}
         <Grid item xs={6}>
@@ -467,18 +506,18 @@ export default function Form({ data }) {
                 <Box sx={{ display: "flex" }}>
                   <Typography>Asignar a moderador</Typography>
                   <Switch
-                    {...register("standby")}
-                    checked={standby}
+                    {...register("hasResolutor")}
+                    checked={hasResolutor}
                     onChange={(e) => {
                       const newValue = e.target.checked;
-                      setValue("standby", newValue); // Asegura que el valor es booleano
+                      setValue("hasResolutor", newValue); // Asegura que el valor es booleano
                     }}
                   />
-                  <Typography>Asignar a Mesa</Typography>
+                  <Typography>Asignar a resolutor</Typography>
                 </Box>
               </Stack>
             </FormGroup>
-            {!standby && (
+            {!hasResolutor ? (
               <FormControl fullWidth>
                 <InputLabel id="moderador">Moderador</InputLabel>
                 <Select
@@ -486,10 +525,10 @@ export default function Form({ data }) {
                   id="moderador"
                   label="Moderador"
                   defaultValue={""}
-                  {...register("moderador", {
+                  {...register("Asignado_a", {
                     required: "Es necesario seleccionar un moderador.",
                   })}
-                  error={!!errors.moderador}
+                  error={!!errors.Asignado_a}
                 >
                   <option aria-label="None" value="" />
                   {data.areasResolutores.map((area) => {
@@ -497,7 +536,7 @@ export default function Form({ data }) {
                       return (
                         <optgroup label={area.area.area} key={area.area._id}>
                           {area.resolutores.map((t, index) => (
-                            <option value={`${t._id}|${area.area._id}`} key={index}>
+                            <option value={`${t._id}`} key={index}>
                               {t.Nombre}
                             </option>
                           ))}
@@ -508,8 +547,42 @@ export default function Form({ data }) {
                     }
                   })}
                 </Select>
-                {errors.moderador && (
-                  <FormHelperText>{<span>{errors.moderador.message}</span>}</FormHelperText>
+                {errors.Asignado_a && (
+                  <FormHelperText>{<span>{errors.Asignado_a.message}</span>}</FormHelperText>
+                )}
+              </FormControl>
+            ) : (
+              <FormControl fullWidth>
+                <InputLabel id="resolutor">Resolutor</InputLabel>
+                <Select
+                  native
+                  id="resolutor"
+                  label="resolutor"
+                  defaultValue={""}
+                  {...register("Asignado_a", {
+                    required: "Es necesario seleccionar un resolutor.",
+                  })}
+                  error={!!errors.resolutor}
+                >
+                  <option aria-label="None" value="" />
+                  {data.resolutores.map((area) => {
+                    if (area) {
+                      return (
+                        <optgroup label={area.area.area} key={area.area._id}>
+                          {area.resolutores.map((t, index) => (
+                            <option value={`${t._id}`} key={index}>
+                              {t.Nombre}
+                            </option>
+                          ))}
+                        </optgroup>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </Select>
+                {errors.Asignado_a && (
+                  <FormHelperText>{<span>{errors.Asignado_a.message}</span>}</FormHelperText>
                 )}
               </FormControl>
             )}
