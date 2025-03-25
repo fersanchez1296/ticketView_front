@@ -46,8 +46,11 @@ const Nota = ({ form, formState }) => {
   });
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    setSelectedFiles(files);
-    form.setValue("Files", files);
+    setSelectedFiles((prevFiles) => {
+      const updatedFiles = [...prevFiles, ...files];
+      form.setValue("Files", updatedFiles);
+      return updatedFiles;
+    });
   };
   const removeFile = (index) => {
     const newFiles = selectedFiles.filter((_, i) => i !== index);
@@ -73,9 +76,6 @@ const Nota = ({ form, formState }) => {
         />
       </Grid>
       <Grid xs={6}>
-        <Typography color="Black">
-          *Selecciona a la vez todos los archivos que necesitas subir (max-10).
-        </Typography>
         <Button
           component="label"
           variant="outlined"
@@ -83,7 +83,7 @@ const Nota = ({ form, formState }) => {
           size="small"
           tabIndex={-1}
           startIcon={<CloudUploadIcon color="primary" />}
-          disabled={selectedFiles.length > 0 ? true : false}
+          // Removemos la deshabilitación para permitir agregar más archivos
         >
           <Typography color="primary">
             {selectedFiles.length > 0
@@ -97,6 +97,10 @@ const Nota = ({ form, formState }) => {
             onChange={handleFileChange}
           />
         </Button>
+        <br />
+        <Typography variant={"caption"} color="Black">
+          *Selecciona los archivos que necesitas subir.
+        </Typography>
       </Grid>
       {/* Botones de eliminar archivos */}
       {selectedFiles.length > 0 && (

@@ -47,7 +47,7 @@ const Reabrir = ({ form, formState }) => {
   });
   return (
     <Grid container spacing={2} m={1}>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <FormGroup>
           <Stack
             direction="row"
@@ -66,7 +66,7 @@ const Reabrir = ({ form, formState }) => {
             </Box>
           </Stack>
         </FormGroup>
-      </Grid>
+      </Grid> */}
       {!reabrirNuevaInfo && (
         <>
           <Grid item xs={6}>
