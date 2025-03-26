@@ -242,6 +242,7 @@ export default function Form({ data }) {
             <FormControl fullWidth error={!!errors[name]}>
               <InputLabel>{label}</InputLabel>
               <Select
+                autoComplete="off"
                 defaultValue=""
                 label={label}
                 {...register(name, { required: `Es necesario seleccionar ${label.toLowerCase()}` })}
@@ -261,6 +262,7 @@ export default function Form({ data }) {
           <FormControl fullWidth>
             <InputLabel>Selecciona el tipo de Ticket</InputLabel>
             <Select
+              autoComplete="off"
               defaultValue=""
               label={"Selecciona el tipo de Ticket"}
               {...register("Tipo_incidencia", {
@@ -285,6 +287,7 @@ export default function Form({ data }) {
           <FormControl fullWidth>
             <InputLabel>Selecciona el area</InputLabel>
             <Select
+              autoComplete="off"
               defaultValue=""
               label={"Selecciona el area"}
               {...register("Area", { required: `Es necesario seleccionar el área` })}
@@ -311,6 +314,7 @@ export default function Form({ data }) {
           <FormControl fullWidth>
             <InputLabel>Selecciona el servicio</InputLabel>
             <Select
+              autoComplete="off"
               defaultValue=""
               label={"Selecciona el servicio"}
               {...register("Servicio", { required: `Es necesario seleccionar el servicio` })}
@@ -339,6 +343,7 @@ export default function Form({ data }) {
           <FormControl fullWidth>
             <InputLabel>Selecciona la Categoría</InputLabel>
             <Select
+              autoComplete="off"
               defaultValue=""
               label={"Selecciona la Categoría"}
               {...register("Categoria", { required: `Es necesario seleccionar la categoria` })}
@@ -370,6 +375,7 @@ export default function Form({ data }) {
           <FormControl fullWidth>
             <InputLabel>Selecciona la Subcategoría</InputLabel>
             <Select
+              autoComplete="off"
               defaultValue=""
               label={"Selecciona la Subcategorpía"}
               {...register("Subcategoria", {
@@ -402,11 +408,18 @@ export default function Form({ data }) {
           </FormControl>
         </Grid>
         <Grid item xs={6}>
-          <TextField value={tiempo} fullWidth disabled label="Fecha de resolución" />
+          <TextField
+            value={tiempo}
+            autoComplete="off"
+            fullWidth
+            disabled
+            label="Fecha de resolución"
+          />
         </Grid>
         {/* Oficio */}
         <Grid item xs={6}>
           <TextField
+            autoComplete="off"
             type="text"
             label="Oficio de recepción:"
             variant="outlined"
@@ -417,6 +430,7 @@ export default function Form({ data }) {
         {/* Descripcion */}
         <Grid item xs={12}>
           <TextField
+            autoComplete="off"
             fullWidth
             id="descripcion"
             label="Descripción del ticket"

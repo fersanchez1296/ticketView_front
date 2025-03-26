@@ -72,6 +72,7 @@ const BuscarCliente = ({ form, formState }) => {
       {/*Introducido por teclado Correo*/}
       <Grid item xs={6}>
         <TextField
+          autoComplete="off"
           type="email" // Muestra validación de correo automáticamente
           label="Correo:"
           defaultValue={correo}

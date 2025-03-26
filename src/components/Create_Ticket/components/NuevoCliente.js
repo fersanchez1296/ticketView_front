@@ -58,6 +58,7 @@ const NuevoCliente = ({ form, formState }) => {
         {/*Introducido por teclado Nombre del cliente*/}
         <Grid item xs={12}>
           <TextField
+            autoComplete="off"
             type="text"
             label="Nombre:"
             {...form.register("nuevocliente.Nombre", {
@@ -73,6 +74,7 @@ const NuevoCliente = ({ form, formState }) => {
         {/*Introducido por teclado Correo*/}
         <Grid item xs={12}>
           <TextField
+            autoComplete="off"
             type="email" // Muestra validación de correo automáticamente
             label="Correo:"
             pattern=".+@example\.mx"
@@ -89,6 +91,7 @@ const NuevoCliente = ({ form, formState }) => {
         {/*Introducido por teclado Teléfono*/}
         <Grid item xs={6}>
           <TextField
+            autoComplete="off"
             type="tel" // Tipo tel para mostrar un teclado numérico en móviles
             label="Teléfono:"
             //value={clientesStore.Telefono}
@@ -114,6 +117,7 @@ const NuevoCliente = ({ form, formState }) => {
         {/*Introducido por teclado extension*/}
         <Grid item xs={6}>
           <TextField
+            autoComplete="off"
             type="tel" // Tipo tel para mostrar un teclado numérico en móviles
             label="Extensión:"
             {...form.register("nuevocliente.Extension", {
@@ -140,6 +144,7 @@ const NuevoCliente = ({ form, formState }) => {
             <FormControl fullWidth>
               <InputLabel id="dependencia">Seleccione la Dependencia</InputLabel>
               <Select
+                autoComplete="off"
                 labelId="dependencia"
                 id="dependencia"
                 defaultValue={""}
@@ -195,6 +200,7 @@ const NuevoCliente = ({ form, formState }) => {
             <FormControl fullWidth>
               <InputLabel id="direccion_general">Seleccione la Dirección general</InputLabel>
               <Select
+                autoComplete="off"
                 labelId="direccion_general"
                 id="direccion_general"
                 defaultValue={""}
@@ -251,6 +257,7 @@ const NuevoCliente = ({ form, formState }) => {
             <FormControl fullWidth>
               <InputLabel id="direccion_area">Seleccione la dirección de area</InputLabel>
               <Select
+                autoComplete="off"
                 labelId="direccion_area"
                 id="direccion_area"
                 defaultValue={""}
@@ -300,6 +307,7 @@ const NuevoCliente = ({ form, formState }) => {
         </Grid>
         <Grid item xs={12}>
           <TextField
+            autoComplete="off"
             id="Ubicacion"
             label="Ubicacion del cliente:"
             multiline
