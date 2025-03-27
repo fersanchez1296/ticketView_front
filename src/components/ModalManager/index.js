@@ -85,15 +85,12 @@ const ModalManager = () => {
     closeWindowContacto,
     isWindowOpen,
     closeWindow,
-<<<<<<< HEAD
     isWindowViewTareasOpen,
     closeWindowViewTareas,
     isWindowCreartareaOpen,
     closeWindowCreartarea,
-=======
     isMesaServicioOpen,
     closeWindowMesaServicio,
->>>>>>> 9452a346e9d5f9fb4165f89a22ce7aa18f6d2843
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -115,11 +112,8 @@ const ModalManager = () => {
   const [editarCliente] = useUpdateClienteByIdMutation();
   const [pendiente] = usePutPendienteMutation();
   const [contactoCliente] = useContactoClienteMutation();
-<<<<<<< HEAD
   const [crearTarea] = useCrearTareaMutation();
-=======
   const [retornoMesa] = useRetornoMesaMutation();
->>>>>>> 9452a346e9d5f9fb4165f89a22ce7aa18f6d2843
   return (
     <>
       {isWindowReabrirOpen && (
@@ -330,7 +324,6 @@ const ModalManager = () => {
           <View />
         </VentanaAcciones>
       )}
-<<<<<<< HEAD
       {isWindowViewTareasOpen && (
         <VentanaAcciones
           isOpen={isWindowViewTareasOpen}
@@ -350,7 +343,8 @@ const ModalManager = () => {
           helpKey={"crearTarea"}
         >
           <Creartarea />
-=======
+        </VentanaAcciones>
+      )}
       {isMesaServicioOpen && (
         <VentanaAcciones
           title="Regresar a mesa de servicio"
@@ -360,7 +354,6 @@ const ModalManager = () => {
           store={ticketStore}
         >
           <Mesa />
->>>>>>> 9452a346e9d5f9fb4165f89a22ce7aa18f6d2843
         </VentanaAcciones>
       )}
       <SuccessSB />

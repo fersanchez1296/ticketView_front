@@ -172,15 +172,12 @@ export const useDialogStore = create<DialogState>((set) => ({
   isHelpWindowOpen: false,
   openWindowHelp: () => set({ isHelpWindowOpen: true }),
   closeWindowHelp: () => set({ isHelpWindowOpen: false }),
-<<<<<<< HEAD
   //estas definiciones y metodos se usan para abrir la ventana de crear tareas:
   isWindowCreartareaOpen: false,
   openWindowCreartarea: () => set({ isWindowCreartareaOpen: true }),
   closeWindowCreartarea: () => set({ isWindowCreartareaOpen: false }),
-=======
   //estas definiciones y metodos se usan para abrir la ventana de ayuda:
   isMesaServicioOpen: false,
   openWindowMesaServicio: () => set({ isMesaServicioOpen: true }),
   closeWindowMesaServicio: () => set({ isMesaServicioOpen: false }),
->>>>>>> 9452a346e9d5f9fb4165f89a22ce7aa18f6d2843
 }));
