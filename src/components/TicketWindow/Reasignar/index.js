@@ -193,7 +193,7 @@ const Reasignar = () => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  <Grid xs={12}>
+                  {/* <Grid xs={12}>
                     <FormControlLabel
                       control={
                         <Switch
@@ -263,7 +263,7 @@ const Reasignar = () => {
                         </Select>
                       </FormControl>
                     </Grid>
-                  ) : null}
+                  ) : null} */}
                   <Grid xs={12}>
                     <FormControlLabel
                       control={
