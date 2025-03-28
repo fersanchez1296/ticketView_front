@@ -16,6 +16,7 @@ import { useLazyGetClienteByCorreoQuery } from "api/clientesApi.js";
 /* -------------------------------------------------------------------------- */
 // Importaciones de Zustand u otro gestor de estado
 import { useCrearTicketStore } from "../store/crearTicket.store.ts";
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 /* -------------------------------------------------------------------------- */
 // Importaciones de utilidades, helpers o constantes
 import PropTypes from "prop-types";
@@ -33,6 +34,7 @@ const BuscarCliente = ({ form, formState }) => {
   // Estados locales con useState
   const [loading, setLoading] = React.useState(false);
   const [clienteExiste, setClienteExiste] = React.useState(false);
+  const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const [data, setData] = React.useState({});
   const [correo, setCorreo] = React.useState();
   /* -------------------------------------------------------------------------- */
@@ -54,6 +56,7 @@ const BuscarCliente = ({ form, formState }) => {
       } else {
         setClienteExiste(false);
         setData({});
+        openErrorSB("No se encontro el cliente en la base de datos", `Status: 404`);
       }
     } catch (error) {
       setClienteExiste(false);

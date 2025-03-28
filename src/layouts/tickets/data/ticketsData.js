@@ -136,6 +136,25 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
+      ...(collection === "nuevos"
+        ? [
+            {
+              field: "Mesa de Servicio",
+              headerName: "Regresa a mesa de servicio",
+              width: 220,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="primary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowMesaServicio}
+                  label="Mesa de Servicio"
+                />
+              ),
+            },
+          ]
+        : []),
     ],
     Usuario: [
       ...(collection !== "cerrados" &&
@@ -246,7 +265,6 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
         : []),
       ...(collection !== "cerrados" &&
       collection !== "resueltos" &&
-      collection !== "standby" &&
       collection !== "reabiertos" &&
       collection !== "abiertos" &&
       collection !== "pendientes" &&

@@ -95,64 +95,6 @@ const Reabrir = ({ form, formState }) => {
           </Grid>
         </>
       )}
-      {reabrirNuevaInfo && (
-        <>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel id="prioridad">Prioridad</InputLabel>
-              <Select
-                native
-                id="prioridad"
-                label="Prioridad"
-                {...form.register("prioridad", {
-                  required: "Es necesario seleccionar la prioridad",
-                })}
-                error={!!formState.errors.prioridad}
-                disabled={!reabrirNuevaInfo ?? true}
-              >
-                <option aria-label="None" value="" />
-                {data.prioridades.map((prioridad) => {
-                  if (prioridad.Tiempo_respuesta) {
-                    return (
-                      <optgroup label={prioridad.Descripcion} key={prioridad._id}>
-                        {prioridad.Tiempo_respuesta.map((t, index) => (
-                          <option value={`${prioridad._id}|${t}`} key={index}>
-                            {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
-                          </option>
-                        ))}
-                      </optgroup>
-                    );
-                  } else {
-                    return <option aria-label="No se está leyendo" value="0" key={0} />;
-                  }
-                })}
-              </Select>
-              {formState.errors.prioridad && (
-                <FormHelperText>{formState.errors.prioridad.message}</FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-        </>
-      )}
-      <Grid item xs={12}>
-        <FormGroup>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ alignItems: "center", justifyContent: "space-between" }}
-          >
-            <Box sx={{ display: "flex" }}>
-              <Switch
-                checked={reabrirNuevaInfo}
-                onChange={(e) => {
-                  setReabrirNuevaInfo(!reabrirNuevaInfo);
-                }}
-              />
-              <Typography>Modificar tiempo de resolución</Typography>
-            </Box>
-          </Stack>
-        </FormGroup>
-      </Grid>
       {/* Botón de archivos */}
       <Grid xs={6}>
         <Button
