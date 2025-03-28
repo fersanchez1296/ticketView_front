@@ -74,7 +74,7 @@ const BuscarCliente = ({ form, formState }) => {
         <TextField
           autoComplete="off"
           type="email" // Muestra validación de correo automáticamente
-          label="Correo:"
+          label="Correo o nombre completo del cliente:"
           defaultValue={correo}
           {...form.register("correocliente", {
             required: "Es necesario buscar un cliente o agregar uno nuevo.",
@@ -187,11 +187,6 @@ const BuscarCliente = ({ form, formState }) => {
             </MDBox>
           </Grid>
         </>
-      ) : null}
-      {!clienteExiste ? (
-        <Typography variant="overline">Ingresa un correo válido para el cliente</Typography>
-      ) : !clienteExiste && Object.keys(data).length === 0 ? (
-        <Typography variant="overline">El cliente no existe</Typography>
       ) : null}
     </Grid>
   );

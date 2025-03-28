@@ -72,7 +72,7 @@ const Nota = ({ form, formState }) => {
           })}
           error={!!formState.errors.Nota}
           helperText={formState.errors.Nota?.message}
-          rows={5.2}
+          rows={15}
           fullWidth
         />
       </Grid>

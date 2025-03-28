@@ -56,13 +56,6 @@ export const ticketsApi = apiSlice.injectEndpoints({
         const formData = new FormData();
         const ticketState = {};
         delete data.correocliente;
-        if (data.isNuevoCliente) {
-          formData.append("nuevoCliente", JSON.stringify(data.nuevocliente));
-          delete data.nuevocliente;
-        }
-        const [prioridad, tiempo] = data.prioridad.split("|");
-        data.Prioridad = prioridad;
-        data.tiempo = tiempo;
         delete data.moderador;
         Object.entries(data).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {
