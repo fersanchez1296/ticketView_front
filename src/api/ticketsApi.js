@@ -53,6 +53,7 @@ export const ticketsApi = apiSlice.injectEndpoints({
     }),
     crear: builder.mutation({
       query: ({ data }) => {
+        console.log(data);
         const formData = new FormData();
         const ticketState = {};
         delete data.correocliente;
@@ -63,6 +64,9 @@ export const ticketsApi = apiSlice.injectEndpoints({
         const [prioridad, tiempo] = data.prioridad.split("|");
         data.Prioridad = prioridad;
         data.tiempo = tiempo;
+        const [_id, Nombre] = data.Asignado_a.split("|");
+        data.Asignado_a = _id;
+        console.log("Asignado", data.Asignado_a);
         delete data.moderador;
         Object.entries(data).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {

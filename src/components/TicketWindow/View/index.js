@@ -171,9 +171,16 @@ const View = ({ form, formState }) => {
       {
         name: "Descripcion_de_cierre",
         label: "Descripción de cierre",
-        gridSize: 12,
+        gridSize: 6,
         options: form.getValues("Descripcion_cierre") ?? "",
         multiline: { state: true },
+      },
+      {
+        name: "Descripción pendiente",
+        label: "Descripción pendiente",
+        gridSize: 6,
+        options: form.getValues("PendingReason") ?? "",
+        multiline: { state: false },
       },
     ],
     []
