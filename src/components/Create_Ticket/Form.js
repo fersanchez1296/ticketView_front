@@ -416,10 +416,10 @@ export default function Form({ data }) {
                     })}
                     error={!!errors.Asignado_a}
                     onChange={(e) => {
-                    const [_id, Nombre] = e.target.value.split("|");
-                    setNombre(Nombre);
-                  }}
-                >
+                      const [_id, Nombre] = e.target.value.split("|");
+                      setNombre(Nombre);
+                    }}
+                  >
                     <option aria-label="None" value="" />
                     {data.areasResolutores.map((area) => {
                       if (area) {
@@ -477,22 +477,22 @@ export default function Form({ data }) {
                 </FormControl>
               )}
               {/* Descripcion */}
-            {Nombre === "Mesa de Servicio" && (
-              <Grid item mt={2} xs={12}>
-                <TextField
-                  fullWidth
-                  id="PendingReason"
-                  label="Descripción pendiente"
-                  {...register("PendingReason")}
-                  error={!!errors.Descripcion}
-                  helperText={errors.Descripcion?.message}
-                  multiline
-                  rows={2}
-                  placeholder="Ingrese la descripción"
-                />
-              </Grid>
-            )}
-          </Box>
+              {Nombre === "Mesa de Servicio" && (
+                <Grid item mt={2} xs={12}>
+                  <TextField
+                    fullWidth
+                    id="PendingReason"
+                    label="Descripción pendiente"
+                    {...register("PendingReason")}
+                    error={!!errors.Descripcion}
+                    helperText={errors.Descripcion?.message}
+                    multiline
+                    rows={2}
+                    placeholder="Ingrese la descripción"
+                  />
+                </Grid>
+              )}
+            </Box>
           </Grid>
           <Grid item xs={12}>
             <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
