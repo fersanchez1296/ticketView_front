@@ -46,7 +46,7 @@ const View = ({ form, formState }) => {
         name: "Prioridad",
         label: "Prioridad",
         gridSize: 1,
-        options: form.getValues("Prioridad.Descripcion") ?? "",
+        options: form.getValues("Subcategoria.Descripcion_prioridad") ?? "",
         multiline: { state: false },
       },
       {
@@ -74,7 +74,7 @@ const View = ({ form, formState }) => {
         name: "Tipo_incidencia",
         label: "Tipo de incidencia",
         gridSize: 2,
-        options: form.getValues("Tipo_incidencia.Tipo_de_incidencia") ?? "",
+        options: form.getValues("Subcategoria.Tipo") ?? "",
         multiline: { state: false },
       },
       {
@@ -88,14 +88,14 @@ const View = ({ form, formState }) => {
         name: "Servicio",
         label: "Servicio",
         gridSize: 3,
-        options: form.getValues("Servicio.Servicio") ?? "",
+        options: form.getValues("Subcategoria.Servicio") ?? "",
         multiline: { state: false },
       },
       {
         name: "Categoria",
         label: "Categoría",
         gridSize: 3,
-        options: form.getValues("Categoria.Categoria") ?? "",
+        options: form.getValues("Subcategoria.Categoría") ?? "",
         multiline: { state: false },
       },
       {

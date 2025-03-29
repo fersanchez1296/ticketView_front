@@ -29,6 +29,7 @@ const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useClientesStore } from "zustand/index.ts";
+import { calcularFechaLimite } from "utils/calcularFechaResolucion";
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -93,7 +94,7 @@ export default function Form({ data }) {
   };
   const onSubmit = async (data) => {
     setLoading(true);
-    form.setValue("idCliente", clientesStore._id);
+    form.setValue("Asignado_a", clientesStore._id);
     try {
       const result = await guardar({ data });
       if (result.error) {
@@ -136,10 +137,10 @@ export default function Form({ data }) {
     setServicio(catalogo.Servicio);
     setTipo_incidencia(catalogo.Tipo);
     setArea(catalogo.Equipo.Area);
+
     if (tiempo) {
-      const tiempoRespuesta = parseInt(tiempo, 10);
-      const fechaResolucion = addHours(new Date(), tiempoRespuesta);
-      const fechaFormateada = format(fechaResolucion, "d 'de' MMMM 'de' yyyy, h:mm a", {
+      const fechaLimite = calcularFechaLimite(tiempo);
+      const fechaFormateada = format(fechaLimite, "d 'de' MMMM 'de' yyyy, h:mm a", {
         locale: es,
       });
       setTiempo(fechaFormateada);
