@@ -1,11 +1,12 @@
 import WindowButton from "components/WindowButton/WindowButton";
-
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 const ClientesData = (clientes, setClientFields, dialogStore) => {
   const columns = [
     {
       field: "visualizar",
-      headerName: "Visualizar",
-      width: 140,
+      headerName: "Ver",
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -14,13 +15,15 @@ const ClientesData = (clientes, setClientFields, dialogStore) => {
           store={setClientFields}
           openWindow={dialogStore.openWindowClientes}
           label="Visualizar"
-        />
+        >
+          <VisibilityIcon />
+        </WindowButton>
       ),
     },
     {
       field: "Editar",
       headerName: "Editar",
-      width: 140,
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -29,7 +32,9 @@ const ClientesData = (clientes, setClientFields, dialogStore) => {
           store={setClientFields}
           openWindow={dialogStore.openWindowEditarCliete}
           label="Editar"
-        />
+        >
+          <EditIcon />
+        </WindowButton>
       ),
     },
     { field: "Nombre", headerName: "Nombre", width: 300, align: "left" },

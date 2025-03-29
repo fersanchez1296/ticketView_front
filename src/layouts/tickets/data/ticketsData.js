@@ -126,7 +126,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             {
               field: "resolver",
               headerName: "Resolver",
-              width: 140,
+              width: 90,
               renderCell: (params) => (
                 <WindowButton
                   key={params.row._id}
@@ -267,7 +267,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             {
               field: "cerrar",
               headerName: "Cerrar",
-              width: 140,
+              width: 80,
               renderCell: (params) => (
                 <WindowButton
                   key={params.row._id}
@@ -309,7 +309,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             {
               field: "Reabrir",
               headerName: "Reabrir",
-              width: 140,
+              width: 80,
               renderCell: (params) => (
                 <WindowButton
                   key={params.row._id}
@@ -423,7 +423,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             {
               field: "cerrar",
               headerName: "Cerrar",
-              width: 140,
+              width: 80,
               renderCell: (params) => (
                 <WindowButton
                   key={params.row._id}
@@ -492,7 +492,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             {
               field: "resolver",
               headerName: "Resolver",
-              width: 140,
+              width: 90,
               renderCell: (params) => (
                 <WindowButton
                   key={params.row._id}
