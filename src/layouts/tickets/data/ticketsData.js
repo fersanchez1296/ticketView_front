@@ -65,7 +65,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       field: "Prioridad",
       headerName: "Prioridad",
       width: 130,
-      renderCell: (params) => <Badge content={params.row.Prioridad?.Descripcion} />,
+      renderCell: (params) => <Badge content={params.row.Subcategoria?.Descripcion_prioridad} />,
     },
     {
       field: "TBAsignado",
@@ -593,7 +593,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
     TBAsignado: ticket.Asignado_a?.length
       ? ticket.Asignado_a.map((n) => n.Nombre).join(", ")
       : ticket.Reasignado_a?.map((n) => n.Nombre).join(", ") || "",
-    TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",
+    TBIncidencia: ticket.Subcategoria?.Tipo ?? "",
     TBCliente: ticket.Cliente?.Nombre ?? "",
     Fecha_hora_cierre:
       ticket.Fecha_hora_cierre != "" ? ticket.Fecha_hora_cierre : "Ticket en curso",

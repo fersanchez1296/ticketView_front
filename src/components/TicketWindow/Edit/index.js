@@ -16,6 +16,9 @@ import { styled } from "@mui/material/styles";
 import FormHelperText from "@mui/material/FormHelperText";
 import PropTypes from "prop-types";
 import { useSelectsCrearTicketQuery } from "api/ticketsApi";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { calcularFechaLimite } from "utils/calcularFechaResolucion";
 //snackbar store
 const EditarTicket = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
@@ -28,6 +31,13 @@ const EditarTicket = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
   // Estados locales con useState
   const [selectedFiles, setSelectedFiles] = React.useState([]);
+  const [Tipo_incidencia, setTipo_incidencia] = React.useState("");
+  const [area, setArea] = React.useState("");
+  const [servicio, setServicio] = React.useState("");
+  const [categoria, setCategoria] = React.useState("");
+  const [tiempo, setTiempo] = React.useState("");
+  const [descripcion, setDescripcion] = React.useState("");
+  const [nuevaFecha, setNuevaFecha] = React.useState("");
   /* -------------------------------------------------------------------------- */
   // Hooks de React Hook Form (useForm, useFieldArray, etc.)
   /* -------------------------------------------------------------------------- */
@@ -67,6 +77,29 @@ const EditarTicket = ({ form, formState }) => {
     setSelectedFiles(newFiles);
     form.setValue("Files", newFiles);
   };
+
+  const handleSubcategoriaChange = (e) => {
+    setNuevaFecha(e.target.value);
+    const selectedSubcategoria = e.target.value;
+    const catalogo = data.categorizacion.find((s) => s._id.includes(selectedSubcategoria));
+    const tiempo = catalogo.Prioridad;
+    console.log(tiempo, catalogo.Equipo._id);
+    form.setValue("tiempo", tiempo);
+    form.setValue("Area", catalogo.Equipo._id);
+    setDescripcion(catalogo.Descripcion_prioridad);
+    setCategoria(catalogo["Categoría"]);
+    setServicio(catalogo.Servicio);
+    setTipo_incidencia(catalogo.Tipo);
+    setArea(catalogo.Equipo.Area);
+
+    if (tiempo) {
+      const fechaLimite = calcularFechaLimite(tiempo);
+      const fechaFormateada = format(fechaLimite, "d 'de' MMMM 'de' yyyy, h:mm a", {
+        locale: es,
+      });
+      setTiempo(fechaFormateada);
+    }
+  };
   /* -------------------------------------------------------------------------- */
   // Renderizado del componente (return)
   return (
@@ -101,18 +134,16 @@ const EditarTicket = ({ form, formState }) => {
           {...form.register("Estado.Estado")}
           disabled
           fullWidth
-          required
         />
       </Grid>
       {/*Fecha limite de resolucion*/}
       <Grid item xs={3}>
         <TextField
           type="text"
-          label="Estado:"
+          label="Actual Fecha límite de resolución:"
           {...form.register("Fecha_limite_resolucion_SLA")}
           disabled
           fullWidth
-          required
         />
       </Grid>
       {/*Introducido por teclado NumeroRec_Oficio*/}
@@ -122,10 +153,8 @@ const EditarTicket = ({ form, formState }) => {
           label="Oficio de recepción:"
           {...form.register("NumeroRec_Oficio")}
           fullWidth
-          required
         />
       </Grid>
-      {/*Seleccion tipo de ticket tipo de incidencia*/}
       <Grid item xs={4}>
         <FormControl fullWidth error={!!formState.errors.Medio?._id}>
           <InputLabel id="demo-simple-select-label">Medio de contacto</InputLabel>
@@ -152,105 +181,73 @@ const EditarTicket = ({ form, formState }) => {
           )}
         </FormControl>
       </Grid>
-      {/*Seleccion tipo de ticket tipo de incidencia*/}
       <Grid item xs={4}>
-        <FormControl fullWidth error={!!formState.errors.Tipo_incidencia?._id}>
-          <InputLabel id="demo-simple-select-label">Tipo de ticket</InputLabel>
+        <FormControl fullWidth>
+          <InputLabel>Selecciona la Subcategoría</InputLabel>
           <Select
-            sx={{ minHeight: "3rem" }}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Estatus"
-            defaultValue={form.getValues("Tipo_incidencia._id") || ""}
-            {...form.register("Tipo_incidencia._id", {
-              required: "El tipo de incidencia es requerida",
-            })}
-          >
-            {data.tiposTickets.map((est) => {
-              return (
-                <MenuItem value={est._id} key={est._id}>
-                  {est.Tipo_de_incidencia}
-                </MenuItem>
-              );
-            })}
-          </Select>
-          {formState.errors.Tipo_incidencia?._id && (
-            <FormHelperText>{formState.errors.Tipo_incidencia._id.message}</FormHelperText>
-          )}
-        </FormControl>
-      </Grid>
-      {/*Seleccion tipo de Servicio*/}
-      <Grid item xs={4}>
-        <FormControl fullWidth error={!!formState.Servicio?._id}>
-          <InputLabel id="demo-simple-select-label">Servicio</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Servicio"
-            defaultValue={form.getValues("Servicio._id") || ""}
-            {...form.register("Servicio._id", { required: "El servicio es requerido" })}
-          >
-            {data.servicios.map((est) => {
-              return (
-                <MenuItem value={est._id} key={est._id}>
-                  {est.Servicio}
-                </MenuItem>
-              );
-            })}
-          </Select>
-          {formState.errors.Servicio?._id && (
-            <FormHelperText>{formState.errors.Servicio._id.message}</FormHelperText>
-          )}
-        </FormControl>
-      </Grid>
-      {/*Seleccion categoria del ticket*/}
-      <Grid item xs={4}>
-        <FormControl fullWidth error={!!formState.Categoria?._id}>
-          <InputLabel id="demo-simple-select-label">Categoría</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Categoría"
-            defaultValue={form.getValues("Categoria._id") || ""}
-            {...form.register("Categoria._id", { required: "El Categoria es requerido" })}
-          >
-            {data.categorias.map((est) => {
-              return (
-                <MenuItem value={est._id} key={est._id}>
-                  {est.Categoria}
-                </MenuItem>
-              );
-            })}
-          </Select>
-          {formState.errors.Categoria?._id && (
-            <FormHelperText>{formState.errors.Categoria._id.message}</FormHelperText>
-          )}
-        </FormControl>
-      </Grid>
-      {/*Seleccion tipo de subcategoria*/}
-      <Grid item xs={4}>
-        <FormControl fullWidth error={!!formState.Subcategoria?._id}>
-          <InputLabel id="demo-simple-select-label">Subcategoría</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Subcategoría"
+            autoComplete="off"
             defaultValue={form.getValues("Subcategoria._id") || ""}
-            {...form.register("Subcategoria._id", { required: "El Subcategoria es requerida" })}
+            label={"Selecciona la Subcategoría"}
+            disabled
+            // {...form.register("Subcategoria", {
+            //   required: `Es necesario seleccionar la subcategoria`,
+            // })}
+            // error={!!formState.errors.Subcategoria}
+            onChange={handleSubcategoriaChange}
           >
-            {data.subcategoria.map((est) => {
-              return (
-                <MenuItem value={est._id} key={est._id}>
-                  {est.Subcategoria}
-                </MenuItem>
-              );
-            })}
+            <MenuItem value="">Seleccionar</MenuItem>
+            {data.categorizacion.map((option) => (
+              <MenuItem key={option._id} value={option._id}>
+                {option.Subcategoria}
+              </MenuItem>
+            ))}
           </Select>
-          {formState.errors.Categoria?._id && (
-            <FormHelperText>{formState.errors.Categoria._id.message}</FormHelperText>
-          )}
+          {/* {formState.errors?.Subcategoria && (
+            <FormHelperText>{formState.errors.Subcategoria.message}</FormHelperText>
+          )} */}
         </FormControl>
       </Grid>
+      {nuevaFecha !== "" && (
+        <>
+          <Grid item xs={6}>
+            <TextField value={categoria} autoComplete="off" fullWidth disabled label="Categoría" />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField value={servicio} autoComplete="off" fullWidth disabled label="Servicio" />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              value={Tipo_incidencia}
+              autoComplete="off"
+              fullWidth
+              disabled
+              label="Tipo de incidente"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField value={area} autoComplete="off" fullWidth disabled label="Área" />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              value={tiempo}
+              autoComplete="off"
+              fullWidth
+              disabled
+              label="Nueva Fecha de resolución"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              value={descripcion}
+              autoComplete="off"
+              fullWidth
+              disabled
+              label="Prioridad"
+            />
+          </Grid>
+        </>
+      )}
+
       {/*Introducido por teclado Descripción del ticket*/}
       <Grid item xs={12}>
         <TextField
@@ -258,12 +255,10 @@ const EditarTicket = ({ form, formState }) => {
           label="Descripción del ticket"
           multiline
           rows={5.2}
-          {...form.register("Descripcion", {
-            required: "Es necesario ingresar la descripción del ticket",
-          })}
+          {...form.register("Descripcion")}
           error={!!formState.errors.Descripcion}
           helperText={formState.errors.Descripcion?.message}
-          sx={{ width: "100%" }}
+          fullWidth
         />
       </Grid>
       <Grid xs={6}>

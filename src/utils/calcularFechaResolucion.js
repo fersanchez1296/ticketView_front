@@ -36,7 +36,8 @@ function ajustarAProximoLunes(fecha) {
  * @returns {Date} Fecha y hora límite en la zona horaria especificada.
  */
 export function calcularFechaLimite(tiempoResolucionHoras) {
-  let fechaActual = toZonedTime(new Date(), "America/Mexico_City");
+  const obtenerFechaActual = () => toZonedTime(new Date(), "America/Mexico_City");
+  let fechaActual = obtenerFechaActual();
 
   // Ajustar si el ticket fue registrado fuera del horario laboral
   const horaActual = fechaActual.getHours();

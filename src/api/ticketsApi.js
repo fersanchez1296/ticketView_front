@@ -159,11 +159,8 @@ export const ticketsApi = apiSlice.injectEndpoints({
         const formData = new FormData();
         const ticketId = data._id;
         const ticketData = {
-          Tipo_incidencia: data.Tipo_incidencia._id,
           NumeroRec_Oficio: data.NumeroRec_Oficio,
-          Servicio: data.Servicio._id,
-          Categoria: data.Categoria._id,
-          Subcategoria: data.Subcategoria._id,
+          // Subcategoria: data.Subcategoria,
           Descripcion: data.Descripcion,
           Medio: data.Medio._id,
         };
@@ -181,9 +178,9 @@ export const ticketsApi = apiSlice.injectEndpoints({
           });
         }
         formData.append("ticketData", JSON.stringify(ticketData));
-        for (let pair of formData.entries()) {
-          console.log(`${pair[0]}: ${pair[1]}`);
-        }
+        // for (let pair of formData.entries()) {
+        //   console.log(`${pair[0]}: ${pair[1]}`);
+        // }
         return {
           url: `/tickets/editar/${ticketId}`,
           method: "PUT",
