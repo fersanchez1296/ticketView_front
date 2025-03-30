@@ -5,18 +5,21 @@ import MDBadge from "components/MDBadge";
 import PropTypes from "prop-types";
 
 const badgeColors = {
+  //estados
   ABIERTOS: "success",
-  Normal: "success",
-  RESUELTOS: "success",
+  RESUELTOS: "info",
   REABIERTOS: "success",
-  NUEVOS: "info",
-  Baja: "info",
   CERRADOS: "error",
-  Alto: "error",
-  CRITICO: "error",
-  Medio: "warning",
+  NUEVOS: "info",
   PENDIENTES: "warning",
   REVISION: "warning",
+  STANDBY: "warning",
+  //prioridades
+  "Incidente grave": "error",
+  Alta: "error",
+  Baja: "success",
+  Media: "warning",
+  Planeada: "info",
 };
 
 const Badge = ({ content }) => (
