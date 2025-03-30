@@ -1,12 +1,13 @@
 import WindowButton from "components/WindowButton/WindowButton";
 import Badge from "components/Badge/Badge";
-
+import { Visibility, NoteAdd } from "@mui/icons-material";
 const TicketsUsuariosData = (ticketsArea, setTicketFields, dialogStore) => {
   const columns = [
     {
       field: "visualizar",
-      headerName: "Visualizar",
-      width: 140,
+      headerName: "Ver",
+      headerAlign: "center",
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -15,13 +16,16 @@ const TicketsUsuariosData = (ticketsArea, setTicketFields, dialogStore) => {
           store={setTicketFields}
           openWindow={dialogStore.openWindow}
           label="Visualizar"
-        />
+        >
+          <Visibility />
+        </WindowButton>
       ),
     },
     {
       field: "Nota",
       headerName: "Nota",
-      width: 140,
+      headerAlign: "center",
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -30,7 +34,9 @@ const TicketsUsuariosData = (ticketsArea, setTicketFields, dialogStore) => {
           store={setTicketFields}
           openWindow={dialogStore.openWindowNota}
           label="Nota"
-        />
+        >
+          <NoteAdd />
+        </WindowButton>
       ),
     },
     { field: "Id", headerName: "ID", width: 90, align: "center" },
@@ -44,7 +50,7 @@ const TicketsUsuariosData = (ticketsArea, setTicketFields, dialogStore) => {
       field: "prioridad",
       headerName: "Prioridad",
       width: 130,
-      renderCell: (params) => <Badge content={params.row.Prioridad?.Descripcion} />,
+      renderCell: (params) => <Badge content={params.row.Subcategoria?.Descripcion_prioridad} />,
     },
     {
       field: "Fecha_hora_creacion",
