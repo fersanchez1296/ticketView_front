@@ -68,7 +68,7 @@ const TicketsUsuariosData = (ticketsArea, setTicketFields, dialogStore) => {
 
   const rows = ticketsArea.map((ticket) => ({
     ...ticket,
-    TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",
+    TBIncidencia: ticket.Subcategoria?.Tipo ?? "",
     TBCliente: ticket.Cliente?.Nombre ?? "",
   }));
 
