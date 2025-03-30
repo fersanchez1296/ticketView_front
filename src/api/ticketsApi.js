@@ -239,6 +239,9 @@ export const ticketsApi = apiSlice.injectEndpoints({
           Prioridad: data.Prioridad,
           Files: data.Files,
         };
+        if (data.Nota) {
+          AuxData.Nota = data.Nota;
+        }
         delete AuxData.Prioridad;
         const aux = AuxData.asignado_a;
         const [Asignado_a, Area_asignado] = aux.split("|");
