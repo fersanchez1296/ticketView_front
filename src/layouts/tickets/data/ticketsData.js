@@ -89,6 +89,13 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       width: 300,
     },
     {
+      field: "Fecha_hora_cierre",
+      headerName: "Fecha de cierre",
+      headerAlign: "center",
+      align: "center",
+      width: 300,
+    },
+    {
       field: "TBIncidencia",
       headerName: "Tipo",
       headerAlign: "center",
@@ -588,6 +595,8 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       : ticket.Reasignado_a?.map((n) => n.Nombre).join(", ") || "",
     TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",
     TBCliente: ticket.Cliente?.Nombre ?? "",
+    Fecha_hora_cierre:
+      ticket.Fecha_hora_cierre != "" ? ticket.Fecha_hora_cierre : "Ticket en curso",
   }));
 
   return { columns, rows };
