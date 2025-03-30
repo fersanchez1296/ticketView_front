@@ -62,7 +62,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       renderCell: (params) => <Badge content={params.row.Estado?.Estado} />,
     },
     {
-      field: "prioridad",
+      field: "Prioridad",
       headerName: "Prioridad",
       width: 130,
       renderCell: (params) => <Badge content={params.row.Prioridad?.Descripcion} />,
@@ -583,9 +583,9 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
 
   const rows = tickets.map((ticket) => ({
     ...ticket,
-    TBAsignado: ticket.Asignado_a
-      ? ticket.Asignado_a.map((n) => n.Nombre)
-      : ticket.Reasignado_a.map((n) => n.Nombre) || "",
+    TBAsignado: ticket.Asignado_a?.length
+      ? ticket.Asignado_a.map((n) => n.Nombre).join(", ")
+      : ticket.Reasignado_a?.map((n) => n.Nombre).join(", ") || "",
     TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",
     TBCliente: ticket.Cliente?.Nombre ?? "",
   }));

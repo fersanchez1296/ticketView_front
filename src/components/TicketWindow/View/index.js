@@ -13,6 +13,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MDButton from "components/MDButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Progress from "components/Progress";
+import { styled } from "@mui/material/styles";
+
+const CustomTextField = styled(TextField)({
+  "& .MuiInputBase-input.Mui-disabled": {
+    WebkitTextFillColor: "black !important",
+    opacity: 1,
+  },
+  "& .MuiInputLabel-root.Mui-disabled": {
+    color: "black !important",
+  },
+});
 //snackbar store
 const View = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
@@ -353,7 +364,7 @@ const View = ({ form, formState }) => {
           </Grid>
           {fields.map((f) => (
             <Grid item xs={f.gridSize} key={f.name}>
-              <TextField
+              <CustomTextField
                 defaultValue={f.options}
                 label={f.label}
                 fullWidth
