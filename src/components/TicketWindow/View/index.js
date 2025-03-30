@@ -345,12 +345,11 @@ const View = ({ form, formState }) => {
       {sections.map(({ title, fields }) => (
         <React.Fragment key={title}>
           <Grid item xs={12}>
-            <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
-              <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+            <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+              <Typography variant="h5" fontWeight="bold" color="White">
                 {title}
               </Typography>
             </MDBox>
-            <Divider />
           </Grid>
           {fields.map((f) => (
             <Grid item xs={f.gridSize} key={f.name}>
@@ -366,8 +365,8 @@ const View = ({ form, formState }) => {
         </React.Fragment>
       ))}
       <Grid item xs={12}>
-        <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
-          <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+        <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+          <Typography variant="h5" fontWeight="bold" color="White">
             Archivos
           </Typography>
         </MDBox>
@@ -396,7 +395,6 @@ const View = ({ form, formState }) => {
                 </Typography>
               </MDBox>
             </Grid>
-            <Divider />
           </>
         ))
       ) : (
@@ -404,12 +402,11 @@ const View = ({ form, formState }) => {
       )}
 
       <Grid item xs={12}>
-        <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
-          <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+        <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+          <Typography variant="h5" fontWeight="bold" color="White">
             Historia del ticket
           </Typography>
         </MDBox>
-        <Divider />
       </Grid>
       {historia?.map((mensaje) => (
         <Accordion

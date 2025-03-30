@@ -10,7 +10,7 @@ const badgeColors = {
   RESUELTOS: "success",
   REABIERTOS: "success",
   NUEVOS: "info",
-  Bajo: "info",
+  Baja: "info",
   CERRADOS: "error",
   Alto: "error",
   CRITICO: "error",

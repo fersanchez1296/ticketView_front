@@ -68,6 +68,13 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       renderCell: (params) => <Badge content={params.row.Prioridad?.Descripcion} />,
     },
     {
+      field: "TBAsignado",
+      headerName: "Resolutor",
+      headerAlign: "center",
+      width: 300,
+      align: "center",
+    },
+    {
       field: "Fecha_hora_creacion",
       headerName: "Fecha de creación",
       headerAlign: "center",
@@ -576,6 +583,9 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
 
   const rows = tickets.map((ticket) => ({
     ...ticket,
+    TBAsignado: ticket.Asignado_a
+      ? ticket.Asignado_a.map((n) => n.Nombre)
+      : ticket.Reasignado_a.map((n) => n.Nombre) || "",
     TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",
     TBCliente: ticket.Cliente?.Nombre ?? "",
   }));
