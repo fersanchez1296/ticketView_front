@@ -25,6 +25,7 @@ import DataTable from "components/DataTable";
 import HistoricaData from "./data/historicoData";
 import { useAuthStore } from "zustand/auth.store.ts";
 import WindowButton from "components/WindowButton/WindowButton";
+import { AssignmentInd } from "@mui/icons-material";
 function Historico() {
   const { role } = useAuthStore();
   const [area, setArea] = React.useState("");
@@ -70,7 +71,9 @@ function Historico() {
         store={setTicketFields}
         openWindow={dialogStore.openWindowReasignar}
         label="Reasignar"
-      />
+      >
+        <AssignmentInd />
+      </WindowButton>
     ),
   };
   const { columns, rows } = HistoricaData(tickets, setTicketFields, dialogStore);
