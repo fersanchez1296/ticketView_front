@@ -111,12 +111,12 @@ export const ticketsApi = apiSlice.injectEndpoints({
         for (let pair of formData.entries()) {
           console.log(`${pair[0]}: ${pair[1]}`);
         }
-        //   return {
-        //     url: `/tickets/nota/${ticketId}`,
-        //     method: "PUT",
-        //     body: formData,
-        //     formData: true,
-        //   };
+        return {
+          url: `/tickets/nota/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
