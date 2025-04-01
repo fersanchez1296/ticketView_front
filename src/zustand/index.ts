@@ -150,4 +150,8 @@ export const useDialogStore = create<DialogState>((set) => ({
   isMesaServicioOpen: false,
   openWindowMesaServicio: () => set({ isMesaServicioOpen: true }),
   closeWindowMesaServicio: () => set({ isMesaServicioOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de ayuda:
+  isWindowRPendiente: false,
+  openWindowRPendiente: () => set({ isWindowRPendiente: true }),
+  closeWindowRPendiente: () => set({ isWindowRPendiente: false }),
 }));

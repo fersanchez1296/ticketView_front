@@ -13,6 +13,7 @@ import Aceptar from "components/TicketWindow/Aceptar";
 import Rechazar from "components/TicketWindow/Rechazar";
 import Asignar from "components/TicketWindow/Asignar_";
 import Nota from "components/TicketWindow/Nota";
+import PendingReason from "components/TicketWindow/PendingReason";
 import VerUsuarios from "components/TicketWindow/Usuarios/Ver";
 import EditarUsuario from "components/TicketWindow/Usuarios/Editar";
 import CrearUsuario from "components/TicketWindow/Usuarios/Crear";
@@ -38,6 +39,7 @@ import {
   usePutPendienteMutation,
   useContactoClienteMutation,
   useRetornoMesaMutation,
+  usePendingReasonMutation,
 } from "api/ticketsApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
@@ -83,6 +85,8 @@ const ModalManager = () => {
     closeWindow,
     isMesaServicioOpen,
     closeWindowMesaServicio,
+    isWindowRPendiente,
+    closeWindowRPendiente,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -96,6 +100,7 @@ const ModalManager = () => {
   const [rechazar] = useRechazarResolucionMutation();
   const [regresar] = usePutRegresarTicketMutation();
   const [nota] = useNotaMutation();
+  const [pendingReason] = usePendingReasonMutation();
   const [asignar] = useAsignarMutation();
   const [editarUsuario] = useUpdateUsuarioByIdMutation();
   const [crearUsuario] = useCrearUsuarioMutation();
@@ -176,6 +181,18 @@ const ModalManager = () => {
           helpKey={"notas"}
         >
           <Nota />
+        </VentanaAcciones>
+      )}
+      {isWindowRPendiente && (
+        <VentanaAcciones
+          title="Descripción pendiente"
+          isOpen={isWindowRPendiente}
+          onClose={closeWindowRPendiente}
+          onSave={pendingReason}
+          store={ticketStore}
+          helpKey={"Pending_Reason"}
+        >
+          <PendingReason />
         </VentanaAcciones>
       )}
       {isWindowAsignarOpen && (
