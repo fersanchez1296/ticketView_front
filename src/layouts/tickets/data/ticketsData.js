@@ -300,6 +300,24 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       ...(collection === "standby"
         ? [
             {
+              field: "Descripción",
+              headerName: "R. Pendiente",
+              headerAlign: "center",
+              width: 120,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="primary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowRPendiente}
+                  label="Razón pendiente"
+                >
+                  <NoteAdd />
+                </WindowButton>
+              ),
+            },
+            {
               field: "Asignar",
               headerName: "Asignar",
               width: 80,

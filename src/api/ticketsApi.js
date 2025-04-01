@@ -111,11 +111,27 @@ export const ticketsApi = apiSlice.injectEndpoints({
         for (let pair of formData.entries()) {
           console.log(`${pair[0]}: ${pair[1]}`);
         }
+        //   return {
+        //     url: `/tickets/nota/${ticketId}`,
+        //     method: "PUT",
+        //     body: formData,
+        //     formData: true,
+        //   };
+      },
+      invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
+    }),
+    pendingReason: builder.mutation({
+      query: ({ data }) => {
+        console.log(data);
+        const ticketData = {
+          PendingReason: data.PendingReason,
+        };
+        console.log("ticketData", ticketData);
+        const ticketId = data._id;
         return {
-          url: `/tickets/nota/${ticketId}`,
+          url: `/tickets/PendingReason/${ticketId}`,
           method: "PUT",
-          body: formData,
-          formData: true,
+          body: ticketData,
         };
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
@@ -551,4 +567,5 @@ export const {
   useGetClientesQuery,
   useContactoClienteMutation,
   useRetornoMesaMutation,
+  usePendingReasonMutation,
 } = ticketsApi;
