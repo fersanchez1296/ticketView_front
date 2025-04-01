@@ -239,4 +239,8 @@ export interface DialogState {
   isWindowRPendiente: boolean;
   openWindowRPendiente: () => void;
   closeWindowRPendiente: () => void;
+  //estas definiciones y metodos se usan para regresar el ticket de usuario a su moderador:
+  isRegresaraModeradorOpen: boolean;
+  openWindowRegresaraModerador: () => void;
+  closeWindowRegresaraModerador: () => void;
 }
