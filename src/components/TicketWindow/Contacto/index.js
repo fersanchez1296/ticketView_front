@@ -6,9 +6,7 @@ import TextField from "@mui/material/TextField";
 import { useGetCorreosQuery } from "api/ticketsApi.js";
 import { useTicketStore } from "zustand/index.ts";
 import PropTypes from "prop-types";
-import { Box, Typography } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
-
+import { ArchivosButton } from "components/ArchivosButton/ArchivosButton";
 const Contacto = ({ form, formState }) => {
   const ticketId = useTicketStore((state) => state._id);
   const { data, isLoading, isError } = useGetCorreosQuery({ ticketId });
@@ -52,14 +50,9 @@ const Contacto = ({ form, formState }) => {
           rows={10}
         />
       </Grid>
-      {/* <Grid item xs={12}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <InfoIcon color="secondary" />
-          <Typography variant="overline" pl={1}>
-            Puedes modificar el asunto del correo si lo necesitas.
-          </Typography>
-        </Box>
-      </Grid> */}
+      <Grid xs={6}>
+        <ArchivosButton form={form} formState={formState} />
+      </Grid>
     </Grid>
   );
 };

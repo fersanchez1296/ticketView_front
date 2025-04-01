@@ -496,10 +496,28 @@ export const ticketsApi = apiSlice.injectEndpoints({
     }),
     contactoCliente: builder.mutation({
       query: ({ data }) => {
-        const ticketId = data._id;
+        const formData = new FormData();
         const auxData = {
           cuerpo: data.cuerpo,
         };
+        const ticketId = data._id;
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(auxData));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
         return {
           url: `tickets/contactoCliente/${ticketId}`,
           method: "PUT",

@@ -420,29 +420,29 @@ const View = ({ form, formState }) => {
         </MDBox>
       </Grid>
       {historia?.map((mensaje) => (
-        <Accordion
-          key={mensaje._id}
-          sx={{
-            width: "100%",
-            marginBottom: "1rem",
-            border: "1px solid blue",
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3-content"
-            id="panel3-header"
+        <Grid item xs={3} key={mensaje._id}>
+          <Accordion
+            sx={{
+              marginBottom: "1rem",
+              border: "1px solid blue",
+            }}
           >
-            <MDBox sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography variant="body1">{`${mensaje.Nombre.Nombre}`}</Typography>
-              <Typography variant="body2">{`${mensaje.Titulo}`}</Typography>
-              <Typography variant="overline">{mensaje.Fecha}</Typography>
-            </MDBox>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography variant="body2">{mensaje.Mensaje}</Typography>
-          </AccordionDetails>
-        </Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel3-content"
+              id="panel3-header"
+            >
+              <MDBox sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography variant="body1">{`${mensaje.Nombre.Nombre}`}</Typography>
+                <Typography variant="body2">{`${mensaje.Titulo}`}</Typography>
+                <Typography variant="overline">{mensaje.Fecha}</Typography>
+              </MDBox>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body2">{mensaje.Mensaje}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
       ))}
     </Grid>
   );

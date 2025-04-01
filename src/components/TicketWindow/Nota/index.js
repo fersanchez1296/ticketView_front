@@ -1,18 +1,11 @@
 import React from "react";
 //mui library component
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { List, ListItem } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
+import { ArchivosButton } from "components/ArchivosButton/ArchivosButton";
 //snackbar store
 const Nota = ({ form, formState }) => {
-  console.log(form);
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   /* -------------------------------------------------------------------------- */
@@ -21,7 +14,6 @@ const Nota = ({ form, formState }) => {
   // Estado global de Zustand
   /* -------------------------------------------------------------------------- */
   // Estados locales con useState
-  const [selectedFiles, setSelectedFiles] = React.useState([]);
   /* -------------------------------------------------------------------------- */
   // Hooks de React Hook Form (useForm, useFieldArray, etc.)
   /* -------------------------------------------------------------------------- */
@@ -34,30 +26,6 @@ const Nota = ({ form, formState }) => {
   // Verificaciones de carga y errores (isLoading, isError)
   /* -------------------------------------------------------------------------- */
   // Funciones auxiliares
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-    setSelectedFiles((prevFiles) => {
-      const updatedFiles = [...prevFiles, ...files];
-      form.setValue("Files", updatedFiles);
-      return updatedFiles;
-    });
-  };
-  const removeFile = (index) => {
-    const newFiles = selectedFiles.filter((_, i) => i !== index);
-    setSelectedFiles(newFiles);
-    form.setValue("Files", newFiles);
-  };
   /* -------------------------------------------------------------------------- */
   // Renderizado del componente (return)
   return (
@@ -77,47 +45,8 @@ const Nota = ({ form, formState }) => {
         />
       </Grid>
       <Grid xs={6}>
-        <Button
-          component="label"
-          variant="outlined"
-          color="primary"
-          size="small"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon color="primary" />}
-          // Removemos la deshabilitación para permitir agregar más archivos
-        >
-          <Typography color="primary">
-            {selectedFiles.length > 0
-              ? `${selectedFiles.length} archivo(s) seleccionado(s)`
-              : "Subir Archivos"}
-          </Typography>
-          <VisuallyHiddenInput
-            {...form.register("Files")}
-            type="file"
-            multiple
-            onChange={handleFileChange}
-          />
-        </Button>
-        <br />
-        <Typography variant={"caption"} color="Black">
-          *Selecciona los archivos que necesitas subir.
-        </Typography>
+        <ArchivosButton form={form} formState={formState} />
       </Grid>
-      {/* Botones de eliminar archivos */}
-      {selectedFiles.length > 0 && (
-        <Grid item xs={12}>
-          <List>
-            {selectedFiles.map((file, index) => (
-              <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography>{file.name}</Typography>
-                <IconButton color="error" onClick={() => removeFile(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-      )}
     </Grid>
   );
 };
