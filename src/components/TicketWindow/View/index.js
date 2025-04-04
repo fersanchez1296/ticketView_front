@@ -37,10 +37,12 @@ const View = ({ form, formState }) => {
       .watch("Reasignado_a")[0]
       ?.Area.map((area) => area.Area)
       .join(", ") || [];
-  const areaNames = form
-    .watch("AreaTicket")
-    .map((area) => area.Area)
-    .join(", ");
+  const areaNames = form.watch("AreaTicket")?.length
+    ? form
+        .watch("AreaTicket")
+        .map((area) => area.Area)
+        .join(", ")
+    : "";
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   const historia = form.getValues("Historia_ticket");
