@@ -111,12 +111,12 @@ export const ticketsApi = apiSlice.injectEndpoints({
         for (let pair of formData.entries()) {
           console.log(`${pair[0]}: ${pair[1]}`);
         }
-        //   return {
-        //     url: `/tickets/nota/${ticketId}`,
-        //     method: "PUT",
-        //     body: formData,
-        //     formData: true,
-        //   };
+        return {
+          url: `/tickets/nota/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
@@ -310,31 +310,32 @@ export const ticketsApi = apiSlice.injectEndpoints({
         const ticketId = data._id;
         const ticketData = {};
         const AuxData = {
-          Asignado_a: data.Asignado_a,
-          asignado_a: data.asignado_a ?? "",
-          Prioridad: data.Prioridad,
-          prioridad: data.prioridad ?? "",
-          descripcionReabierto: data.Descripcion,
+          Asignado_a: data.asignado_a,
+          // asignado_a: data.asignado_a ?? "",
+          // Prioridad: data.Prioridad,
+          // prioridad: data.prioridad ?? "",
+          //descripcionReabierto: data.Descripcion,
           Files: data.Files,
         };
         if (typeof AuxData.Asignado_a === "object") {
           delete AuxData.Asignado_a;
-          delete AuxData.Prioridad;
-          delete AuxData.asignado_a;
-          delete AuxData.prioridad;
-        } else {
-          AuxData.Prioridad = "";
-          const aux = AuxData.asignado_a;
-          const auxPrioridad = AuxData.prioridad;
-          const [Asignado_a, Area_asignado] = aux.split("|");
-          const [Prioridad, tiempo] = auxPrioridad.split("|");
-          AuxData.Asignado_a = Asignado_a;
-          AuxData.Area_asignado = Area_asignado;
-          AuxData.Prioridad = Prioridad;
-          AuxData.tiempo = tiempo;
-          delete AuxData.asignado_a;
-          delete AuxData.prioridad;
         }
+        //delete AuxData.Prioridad;
+        // delete AuxData.asignado_a;
+        //delete AuxData.prioridad;
+        // } else {
+        //   //AuxData.Prioridad = "";
+        //   //const aux = AuxData.asignado_a;
+        //   //const auxPrioridad = AuxData.prioridad;
+        //   //const [Asignado_a, Area_asignado] = aux.split("|");
+        //   //const [Prioridad, tiempo] = auxPrioridad.split("|");
+        //   //AuxData.Asignado_a = Asignado_a;
+        //   //AuxData.Area_asignado = Area_asignado;
+        //   //AuxData.Prioridad = Prioridad;
+        //   //AuxData.tiempo = tiempo;
+        //   //delete AuxData.asignado_a;
+        //   //delete AuxData.prioridad;
+        // }
         Object.entries(AuxData).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {
             value.forEach((file) => {
@@ -366,8 +367,6 @@ export const ticketsApi = apiSlice.injectEndpoints({
         const formData = new FormData();
         const ticketId = data._id;
         const ticketData = {
-          _id: ticketId,
-          Numero_Oficio: data.Numero_Oficio,
           Descripcion_cierre: data.Respuesta_cierre_reasignado,
         };
         if (data.Files) {
@@ -443,15 +442,33 @@ export const ticketsApi = apiSlice.injectEndpoints({
     //Pendiente
     putPendiente: builder.mutation({
       query: ({ data }) => {
-        const ticketId = data._id;
+        const formData = new FormData();
         const auxData = {
-          Id: data.Id,
           cuerpo: data.cuerpo,
         };
+        const ticketId = data._id;
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(auxData));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
         return {
           url: `tickets/pendiente/${ticketId}`,
           method: "PUT",
-          body: auxData,
+          body: formData,
+          formData: true,
         };
       },
       invalidatesTags: ["Tickets"],
@@ -537,7 +554,8 @@ export const ticketsApi = apiSlice.injectEndpoints({
         return {
           url: `tickets/contactoCliente/${ticketId}`,
           method: "PUT",
-          body: auxData,
+          body: formData,
+          formData: true,
         };
       },
       invalidatesTags: ["Tickets"],

@@ -62,6 +62,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import GroupIcon from "@mui/icons-material/Group";
 import Historico from "layouts/Historico/index";
 import FeedIcon from "@mui/icons-material/Feed";
+import ErrorIcon from "@mui/icons-material/Error";
 import Coordinacion from "layouts/coordinacion/index";
 //import Usuarios from "layouts/usuarios/index";
 import Usuarios from "layouts/usuarios2/index";
@@ -86,6 +87,15 @@ const routes = [
     icon: <FiberNewIcon />,
     route: "/crear_ticket",
     component: <Create_Ticket />,
+  },
+  {
+    type: "collapse",
+    name: "Graves",
+    key: "graves",
+    rol: ["Root", "Administrador", "Moderador"],
+    icon: <ErrorIcon />,
+    route: "/graves",
+    component: <DataTable collection={"nuevos"} />,
   },
   {
     type: "collapse",

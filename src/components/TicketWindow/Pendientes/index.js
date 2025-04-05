@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import { useGetCorreosQuery } from "api/ticketsApi.js";
 import { useTicketStore } from "zustand/index.ts";
 import PropTypes from "prop-types";
+import { ArchivosButton } from "components/ArchivosButton/ArchivosButton";
 const Pendientes = ({ form, formState }) => {
   const ticketId = useTicketStore((state) => state._id);
   const { data, isLoading, isError } = useGetCorreosQuery({ ticketId });
@@ -26,13 +27,13 @@ const Pendientes = ({ form, formState }) => {
       </Grid>
       <Grid item xs={12}>
         {/* Input para agregr la descripción pendiente */}
-        <TextField
+        {/* <TextField
           fullWidth
           id="outlined-multiline-static"
           label="CC:"
           value={data.correoModerador}
           disabled
-        />
+        /> */}
       </Grid>
       <Grid item xs={12}>
         {/* Input para agregr la descripción pendiente */}
@@ -58,6 +59,9 @@ const Pendientes = ({ form, formState }) => {
           multiline
           rows={10}
         />
+      </Grid>
+      <Grid xs={6}>
+        <ArchivosButton form={form} formState={formState} />
       </Grid>
     </Grid>
   );

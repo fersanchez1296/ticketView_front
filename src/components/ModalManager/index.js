@@ -91,7 +91,6 @@ const ModalManager = () => {
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
   const clientStore = useClientesStore();
-
   const [reabrir] = useReabrirMutation();
   const [resolver] = useResolverMutation();
   const [cerrar] = useCerrarMutation();

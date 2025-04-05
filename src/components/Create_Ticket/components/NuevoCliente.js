@@ -128,7 +128,7 @@ const NuevoCliente = ({ form: parentForm }) => {
           {/*Introducido por teclado Teléfono*/}
           <Grid item xs={6}>
             <TextField
-              autoComplete="off"
+              //autoComplete="off"
               type="tel" // Tipo tel para mostrar un teclado numérico en móviles
               label="Teléfono:"
               //value={clientesStore.Telefono}

@@ -30,6 +30,7 @@ const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"))
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useClientesStore } from "zustand/index.ts";
 import { calcularFechaLimite } from "utils/calcularFechaResolucion";
+import CustomSelect from "components/Select/Select";
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -63,7 +64,7 @@ export default function Form({ data }) {
   const [isNuevoCliente, setIsNuevoCliente] = React.useState(false);
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
-  const { register, handleSubmit, formState, setValue, watch, reset } = form;
+  const { register, handleSubmit, formState, setValue, watch, reset, control } = form;
   const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
   const [Nombre, setNombre] = React.useState("");
@@ -126,9 +127,14 @@ export default function Form({ data }) {
     [data]
   );
 
-  const handleSubcategoriaChange = (e) => {
-    const selectedSubcategoria = e.target.value;
+  const handleSubcategoriaChange = (selectedOption) => {
+    if (!selectedOption) return; // por si se limpia el select
+
+    const selectedSubcategoria = selectedOption._id;
     const catalogo = data.categorizacion.find((s) => s._id.includes(selectedSubcategoria));
+
+    if (!catalogo) return;
+
     const tiempo = catalogo.Prioridad;
     setValue("tiempo", tiempo);
     setValue("Area", catalogo.Equipo._id);
@@ -146,6 +152,7 @@ export default function Form({ data }) {
       setTiempo(fechaFormateada);
     }
   };
+
   return (
     <>
       <Grid container spacing={1}>
@@ -228,7 +235,14 @@ export default function Form({ data }) {
           ))}
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel>Selecciona la Subcategoría</InputLabel>
+              <CustomSelect
+                options={data.categorizacion}
+                form={form}
+                formState={formState}
+                control={control}
+                onChangeCallback={handleSubcategoriaChange}
+              />
+              {/* <InputLabel>Selecciona la Subcategoría</InputLabel>
               <Select
                 autoComplete="off"
                 defaultValue=""
@@ -248,7 +262,7 @@ export default function Form({ data }) {
               </Select>
               {errors.Subcategoria && (
                 <FormHelperText>{errors.Subcategoria.message}</FormHelperText>
-              )}
+              )} */}
             </FormControl>
           </Grid>
           <Grid item xs={6}>

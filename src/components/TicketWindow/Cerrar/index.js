@@ -38,7 +38,7 @@ const Cerrar = ({ form, formState }) => {
   return (
     <Grid container spacing={2} m={1}>
       <Grid item xs={12}>
-        <TextField
+        {/* <TextField
           fullWidth
           id="oficio_cierre"
           label="Oficio de cierre"
@@ -46,7 +46,7 @@ const Cerrar = ({ form, formState }) => {
           error={!!formState.errors?.Numero_Oficio}
           helperText={formState.errors?.Numero_Oficio?.message}
           placeholder="Ingresa el número de oficio de cierre"
-        />
+        /> */}
       </Grid>
       <Grid item xs={12}>
         <TextField
@@ -59,7 +59,7 @@ const Cerrar = ({ form, formState }) => {
           error={!!formState.errors?.Respuesta_cierre_reasignado}
           helperText={formState.errors?.Respuesta_cierre_reasignado?.message}
           multiline
-          rows={6}
+          rows={15}
           placeholder="Ingresa la descripción de cierre del ticket"
         />
       </Grid>

@@ -10,10 +10,10 @@ import {
   AssignmentReturn,
   ThumbDown,
   ThumbUp,
-  Pending,
   DoneAll,
   Replay,
 } from "@mui/icons-material";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => {
   const baseColumns = [
     {
@@ -262,7 +262,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   openWindow={dialogStore.openWindowPendientes}
                   label="Pendiente"
                 >
-                  <Pending />
+                  <PendingActionsIcon />
                 </WindowButton>
               ),
             },
@@ -336,7 +336,7 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
-      ...(collection === "cerrados"
+      ...(collection === "cerrados" || collection === "resueltos"
         ? [
             {
               field: "Reabrir",
