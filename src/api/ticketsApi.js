@@ -169,6 +169,39 @@ export const ticketsApi = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
+    retornoModerador: builder.mutation({
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketData = {
+          descripcion_retorno: data.descripcion_retorno,
+        };
+        const ticketId = data._id;
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
+        return {
+          url: `/tickets/retornoModerador/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
+    }),
     //Editar ticket
     editar: builder.mutation({
       query: ({ data }) => {
@@ -585,5 +618,6 @@ export const {
   useGetClientesQuery,
   useContactoClienteMutation,
   useRetornoMesaMutation,
+  useRetornoModeradorMutation,
   usePendingReasonMutation,
 } = ticketsApi;

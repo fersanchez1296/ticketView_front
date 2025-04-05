@@ -266,6 +266,25 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                 </WindowButton>
               ),
             },
+            {
+              field: "Moderador",
+              headerName: "Moderador",
+              headerAlign: "center",
+              align: "center",
+              width: 150,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="primary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowRegresaraModerador}
+                  label="Regresar a moderador"
+                >
+                  <AssignmentReturn />
+                </WindowButton>
+              ),
+            },
           ]
         : []),
     ],
@@ -333,6 +352,13 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                   <AssignmentInd />
                 </WindowButton>
               ),
+            },
+            {
+              field: "PendingReason",
+              headerName: "Descripción pendiente",
+              headerAlign: "center",
+              width: 200,
+              align: "center",
             },
           ]
         : []),

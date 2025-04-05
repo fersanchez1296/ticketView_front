@@ -154,4 +154,8 @@ export const useDialogStore = create<DialogState>((set) => ({
   isWindowRPendiente: false,
   openWindowRPendiente: () => set({ isWindowRPendiente: true }),
   closeWindowRPendiente: () => set({ isWindowRPendiente: false }),
+  //estas definiciones y metodos se usan para regresar el ticket de usuario a su moderador:
+  isRegresaraModeradorOpen: false,
+  openWindowRegresaraModerador: () => set({ isRegresaraModeradorOpen: true }),
+  closeWindowRegresaraModerador: () => set({ isRegresaraModeradorOpen: false }),
 }));
