@@ -114,6 +114,7 @@ export default function Form({ data }) {
       setLoading(false);
     }
   };
+  const standby = watch("standby");
   const hasResolutor = watch("hasResolutor");
   const formFields = React.useMemo(
     () => [

@@ -14,11 +14,12 @@ export const usersApi = apiSlice.injectEndpoints({
     }),
     updateUsuarioById: builder.mutation({
       query: ({ data }) => {
+        const areaIds = data.Area.map((area) => area._id);
         const userId = data._id;
         const auxData = {
           Nombre: data.Nombre,
           Correo: data.Correo,
-          Area: data.Area[0]._id,
+          Area: areaIds,
           Rol: data.Rol._id,
         };
         return {

@@ -13,7 +13,7 @@ const Ver = ({ form, formState }) => {
         <TextField fullWidth id="Correo" label="Correo" {...form.register("Correo")} disabled />
       </Grid>
       <Grid item xs={6}>
-        <TextField fullWidth id="Area" label="Área" {...form.register("TBArea")} disabled />
+        <TextField fullWidth id="Area " label="Área" {...form.register("TBArea")} disabled />
       </Grid>
       <Grid item xs={6}>
         <TextField fullWidth id="Usuario" label="Usuario" {...form.register("Username")} disabled />

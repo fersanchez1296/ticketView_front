@@ -516,6 +516,24 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
                 </WindowButton>
               ),
             },
+            {
+              field: "Descripción",
+              headerName: "R. Pendiente",
+              headerAlign: "center",
+              width: 120,
+              renderCell: (params) => (
+                <WindowButton
+                  key={params.row._id}
+                  ticket={params.row}
+                  color="primary"
+                  store={setTicketFields}
+                  openWindow={dialogStore.openWindowRPendiente}
+                  label="Razón pendiente"
+                >
+                  <NoteAdd />
+                </WindowButton>
+              ),
+            },
           ]
         : []),
       ...(collection === "cerrados"

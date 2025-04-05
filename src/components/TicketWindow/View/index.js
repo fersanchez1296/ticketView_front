@@ -26,6 +26,23 @@ const CustomTextField = styled(TextField)({
 });
 //snackbar store
 const View = ({ form, formState }) => {
+  console.log(form.watch());
+  const areaModerador =
+    form
+      .watch("Asignado_a")[0]
+      ?.Area.map((area) => area.Area)
+      .join(", ") || [];
+  const areaResolutor =
+    form
+      .watch("Reasignado_a")[0]
+      ?.Area.map((area) => area.Area)
+      .join(", ") || [];
+  const areaNames = form.watch("AreaTicket")?.length
+    ? form
+        .watch("AreaTicket")
+        .map((area) => area.Area)
+        .join(", ")
+    : "";
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   const historia = form.getValues("Historia_ticket");
@@ -54,9 +71,16 @@ const View = ({ form, formState }) => {
         multiline: { state: false },
       },
       {
+        name: "Arealocalizacion",
+        label: "Área localización",
+        gridSize: 3,
+        options: areaNames ?? "",
+        multiline: { state: false },
+      },
+      {
         name: "Prioridad",
         label: "Prioridad",
-        gridSize: 1,
+        gridSize: 2,
         options: form.getValues("Subcategoria.Descripcion_prioridad") ?? "",
         multiline: { state: false },
       },
@@ -77,7 +101,7 @@ const View = ({ form, formState }) => {
       {
         name: "Estado",
         label: "Estado",
-        gridSize: 3,
+        gridSize: 1,
         options: form.getValues("Estado.Estado") ?? "",
         multiline: { state: false },
       },
@@ -91,14 +115,14 @@ const View = ({ form, formState }) => {
       {
         name: "Area",
         label: "Área",
-        gridSize: 3,
+        gridSize: 2,
         options: form.getValues("Area.Area") ?? "",
         multiline: { state: false },
       },
       {
         name: "Servicio",
         label: "Servicio",
-        gridSize: 3,
+        gridSize: 2,
         options: form.getValues("Subcategoria.Servicio") ?? "",
         multiline: { state: false },
       },
@@ -210,7 +234,7 @@ const View = ({ form, formState }) => {
         name: "Area_asignado",
         label: "Área moderador",
         gridSize: 6,
-        options: form.getValues("Asignado_a[0].Area[0].Area") ?? "",
+        options: areaModerador ?? "",
         multiline: { state: false },
       },
     ],
@@ -230,7 +254,7 @@ const View = ({ form, formState }) => {
         name: "Area_resolutor",
         label: "Área resolutor",
         gridSize: 6,
-        options: form.getValues("Reasignado_a[0].Area[0].Area") ?? "",
+        options: areaResolutor ?? "",
         multiline: { state: false },
       },
       {
