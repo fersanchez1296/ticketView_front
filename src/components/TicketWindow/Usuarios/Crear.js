@@ -8,6 +8,9 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import PropTypes from "prop-types";
 import FormHelperText from "@mui/material/FormHelperText";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
+
 //api hook
 import { useGetRolUsuarioQuery } from "api/usuariosApi";
 
@@ -69,7 +72,7 @@ const Crear = ({ form, formState }) => {
             )}
           </FormControl>
         </Grid>
-        {/*Seleccion del area del usuario*/}
+        {/* Seleccion del area del usuario
         <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Área</InputLabel>
@@ -85,6 +88,42 @@ const Crear = ({ form, formState }) => {
               {data.areas.map((est) => (
                 <MenuItem value={est._id} key={est._id}>
                   {est.Area}
+                </MenuItem>
+              ))}
+            </Select>
+            {formState.errors.areaUsuario && (
+              <FormHelperText>{formState.errors.areaUsuario.message}</FormHelperText>
+            )}
+          </FormControl>
+        </Grid> */}
+        {/* Selección de múltiples áreas */}
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Áreas</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Coordinación de usuario"
+              multiple // Permite selección múltiple
+              value={form.watch("areaUsuario") || []} // Usa el valor actual del formulario
+              onChange={(e) => form.setValue("areaUsuario", e.target.value)} // Actualiza el formulario
+              {...form.register("areaUsuario", {
+                required: "El área del usuario es requerida",
+              })}
+              error={!!formState.errors.areaUsuario}
+              renderValue={(selected) =>
+                selected
+                  .map((id) => {
+                    const area = data.areas.find((a) => a._id === id);
+                    return area ? area.Area : id;
+                  })
+                  .join(", ")
+              }
+            >
+              {data.areas.map((est) => (
+                <MenuItem key={est._id} value={est._id}>
+                  <Checkbox checked={form.watch("areaUsuario")?.includes(est._id) || false} />
+                  <ListItemText primary={est.Area} />
                 </MenuItem>
               ))}
             </Select>

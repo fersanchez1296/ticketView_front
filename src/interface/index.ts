@@ -28,6 +28,7 @@ export interface TicketProps {
   Reasignado_a?: Object;
   Area_reasignado_a?: Object;
   Descripcion_resolucion: string;
+  PendingReason: string;
   Medio: string;
   Cliente: String;
   Historia_ticket: Array<any>;
@@ -74,6 +75,7 @@ export const ticketInitialState: TicketProps = {
   Descripcion_resolucion: "",
   Medio: "",
   Cliente: "",
+  PendingReason: "",
   Historia_ticket: [],
   Files: [],
 };
@@ -229,4 +231,16 @@ export interface DialogState {
   isHelpWindowOpen: boolean;
   openWindowHelp: () => void;
   closeWindowHelp: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana de ayuda:
+  isMesaServicioOpen: boolean;
+  openWindowMesaServicio: () => void;
+  closeWindowMesaServicio: () => void;
+  //estas definiciones y metodos se usan para abrir la ventana razón pendiente:
+  isWindowRPendiente: boolean;
+  openWindowRPendiente: () => void;
+  closeWindowRPendiente: () => void;
+  //estas definiciones y metodos se usan para regresar el ticket de usuario a su moderador:
+  isRegresaraModeradorOpen: boolean;
+  openWindowRegresaraModerador: () => void;
+  closeWindowRegresaraModerador: () => void;
 }

@@ -11,7 +11,8 @@ import { List, ListItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 //snackbar store
-const Nota = ({ form, formState }) => {
+const PendingReason = ({ form, formState }) => {
+  console.log(form);
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   /* -------------------------------------------------------------------------- */
@@ -44,86 +45,33 @@ const Nota = ({ form, formState }) => {
     whiteSpace: "nowrap",
     width: 1,
   });
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-    setSelectedFiles((prevFiles) => {
-      const updatedFiles = [...prevFiles, ...files];
-      form.setValue("Files", updatedFiles);
-      return updatedFiles;
-    });
-  };
-  const removeFile = (index) => {
-    const newFiles = selectedFiles.filter((_, i) => i !== index);
-    setSelectedFiles(newFiles);
-    form.setValue("Files", newFiles);
-  };
-  /* -------------------------------------------------------------------------- */
   // Renderizado del componente (return)
   return (
     <Grid container spacing={1} m={1}>
       <Grid item xs={12}>
         <TextField
-          id="descripcion"
-          label="Respuesta cliente"
+          id="PendingReason"
+          label="Añade la descripción:"
           multiline
-          {...form.register("Descripcion_respuesta_cliente", {
-            required: "Es necesario ingresar la respuesta del cliente",
+          {...form.register("PendingReason", {
+            required: "Es necesario ingresar la descripción",
           })}
-          error={!!formState.errors.Descripcion_respuesta_cliente}
-          helperText={formState.errors.Descripcion_respuesta_cliente?.message}
-          rows={5.2}
+          error={!!formState.errors.Nota}
+          helperText={formState.errors.Nota?.message}
+          rows={15}
           fullWidth
+          InputLabelProps={{
+            style: { color: "black" },
+          }}
         />
       </Grid>
-      <Grid xs={6}>
-        <Button
-          component="label"
-          variant="outlined"
-          color="primary"
-          size="small"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon color="primary" />}
-          // Removemos la deshabilitación para permitir agregar más archivos
-        >
-          <Typography color="primary">
-            {selectedFiles.length > 0
-              ? `${selectedFiles.length} archivo(s) seleccionado(s)`
-              : "Subir Archivos"}
-          </Typography>
-          <VisuallyHiddenInput
-            {...form.register("Files")}
-            type="file"
-            multiple
-            onChange={handleFileChange}
-          />
-        </Button>
-        <br />
-        <Typography variant={"caption"} color="Black">
-          *Selecciona los archivos que necesitas subir.
-        </Typography>
-      </Grid>
-      {/* Botones de eliminar archivos */}
-      {selectedFiles.length > 0 && (
-        <Grid item xs={12}>
-          <List>
-            {selectedFiles.map((file, index) => (
-              <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography>{file.name}</Typography>
-                <IconButton color="error" onClick={() => removeFile(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-      )}
     </Grid>
   );
 };
 
-Nota.propTypes = {
+PendingReason.propTypes = {
   form: PropTypes.object,
   formState: PropTypes.object,
 };
 
-export default React.memo(Nota);
+export default React.memo(PendingReason);

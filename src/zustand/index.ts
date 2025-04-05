@@ -146,4 +146,16 @@ export const useDialogStore = create<DialogState>((set) => ({
   isHelpWindowOpen: false,
   openWindowHelp: () => set({ isHelpWindowOpen: true }),
   closeWindowHelp: () => set({ isHelpWindowOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de ayuda:
+  isMesaServicioOpen: false,
+  openWindowMesaServicio: () => set({ isMesaServicioOpen: true }),
+  closeWindowMesaServicio: () => set({ isMesaServicioOpen: false }),
+  //estas definiciones y metodos se usan para abrir la ventana de ayuda:
+  isWindowRPendiente: false,
+  openWindowRPendiente: () => set({ isWindowRPendiente: true }),
+  closeWindowRPendiente: () => set({ isWindowRPendiente: false }),
+  //estas definiciones y metodos se usan para regresar el ticket de usuario a su moderador:
+  isRegresaraModeradorOpen: false,
+  openWindowRegresaraModerador: () => set({ isRegresaraModeradorOpen: true }),
+  closeWindowRegresaraModerador: () => set({ isRegresaraModeradorOpen: false }),
 }));

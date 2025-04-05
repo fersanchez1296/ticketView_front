@@ -13,8 +13,36 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MDButton from "components/MDButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Progress from "components/Progress";
+import { styled } from "@mui/material/styles";
+
+const CustomTextField = styled(TextField)({
+  "& .MuiInputBase-input.Mui-disabled": {
+    WebkitTextFillColor: "black !important",
+    opacity: 1,
+  },
+  "& .MuiInputLabel-root.Mui-disabled": {
+    color: "black !important",
+  },
+});
 //snackbar store
 const View = ({ form, formState }) => {
+  console.log(form.watch());
+  const areaModerador =
+    form
+      .watch("Asignado_a")[0]
+      ?.Area.map((area) => area.Area)
+      .join(", ") || [];
+  const areaResolutor =
+    form
+      .watch("Reasignado_a")[0]
+      ?.Area.map((area) => area.Area)
+      .join(", ") || [];
+  const areaNames = form.watch("AreaTicket")?.length
+    ? form
+        .watch("AreaTicket")
+        .map((area) => area.Area)
+        .join(", ")
+    : "";
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   const historia = form.getValues("Historia_ticket");
@@ -43,10 +71,17 @@ const View = ({ form, formState }) => {
         multiline: { state: false },
       },
       {
+        name: "Arealocalizacion",
+        label: "Área localización",
+        gridSize: 3,
+        options: areaNames ?? "",
+        multiline: { state: false },
+      },
+      {
         name: "Prioridad",
         label: "Prioridad",
-        gridSize: 1,
-        options: form.getValues("Prioridad.Descripcion") ?? "",
+        gridSize: 2,
+        options: form.getValues("Subcategoria.Descripcion_prioridad") ?? "",
         multiline: { state: false },
       },
       {
@@ -66,7 +101,7 @@ const View = ({ form, formState }) => {
       {
         name: "Estado",
         label: "Estado",
-        gridSize: 3,
+        gridSize: 1,
         options: form.getValues("Estado.Estado") ?? "",
         multiline: { state: false },
       },
@@ -74,28 +109,28 @@ const View = ({ form, formState }) => {
         name: "Tipo_incidencia",
         label: "Tipo de incidencia",
         gridSize: 2,
-        options: form.getValues("Tipo_incidencia.Tipo_de_incidencia") ?? "",
+        options: form.getValues("Subcategoria.Tipo") ?? "",
         multiline: { state: false },
       },
       {
         name: "Area",
         label: "Área",
-        gridSize: 3,
+        gridSize: 2,
         options: form.getValues("Area.Area") ?? "",
         multiline: { state: false },
       },
       {
         name: "Servicio",
         label: "Servicio",
-        gridSize: 3,
-        options: form.getValues("Servicio.Servicio") ?? "",
+        gridSize: 2,
+        options: form.getValues("Subcategoria.Servicio") ?? "",
         multiline: { state: false },
       },
       {
         name: "Categoria",
         label: "Categoría",
         gridSize: 3,
-        options: form.getValues("Categoria.Categoria") ?? "",
+        options: form.getValues("Subcategoria.Categoría") ?? "",
         multiline: { state: false },
       },
       {
@@ -171,9 +206,16 @@ const View = ({ form, formState }) => {
       {
         name: "Descripcion_de_cierre",
         label: "Descripción de cierre",
-        gridSize: 12,
+        gridSize: 6,
         options: form.getValues("Descripcion_cierre") ?? "",
         multiline: { state: true },
+      },
+      {
+        name: "Descripción pendiente",
+        label: "Descripción pendiente",
+        gridSize: 6,
+        options: form.getValues("PendingReason") ?? "",
+        multiline: { state: false },
       },
     ],
     []
@@ -192,7 +234,7 @@ const View = ({ form, formState }) => {
         name: "Area_asignado",
         label: "Área moderador",
         gridSize: 6,
-        options: form.getValues("Asignado_a[0].Area[0].Area") ?? "",
+        options: areaModerador ?? "",
         multiline: { state: false },
       },
     ],
@@ -212,7 +254,7 @@ const View = ({ form, formState }) => {
         name: "Area_resolutor",
         label: "Área resolutor",
         gridSize: 6,
-        options: form.getValues("Reasignado_a[0].Area[0].Area") ?? "",
+        options: areaResolutor ?? "",
         multiline: { state: false },
       },
       {
@@ -338,16 +380,15 @@ const View = ({ form, formState }) => {
       {sections.map(({ title, fields }) => (
         <React.Fragment key={title}>
           <Grid item xs={12}>
-            <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
-              <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+            <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+              <Typography variant="h5" fontWeight="bold" color="White">
                 {title}
               </Typography>
             </MDBox>
-            <Divider />
           </Grid>
           {fields.map((f) => (
             <Grid item xs={f.gridSize} key={f.name}>
-              <TextField
+              <CustomTextField
                 defaultValue={f.options}
                 label={f.label}
                 fullWidth
@@ -359,8 +400,8 @@ const View = ({ form, formState }) => {
         </React.Fragment>
       ))}
       <Grid item xs={12}>
-        <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
-          <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+        <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+          <Typography variant="h5" fontWeight="bold" color="White">
             Archivos
           </Typography>
         </MDBox>
@@ -389,7 +430,6 @@ const View = ({ form, formState }) => {
                 </Typography>
               </MDBox>
             </Grid>
-            <Divider />
           </>
         ))
       ) : (
@@ -397,12 +437,11 @@ const View = ({ form, formState }) => {
       )}
 
       <Grid item xs={12}>
-        <MDBox bgColor="primary" borderRadius="lg" p={2} textAlign="left">
-          <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+        <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+          <Typography variant="h5" fontWeight="bold" color="White">
             Historia del ticket
           </Typography>
         </MDBox>
-        <Divider />
       </Grid>
       {historia?.map((mensaje) => (
         <Accordion

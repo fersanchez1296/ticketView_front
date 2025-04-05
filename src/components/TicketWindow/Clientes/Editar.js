@@ -32,7 +32,6 @@ const NuevoCliente = ({ form, formState }) => {
   // Estados locales con useState
   const [nuevaDGeneral, setNuevaDGeneral] = useState(false);
   const [nuevaDArea, setNuevaDArea] = useState(false);
-  const [nuevaDependencia, setNuevaDependencia] = useState(false);
   /* -------------------------------------------------------------------------- */
   // Refs y useMemo / useCallback (si aplica)
   /* -------------------------------------------------------------------------- */
@@ -124,60 +123,6 @@ const NuevoCliente = ({ form, formState }) => {
             fullWidth
           />
         </Grid>
-        {/*Introducido por teclado Dependencia del cliente*/}
-        <Grid item xs={6}>
-          {!nuevaDependencia ? (
-            <FormControl fullWidth>
-              <InputLabel id="dependencia">Seleccione la Dependencia</InputLabel>
-              <Select
-                labelId="dependencia"
-                id="dependencia"
-                defaultValue={form.getValues("Dependencia._id") || ""}
-                {...form.register("Dependencia", {
-                  required: "Es necesario seleccionar la dependencia del cliente",
-                })}
-                error={!!formState.errors.Dependencia}
-                helperText={formState.errors.Dependencia?.message}
-                label="Dependencia"
-              >
-                <MenuItem value={""} key={"empty"}>
-                  {""}
-                </MenuItem>
-                {data.dependencias.map((est) => {
-                  return (
-                    <MenuItem value={est._id} key={est._id}>
-                      {est.Dependencia}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-              {formState.errors.Dependencia && (
-                <FormHelperText>{formState.errors.Dependencia.message}</FormHelperText>
-              )}
-            </FormControl>
-          ) : (
-            <TextField
-              type="text"
-              label="Ingrese la nueva Dependencia"
-              //value={clientesStore.nuevaDependencia}
-              {...form.register("nuevaDependencia", {
-                required: "Es necesario ingresar la dependencia del cliente",
-              })}
-              error={!!formState.errors.nuevaDependencia}
-              helperText={formState.errors.nuevaDependencia?.message}
-              fullWidth
-            />
-          )}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={nuevaDependencia}
-                onChange={(e) => setNuevaDependencia(e.target.checked)}
-              />
-            }
-            label="Nueva dependencia"
-          />
-        </Grid>
         {/*Seleccion Dirección general*/}
         <Grid item xs={6}>
           {!nuevaDGeneral ? (
@@ -233,7 +178,7 @@ const NuevoCliente = ({ form, formState }) => {
           />
         </Grid>
         {/*Seleccion Dirección area*/}
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           {!nuevaDArea ? (
             <FormControl fullWidth>
               <InputLabel id="direccion_area">Seleccione la dirección de area</InputLabel>

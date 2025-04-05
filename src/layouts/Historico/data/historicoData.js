@@ -1,11 +1,13 @@
 import WindowButton from "components/WindowButton/WindowButton";
 import Badge from "components/Badge/Badge";
+import { Visibility, NoteAdd } from "@mui/icons-material";
 const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
   const columns = [
     {
       field: "visualizar",
-      headerName: "Visualizar",
-      width: 140,
+      headerName: "Ver",
+      headerAlign: "center",
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -14,13 +16,16 @@ const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
           store={setTicketFields}
           openWindow={dialogStore.openWindow}
           label="Visualizar"
-        />
+        >
+          <Visibility />
+        </WindowButton>
       ),
     },
     {
       field: "Nota",
       headerName: "Nota",
-      width: 140,
+      headerAlign: "center",
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -29,7 +34,9 @@ const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
           store={setTicketFields}
           openWindow={dialogStore.openWindowNota}
           label="Nota"
-        />
+        >
+          <NoteAdd />
+        </WindowButton>
       ),
     },
     { field: "Id", headerName: "ID", width: 90, align: "center" },
@@ -43,7 +50,7 @@ const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
       field: "prioridad",
       headerName: "Prioridad",
       width: 130,
-      renderCell: (params) => <Badge content={params.row.Prioridad?.Descripcion} />,
+      renderCell: (params) => <Badge content={params.row.Subcategoria?.Descripcion_prioridad} />,
     },
     {
       field: "Fecha_hora_creacion",
@@ -60,7 +67,7 @@ const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
   ];
   const rows = ticketsArea.map((ticket) => ({
     ...ticket,
-    TBIncidencia: ticket.Tipo_incidencia?.Tipo_de_incidencia ?? "",
+    TBIncidencia: ticket.Subcategoria?.Tipo ?? "",
     TBCliente: ticket.Cliente?.Nombre ?? "",
   }));
 

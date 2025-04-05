@@ -53,18 +53,13 @@ export const ticketsApi = apiSlice.injectEndpoints({
     }),
     crear: builder.mutation({
       query: ({ data }) => {
+        console.log(data);
         const formData = new FormData();
         const ticketState = {};
         delete data.correocliente;
-        if (data.isNuevoCliente) {
-          formData.append("nuevoCliente", JSON.stringify(data.nuevocliente));
-          delete data.nuevocliente;
-        }
-        const [prioridad, tiempo] = data.prioridad.split("|");
-        const [asignado_a, area_asignado] = data.moderador.split("|");
-        data.Prioridad = prioridad;
-        data.tiempo = tiempo;
-        data.Asignado_a = asignado_a;
+        const [_id, Nombre] = data.Asignado_a.split("|");
+        data.Asignado_a = _id;
+        console.log("Asignado", data.Asignado_a);
         delete data.moderador;
         Object.entries(data).forEach(([key, value]) => {
           if (key === "Files" && Array.isArray(value)) {
@@ -125,20 +120,29 @@ export const ticketsApi = apiSlice.injectEndpoints({
       },
       invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
     }),
-    //Editar ticket
-    editar: builder.mutation({
+    pendingReason: builder.mutation({
+      query: ({ data }) => {
+        console.log(data);
+        const ticketData = {
+          PendingReason: data.PendingReason,
+        };
+        console.log("ticketData", ticketData);
+        const ticketId = data._id;
+        return {
+          url: `/tickets/PendingReason/${ticketId}`,
+          method: "PUT",
+          body: ticketData,
+        };
+      },
+      invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
+    }),
+    retornoMesa: builder.mutation({
       query: ({ data }) => {
         const formData = new FormData();
-        const ticketId = data._id;
         const ticketData = {
-          Tipo_incidencia: data.Tipo_incidencia._id,
-          NumeroRec_Oficio: data.NumeroRec_Oficio,
-          Servicio: data.Servicio._id,
-          Categoria: data.Categoria._id,
-          Subcategoria: data.Subcategoria._id,
-          Descripcion: data.Descripcion,
-          Medio: data.Medio._id,
+          descripcion_retorno: data.descripcion_retorno,
         };
+        const ticketId = data._id;
         if (data.Files) {
           Object.entries(data).forEach(([key, value]) => {
             if (key === "Files" && Array.isArray(value)) {
@@ -156,6 +160,76 @@ export const ticketsApi = apiSlice.injectEndpoints({
         for (let pair of formData.entries()) {
           console.log(`${pair[0]}: ${pair[1]}`);
         }
+        return {
+          url: `/tickets/retornoMesa/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
+    }),
+    retornoModerador: builder.mutation({
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketData = {
+          descripcion_retorno: data.descripcion_retorno,
+        };
+        const ticketId = data._id;
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
+        for (let pair of formData.entries()) {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
+        return {
+          url: `/tickets/retornoModerador/${ticketId}`,
+          method: "PUT",
+          body: formData,
+          formData: true,
+        };
+      },
+      invalidatesTags: ["Tickets", "Ticket", "Dashboard"],
+    }),
+    //Editar ticket
+    editar: builder.mutation({
+      query: ({ data }) => {
+        const formData = new FormData();
+        const ticketId = data._id;
+        const ticketData = {
+          NumeroRec_Oficio: data.NumeroRec_Oficio,
+          // Subcategoria: data.Subcategoria,
+          Descripcion: data.Descripcion,
+          Medio: data.Medio._id,
+        };
+        if (data.Files) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Files" && Array.isArray(value)) {
+              value.forEach((file) => {
+                if (file instanceof File) {
+                  formData.append("files", file);
+                } else {
+                  console.error(`El archivo no es válido:`, file);
+                }
+              });
+            }
+          });
+        }
+        formData.append("ticketData", JSON.stringify(ticketData));
+        // for (let pair of formData.entries()) {
+        //   console.log(`${pair[0]}: ${pair[1]}`);
+        // }
         return {
           url: `/tickets/editar/${ticketId}`,
           method: "PUT",
@@ -211,6 +285,9 @@ export const ticketsApi = apiSlice.injectEndpoints({
           Prioridad: data.Prioridad,
           Files: data.Files,
         };
+        if (data.Nota) {
+          AuxData.Nota = data.Nota;
+        }
         delete AuxData.Prioridad;
         const aux = AuxData.asignado_a;
         const [Asignado_a, Area_asignado] = aux.split("|");
@@ -504,4 +581,7 @@ export const {
   useGetCorreosQuery,
   useGetClientesQuery,
   useContactoClienteMutation,
+  useRetornoMesaMutation,
+  useRetornoModeradorMutation,
+  usePendingReasonMutation,
 } = ticketsApi;

@@ -23,9 +23,13 @@ import MDBox from "components/MDBox";
 import { useCrearMutation } from "api/ticketsApi.js";
 import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { addHours, format } from "date-fns";
+import { es } from "date-fns/locale";
 const LazyNuevoCliente = React.lazy(() => import("./components/NuevoCliente"));
 const LazyBuscarCliente = React.lazy(() => import("./components/BuscarCliente"));
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useClientesStore } from "zustand/index.ts";
+import { calcularFechaLimite } from "utils/calcularFechaResolucion";
 function CustomTabPanel(props) {
   const { children, value, index } = props;
 
@@ -46,17 +50,23 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 export default function Form({ data }) {
+  const clientesStore = useClientesStore();
   const [loading, setLoading] = React.useState(false);
   const [Tipo_incidencia, setTipo_incidencia] = React.useState("");
   const [area, setArea] = React.useState("");
   const [servicio, setServicio] = React.useState("");
   const [categoria, setCategoria] = React.useState("");
-  const form = useForm({ defaultValues: { Files: [], standby: false, isNuevoCliente: false } });
+  const [descripcion, setDescripcion] = React.useState("");
+  const [subcategoria, setSubcategoria] = React.useState("");
+  const [tiempo, setTiempo] = React.useState("");
+  const form = useForm({ defaultValues: { Files: [] } });
+  const [isNuevoCliente, setIsNuevoCliente] = React.useState(false);
   const [guardar] = useCrearMutation();
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const { register, handleSubmit, formState, setValue, watch, reset } = form;
   const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const openSuccessSB = useSnackbarStore((state) => state.openSuccessSB);
+  const [Nombre, setNombre] = React.useState("");
   const { errors } = formState;
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -71,8 +81,11 @@ export default function Form({ data }) {
   });
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    setSelectedFiles(files);
-    setValue("Files", files);
+    setSelectedFiles((prevFiles) => {
+      const updatedFiles = [...prevFiles, ...files];
+      form.setValue("Files", updatedFiles);
+      return updatedFiles;
+    });
   };
   const removeFile = (index) => {
     const newFiles = selectedFiles.filter((_, i) => i !== index);
@@ -81,6 +94,7 @@ export default function Form({ data }) {
   };
   const onSubmit = async (data) => {
     setLoading(true);
+    form.setValue("Asignado_a", clientesStore._id);
     try {
       const result = await guardar({ data });
       if (result.error) {
@@ -93,13 +107,14 @@ export default function Form({ data }) {
         }, 3500);
       }
     } catch (error) {
+      console.log(error);
       openErrorSB("Ocurrió un error inesperado al crear el ticket.", `Status: 500`);
     } finally {
       setLoading(false);
     }
   };
   const standby = watch("standby");
-  const isNuevoCliente = watch("isNuevoCliente");
+  const hasResolutor = watch("hasResolutor");
   const formFields = React.useMemo(
     () => [
       {
@@ -111,18 +126,34 @@ export default function Form({ data }) {
     ],
     [data]
   );
+
+  const handleSubcategoriaChange = (e) => {
+    const selectedSubcategoria = e.target.value;
+    const catalogo = data.categorizacion.find((s) => s._id.includes(selectedSubcategoria));
+    const tiempo = catalogo.Prioridad;
+    setValue("tiempo", tiempo);
+    setValue("Area", catalogo.Equipo._id);
+    setDescripcion(catalogo.Descripcion_prioridad);
+    setCategoria(catalogo["Categoría"]);
+    setServicio(catalogo.Servicio);
+    setTipo_incidencia(catalogo.Tipo);
+    setArea(catalogo.Equipo.Area);
+
+    if (tiempo) {
+      const fechaLimite = calcularFechaLimite(tiempo);
+      const fechaFormateada = format(fechaLimite, "d 'de' MMMM 'de' yyyy, h:mm a", {
+        locale: es,
+      });
+      setTiempo(fechaFormateada);
+    }
+  };
   return (
-    <Box
-      component="form"
-      sx={{ "& > :not(style)": { m: 1 } }}
-      onSubmit={handleSubmit(onSubmit)}
-      //autoComplete="on"
-    >
+    <>
       <Grid container spacing={1}>
         {/* Separador cliente */}
         <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
+          <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+            <Typography variant="h5" fontWeight="bold" color="White">
               Cliente
             </Typography>
           </MDBox>
@@ -140,8 +171,7 @@ export default function Form({ data }) {
                   <Switch
                     checked={isNuevoCliente}
                     onChange={(e) => {
-                      const newValue = e.target.checked;
-                      setValue("isNuevoCliente", newValue);
+                      setIsNuevoCliente(!isNuevoCliente);
                     }}
                   />
                   <Typography>Nuevo Cliente</Typography>
@@ -158,390 +188,342 @@ export default function Form({ data }) {
             </Suspense>
           </Box>
         </Grid>
-        {/* divisor de ticket */}
-        <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={-3} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-              Ticket
-            </Typography>
-          </MDBox>
-          <Divider />
-        </Grid>
-        {/* Prioridad */}
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="prioridad">Prioridad</InputLabel>
-            <Select
-              native
-              id="prioridad"
-              label="Prioridad"
-              {...register("prioridad", {
-                required: "Es necesario seleccionar la prioridad",
-              })}
-              error={!!errors.prioridad}
-            >
-              <option aria-label="None" value="" />
-              {data.prioridades.map((prioridad) => {
-                if (prioridad.Tiempo_respuesta) {
-                  return (
-                    <optgroup label={prioridad.Descripcion} key={prioridad._id}>
-                      {prioridad.Tiempo_respuesta.map((t, index) => (
-                        <option value={`${prioridad._id}|${t}`} key={index}>
-                          {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
-                        </option>
-                      ))}
-                    </optgroup>
-                  );
-                } else {
-                  return <option aria-label="No se está leyendo" value="0" key={0} />;
-                }
-              })}
-            </Select>
-            {errors.prioridad && <FormHelperText>{errors.prioridad.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        {formFields.map(({ name, label, options, key }) => (
-          <Grid item xs={6} key={name}>
-            <FormControl fullWidth error={!!errors[name]}>
-              <InputLabel>{label}</InputLabel>
+      </Grid>
+      <Box
+        component="form"
+        sx={{ "& > :not(style)": { m: 1 } }}
+        onSubmit={handleSubmit(onSubmit)}
+        //autoComplete="on"
+      >
+        <Grid container spacing={1}>
+          {/* divisor de ticket */}
+          <Grid item xs={12}>
+            <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+              <Typography variant="h5" fontWeight="bold" color="White">
+                Ticket
+              </Typography>
+            </MDBox>
+          </Grid>
+          {formFields.map(({ name, label, options, key }) => (
+            <Grid item xs={6} key={name}>
+              <FormControl fullWidth error={!!errors[name]}>
+                <InputLabel>{label}</InputLabel>
+                <Select
+                  autoComplete="off"
+                  defaultValue=""
+                  label={label}
+                  {...register(name, {
+                    required: `Es necesario seleccionar ${label.toLowerCase()}`,
+                  })}
+                >
+                  <MenuItem value="">Seleccionar</MenuItem>
+                  {options.map((option) => (
+                    <MenuItem key={option._id} value={option._id}>
+                      {option[key]}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+              </FormControl>
+            </Grid>
+          ))}
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel>Selecciona la Subcategoría</InputLabel>
               <Select
+                autoComplete="off"
                 defaultValue=""
-                label={label}
-                {...register(name, { required: `Es necesario seleccionar ${label.toLowerCase()}` })}
+                label={"Selecciona la Subcategoría"}
+                {...register("Subcategoria", {
+                  required: `Es necesario seleccionar la subcategoria`,
+                })}
+                error={!!errors.Subcategoria}
+                onChange={handleSubcategoriaChange}
               >
                 <MenuItem value="">Seleccionar</MenuItem>
-                {options.map((option) => (
+                {data.categorizacion.map((option) => (
                   <MenuItem key={option._id} value={option._id}>
-                    {option[key]}
+                    {option.Subcategoria}
                   </MenuItem>
                 ))}
               </Select>
-              {errors[name] && <FormHelperText>{errors[name].message}</FormHelperText>}
+              {errors.Subcategoria && (
+                <FormHelperText>{errors.Subcategoria.message}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
-        ))}
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Selecciona el tipo de Ticket</InputLabel>
-            <Select
-              defaultValue=""
-              label={"Selecciona el tipo de Ticket"}
-              {...register("Tipo_incidencia", {
-                required: `Es necesario seleccionar el Tipo de ticket`,
-              })}
-              error={!!errors.Tipo_incidencia}
-              onChange={(e) => setTipo_incidencia(e.target.value)}
-            >
-              <MenuItem value="">Seleccionar</MenuItem>
-              {data.tiposTickets.map((option) => (
-                <MenuItem key={option._id} value={option._id}>
-                  {option.Tipo_de_incidencia}
-                </MenuItem>
-              ))}
-            </Select>
-            {errors.Tipo_incidencia && (
-              <FormHelperText>{errors.Tipo_incidencia.message}</FormHelperText>
-            )}
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Selecciona el area</InputLabel>
-            <Select
-              defaultValue=""
-              label={"Selecciona el area"}
-              {...register("Area", { required: `Es necesario seleccionar el área` })}
-              error={!!errors.Area}
-              onChange={(e) => setArea(e.target.value)}
-            >
-              <MenuItem value="">Seleccionar</MenuItem>
-              {data.areas
-                .filter((s) => s.Tipo_de_incidencia.includes(Tipo_incidencia)) // Filtra los elementos por el tipo de incidencia
-                .map(
-                  (
-                    option // Luego, mapea los resultados para renderizarlos
-                  ) => (
-                    <MenuItem key={option._id} value={option._id}>
-                      {option.Area}
-                    </MenuItem>
-                  )
-                )}
-            </Select>
-            {errors.Area && <FormHelperText>{errors.Area.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Selecciona el servicio</InputLabel>
-            <Select
-              defaultValue=""
-              label={"Selecciona el servicio"}
-              {...register("Servicio", { required: `Es necesario seleccionar el servicio` })}
-              error={!!errors.Servicio}
-              onChange={(e) => setServicio(e.target.value)}
-            >
-              <MenuItem value="">Seleccionar</MenuItem>
-              {data.servicios
-                .filter(
-                  (s) => s.Tipo_de_incidencia.includes(Tipo_incidencia) && s.Area.includes(area)
-                ) // Filtra los elementos por el área
-                .map(
-                  (
-                    option // Luego, mapea los resultados para renderizarlos
-                  ) => (
-                    <MenuItem key={option._id} value={option._id}>
-                      {option.Servicio}
-                    </MenuItem>
-                  )
-                )}
-            </Select>
-            {errors.Servicio && <FormHelperText>{errors.Servicio.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Selecciona la Categoría</InputLabel>
-            <Select
-              defaultValue=""
-              label={"Selecciona la Categoría"}
-              {...register("Categoria", { required: `Es necesario seleccionar la categoria` })}
-              error={!!errors.Categoria}
-              onChange={(e) => setCategoria(e.target.value)}
-            >
-              <MenuItem value="">Seleccionar</MenuItem>
-              {data.categorias
-                .filter(
-                  (s) =>
-                    s.Tipo_de_incidencia.includes(Tipo_incidencia) &&
-                    s.Area.includes(area) &&
-                    s.Servicio.includes(servicio)
-                ) // Filtra los elementos por el área
-                .map(
-                  (
-                    option // Luego, mapea los resultados para renderizarlos
-                  ) => (
-                    <MenuItem key={option._id} value={option._id}>
-                      {option.Categoria}
-                    </MenuItem>
-                  )
-                )}
-            </Select>
-            {errors.Categoria && <FormHelperText>{errors.Categoria.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel>Selecciona la Subcategoría</InputLabel>
-            <Select
-              defaultValue=""
-              label={"Selecciona la Subcategorpía"}
-              {...register("Subcategoria", {
-                required: `Es necesario seleccionar la subcategoria`,
-              })}
-              error={!!errors.Subcategoria}
-            >
-              <MenuItem value="">Seleccionar</MenuItem>
-              {data.subcategoria
-                .filter(
-                  (s) =>
-                    s.Tipo_de_incidencia.includes(Tipo_incidencia) &&
-                    s.Area.includes(area) &&
-                    s.Servicio.includes(servicio) &&
-                    s.Categoria.includes(categoria)
-                ) // Filtra los elementos por el área
-                .map(
-                  (
-                    option // Luego, mapea los resultados para renderizarlos
-                  ) => (
-                    <MenuItem key={option._id} value={option._id}>
-                      {option.Subcategoria}
-                    </MenuItem>
-                  )
-                )}
-            </Select>
-            {errors.Subcategoria && <FormHelperText>{errors.Subcategoria.message}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        {/* Oficio */}
-        <Grid item xs={6}>
-          <TextField
-            type="text"
-            label="Oficio de recepción:"
-            variant="outlined"
-            {...register("NumeroRec_Oficio")}
-            fullWidth
-          />
-        </Grid>
-        {/* Descripcion */}
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            id="descripcion"
-            label="Descripción del ticket"
-            {...register("Descripcion", {
-              required: "Es necesario ingresar la descripción del ticket",
-            })}
-            error={!!errors.Descripcion}
-            helperText={errors.Descripcion?.message}
-            multiline
-            rows={6}
-            placeholder="Ingresa la descripción del ticket"
-          />
-        </Grid>
-        {/* Separador de archivos */}
-        <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-              Archivos
-            </Typography>
-          </MDBox>
-        </Grid>
-        {/* Botón de archivos */}
-        <Grid xs={6}>
-          <Typography color="Black">
-            *Selecciona a la vez todos los archivos que necesitas subir.
-          </Typography>
-          <Button
-            component="label"
-            variant="outlined"
-            color="primary"
-            size="small"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon color="primary" />}
-            disabled={selectedFiles.length > 0 ? true : false}
-          >
-            <Typography color="primary">
-              {selectedFiles.length > 0
-                ? `${selectedFiles.length} archivo(s) seleccionado(s)`
-                : "Subir Archivos"}
-            </Typography>
-            <VisuallyHiddenInput
-              {...register("Files")}
-              type="file"
-              multiple
-              onChange={handleFileChange}
-            />
-          </Button>
-        </Grid>
-        {/* Botones de eliminar archivos */}
-        {selectedFiles.length > 0 && (
-          <Grid item xs={12}>
-            <List>
-              {selectedFiles.map((file, index) => (
-                <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typography>{file.name}</Typography>
-                  <IconButton color="error" onClick={() => removeFile(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItem>
-              ))}
-            </List>
+          <Grid item xs={6}>
+            <TextField value={categoria} autoComplete="off" fullWidth disabled label="Categoría" />
           </Grid>
-        )}
-        {/* Separador moderador */}
-        <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-              Moderador
-            </Typography>
-          </MDBox>
-        </Grid>
-        {/* Asignar moderador */}
-        <Grid item xs={12}>
-          <Box
-            pt={4}
-            pb={3}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "left",
-            }}
-          >
-            <FormGroup>
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{ alignItems: "center", justifyContent: "space-between" }}
-              >
-                <Box sx={{ display: "flex" }}>
-                  <Typography>Asignar a moderador</Typography>
-                  <Switch
-                    {...register("standby")}
-                    checked={standby}
-                    onChange={(e) => {
-                      const newValue = e.target.checked;
-                      setValue("standby", newValue); // Asegura que el valor es booleano
-                    }}
-                  />
-                  <Typography>Asignar a Mesa</Typography>
-                </Box>
-              </Stack>
-            </FormGroup>
-            {!standby && (
-              <FormControl fullWidth>
-                <InputLabel id="moderador">Moderador</InputLabel>
-                <Select
-                  native
-                  id="moderador"
-                  label="Moderador"
-                  defaultValue={""}
-                  {...register("moderador", {
-                    required: "Es necesario seleccionar un moderador.",
-                  })}
-                  error={!!errors.moderador}
+          <Grid item xs={6}>
+            <TextField value={servicio} autoComplete="off" fullWidth disabled label="Servicio" />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              value={Tipo_incidencia}
+              autoComplete="off"
+              fullWidth
+              disabled
+              label="Tipo de incidente"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField value={area} autoComplete="off" fullWidth disabled label="Área" />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              value={tiempo}
+              autoComplete="off"
+              fullWidth
+              disabled
+              label="Fecha de resolución"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              value={descripcion}
+              autoComplete="off"
+              fullWidth
+              disabled
+              label="Prioridad"
+            />
+          </Grid>
+
+          {/* Oficio */}
+          <Grid item xs={6}>
+            <TextField
+              autoComplete="off"
+              type="text"
+              label="Oficio de recepción:"
+              variant="outlined"
+              {...register("NumeroRec_Oficio")}
+              fullWidth
+            />
+          </Grid>
+          {/* Descripcion */}
+          <Grid item xs={12}>
+            <TextField
+              autoComplete="off"
+              fullWidth
+              id="descripcion"
+              label="Descripción del ticket"
+              {...register("Descripcion", {
+                required: "Es necesario ingresar la descripción del ticket",
+              })}
+              error={!!errors.Descripcion}
+              helperText={errors.Descripcion?.message}
+              multiline
+              rows={6}
+              placeholder="Ingresa la descripción del ticket"
+            />
+          </Grid>
+          {/* Separador de archivos */}
+          <Grid item xs={12}>
+            <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+              <Typography variant="h5" fontWeight="bold" color="White">
+                Archivos
+              </Typography>
+            </MDBox>
+          </Grid>
+          {/* Botón de archivos */}
+          <Grid xs={6}>
+            <Button
+              component="label"
+              variant="outlined"
+              color="primary"
+              size="small"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon color="primary" />}
+              // Removemos la deshabilitación para permitir agregar más archivos
+            >
+              <Typography color="primary">
+                {selectedFiles.length > 0
+                  ? `${selectedFiles.length} archivo(s) seleccionado(s)`
+                  : "Subir Archivos"}
+              </Typography>
+              <VisuallyHiddenInput
+                {...form.register("Files")}
+                type="file"
+                multiple
+                onChange={handleFileChange}
+              />
+            </Button>
+            <br />
+          </Grid>
+          {/* Botones de eliminar archivos */}
+          {selectedFiles.length > 0 && (
+            <Grid item xs={12}>
+              <List>
+                {selectedFiles.map((file, index) => (
+                  <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography>{file.name}</Typography>
+                    <IconButton color="error" onClick={() => removeFile(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Grid>
+          )}
+          {/* Separador moderador */}
+          <Grid item xs={12}>
+            <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+              <Typography variant="h5" fontWeight="bold" color="White">
+                Moderador
+              </Typography>
+            </MDBox>
+          </Grid>
+          {/* Asignar moderador */}
+          <Grid item xs={12}>
+            <Box
+              pt={4}
+              pb={3}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "left",
+              }}
+            >
+              <FormGroup>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{ alignItems: "center", justifyContent: "space-between" }}
                 >
-                  <option aria-label="None" value="" />
-                  {data.areasResolutores.map((area) => {
-                    if (area) {
-                      return (
-                        <optgroup label={area.area.area} key={area.area._id}>
-                          {area.resolutores.map((t, index) => (
-                            <option value={`${t._id}|${area.area._id}`} key={index}>
-                              {t.Nombre}
-                            </option>
-                          ))}
-                        </optgroup>
-                      );
-                    } else {
-                      return null;
-                    }
-                  })}
-                </Select>
-                {errors.moderador && (
-                  <FormHelperText>{<span>{errors.moderador.message}</span>}</FormHelperText>
-                )}
-              </FormControl>
-            )}
-          </Box>
+                  <Box sx={{ display: "flex" }}>
+                    <Typography>Asignar a moderador</Typography>
+                    <Switch
+                      {...register("hasResolutor")}
+                      checked={hasResolutor}
+                      onChange={(e) => {
+                        const newValue = e.target.checked;
+                        setValue("hasResolutor", newValue); // Asegura que el valor es booleano
+                      }}
+                    />
+                    <Typography>Asignar a resolutor</Typography>
+                  </Box>
+                </Stack>
+              </FormGroup>
+              {!hasResolutor ? (
+                <FormControl fullWidth>
+                  <InputLabel id="moderador">Moderador</InputLabel>
+                  <Select
+                    native
+                    id="moderador"
+                    label="Moderador"
+                    defaultValue={""}
+                    {...register("Asignado_a", {
+                      required: "Es necesario seleccionar un moderador.",
+                    })}
+                    error={!!errors.Asignado_a}
+                    onChange={(e) => {
+                      const [_id, Nombre] = e.target.value.split("|");
+                      setNombre(Nombre);
+                    }}
+                  >
+                    <option aria-label="None" value="" />
+                    {data.areasResolutores.map((area) => {
+                      if (area) {
+                        return (
+                          <optgroup label={area.area.area} key={area.area._id}>
+                            {area.resolutores.map((t, index) => (
+                              <option value={`${t._id}|${t.Nombre}`} key={index}>
+                                {t.Nombre}
+                              </option>
+                            ))}
+                          </optgroup>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </Select>
+                  {errors.Asignado_a && (
+                    <FormHelperText>{<span>{errors.Asignado_a.message}</span>}</FormHelperText>
+                  )}
+                </FormControl>
+              ) : (
+                <FormControl fullWidth>
+                  <InputLabel id="resolutor">Resolutor</InputLabel>
+                  <Select
+                    native
+                    id="resolutor"
+                    label="resolutor"
+                    defaultValue={""}
+                    {...register("Asignado_a", {
+                      required: "Es necesario seleccionar un resolutor.",
+                    })}
+                    error={!!errors.resolutor}
+                  >
+                    <option aria-label="None" value="" />
+                    {data.resolutores.map((area) => {
+                      if (area) {
+                        return (
+                          <optgroup label={area.area.area} key={area.area._id}>
+                            {area.resolutores.map((t, index) => (
+                              <option value={`${t._id}`} key={index}>
+                                {t.Nombre}
+                              </option>
+                            ))}
+                          </optgroup>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </Select>
+                  {errors.Asignado_a && (
+                    <FormHelperText>{<span>{errors.Asignado_a.message}</span>}</FormHelperText>
+                  )}
+                </FormControl>
+              )}
+              {/* Descripcion */}
+              {Nombre === "Mesa de Servicio" && (
+                <Grid item mt={2} xs={12}>
+                  <TextField
+                    fullWidth
+                    id="PendingReason"
+                    label="Descripción pendiente"
+                    {...register("PendingReason")}
+                    error={!!errors.Descripcion}
+                    helperText={errors.Descripcion?.message}
+                    multiline
+                    rows={2}
+                    placeholder="Ingrese la descripción"
+                  />
+                </Grid>
+              )}
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="left">
+              <Typography variant="h5" fontWeight="bold" color="White">
+                Guardar Ticket
+              </Typography>
+            </MDBox>
+          </Grid>
+          {/* Botón de guardar */}
+          <Grid item xs={12}>
+            <LoadingButton
+              type="submit"
+              variant="outlined"
+              color="primary"
+              size="large"
+              fullWidth
+              tabIndex={-1}
+              startIcon={<SaveIcon color="primary" />}
+              loading={loading}
+              loadingIndicator="Guardando ticket…"
+            >
+              <span>
+                <Typography color="primary">{"Guardar Ticket"}</Typography>
+              </span>
+            </LoadingButton>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <MDBox bgColor="primary" borderRadius="lg" mt={2} p={2} mb={1} textAlign="left">
-            <Typography variant="h4" fontWeight="light" color="White" mt={1}>
-              Guardar Ticket
-            </Typography>
-          </MDBox>
-        </Grid>
-        {/* Botón de guardar */}
-        <Grid item xs={12}>
-          <LoadingButton
-            type="submit"
-            variant="outlined"
-            color="primary"
-            size="large"
-            fullWidth
-            tabIndex={-1}
-            startIcon={<SaveIcon color="primary" />}
-            loading={loading}
-            loadingIndicator="Guardando ticket…"
-          >
-            <span>
-              <Typography color="primary">{"Guardar Ticket"}</Typography>
-            </span>
-          </LoadingButton>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 }
 

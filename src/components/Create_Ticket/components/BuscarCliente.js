@@ -16,6 +16,7 @@ import { useLazyGetClienteByCorreoQuery } from "api/clientesApi.js";
 /* -------------------------------------------------------------------------- */
 // Importaciones de Zustand u otro gestor de estado
 import { useCrearTicketStore } from "../store/crearTicket.store.ts";
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 /* -------------------------------------------------------------------------- */
 // Importaciones de utilidades, helpers o constantes
 import PropTypes from "prop-types";
@@ -33,6 +34,7 @@ const BuscarCliente = ({ form, formState }) => {
   // Estados locales con useState
   const [loading, setLoading] = React.useState(false);
   const [clienteExiste, setClienteExiste] = React.useState(false);
+  const openErrorSB = useSnackbarStore((state) => state.openErrorSB);
   const [data, setData] = React.useState({});
   const [correo, setCorreo] = React.useState();
   /* -------------------------------------------------------------------------- */
@@ -54,6 +56,7 @@ const BuscarCliente = ({ form, formState }) => {
       } else {
         setClienteExiste(false);
         setData({});
+        openErrorSB("No se encontro el cliente en la base de datos", `Status: 404`);
       }
     } catch (error) {
       setClienteExiste(false);
@@ -69,8 +72,9 @@ const BuscarCliente = ({ form, formState }) => {
       {/*Introducido por teclado Correo*/}
       <Grid item xs={6}>
         <TextField
+          autoComplete="off"
           type="email" // Muestra validación de correo automáticamente
-          label="Correo:"
+          label="Correo o nombre completo del cliente:"
           defaultValue={correo}
           {...form.register("correocliente", {
             required: "Es necesario buscar un cliente o agregar uno nuevo.",
@@ -183,11 +187,6 @@ const BuscarCliente = ({ form, formState }) => {
             </MDBox>
           </Grid>
         </>
-      ) : null}
-      {!clienteExiste ? (
-        <Typography variant="overline">Ingresa un correo válido para el cliente</Typography>
-      ) : !clienteExiste && Object.keys(data).length === 0 ? (
-        <Typography variant="overline">El cliente no existe</Typography>
       ) : null}
     </Grid>
   );

@@ -11,7 +11,7 @@ import { List, ListItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 //snackbar store
-const Nota = ({ form, formState }) => {
+const Moderador = ({ form, formState }) => {
   /* -------------------------------------------------------------------------- */
   // Definición de constantes (rutas, configuraciones)
   /* -------------------------------------------------------------------------- */
@@ -63,14 +63,14 @@ const Nota = ({ form, formState }) => {
     <Grid container spacing={1} m={1}>
       <Grid item xs={12}>
         <TextField
-          id="descripcion"
-          label="Respuesta cliente"
+          id="regresar_moderador"
+          label="Descripción de retorno"
           multiline
-          {...form.register("Descripcion_respuesta_cliente", {
-            required: "Es necesario ingresar la respuesta del cliente",
+          {...form.register("descripcion_retorno", {
+            required: "Es necesario ingresar la descripción",
           })}
-          error={!!formState.errors.Descripcion_respuesta_cliente}
-          helperText={formState.errors.Descripcion_respuesta_cliente?.message}
+          error={!!formState.errors.descripcion_retorno}
+          helperText={formState.errors.descripcion_retorno?.message}
           rows={5.2}
           fullWidth
         />
@@ -98,9 +98,6 @@ const Nota = ({ form, formState }) => {
           />
         </Button>
         <br />
-        <Typography variant={"caption"} color="Black">
-          *Selecciona los archivos que necesitas subir.
-        </Typography>
       </Grid>
       {/* Botones de eliminar archivos */}
       {selectedFiles.length > 0 && (
@@ -121,9 +118,9 @@ const Nota = ({ form, formState }) => {
   );
 };
 
-Nota.propTypes = {
+Moderador.propTypes = {
   form: PropTypes.object,
   formState: PropTypes.object,
 };
 
-export default React.memo(Nota);
+export default React.memo(Moderador);

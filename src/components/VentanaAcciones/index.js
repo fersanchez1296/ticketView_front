@@ -46,7 +46,6 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
         openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
       } else {
         openSuccessSB(result.data.desc, `Status: 200`);
-        reset();
         setTimeout(() => {
           onClose();
         }, 2500);
@@ -54,16 +53,18 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
     } catch (error) {
       openErrorSB(result.error.data.desc, `Status: 500`);
     } finally {
+      reset();
+      store.resetValues();
       setLoading(false);
     }
   };
-  console.log(store);
   return (
     <React.Fragment>
       <Dialog
         fullScreen
         open={isOpen}
         onClose={() => {
+          reset();
           store.resetValues();
           onClose();
         }}
@@ -76,6 +77,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
               color="inherit"
               onClick={() => {
                 store.resetValues();
+                reset();
                 onClose();
               }}
               aria-label="close"

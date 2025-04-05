@@ -95,7 +95,15 @@ function Dashboard() {
     },
     {
       color: "primary",
-      icon: "event_busy",
+      icon: "done",
+      count: data.resueltos,
+      nav: "resueltos",
+      title: "Resueltos",
+      key: "resueltos",
+    },
+    {
+      color: "primary",
+      icon: "done_all",
       count: data.cerrados,
       nav: "cerrados",
       title: "Cerrados",
@@ -145,7 +153,23 @@ function Dashboard() {
     },
     {
       color: "primary",
-      icon: "event_busy",
+      icon: "pan_tool",
+      count: data.totalResueltos,
+      nav: "standby",
+      title: "Mesa de Servicio",
+      key: "Standby",
+    },
+    {
+      color: "primary",
+      icon: "done",
+      count: data.totalResueltos,
+      nav: "resueltos",
+      title: "Resueltos",
+      key: "resueltos",
+    },
+    {
+      color: "secondary",
+      icon: "done_all",
       count: data.totalCerrados,
       nav: "cerrados",
       title: "Cerrados",
@@ -189,7 +213,7 @@ function Dashboard() {
           ))}
         </Grid>
       </MDBox>
-      {role != "Root" ? null : (
+      {role === "Root" || role === "Administrador" ? (
         <>
           <MDBox py={3}>
             <Grid container spacing={3}>
@@ -220,7 +244,7 @@ function Dashboard() {
             </Grid>
           </MDBox>
         </>
-      )}
+      ) : null}
 
       <Footer />
     </DashboardLayout>

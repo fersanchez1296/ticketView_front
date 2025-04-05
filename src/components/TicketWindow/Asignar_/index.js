@@ -10,6 +10,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormGroup from "@mui/material/FormGroup";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -22,6 +23,7 @@ import Progress from "components/Progress";
 const Reabrir = ({ form, formState }) => {
   const [reabrirNuevaInfo, setReabrirNuevaInfo] = React.useState(false);
   const { data, isLoading } = useReabrirFieldsQuery();
+  const [nota, setNota] = React.useState(false);
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   if (isLoading) return <Progress open={true} />;
   const handleFileChange = (event) => {
@@ -95,64 +97,25 @@ const Reabrir = ({ form, formState }) => {
           </Grid>
         </>
       )}
-      {reabrirNuevaInfo && (
-        <>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel id="prioridad">Prioridad</InputLabel>
-              <Select
-                native
-                id="prioridad"
-                label="Prioridad"
-                {...form.register("prioridad", {
-                  required: "Es necesario seleccionar la prioridad",
-                })}
-                error={!!formState.errors.prioridad}
-                disabled={!reabrirNuevaInfo ?? true}
-              >
-                <option aria-label="None" value="" />
-                {data.prioridades.map((prioridad) => {
-                  if (prioridad.Tiempo_respuesta) {
-                    return (
-                      <optgroup label={prioridad.Descripcion} key={prioridad._id}>
-                        {prioridad.Tiempo_respuesta.map((t, index) => (
-                          <option value={`${prioridad._id}|${t}`} key={index}>
-                            {t >= 24 ? `${t / 24} día(s)` : `${t} horas`}
-                          </option>
-                        ))}
-                      </optgroup>
-                    );
-                  } else {
-                    return <option aria-label="No se está leyendo" value="0" key={0} />;
-                  }
-                })}
-              </Select>
-              {formState.errors.prioridad && (
-                <FormHelperText>{formState.errors.prioridad.message}</FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-        </>
-      )}
-      <Grid item xs={12}>
-        <FormGroup>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ alignItems: "center", justifyContent: "space-between" }}
-          >
-            <Box sx={{ display: "flex" }}>
-              <Switch
-                checked={reabrirNuevaInfo}
-                onChange={(e) => {
-                  setReabrirNuevaInfo(!reabrirNuevaInfo);
-                }}
-              />
-              <Typography>Modificar tiempo de resolución</Typography>
-            </Box>
-          </Stack>
-        </FormGroup>
+      <Grid xs={12}>
+        <FormControlLabel
+          control={<Switch checked={nota} onChange={() => setNota(!nota)} />}
+          label="Agregar nota"
+        />
       </Grid>
+      {nota && (
+        <Grid item xs={12}>
+          <TextField
+            id="notas"
+            label="Nota"
+            multiline
+            {...form.register("Nota")}
+            rows={15}
+            fullWidth
+          />
+        </Grid>
+      )}
+
       {/* Botón de archivos */}
       <Grid xs={6}>
         <Button
@@ -176,10 +139,6 @@ const Reabrir = ({ form, formState }) => {
             onChange={handleFileChange}
           />
         </Button>
-        <br />
-        <Typography variant={"caption"} color="Black">
-          *Selecciona a la vez todos los archivos que necesitas subir.
-        </Typography>
       </Grid>
       {/* Botones de eliminar archivos */}
       {selectedFiles.length > 0 && (

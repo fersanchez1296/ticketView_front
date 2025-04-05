@@ -12,6 +12,7 @@ export default function DataTable({ rows, columns }) {
       <DataGrid
         rows={rows}
         columns={columns}
+        headerAlign="right"
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10, 15, 20, 25]}
         sx={{ border: 0 }}

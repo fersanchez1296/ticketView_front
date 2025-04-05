@@ -14,6 +14,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import FormGroup from "@mui/material/FormGroup";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
+
 /* -------------------------------------------------------------------------- */
 // Importaciones de hooks de API (RTK Query, Axios, etc.)
 import { useCrearMutation } from "api/ticketsApi.js";
@@ -130,7 +131,6 @@ const Cliente = () => {
             {!buscarCliente ? <LazyBuscarCliente /> : <LazyNuevoCliente />}
           </Suspense>
         </Grid>
-        {/*Botón que envía los daots que se guardan en ticketSatate mediante un post */}
       </Grid>
     </>
   );

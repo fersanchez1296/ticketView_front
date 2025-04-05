@@ -13,6 +13,7 @@ import Aceptar from "components/TicketWindow/Aceptar";
 import Rechazar from "components/TicketWindow/Rechazar";
 import Asignar from "components/TicketWindow/Asignar_";
 import Nota from "components/TicketWindow/Nota";
+import PendingReason from "components/TicketWindow/PendingReason";
 import VerUsuarios from "components/TicketWindow/Usuarios/Ver";
 import EditarUsuario from "components/TicketWindow/Usuarios/Editar";
 import CrearUsuario from "components/TicketWindow/Usuarios/Crear";
@@ -23,6 +24,8 @@ import { useUserStore, useTicketStore, useClientesStore } from "zustand/index.ts
 import Pendientes from "components/TicketWindow/Pendientes";
 import Regresar from "components/TicketWindow/Regresar";
 import Contacto from "components/TicketWindow/Contacto";
+import Mesa from "components/TicketWindow/Mesa/index";
+import Moderador from "components/TicketWindow/R_a_Moderador/index";
 //reabrir store
 import {
   useReabrirMutation,
@@ -36,6 +39,9 @@ import {
   usePutRegresarTicketMutation,
   usePutPendienteMutation,
   useContactoClienteMutation,
+  useRetornoMesaMutation,
+  usePendingReasonMutation,
+  useRetornoModeradorMutation,
 } from "api/ticketsApi";
 
 import { useUpdateUsuarioByIdMutation, useCrearUsuarioMutation } from "api/usuariosApi";
@@ -79,6 +85,12 @@ const ModalManager = () => {
     closeWindowContacto,
     isWindowOpen,
     closeWindow,
+    isMesaServicioOpen,
+    closeWindowMesaServicio,
+    isWindowRPendiente,
+    closeWindowRPendiente,
+    isRegresaraModeradorOpen,
+    closeWindowRegresaraModerador,
   } = useDialogStore();
   const usuariosStore = useUserStore();
   const ticketStore = useTicketStore();
@@ -92,6 +104,7 @@ const ModalManager = () => {
   const [rechazar] = useRechazarResolucionMutation();
   const [regresar] = usePutRegresarTicketMutation();
   const [nota] = useNotaMutation();
+  const [pendingReason] = usePendingReasonMutation();
   const [asignar] = useAsignarMutation();
   const [editarUsuario] = useUpdateUsuarioByIdMutation();
   const [crearUsuario] = useCrearUsuarioMutation();
@@ -99,6 +112,8 @@ const ModalManager = () => {
   const [editarCliente] = useUpdateClienteByIdMutation();
   const [pendiente] = usePutPendienteMutation();
   const [contactoCliente] = useContactoClienteMutation();
+  const [retornoMesa] = useRetornoMesaMutation();
+  const [retornoModerador] = useRetornoModeradorMutation();
   return (
     <>
       {isWindowReabrirOpen && (
@@ -171,6 +186,18 @@ const ModalManager = () => {
           helpKey={"notas"}
         >
           <Nota />
+        </VentanaAcciones>
+      )}
+      {isWindowRPendiente && (
+        <VentanaAcciones
+          title="Descripción pendiente"
+          isOpen={isWindowRPendiente}
+          onClose={closeWindowRPendiente}
+          onSave={pendingReason}
+          store={ticketStore}
+          helpKey={"Pending_Reason"}
+        >
+          <PendingReason />
         </VentanaAcciones>
       )}
       {isWindowAsignarOpen && (
@@ -307,6 +334,28 @@ const ModalManager = () => {
       {isWindowOpen && (
         <VentanaAcciones isOpen={isWindowOpen} onClose={closeWindow} store={ticketStore}>
           <View />
+        </VentanaAcciones>
+      )}
+      {isMesaServicioOpen && (
+        <VentanaAcciones
+          title="Regresar a mesa de servicio"
+          isOpen={isMesaServicioOpen}
+          onClose={closeWindowMesaServicio}
+          onSave={retornoMesa}
+          store={ticketStore}
+        >
+          <Mesa />
+        </VentanaAcciones>
+      )}
+      {isRegresaraModeradorOpen && (
+        <VentanaAcciones
+          title="Regresar a moderador"
+          isOpen={isRegresaraModeradorOpen}
+          onClose={closeWindowRegresaraModerador}
+          onSave={retornoModerador}
+          store={ticketStore}
+        >
+          <Mesa />
         </VentanaAcciones>
       )}
       <SuccessSB />

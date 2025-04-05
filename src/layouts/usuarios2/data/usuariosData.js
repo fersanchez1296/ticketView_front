@@ -1,12 +1,13 @@
 import WindowButton from "components/WindowButton/WindowButton";
 import SwitchActive from "../components/switch";
-
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 const UsuariosData = (usuarios, setUserFields, dialogStore) => {
   const columns = [
     {
       field: "visualizar",
-      headerName: "Visualizar",
-      width: 140,
+      headerName: "Ver",
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -15,13 +16,15 @@ const UsuariosData = (usuarios, setUserFields, dialogStore) => {
           store={setUserFields}
           openWindow={dialogStore.openWindowUsuarios}
           label="Visualizar"
-        />
+        >
+          <VisibilityIcon />
+        </WindowButton>
       ),
     },
     {
       field: "Editar",
       headerName: "Editar",
-      width: 140,
+      width: 80,
       renderCell: (params) => (
         <WindowButton
           key={params.row._id}
@@ -30,7 +33,9 @@ const UsuariosData = (usuarios, setUserFields, dialogStore) => {
           store={setUserFields}
           openWindow={dialogStore.openWindowEditarUsuario}
           label="Editar"
-        />
+        >
+          <EditIcon />
+        </WindowButton>
       ),
     },
     {
