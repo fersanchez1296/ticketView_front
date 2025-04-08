@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => {
+  console.log("tickets", tickets);
   const baseColumns = [
     {
       field: "visualizar",
@@ -359,6 +360,17 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
               headerAlign: "center",
               width: 200,
               align: "center",
+            },
+            {
+              field: "Creado_por",
+              headerName: "Creado por",
+              headerAlign: "center",
+              width: 200,
+              align: "center",
+              renderCell: (params) => {
+                const nombre = params.row.Creado_por?.Nombre || "";
+                return <span>{nombre}</span>;
+              },
             },
           ]
         : []),
