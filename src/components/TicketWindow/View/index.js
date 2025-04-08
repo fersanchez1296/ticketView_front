@@ -45,7 +45,7 @@ const CustomTextField = styled(TextField)({
 });
 //snackbar store
 const View = ({ form, formState }) => {
-  console.log(form.watch());
+  //console.log(form.watch());
   const areaModerador =
     form
       .watch("Asignado_a")[0]
@@ -71,7 +71,6 @@ const View = ({ form, formState }) => {
   const setTicketFields = useTicketStore((state) => state.setTicketFetch);
   const dialogStore = useDialogStore();
   const { role } = useAuthStore();
-  console.log("ROLE", role);
   /* -------------------------------------------------------------------------- */
   // API Hooks (RTK Query, Axios, etc.)
   /* -------------------------------------------------------------------------- */

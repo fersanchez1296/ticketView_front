@@ -580,10 +580,20 @@ export const ticketsApi = apiSlice.injectEndpoints({
             }
           });
         }
-        formData.append("ticketData", JSON.stringify(auxData));
-        for (let pair of formData.entries()) {
-          console.log(`${pair[0]}: ${pair[1]}`);
+        if (data.Otros_correos) {
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === "Otros_correos" && Array.isArray(value)) {
+              // Simplemente agregamos los correos tal como están al formData
+              formData.append("emails_extra", JSON.stringify(value));
+            }
+          });
+        } else {
+          formData.append("emails_extra", JSON.stringify([]));
         }
+        formData.append("ticketData", JSON.stringify(auxData));
+        // for (let pair of formData.entries()) {
+        //   console.log(`${pair[0]}: ${pair[1]}`);
+        // }
         return {
           url: `tickets/contactoCliente/${ticketId}`,
           method: "PUT",

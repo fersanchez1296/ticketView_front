@@ -12,21 +12,37 @@ const Contacto = ({ form, formState }) => {
   const { data, isLoading, isError } = useGetCorreosQuery({ ticketId });
   if (isLoading) return <div>Cargando correos...</div>;
   if (isError) return <div>Error al cargar los correos</div>;
-
   return (
     <Grid container spacing={1} m={1}>
       <Grid item xs={12}>
-        {/* Input para agregr la descripción pendiente */}
+        {/* Correo cliente */}
         <TextField
           fullWidth
           id="outlined-multiline-static"
-          label="Para:"
+          label="Cliente:"
           value={data.correoCliente}
           disabled
         />
       </Grid>
       <Grid item xs={12}>
-        {/* Input para agregr la descripción pendiente */}
+        {/* Correo cliente */}
+        <TextField
+          fullWidth
+          id="outlined-multiline-static"
+          label="Otros destinatarios:"
+          value={form.watch("Otros_correos")?.join(", ") || ""}
+          onChange={(e) => {
+            const value = e.target.value;
+            const emails = value.split(",").map((email) => email.trim());
+            form.setValue("Otros_correos", emails);
+          }}
+          multiline
+          rows={1}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        {/* Asunto */}
         <TextField
           fullWidth
           id="asunto"
