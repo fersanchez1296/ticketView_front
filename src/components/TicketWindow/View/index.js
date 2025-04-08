@@ -2,6 +2,7 @@ import React from "react";
 //mui library component
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Unstable_Grid2";
+import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import Divider from "@mui/material/Divider";
 import MDBox from "components/MDBox";
@@ -15,6 +16,24 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Progress from "components/Progress";
 import { styled } from "@mui/material/styles";
 
+import { useDialogStore, useTicketStore } from "zustand/index.ts";
+import { useAuthStore } from "zustand/auth.store.ts";
+//Botones
+import WindowButton from "components/WindowButton/WindowButton";
+import {
+  Visibility,
+  NoteAdd,
+  AssignmentInd,
+  Task,
+  Edit,
+  Email,
+  AssignmentReturn,
+  ThumbDown,
+  ThumbUp,
+  DoneAll,
+  Replay,
+} from "@mui/icons-material";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 const CustomTextField = styled(TextField)({
   "& .MuiInputBase-input.Mui-disabled": {
     WebkitTextFillColor: "black !important",
@@ -48,6 +67,11 @@ const View = ({ form, formState }) => {
   const historia = form.getValues("Historia_ticket");
   const files = form.getValues("files");
   const getReabierto = form.getValues("Reabierto");
+  const estadoTicket = form.getValues("Estado.Estado");
+  const setTicketFields = useTicketStore((state) => state.setTicketFetch);
+  const dialogStore = useDialogStore();
+  const { role } = useAuthStore();
+  console.log("ROLE", role);
   /* -------------------------------------------------------------------------- */
   // API Hooks (RTK Query, Axios, etc.)
   /* -------------------------------------------------------------------------- */
@@ -240,7 +264,6 @@ const View = ({ form, formState }) => {
     ],
     []
   );
-
   const resolutorFields = React.useMemo(
     () => [
       {
@@ -267,6 +290,596 @@ const View = ({ form, formState }) => {
     ],
     []
   );
+
+  const acciones = (estadoTicket, role) => {
+    const accionesBase = [
+      {
+        field: "Nota",
+        headerName: "Nota",
+        headerAlign: "center",
+        width: 80,
+        renderCell: (params) => (
+          <WindowButton
+            ticket={params.row}
+            color="secondary"
+            store={setTicketFields}
+            openWindow={dialogStore.openWindowNota}
+            label="Nota"
+          >
+            <NoteAdd />
+          </WindowButton>
+        ),
+      },
+      {
+        field: "Contacto",
+        headerName: "Contacto",
+        width: 90,
+        renderCell: (params) => (
+          <WindowButton
+            ticket={params.row}
+            color="primary"
+            store={setTicketFields}
+            openWindow={dialogStore.openWindowContacto}
+            label="Contacto"
+          >
+            <Email />
+          </WindowButton>
+        ),
+      },
+    ];
+
+    // Mapa de acciones específicas
+    const accionesPorEstadoYRol = {
+      NUEVOS: {
+        Root: [
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowResolver}
+                label="Resolver"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+        ],
+        Moderador: [
+          {
+            field: "reasignar",
+            headerName: "Reasignar",
+            align: "center",
+            width: 100,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowReasignar}
+                label="Reasignar"
+              >
+                <AssignmentInd />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowResolver}
+                label="Resolver"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Mesa de Servicio",
+            headerName: "Mesa de Servicio",
+            headerAlign: "center",
+            align: "center",
+            width: 150,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowMesaServicio}
+                label="Regresar a mesa de servicio"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+      RESUELTOS: {
+        Root: [
+          {
+            field: "Reabrir",
+            headerName: "Reabrir",
+            width: 80,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowReabrir}
+                label="Reabrir"
+              >
+                <Replay />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "cerrar",
+            headerName: "Cerrar",
+            width: 80,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowCloseTicket}
+                label="Cerrar"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+        ],
+        Moderador: [
+          {
+            field: "Mesa de Servicio",
+            headerName: "Mesa de Servicio",
+            headerAlign: "center",
+            align: "center",
+            width: 150,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowMesaServicio}
+                label="Regresar a mesa de servicio"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+      PENDIENTES: {
+        Root: [
+          {
+            field: "regresar",
+            headerName: "Regresar",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowRegresar}
+                label="Regresar"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+      STANDBY: {
+        Root: [
+          {
+            field: "Descripción",
+            headerName: "R. Pendiente",
+            headerAlign: "center",
+            width: 120,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowRPendiente}
+                label="Razón pendiente"
+              >
+                <NoteAdd />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Asignar",
+            headerName: "Asignar",
+            width: 80,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowAsignar}
+                label="Asignar"
+              >
+                <AssignmentInd />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowResolver}
+                label="Resolver"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Editar",
+            headerName: "Editar",
+            width: 80,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowEdit}
+                label="Editar"
+              >
+                <Edit />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+      CERRADOS: {
+        Root: [
+          {
+            field: "Reabrir",
+            headerName: "Reabrir",
+            width: 80,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowReabrir}
+                label="Reabrir"
+              >
+                <Replay />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+      ABIERTOS: {
+        Moderador: [
+          {
+            field: "reasignar",
+            headerName: "Reasignar",
+            align: "center",
+            width: 100,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowReasignar}
+                label="Reasignar"
+              >
+                <AssignmentInd />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowResolver}
+                label="Resolver"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Mesa de Servicio",
+            headerName: "Mesa de Servicio",
+            headerAlign: "center",
+            align: "center",
+            width: 150,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowMesaServicio}
+                label="Regresar a mesa de servicio"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+        Usuario: [
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowResolver}
+                label="Resolver"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Pendiente",
+            headerName: "Marcar Pendiente",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowPendientes}
+                label="Pendiente"
+              >
+                <PendingActionsIcon />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Moderador",
+            headerName: "Moderador",
+            headerAlign: "center",
+            align: "center",
+            width: 150,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowRegresaraModerador}
+                label="Regresar a moderador"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+      REVISION: {
+        Moderador: [
+          {
+            field: "reasignar",
+            headerName: "Reasignar",
+            align: "center",
+            width: 100,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowReasignar}
+                label="Reasignar"
+              >
+                <AssignmentInd />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Aceptar",
+            headerName: "Aceptar",
+            headerAlign: "center",
+            align: "center",
+            width: 90,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="success"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowAceptar}
+                label="Aceptar"
+              >
+                <ThumbUp />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Rechazar",
+            headerName: "Rechazar",
+            headerAlign: "center",
+            align: "center",
+            width: 100,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="error"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowRechazar}
+                label="Rechazar"
+              >
+                <ThumbDown />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Mesa de Servicio",
+            headerName: "Mesa de Servicio",
+            headerAlign: "center",
+            align: "center",
+            width: 150,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowMesaServicio}
+                label="Regresar a mesa de servicio"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+      REABIERTOS: {
+        Moderador: [
+          {
+            field: "reasignar",
+            headerName: "Reasignar",
+            align: "center",
+            width: 100,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowReasignar}
+                label="Reasignar"
+              >
+                <AssignmentInd />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowResolver}
+                label="Resolver"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Mesa de Servicio",
+            headerName: "Mesa de Servicio",
+            headerAlign: "center",
+            align: "center",
+            width: 150,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowMesaServicio}
+                label="Regresar a mesa de servicio"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+        Usuario: [
+          {
+            field: "resolver",
+            headerName: "Resolver",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowResolver}
+                label="Resolver"
+              >
+                <Task />
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Pendiente",
+            headerName: "Marcar Pendiente",
+            width: 140,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="secondary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowPendientes}
+                label="Pendiente"
+              >
+                {/* <PendingActionsIcon /> */}
+              </WindowButton>
+            ),
+          },
+          {
+            field: "Moderador",
+            headerName: "Moderador",
+            headerAlign: "center",
+            align: "center",
+            width: 150,
+            renderCell: (params) => (
+              <WindowButton
+                key={params.row._id}
+                ticket={params.row}
+                color="primary"
+                store={setTicketFields}
+                openWindow={dialogStore.openWindowRegresaraModerador}
+                label="Regresar a moderador"
+              >
+                <AssignmentReturn />
+              </WindowButton>
+            ),
+          },
+        ],
+      },
+    };
+    const accionesExtra = accionesPorEstadoYRol[estadoTicket]?.[role] ?? [];
+    return [...accionesBase, ...accionesExtra];
+  };
 
   const clienteFields = React.useMemo(
     () => [
@@ -377,6 +990,20 @@ const View = ({ form, formState }) => {
   // Renderizado del componente (return)
   return (
     <Grid container spacing={1} m={1}>
+      <Grid item xs={12}>
+        <MDBox bgColor="primary" borderRadius="lg" mt={1} p={1} mb={1} textAlign="center">
+          <Typography variant="h5" fontWeight="bold" color="White">
+            Acciones
+          </Typography>
+        </MDBox>
+      </Grid>
+      <Grid item xs={12} container justifyContent="center" alignItems="center">
+        {acciones(estadoTicket, role).map((accion) => (
+          <Box key={accion.field} ml={5} mr={5} display="inline-block">
+            {accion.renderCell({ row: form.watch() })}
+          </Box>
+        ))}
+      </Grid>
       {sections.map(({ title, fields }) => (
         <React.Fragment key={title}>
           <Grid item xs={12}>
