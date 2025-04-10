@@ -52,6 +52,23 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
         </WindowButton>
       ),
     },
+    {
+      field: "Contacto",
+      headerName: "Contacto",
+      width: 90,
+      renderCell: (params) => (
+        <WindowButton
+          key={params.row._id}
+          ticket={params.row}
+          color="primary"
+          store={setTicketFields}
+          openWindow={dialogStore.openWindowContacto}
+          label="Contacto"
+        >
+          <Email />
+        </WindowButton>
+      ),
+    },
     { field: "Id", headerName: "ID", width: 90, align: "center", headerAlign: "center" },
     {
       field: "estatus",
@@ -451,23 +468,6 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
-      {
-        field: "Contacto",
-        headerName: "Contacto",
-        width: 90,
-        renderCell: (params) => (
-          <WindowButton
-            key={params.row._id}
-            ticket={params.row}
-            color="primary"
-            store={setTicketFields}
-            openWindow={dialogStore.openWindowContacto}
-            label="Contacto"
-          >
-            <Email />
-          </WindowButton>
-        ),
-      },
     ],
     Administrador: [
       ...(collection !== "cerrados" &&
@@ -536,6 +536,13 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
+      {
+        field: "PendingReason",
+        headerName: "Descripción pendiente",
+        headerAlign: "center",
+        width: 200,
+        align: "center",
+      },
       ...(collection === "cerrados"
         ? [
             {
@@ -626,23 +633,6 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
             },
           ]
         : []),
-      {
-        field: "Contacto",
-        headerName: "Contacto",
-        width: 90,
-        renderCell: (params) => (
-          <WindowButton
-            key={params.row._id}
-            ticket={params.row}
-            color="primary"
-            store={setTicketFields}
-            openWindow={dialogStore.openWindowContacto}
-            label="Contacto"
-          >
-            <Email />
-          </WindowButton>
-        ),
-      },
     ],
   };
 

@@ -12,8 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 // react-router-dom components
 import { useLocation, NavLink, Navigate, useNavigate } from "react-router-dom";
 
@@ -25,7 +24,9 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
-
+import { TextField } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SearchIcon from "@mui/icons-material/Search";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -49,12 +50,16 @@ import {
 //api
 import { useLogoutMutation } from "api/authApi";
 import { useExcelMutation, useManualMutation } from "api/dashboardApi";
+import { useTicketStore, useDialogStore } from "zustand/index.ts";
 
 //store
 import { useAuthStore } from "zustand/auth.store.ts";
-
+import { useGetTicketByIdMutation } from "api/ticketsApi";
+import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
+  const openWindow = useDialogStore((state) => state.openWindow);
   const setAuth = useAuthStore((state) => state.setAuth);
   const setRole = useAuthStore((state) => state.setRole);
   const { role } = useAuthStore();
@@ -64,6 +69,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
+  const { openSuccessSB, openErrorSB } = useSnackbarStore();
+  const [ticketId, setTicketId] = React.useState("");
+  const [postTicket] = useGetTicketByIdMutation();
+  const setTicketFromFetch = useTicketStore((state) => state.setTicketFetch);
 
   let textColor = "white";
 
@@ -122,6 +131,28 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       link.remove();
     } catch (error) {
       console.error("Error al descargar el manual:", error);
+    }
+  };
+
+  const buscarTicket = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    let result = undefined;
+    try {
+      result = await postTicket(ticketId);
+      if (result.error) {
+        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+      } else {
+        openSuccessSB(result.data.desc, `Status: 200`);
+        setTicketFromFetch(result.data[0]);
+        openWindow();
+        setTicketId("");
+      }
+    } catch (error) {
+      console.log(error);
+      openErrorSB("Verifica tu busqueda", `Status: ${result.error.status}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -250,6 +281,65 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           (darkMode && !transparentSidenav && whiteSidenav)
         }
       />
+      {role !== "Usuario" && (
+        <>
+          <MDBox
+            component="form"
+            p={2}
+            mt="auto"
+            sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+          >
+            <TextField
+              type="number"
+              label="Buscar por Id:"
+              value={ticketId}
+              onChange={(e) => setTicketId(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input": {
+                  color: "White",
+                  fontWeight: "bold",
+                },
+                // Estilo del label (etiqueta)
+                "& .MuiInputLabel-root": {
+                  color: "White",
+                  fontWeight: "bold",
+                },
+                "& input[type=number]::-webkit-inner-spin-button": {
+                  WebkitAppearance: "none",
+                  margin: 0,
+                },
+                "& input[type=number]::-webkit-outer-spin-button": {
+                  WebkitAppearance: "none",
+                  margin: 0,
+                },
+                "& input[type=number]": {
+                  MozAppearance: "textfield",
+                },
+              }}
+              fullWidth
+            />
+            <LoadingButton
+              variant={"contained"}
+              onClick={buscarTicket}
+              endIcon={<SearchIcon />}
+              sx={{ backgroundColor: "#7557C1", color: "White" }}
+              type={"submit"}
+              loading={loading}
+              loadingIndicator="Buscando…"
+              disabled={!ticketId ? true : false}
+            >
+              <span>Buscar</span>
+            </LoadingButton>
+          </MDBox>
+          <Divider
+            light={
+              (!darkMode && !whiteSidenav && !transparentSidenav) ||
+              (darkMode && !transparentSidenav && whiteSidenav)
+            }
+          />
+        </>
+      )}
+
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
         <MDButton
