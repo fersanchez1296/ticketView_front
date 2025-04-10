@@ -76,7 +76,7 @@ const routes = [
     type: "collapse",
     name: "Busqueda avanzada",
     key: "busqueda_avanzada",
-    rol: ["Root", "Administrador"],
+    rol: ["Root", "Administrador", "Moderador", "Auditor"],
     icon: <TravelExploreIcon />,
     route: "/busqueda_avanzada",
     component: <BusquedaAvanzada />,
