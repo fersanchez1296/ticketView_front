@@ -24,17 +24,17 @@ import PropTypes from "prop-types";
 // @material-ui core components
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
+//import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
-import LoadingButton from "@mui/lab/LoadingButton";
-import SearchIcon from "@mui/icons-material/Search";
+//import LoadingButton from "@mui/lab/LoadingButton";
+//import SearchIcon from "@mui/icons-material/Search";
 //api hook
-import { useGetTicketByIdMutation } from "api/ticketsApi";
+//import { useGetTicketByIdMutation } from "api/ticketsApi";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDInput from "components/MDInput";
-import { TextField } from "@mui/material";
+//import MDInput from "components/MDInput";
+//import { TextField } from "@mui/material";
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
@@ -57,31 +57,31 @@ import {
 } from "context";
 
 //store
-import { useTicketStore, useDialogStore } from "zustand/index.ts";
-import { useAuthStore } from "zustand/auth.store.ts";
-import MDButton from "components/MDButton";
+//import { useTicketStore, useDialogStore } from "zustand/index.ts";
+// import { useAuthStore } from "zustand/auth.store.ts";
+// import MDButton from "components/MDButton";
 //snackbar store
-import { useSnackbarStore } from "zustand/snackbarState.store.ts";
+// import { useSnackbarStore } from "zustand/snackbarState.store.ts";
 //snackbar
-import SuccessSB from "components/Snackbar/success/index";
-import ErrorSB from "components/Snackbar/error/index";
+// import SuccessSB from "components/Snackbar/success/index";
+// import ErrorSB from "components/Snackbar/error/index";
 function DashboardNavbar({ absolute, light, isMini }) {
-  const [loading, setLoading] = React.useState(false);
+  //const [loading, setLoading] = React.useState(false);
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
-  const [ticketId, setTicketId] = React.useState("");
-  const [postTicket] = useGetTicketByIdMutation();
-  const { role } = useAuthStore();
-  const openWindow = useDialogStore((state) => state.openWindow);
-  const setTicketFromFetch = useTicketStore((state) => state.setTicketFetch);
+  //const [ticketId, setTicketId] = React.useState("");
+  //const [postTicket] = useGetTicketByIdMutation();
+  //const { role } = useAuthStore();
+  //const openWindow = useDialogStore((state) => state.openWindow);
+  //const setTicketFromFetch = useTicketStore((state) => state.setTicketFetch);
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
-  const { openSuccessSB, openErrorSB } = useSnackbarStore();
+  //const { openSuccessSB, openErrorSB } = useSnackbarStore();
 
   useEffect(() => {
     // Setting the navbar type
@@ -150,25 +150,25 @@ function DashboardNavbar({ absolute, light, isMini }) {
       return colorValue;
     },
   });
-  const buscarTicket = async (e) => {
-    setLoading(true);
-    e.preventDefault();
-    try {
-      const result = await postTicket(ticketId);
-      if (result.error) {
-        openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
-      } else {
-        openSuccessSB(result.data.desc, `Status: 200`);
-        setTicketFromFetch(result.data[0]);
-        openWindow();
-        setTicketId("");
-      }
-    } catch (error) {
-      openErrorSB("Verifica tu busqueda", `Status: ${result.error.status}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const buscarTicket = async (e) => {
+  //   setLoading(true);
+  //   e.preventDefault();
+  //   try {
+  //     const result = await postTicket(ticketId);
+  //     if (result.error) {
+  //       openErrorSB(result.error.data.desc, `Status: ${result.error.status}`);
+  //     } else {
+  //       openSuccessSB(result.data.desc, `Status: 200`);
+  //       setTicketFromFetch(result.data[0]);
+  //       openWindow();
+  //       setTicketId("");
+  //     }
+  //   } catch (error) {
+  //     openErrorSB("Verifica tu busqueda", `Status: ${result.error.status}`);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   return (
     <>
       <AppBar
@@ -180,7 +180,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
             <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
           </MDBox>
-          {role != "Usuario" ? (
+          {/* {role != "Usuario" ? (
             <>
               {isMini ? null : (
                 <MDBox
@@ -209,7 +209,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
                       {miniSidenav ? "menu_open" : "menu"}
                     </Icon>
                   </IconButton>
-                  {/*Boton que enviara el post con el id del ticket que se va a buscar*/}
                   <LoadingButton
                     variant={"contained"}
                     onClick={buscarTicket}
@@ -225,7 +224,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </MDBox>
               )}
             </>
-          ) : null}
+          ) : null} */}
         </Toolbar>
       </AppBar>
     </>

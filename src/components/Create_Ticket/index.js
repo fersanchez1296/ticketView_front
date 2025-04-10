@@ -43,9 +43,7 @@ const Edit = () => {
   // Renderizado del componente (return)
   return (
     <React.Fragment>
-      <DashboardLayout>
-        <Form data={data} />
-      </DashboardLayout>
+      <Form data={data} />
     </React.Fragment>
   );
 };
