@@ -350,6 +350,10 @@ export const ticketsApi = apiSlice.injectEndpoints({
           //descripcionReabierto: data.Descripcion,
           Files: data.Files,
         };
+        if (data.Nota) {
+          AuxData.Nota = data.Nota;
+        }
+        console.log("AuxData", AuxData);
         if (typeof AuxData.Asignado_a === "object") {
           delete AuxData.Asignado_a;
         }

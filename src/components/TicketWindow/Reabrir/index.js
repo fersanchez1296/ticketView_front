@@ -7,11 +7,15 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { useReabrirFieldsQuery } from "api/ticketsApi";
 import Progress from "components/Progress";
 import { ArchivosButton } from "components/ArchivosButton/ArchivosButton";
 const Reabrir = ({ form, formState }) => {
   const { data, isLoading } = useReabrirFieldsQuery();
+  const [nota, setNota] = React.useState(false);
+  console.log(form.watch("Nota"));
   if (isLoading) return <Progress open={true} />;
   return (
     <Grid container spacing={2} m={1}>
@@ -74,6 +78,24 @@ const Reabrir = ({ form, formState }) => {
       <Grid xs={6}>
         <ArchivosButton form={form} formState={formState} />
       </Grid>
+      <Grid xs={12}>
+        <FormControlLabel
+          control={<Switch checked={nota} onChange={() => setNota(!nota)} />}
+          label="Agregar nota"
+        />
+      </Grid>
+      {nota && (
+        <Grid item xs={12}>
+          <TextField
+            id="notas"
+            label="Nota"
+            multiline
+            {...form.register("Nota")}
+            rows={15}
+            fullWidth
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };
