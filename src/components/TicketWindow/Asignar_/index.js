@@ -28,8 +28,11 @@ const Reabrir = ({ form, formState }) => {
   if (isLoading) return <Progress open={true} />;
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    setSelectedFiles(files);
-    form.setValue("Files", files);
+    setSelectedFiles((prevFiles) => {
+      const updatedFiles = [...prevFiles, ...files];
+      form.setValue("Files", updatedFiles);
+      return updatedFiles;
+    });
   };
   const removeFile = (index) => {
     const newFiles = selectedFiles.filter((_, i) => i !== index);
@@ -115,7 +118,6 @@ const Reabrir = ({ form, formState }) => {
           />
         </Grid>
       )}
-
       {/* Botón de archivos */}
       <Grid xs={6}>
         <Button
@@ -125,7 +127,7 @@ const Reabrir = ({ form, formState }) => {
           size="small"
           tabIndex={-1}
           startIcon={<CloudUploadIcon color="primary" />}
-          disabled={selectedFiles.length > 0 ? true : false}
+          // Removemos la deshabilitación para permitir agregar más archivos
         >
           <Typography color="primary">
             {selectedFiles.length > 0
@@ -139,6 +141,7 @@ const Reabrir = ({ form, formState }) => {
             onChange={handleFileChange}
           />
         </Button>
+        <br />
       </Grid>
       {/* Botones de eliminar archivos */}
       {selectedFiles.length > 0 && (
