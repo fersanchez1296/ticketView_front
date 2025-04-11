@@ -15,7 +15,6 @@ import {
 } from "@mui/icons-material";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => {
-  console.log("tickets", tickets);
   const baseColumns = [
     {
       field: "visualizar",
@@ -105,6 +104,9 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
       headerAlign: "center",
       align: "center",
       width: 300,
+      renderCell: (params) => (
+        <span style={{ color: params.row.vencido ? "red" : "inherit" }}>{params.value}</span>
+      ),
     },
     {
       field: "Fecha_hora_cierre",
@@ -308,7 +310,6 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
     ],
     Root: [
       ...(collection !== "cerrados" &&
-      collection !== "standby" &&
       collection !== "nuevos" &&
       collection !== "reabiertos" &&
       collection !== "abiertos" &&
@@ -483,7 +484,6 @@ const TicketsData = (tickets, collection, setTicketFields, rol, dialogStore) => 
     ],
     Administrador: [
       ...(collection !== "cerrados" &&
-      collection !== "standby" &&
       collection !== "nuevos" &&
       collection !== "reabiertos" &&
       collection !== "abiertos" &&
