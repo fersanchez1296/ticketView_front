@@ -26,7 +26,22 @@ export const historicoApi = apiSlice.injectEndpoints({
         responseHandler: async (response) => response.blob(), // Recibe el archivo como Blob
       }),
     }),
+    busquedaAvanzada: builder.mutation({
+      query: ({ criterio, termino }) => {
+        const url = `tickets/${criterio}?termino=${termino}`;
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["Dashboard"],
+    }),
   }),
 });
 
-export const { useDashboardQuery, useExcelMutation, useManualMutation } = historicoApi;
+export const {
+  useDashboardQuery,
+  useExcelMutation,
+  useManualMutation,
+  useBusquedaAvanzadaMutation,
+} = historicoApi;

@@ -34,6 +34,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
     },
   });
   const { isHelpWindowOpen, openWindowHelp } = useDialogStore();
+  const closeWindow = useDialogStore((state) => state.closeWindow);
   const [loading, setLoading] = React.useState(false);
   const { handleSubmit, formState, reset } = form;
   const { openSuccessSB, openErrorSB } = useSnackbarStore();
@@ -55,6 +56,7 @@ const Index = ({ children, title, isOpen, onClose, onSave, store, helpKey }) => 
     } finally {
       reset();
       store.resetValues();
+      closeWindow();
       setLoading(false);
     }
   };

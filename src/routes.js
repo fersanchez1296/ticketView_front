@@ -64,12 +64,23 @@ import Historico from "layouts/Historico/index";
 import FeedIcon from "@mui/icons-material/Feed";
 import ErrorIcon from "@mui/icons-material/Error";
 import Coordinacion from "layouts/coordinacion/index";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 //import Usuarios from "layouts/usuarios/index";
 import Usuarios from "layouts/usuarios2/index";
 import Clientes from "layouts/clientes/index";
 import { ticketsUsuario } from "layouts/ticketsUsuario";
 import TicketsUsuario from "layouts/ticketsUsuario";
+import BusquedaAvanzada from "layouts/busqueda_avanzada";
 const routes = [
+  {
+    type: "collapse",
+    name: "Busqueda avanzada",
+    key: "busqueda_avanzada",
+    rol: ["Root", "Administrador", "Moderador", "Auditor"],
+    icon: <TravelExploreIcon />,
+    route: "/busqueda_avanzada",
+    component: <BusquedaAvanzada />,
+  },
   {
     type: "collapse",
     name: "Dashboard",
@@ -88,15 +99,15 @@ const routes = [
     route: "/crear_ticket",
     component: <Create_Ticket />,
   },
-  {
-    type: "collapse",
-    name: "Graves",
-    key: "graves",
-    rol: ["Root", "Administrador", "Moderador"],
-    icon: <ErrorIcon />,
-    route: "/graves",
-    component: <DataTable collection={"nuevos"} />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Graves",
+  //   key: "graves",
+  //   rol: ["Root", "Administrador", "Moderador"],
+  //   icon: <ErrorIcon />,
+  //   route: "/graves",
+  //   component: <DataTable collection={"graves"} />,
+  // },
   {
     type: "collapse",
     name: "Nuevos",
