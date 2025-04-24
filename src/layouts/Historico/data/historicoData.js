@@ -59,15 +59,13 @@ const HistoricaData = (ticketsArea, setTicketFields, dialogStore) => {
       width: 300,
       align: "center",
       renderCell: (params) => {
-        const ultimoReasignado = params.row.Reasignado_a?.length
-          ? params.row.Reasignado_a[params.row.Reasignado_a.length - 1].Nombre
-          : "Sin asignar";
-        return (
-          <Badge
-            className="bg-blue-500 text-white backgroundColor: blue"
-            content={ultimoReasignado}
-          />
-        );
+        let contenido = "Mesa de servicio"; // Valor predeterminado
+        if (params.row.Reasignado_a?.length) {
+          contenido = params.row.Reasignado_a[params.row.Reasignado_a.length - 1].Nombre;
+        } else if (params.row.Asignado?.length) {
+          contenido = params.row.Asignado[params.row.Asignado.length - 1].Nombre;
+        }
+        return <Badge className="bg-blue-500 text-white" content={contenido} />;
       },
     },
     {
