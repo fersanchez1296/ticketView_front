@@ -54,7 +54,7 @@ const Reabrir = ({ form, formState }) => {
     <Grid container spacing={2} m={1}>
       <Grid item xs={6}>
         <FormControl fullWidth>
-          <InputLabel id="moderador">Moderador</InputLabel>
+          <InputLabel id="moderador">Usuarios</InputLabel>
           <Select
             native
             id="moderador"

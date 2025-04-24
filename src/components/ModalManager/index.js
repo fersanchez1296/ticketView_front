@@ -201,7 +201,7 @@ const ModalManager = () => {
       )}
       {isWindowAsignarOpen && (
         <VentanaAcciones
-          title="Asignar ticket a moderador"
+          title="Asignar ticket"
           isOpen={isWindowAsignarOpen}
           onClose={closeWindowAsignar}
           onSave={asignar}
